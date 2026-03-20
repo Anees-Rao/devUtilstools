@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Address Lookup &amp; Subnet Calculator Online Free | DevUtils</title>
+  <meta name="description" content="Validate and analyze IPv4/IPv6 addresses, calculate subnets with CIDR notation, find network and broadcast addresses, subnet masks, and host ranges. Free online IP address lookup with geolocation classification — works offline, no API calls.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/ip-lookup">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="IP Address Lookup & Subnet Calculator — Free Online Tool">
+  <meta property="og:description" content="Validate IPv4/IPv6 addresses, calculate subnets, find network addresses and host ranges. Free IP analyzer for developers.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "IP Address Lookup & Subnet Calculator",
+    "url": "https://devutils.com/ip-lookup.html",
+    "description": "Validate and analyze IPv4/IPv6 addresses, calculate subnets with CIDR notation. Free online IP address lookup and subnet calculator for developers.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I find information about an IP address?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Enter any IPv4 or IPv6 address into the analyzer above to instantly see its version, binary/decimal/hex representations, classification (private, public, loopback, link-local, multicast), and IP class. Add a CIDR prefix length (e.g. /24) to calculate subnet details including network address, broadcast address, usable host range, subnet mask, and wildcard mask. All processing happens locally in your browser — no data is sent to any server." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between IPv4 and IPv6?",
+        "acceptedAnswer": { "@type": "Answer", "text": "IPv4 uses 32-bit addresses written as four decimal octets (e.g. 192.168.1.1), providing about 4.3 billion unique addresses. IPv6 uses 128-bit addresses written as eight groups of four hexadecimal digits separated by colons (e.g. 2001:0db8::1), providing approximately 340 undecillion addresses. IPv6 was created to solve IPv4 address exhaustion and includes improvements like built-in IPsec support, simplified headers, and no need for NAT." }
+      },
+      {
+        "@type": "Question",
+        "name": "What are private IP address ranges (RFC 1918)?",
+        "acceptedAnswer": { "@type": "Answer", "text": "RFC 1918 defines three private IPv4 address ranges that are not routable on the public internet: 10.0.0.0/8 (10.0.0.0 – 10.255.255.255, ~16.7 million addresses), 172.16.0.0/12 (172.16.0.0 – 172.31.255.255, ~1 million addresses), and 192.168.0.0/16 (192.168.0.0 – 192.168.255.255, ~65,000 addresses). These are used for local networks behind NAT routers. Other reserved ranges include 127.0.0.0/8 for loopback and 169.254.0.0/16 for link-local." }
+      },
+      {
+        "@type": "Question",
+        "name": "How does CIDR notation and subnetting work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "CIDR (Classless Inter-Domain Routing) notation appends a prefix length to an IP address (e.g. 192.168.1.0/24). The prefix length indicates how many leading bits define the network portion. A /24 means the first 24 bits are the network part, leaving 8 bits for host addresses (256 addresses, 254 usable). Subnetting divides a larger network into smaller segments: a /24 can be split into two /25 subnets (128 addresses each) or four /26 subnets (64 addresses each)." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a subnet mask and how do I calculate it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A subnet mask is a 32-bit number that separates the network and host portions of an IP address. It has consecutive 1-bits for the network part and 0-bits for the host part. For example, /24 = 255.255.255.0 (24 ones followed by 8 zeros in binary). The wildcard mask is the inverse: 0.0.0.255. To find the network address, perform a bitwise AND between the IP and subnet mask. The broadcast address is the network address with all host bits set to 1." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .ip-input-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .ip-input-row .ip-field { flex: 1; }
+    .ip-input-row .cidr-field { width: 100px; flex-shrink: 0; }
+    @media (max-width: 480px) {
+      .ip-input-row { flex-direction: column; align-items: stretch; }
+      .ip-input-row .cidr-field { width: 100%; }
+    }
+
+    .quick-examples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .quick-examples button {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 5px 10px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text2);
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .quick-examples button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .ip-result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    @media (max-width: 560px) {
+      .ip-result-grid { grid-template-columns: 1fr; }
+    }
+
+    .ip-result-cell {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .ip-result-cell.full-width {
+      grid-column: 1 / -1;
+    }
+    .ip-result-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+    }
+    .ip-result-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      word-break: break-all;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .ip-result-value:hover { color: var(--accent); }
+
+    .ip-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .ip-badge.badge-public { background: rgba(52,199,89,.15); color: #34c759; }
+    .ip-badge.badge-private { background: rgba(255,159,10,.15); color: #ff9f0a; }
+    .ip-badge.badge-loopback { background: rgba(94,92,230,.15); color: #5e5ce6; }
+    .ip-badge.badge-linklocal { background: rgba(0,122,255,.15); color: #007aff; }
+    .ip-badge.badge-multicast { background: rgba(255,55,95,.15); color: #ff375f; }
+    .ip-badge.badge-reserved { background: rgba(172,142,104,.15); color: #ac8e68; }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    .subnet-section-title {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 10px;
+    }
+
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 12px;
+      margin-top: 14px;
+    }
+    .ref-table th {
+      text-align: left;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text3);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ref-table td {
+      padding: 8px 10px;
+      color: var(--text2);
+      border-bottom: 1px solid var(--border);
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { color: var(--text); }
+
+    #ip-analysis, #subnet-results { display: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Network Tool</div>
+    <h1>IP Address Lookup &amp; Analyzer</h1>
+    <p class="tool-description">
+      Validate and analyze any IPv4 or IPv6 address instantly. See binary, decimal, and hex representations, classify addresses as public or private (RFC 1918), and calculate subnet details using CIDR notation. This free IP address lookup tool computes network addresses, broadcast addresses, subnet masks, wildcard masks, and usable host ranges entirely in your browser — no external API calls, no data sent to any server. Supports IPv4 vs IPv6 address checking, IP subnet calculation, and private IP range identification. Works offline.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">ip-lookup.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>IP Address</label>
+      <div class="ip-input-row">
+        <div class="ip-field">
+          <input type="text" id="ip-input" placeholder="e.g. 192.168.1.1 or 2001:db8::1" oninput="analyze()" spellcheck="false" autocomplete="off">
+        </div>
+        <div class="cidr-field">
+          <input type="text" id="cidr-input" placeholder="/ CIDR" oninput="analyze()" spellcheck="false" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="quick-examples">
+        <button onclick="loadExample('192.168.1.1','24')">192.168.1.1/24</button>
+        <button onclick="loadExample('10.0.0.0','8')">10.0.0.0/8</button>
+        <button onclick="loadExample('172.16.0.0','12')">172.16.0.0/12</button>
+        <button onclick="loadExample('8.8.8.8','32')">8.8.8.8/32</button>
+        <button onclick="loadExample('::1','')">::1</button>
+      </div>
+
+      <!-- IP Analysis Results -->
+      <div id="ip-analysis">
+        <hr class="section-divider">
+        <div class="subnet-section-title">IP Address Analysis</div>
+        <div class="ip-result-grid" id="ip-info-grid"></div>
+      </div>
+
+      <!-- Subnet Results -->
+      <div id="subnet-results">
+        <hr class="section-divider">
+        <div class="subnet-section-title">Subnet Calculation</div>
+        <div class="ip-result-grid" id="subnet-grid"></div>
+      </div>
+
+      <!-- Reference Table -->
+      <hr class="section-divider">
+      <div class="subnet-section-title">Common Private IP Ranges Reference</div>
+      <div style="overflow-x:auto">
+        <table class="ref-table">
+          <thead>
+            <tr>
+              <th>Range</th>
+              <th>CIDR</th>
+              <th>Type</th>
+              <th>Addresses</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>10.0.0.0 – 10.255.255.255</td><td>10.0.0.0/8</td><td>Private (RFC 1918)</td><td>16,777,216</td></tr>
+            <tr><td>172.16.0.0 – 172.31.255.255</td><td>172.16.0.0/12</td><td>Private (RFC 1918)</td><td>1,048,576</td></tr>
+            <tr><td>192.168.0.0 – 192.168.255.255</td><td>192.168.0.0/16</td><td>Private (RFC 1918)</td><td>65,536</td></tr>
+            <tr><td>127.0.0.0 – 127.255.255.255</td><td>127.0.0.0/8</td><td>Loopback</td><td>16,777,216</td></tr>
+            <tr><td>169.254.0.0 – 169.254.255.255</td><td>169.254.0.0/16</td><td>Link-Local</td><td>65,536</td></tr>
+            <tr><td>224.0.0.0 – 239.255.255.255</td><td>224.0.0.0/4</td><td>Multicast</td><td>268,435,456</td></tr>
+            <tr><td>240.0.0.0 – 255.255.255.255</td><td>240.0.0.0/4</td><td>Reserved</td><td>268,435,456</td></tr>
+            <tr><td>::1/128</td><td>::1/128</td><td>IPv6 Loopback</td><td>1</td></tr>
+            <tr><td>fe80::/10</td><td>fe80::/10</td><td>IPv6 Link-Local</td><td>~1.2×10<sup>24</sup></td></tr>
+            <tr><td>fc00::/7</td><td>fc00::/7</td><td>IPv6 Unique Local</td><td>~5.9×10<sup>37</sup></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I find information about an IP address?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Enter any IPv4 or IPv6 address into the input field above to instantly see its version, binary/decimal/hex representations, classification (private, public, loopback, link-local, multicast), and IP class. Add a CIDR prefix length (e.g., <code>/24</code>) to calculate subnet details including <strong>network address</strong>, <strong>broadcast address</strong>, usable host range, <strong>subnet mask</strong>, and <strong>wildcard mask</strong>. All processing happens locally in your browser — no data is sent to any server, and no external API calls are made.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between IPv4 and IPv6?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>IPv4</strong> uses 32-bit addresses written as four decimal octets (e.g., <code>192.168.1.1</code>), providing about 4.3 billion unique addresses. <strong>IPv6</strong> uses 128-bit addresses written as eight groups of four hexadecimal digits separated by colons (e.g., <code>2001:0db8::1</code>), providing approximately 3.4 &times; 10<sup>38</sup> addresses. IPv6 was created to solve IPv4 address exhaustion and includes improvements like built-in IPsec support, simplified packet headers, and elimination of NAT.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What are private IP address ranges (RFC 1918)?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        RFC 1918 defines three private IPv4 address ranges not routable on the public internet: <strong>10.0.0.0/8</strong> (~16.7 million addresses), <strong>172.16.0.0/12</strong> (~1 million addresses), and <strong>192.168.0.0/16</strong> (~65,000 addresses). These are used for local area networks behind NAT routers. Other reserved ranges include <code>127.0.0.0/8</code> for loopback and <code>169.254.0.0/16</code> for link-local auto-configuration. The reference table above lists all common reserved ranges.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How does CIDR notation and subnetting work?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>CIDR</strong> (Classless Inter-Domain Routing) notation appends a prefix length to an IP address, like <code>192.168.1.0/24</code>. The prefix length indicates how many leading bits define the network portion. A <code>/24</code> means 24 network bits and 8 host bits — giving 256 total addresses (254 usable hosts, minus network and broadcast). Subnetting divides a larger network into smaller segments: a <code>/24</code> can be split into two <code>/25</code> subnets (128 addresses each) or four <code>/26</code> subnets (64 addresses each). Use the subnet calculator above to explore these calculations interactively.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is a subnet mask and how do I calculate it?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A <strong>subnet mask</strong> is a 32-bit number that separates the network and host portions of an IP address. It consists of consecutive 1-bits for the network part followed by 0-bits for the host part. For example, <code>/24</code> = <code>255.255.255.0</code> (24 ones followed by 8 zeros in binary). The <strong>wildcard mask</strong> is the bitwise inverse: <code>0.0.0.255</code>. To find the network address, perform a bitwise AND between the IP and subnet mask. The broadcast address has all host bits set to 1. Enter any IP with a CIDR prefix above to see all these values computed instantly.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="hash-generator.html">
+        <div class="related-icon">#</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Hash Generator</div>
+          <div class="related-card-desc">Generate MD5, SHA-256, SHA-512 hashes</div>
+        </div>
+      </a>
+      <a class="related-card" href="number-base.html">
+        <div class="related-icon">01</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Number Base Converter</div>
+          <div class="related-card-desc">Convert between binary, hex, octal, decimal</div>
+        </div>
+      </a>
+      <a class="related-card" href="url-encoder.html">
+        <div class="related-icon">&#x1f517;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">URL Encoder</div>
+          <div class="related-card-desc">Encode and decode URL components</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — IP Address Lookup</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+// ── Helpers ──
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+  showToast();
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+function loadExample(ip, cidr) {
+  document.getElementById('ip-input').value = ip;
+  document.getElementById('cidr-input').value = cidr;
+  analyze();
+}
+
+// ── IPv4 Parsing & Validation ──
+function parseIPv4(str) {
+  str = str.trim();
+  const m = str.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (!m) return null;
+  const octets = [+m[1], +m[2], +m[3], +m[4]];
+  if (octets.some(o => o > 255)) return null;
+  // reject leading zeros (e.g. 01.02.03.04)
+  if ([m[1],m[2],m[3],m[4]].some(s => s.length > 1 && s[0] === '0')) return null;
+  return octets;
+}
+
+function ipv4ToInt(octets) {
+  return ((octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]) >>> 0;
+}
+
+function intToIPv4(n) {
+  return [(n >>> 24) & 0xFF, (n >>> 16) & 0xFF, (n >>> 8) & 0xFF, n & 0xFF].join('.');
+}
+
+function ipv4ToBinary(octets) {
+  return octets.map(o => o.toString(2).padStart(8, '0')).join('.');
+}
+
+function ipv4ToHex(octets) {
+  return octets.map(o => o.toString(16).padStart(2, '0')).join(':');
+}
+
+function ipv4ToDecimal(octets) {
+  return ipv4ToInt(octets).toString();
+}
+
+function classifyIPv4(octets) {
+  const a = octets[0], b = octets[1];
+  // Loopback
+  if (a === 127) return { type: 'Loopback', badge: 'loopback' };
+  // Link-local
+  if (a === 169 && b === 254) return { type: 'Link-Local', badge: 'linklocal' };
+  // Private RFC 1918
+  if (a === 10) return { type: 'Private (RFC 1918)', badge: 'private' };
+  if (a === 172 && b >= 16 && b <= 31) return { type: 'Private (RFC 1918)', badge: 'private' };
+  if (a === 192 && b === 168) return { type: 'Private (RFC 1918)', badge: 'private' };
+  // Multicast
+  if (a >= 224 && a <= 239) return { type: 'Multicast', badge: 'multicast' };
+  // Reserved
+  if (a >= 240) return { type: 'Reserved', badge: 'reserved' };
+  // Public
+  return { type: 'Public', badge: 'public' };
+}
+
+function ipv4Class(octets) {
+  const a = octets[0];
+  if (a <= 127) return 'A';
+  if (a <= 191) return 'B';
+  if (a <= 223) return 'C';
+  if (a <= 239) return 'D (Multicast)';
+  return 'E (Reserved)';
+}
+
+// ── IPv6 Parsing & Validation ──
+function parseIPv6(str) {
+  str = str.trim();
+
+  // Handle ::ffff:1.2.3.4 mixed notation
+  const mixedMatch = str.match(/^(.*):((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3}))$/);
+  if (mixedMatch) {
+    const v4parts = [+mixedMatch[3], +mixedMatch[4], +mixedMatch[5], +mixedMatch[6]];
+    if (v4parts.some(p => p > 255)) return null;
+    const hex1 = ((v4parts[0] << 8) | v4parts[1]).toString(16);
+    const hex2 = ((v4parts[2] << 8) | v4parts[3]).toString(16);
+    str = mixedMatch[1] + ':' + hex1 + ':' + hex2;
+  }
+
+  // Expand :: shorthand
+  if (str.indexOf('::') !== -1) {
+    const halves = str.split('::');
+    if (halves.length > 2) return null;
+    const left = halves[0] ? halves[0].split(':') : [];
+    const right = halves[1] ? halves[1].split(':') : [];
+    const missing = 8 - left.length - right.length;
+    if (missing < 0) return null;
+    const mid = new Array(missing).fill('0');
+    str = left.concat(mid).concat(right).join(':');
+  }
+
+  const groups = str.split(':');
+  if (groups.length !== 8) return null;
+
+  const parsed = [];
+  for (let i = 0; i < 8; i++) {
+    if (!/^[0-9a-fA-F]{1,4}$/.test(groups[i])) return null;
+    parsed.push(parseInt(groups[i], 16));
+  }
+  return parsed; // array of 8 16-bit values
+}
+
+function ipv6Full(groups) {
+  return groups.map(g => g.toString(16).padStart(4, '0')).join(':');
+}
+
+function ipv6ToBinary(groups) {
+  return groups.map(g => g.toString(16).padStart(4, '0').split('').map(
+    h => parseInt(h, 16).toString(2).padStart(4, '0')
+  ).join('')).join(':');
+}
+
+function ipv6ToDecimal(groups) {
+  let n = BigInt(0);
+  for (let i = 0; i < 8; i++) {
+    n = (n << BigInt(16)) | BigInt(groups[i]);
+  }
+  return n.toString();
+}
+
+function ipv6ToHex(groups) {
+  return groups.map(g => g.toString(16).padStart(4, '0')).join(':');
+}
+
+function classifyIPv6(groups) {
+  // ::1 loopback
+  if (groups.slice(0, 7).every(g => g === 0) && groups[7] === 1) return { type: 'Loopback', badge: 'loopback' };
+  // :: unspecified
+  if (groups.every(g => g === 0)) return { type: 'Unspecified', badge: 'reserved' };
+  // fe80::/10 link-local
+  if ((groups[0] & 0xFFC0) === 0xFE80) return { type: 'Link-Local', badge: 'linklocal' };
+  // fc00::/7 unique local
+  if ((groups[0] & 0xFE00) === 0xFC00) return { type: 'Unique Local (Private)', badge: 'private' };
+  // ff00::/8 multicast
+  if ((groups[0] & 0xFF00) === 0xFF00) return { type: 'Multicast', badge: 'multicast' };
+  // ::ffff:0:0/96 IPv4-mapped
+  if (groups[0] === 0 && groups[1] === 0 && groups[2] === 0 && groups[3] === 0 &&
+      groups[4] === 0 && groups[5] === 0xFFFF) return { type: 'IPv4-Mapped', badge: 'reserved' };
+  return { type: 'Global Unicast (Public)', badge: 'public' };
+}
+
+// ── Subnet Calculation (IPv4) ──
+function calcSubnet(octets, prefix) {
+  if (prefix < 0 || prefix > 32) return null;
+  const ip = ipv4ToInt(octets);
+  const mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+  const wildcard = (~mask) >>> 0;
+  const network = (ip & mask) >>> 0;
+  const broadcast = (network | wildcard) >>> 0;
+  const totalHosts = Math.pow(2, 32 - prefix);
+  const usableHosts = totalHosts > 2 ? totalHosts - 2 : (prefix === 32 ? 1 : totalHosts);
+  const firstHost = prefix < 31 ? (network + 1) >>> 0 : network;
+  const lastHost = prefix < 31 ? (broadcast - 1) >>> 0 : broadcast;
+
+  return {
+    network: intToIPv4(network),
+    broadcast: intToIPv4(broadcast),
+    subnetMask: intToIPv4(mask),
+    wildcard: intToIPv4(wildcard),
+    firstHost: intToIPv4(firstHost),
+    lastHost: intToIPv4(lastHost),
+    totalHosts: totalHosts.toLocaleString(),
+    usableHosts: usableHosts.toLocaleString(),
+    subnetMaskBinary: (mask >>> 0).toString(2).padStart(32, '0').replace(/(.{8})/g, '$1.').slice(0, -1)
+  };
+}
+
+// ── Build result cell HTML ──
+function cell(label, value, fullWidth) {
+  const cls = fullWidth ? 'ip-result-cell full-width' : 'ip-result-cell';
+  const escaped = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return '<div class="' + cls + '">' +
+    '<div class="ip-result-label">' + label + '</div>' +
+    '<div class="ip-result-value" onclick="copyText(\'' + value.replace(/'/g, "\\'") + '\')">' + escaped + '</div>' +
+    '</div>';
+}
+
+function badgeHTML(type, badgeCls) {
+  return '<span class="ip-badge badge-' + badgeCls + '">' + type + '</span>';
+}
+
+// ── Main Analyze ──
+function analyze() {
+  const raw = document.getElementById('ip-input').value.trim();
+  const cidrRaw = document.getElementById('cidr-input').value.trim().replace(/^\//, '');
+  const analysisEl = document.getElementById('ip-analysis');
+  const subnetEl = document.getElementById('subnet-results');
+  const infoGrid = document.getElementById('ip-info-grid');
+  const subnetGrid = document.getElementById('subnet-grid');
+
+  analysisEl.style.display = 'none';
+  subnetEl.style.display = 'none';
+  infoGrid.innerHTML = '';
+  subnetGrid.innerHTML = '';
+
+  if (!raw) return;
+
+  // Try IPv4 first
+  const v4 = parseIPv4(raw);
+  if (v4) {
+    const cls = classifyIPv4(v4);
+    const ipClass = ipv4Class(v4);
+    let html = '';
+    html += cell('IP Version', 'IPv4', false);
+    html += '<div class="ip-result-cell"><div class="ip-result-label">Classification</div><div>' + badgeHTML(cls.type, cls.badge) + '</div></div>';
+    html += cell('IP Class', 'Class ' + ipClass, false);
+    html += cell('Decimal', ipv4ToDecimal(v4), false);
+    html += cell('Binary', ipv4ToBinary(v4), true);
+    html += cell('Hexadecimal', ipv4ToHex(v4), false);
+    infoGrid.innerHTML = html;
+    analysisEl.style.display = '';
+
+    // Subnet calc
+    if (cidrRaw !== '') {
+      const prefix = parseInt(cidrRaw, 10);
+      if (!isNaN(prefix) && prefix >= 0 && prefix <= 32) {
+        const s = calcSubnet(v4, prefix);
+        if (s) {
+          let sh = '';
+          sh += cell('Network Address', s.network, false);
+          sh += cell('Broadcast Address', s.broadcast, false);
+          sh += cell('Subnet Mask', s.subnetMask, false);
+          sh += cell('Wildcard Mask', s.wildcard, false);
+          sh += cell('First Usable Host', s.firstHost, false);
+          sh += cell('Last Usable Host', s.lastHost, false);
+          sh += cell('Total Addresses', s.totalHosts, false);
+          sh += cell('Usable Hosts', s.usableHosts, false);
+          sh += cell('Subnet Mask (Binary)', s.subnetMaskBinary, true);
+          subnetGrid.innerHTML = sh;
+          subnetEl.style.display = '';
+        }
+      }
+    }
+    return;
+  }
+
+  // Try IPv6
+  const v6 = parseIPv6(raw);
+  if (v6) {
+    const cls = classifyIPv6(v6);
+    let html = '';
+    html += cell('IP Version', 'IPv6', false);
+    html += '<div class="ip-result-cell"><div class="ip-result-label">Classification</div><div>' + badgeHTML(cls.type, cls.badge) + '</div></div>';
+    html += cell('Full Address', ipv6Full(v6), true);
+    html += cell('Decimal', ipv6ToDecimal(v6), true);
+    html += cell('Binary', ipv6ToBinary(v6), true);
+    html += cell('Hexadecimal', ipv6ToHex(v6), true);
+    infoGrid.innerHTML = html;
+    analysisEl.style.display = '';
+    return;
+  }
+
+  // Invalid
+  infoGrid.innerHTML = '<div class="ip-result-cell full-width"><div class="ip-result-label">Validation</div><div class="ip-result-value" style="color:var(--red);cursor:default">Invalid IP address — enter a valid IPv4 or IPv6 address</div></div>';
+  analysisEl.style.display = '';
+}
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

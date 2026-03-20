@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoder / Decoder Online — Percent Encoding Tool Free | DevUtils</title>
+  <meta name="description" content="URL encode and decode strings online. Supports encodeURIComponent, encodeURI, and full percent-encoding for special characters, UTF-8 and query parameters. Free, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/url-encoder">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="URL Encoder / Decoder Online — Free Percent Encoding Tool">
+  <meta property="og:description" content="Encode and decode URLs with percent-encoding. Supports UTF-8, query strings and special characters.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URL Encoder / Decoder Online",
+    "url": "https://devutils.com/url-encoder.html",
+    "description": "URL encode and decode strings online with percent-encoding. Free developer tool.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between encodeURI and encodeURIComponent?",
+        "acceptedAnswer": { "@type": "Answer", "text": "encodeURI encodes a full URI but preserves characters that have special meaning in URLs (like ://?#&=). encodeURIComponent encodes everything except unreserved characters (letters, digits, - _ . ~), making it suitable for encoding individual query parameter values. Use encodeURIComponent for values and encodeURI for complete URLs." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do URLs need to be encoded?",
+        "acceptedAnswer": { "@type": "Answer", "text": "URLs can only contain a limited set of ASCII characters. Special characters like spaces, &, =, ?, #, and non-ASCII characters (Unicode/UTF-8) must be percent-encoded to be safely transmitted in URLs. Without encoding, these characters would be misinterpreted as URL delimiters or cause parsing errors." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I encode spaces in a URL — plus sign or %20?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Both are valid but in different contexts. %20 is the standard percent-encoding for spaces (RFC 3986) and works everywhere in a URL. The plus sign (+) represents a space only in application/x-www-form-urlencoded format, which is used in HTML form submissions and query strings. For general URL encoding, prefer %20." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is double encoding and how do I avoid it?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Double encoding happens when an already-encoded string is encoded again, turning %20 into %2520. This usually occurs when you encode a full URL that already contains percent-encoded characters. To avoid it, only encode the raw values before inserting them into the URL, or decode first and then re-encode once." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does URL encoding affect SEO?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Google can generally handle URL-encoded characters, but clean, human-readable URLs are preferred for SEO. Excessive percent-encoding makes URLs harder to read and share. Use hyphens instead of spaces, avoid special characters in URL paths, and keep encoding to query parameters where necessary." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .mode-select {
+      display: flex; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;
+    }
+    .mode-select label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; text-transform: none; letter-spacing: normal;
+      cursor: pointer; margin: 0; padding: 6px 12px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      transition: border-color .2s, background .2s;
+    }
+    .mode-select label:hover { border-color: var(--border2); background: var(--bg3); }
+    .mode-select input[type="radio"]:checked + span { color: var(--accent); }
+    .mode-select label:has(input:checked) {
+      border-color: rgba(0,208,132,.3); background: var(--accent-dim);
+    }
+    .char-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+    .url-breakdown {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      font-family: var(--mono); font-size: 12px;
+      margin-top: 12px;
+    }
+    .url-breakdown-row {
+      display: flex; gap: 8px; padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .url-breakdown-row:last-child { border-bottom: none; }
+    .url-breakdown-key { color: var(--accent); min-width: 80px; }
+    .url-breakdown-val { color: var(--text2); word-break: break-all; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Encoding Tool</div>
+    <h1>URL Encoder / Decoder</h1>
+    <p class="tool-description">
+      Encode or decode URLs and query strings using standard percent-encoding (RFC 3986). This free online URL encoder supports both <code>encodeURIComponent</code> and <code>encodeURI</code> modes, handles UTF-8 and Unicode characters, and lets you bulk-encode URL parameters. Paste any URL or text to instantly see the encoded or decoded result. All processing happens in your browser — nothing is uploaded to a server.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">url-encoder.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('encode', this)">Encode</button>
+        <button class="tab" onclick="setMode('decode', this)">Decode</button>
+      </div>
+
+      <!-- ENCODE -->
+      <div id="mode-encode">
+        <label>Encoding Method</label>
+        <div class="mode-select">
+          <label><input type="radio" name="enc-method" value="component" checked onchange="doEncode()"><span>encodeURIComponent</span></label>
+          <label><input type="radio" name="enc-method" value="uri" onchange="doEncode()"><span>encodeURI</span></label>
+          <label><input type="radio" name="enc-method" value="form" onchange="doEncode()"><span>Form (+ for spaces)</span></label>
+        </div>
+
+        <div style="margin-top:12px">
+          <label>Text to encode</label>
+          <textarea id="encode-input" placeholder="Hello World! foo=bar&baz=qux" oninput="doEncode()" rows="4"></textarea>
+          <div class="char-count" id="encode-count">0 characters</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="output-label">
+          <label style="margin:0">Encoded Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput('encode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="encode-output" style="color:var(--text2); font-style:italic">Output will appear here...</div>
+        <div class="char-count" id="encode-out-count"></div>
+      </div>
+
+      <!-- DECODE -->
+      <div id="mode-decode" style="display:none">
+        <label>Encoded URL or string to decode</label>
+        <textarea id="decode-input" placeholder="Hello%20World%21%20foo%3Dbar%26baz%3Dqux" oninput="doDecode()" rows="4"></textarea>
+        <div class="char-count" id="decode-count">0 characters</div>
+
+        <div class="divider"></div>
+
+        <div class="output-label">
+          <label style="margin:0">Decoded Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput('decode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="decode-output" style="color:var(--text2); font-style:italic">Output will appear here...</div>
+        <div id="decode-status"></div>
+
+        <div id="url-parts" style="display:none">
+          <div class="divider"></div>
+          <label>URL Breakdown</label>
+          <div class="url-breakdown" id="url-breakdown"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between encodeURI and encodeURIComponent?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <code>encodeURI</code> encodes a full URI but preserves characters that have special meaning in URLs — like <code>: / / ? # [ ] @ ! $ & ' ( ) * + , ; =</code>. <code>encodeURIComponent</code> encodes <em>everything</em> except unreserved characters (letters, digits, <code>- _ . ~</code>), making it the right choice for encoding individual query parameter values. Use <code>encodeURIComponent</code> for values inserted into a URL, and <code>encodeURI</code> for encoding a complete URL string.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Why do URLs need to be encoded?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        URLs can only safely contain a limited set of ASCII characters as defined in <a href="https://datatracker.ietf.org/doc/html/rfc3986" style="color:var(--accent)">RFC 3986</a>. Special characters like spaces, <code>&amp;</code>, <code>=</code>, <code>?</code>, <code>#</code>, and non-ASCII characters (Unicode / UTF-8) must be percent-encoded to be safely transmitted. Without encoding, these characters would be misinterpreted as URL delimiters or cause parsing errors in browsers and servers.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I encode spaces in a URL — plus sign or %20?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Both are valid but in different contexts. <code>%20</code> is the standard percent-encoding for spaces per RFC 3986 and works everywhere in a URL — path, query, fragment. The plus sign (<code>+</code>) represents a space only in <code>application/x-www-form-urlencoded</code> format, used in HTML form submissions and query strings. For general URL encoding, prefer <code>%20</code>. Use <code>+</code> only when building form-encoded POST bodies.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is double encoding and how do I avoid it?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Double encoding happens when an already-encoded string is encoded again — for example, <code>%20</code> becomes <code>%2520</code> (the <code>%</code> itself gets encoded). This usually occurs when you pass a pre-encoded URL through an encoding function again. To avoid it: encode raw values <em>before</em> inserting them into the URL, never encode a complete URL that already contains percent-encoded characters, or decode first then re-encode once.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I URL encode non-ASCII and Unicode characters?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Non-ASCII characters (like é, ñ, 中文, العربية) are first converted to their UTF-8 byte representation, then each byte is percent-encoded. For example, the character <code>é</code> (U+00E9) becomes <code>%C3%A9</code> in UTF-8. JavaScript's <code>encodeURIComponent</code> handles this automatically. This is the standard defined by RFC 3986 and IRI (RFC 3987).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Does URL encoding affect SEO?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Google can handle URL-encoded characters, but clean, human-readable URLs are preferred for SEO. Excessive percent-encoding makes URLs harder to read, share, and click on in search results. Best practices: use hyphens instead of spaces or underscores, avoid special characters in URL paths, use lowercase, and keep encoding to query parameters where it's actually necessary.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="jwt-decoder.html">
+        <div class="related-icon">jwt</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JWT Decoder</div>
+          <div class="related-card-desc">Decode and inspect JWT tokens</div>
+        </div>
+      </a>
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — URL Encoder / Decoder</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+function setMode(mode, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-encode').style.display = mode === 'encode' ? '' : 'none';
+  document.getElementById('mode-decode').style.display = mode === 'decode' ? '' : 'none';
+}
+
+function getMethod() {
+  return document.querySelector('input[name="enc-method"]:checked').value;
+}
+
+function doEncode() {
+  const input = document.getElementById('encode-input').value;
+  document.getElementById('encode-count').textContent = input.length + ' characters';
+  const out = document.getElementById('encode-output');
+  const outCount = document.getElementById('encode-out-count');
+  if (!input) {
+    out.textContent = 'Output will appear here...';
+    out.style.fontStyle = 'italic'; out.style.color = 'var(--text2)';
+    outCount.textContent = '';
+    return;
+  }
+  const method = getMethod();
+  let encoded = '';
+  if (method === 'component') encoded = encodeURIComponent(input);
+  else if (method === 'uri') encoded = encodeURI(input);
+  else encoded = encodeURIComponent(input).replace(/%20/g, '+');
+  out.textContent = encoded;
+  out.style.fontStyle = 'normal'; out.style.color = 'var(--text)';
+  outCount.textContent = encoded.length + ' characters output';
+}
+
+function doDecode() {
+  const input = document.getElementById('decode-input').value.trim();
+  document.getElementById('decode-count').textContent = input.length + ' characters';
+  const out = document.getElementById('decode-output');
+  const status = document.getElementById('decode-status');
+  const urlParts = document.getElementById('url-parts');
+  if (!input) {
+    out.textContent = 'Output will appear here...';
+    out.style.fontStyle = 'italic'; out.style.color = 'var(--text2)';
+    status.innerHTML = '';
+    urlParts.style.display = 'none';
+    return;
+  }
+  try {
+    const decoded = decodeURIComponent(input.replace(/\+/g, ' '));
+    out.textContent = decoded;
+    out.style.fontStyle = 'normal'; out.style.color = 'var(--text)';
+    status.innerHTML = '<div class="status status-ok">\u2713 Decoded successfully</div>';
+
+    // Try to parse as URL
+    try {
+      const url = new URL(decoded);
+      let html = '';
+      html += row('Protocol', url.protocol);
+      if (url.hostname) html += row('Host', url.hostname);
+      if (url.port) html += row('Port', url.port);
+      html += row('Path', url.pathname);
+      if (url.search) {
+        html += row('Query', url.search);
+        for (const [k, v] of url.searchParams) {
+          html += row('  \u2514 ' + k, v);
+        }
+      }
+      if (url.hash) html += row('Hash', url.hash);
+      document.getElementById('url-breakdown').innerHTML = html;
+      urlParts.style.display = '';
+    } catch(e) {
+      urlParts.style.display = 'none';
+    }
+  } catch(e) {
+    out.textContent = '';
+    status.innerHTML = '<div class="status status-err">\u2717 Invalid encoded string: ' + e.message + '</div>';
+    urlParts.style.display = 'none';
+  }
+}
+
+function row(key, val) {
+  return '<div class="url-breakdown-row"><span class="url-breakdown-key">' + escHtml(key) + '</span><span class="url-breakdown-val">' + escHtml(val) + '</span></div>';
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyOutput(id) {
+  const text = document.getElementById(id).textContent;
+  if (text) { navigator.clipboard.writeText(text); showToast(); }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String Escape & Unescape Tool Online — JSON, HTML, URL Free | DevUtils</title>
+  <meta name="description" content="Escape and unescape strings online for JSON, HTML, JavaScript, URL, CSV and SQL. Handle backslash escaping, special characters, newline tab quotes, HTML entities and URL encoding. Free, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/string-escape">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="String Escape & Unescape Tool Online — JSON, HTML, URL, JS, CSV, SQL">
+  <meta property="og:description" content="Escape and unescape strings for JSON, HTML, JavaScript, URL, CSV and SQL. Handle escape sequences, backslash escaping and special characters.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "String Escape & Unescape Tool Online",
+    "url": "https://devutils.com/string-escape.html",
+    "description": "Escape and unescape strings online for JSON, HTML, JavaScript, URL, CSV and SQL. Handle backslash escaping, special characters, escape sequences and more.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is string escaping and why is it needed?",
+        "acceptedAnswer": { "@type": "Answer", "text": "String escaping is the process of replacing special characters with escape sequences so they can be safely included in strings, code, or data formats. For example, a double quote inside a JSON string must be escaped as \\\" to avoid prematurely ending the string. Without escaping, special characters like quotes, backslashes, newlines, and tabs would break parsers, cause syntax errors, or create security vulnerabilities like SQL injection and XSS attacks." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I escape special characters in a JSON string?",
+        "acceptedAnswer": { "@type": "Answer", "text": "In JSON, you must escape the following characters inside strings: double quotes (\\\")), backslash (\\\\), newline (\\n), tab (\\t), carriage return (\\r), form feed (\\f), backspace (\\b), and any Unicode control character using \\uXXXX notation. JavaScript's JSON.stringify() handles this automatically. This tool performs the same escaping in your browser." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between HTML encoding and URL encoding?",
+        "acceptedAnswer": { "@type": "Answer", "text": "HTML encoding converts characters to HTML entities (e.g., < becomes &lt;) so they display as text in HTML documents instead of being interpreted as markup. URL encoding (percent-encoding) converts characters to %XX format (e.g., space becomes %20) so they can be safely included in URLs. They serve different purposes and are not interchangeable — HTML encoding is for rendering in web pages, URL encoding is for transmitting data in URLs." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I unescape a backslash-escaped string?",
+        "acceptedAnswer": { "@type": "Answer", "text": "To unescape a backslash-escaped string, replace each escape sequence with its corresponding character: \\n with a newline, \\t with a tab, \\\" with a double quote, \\\\ with a single backslash, and \\uXXXX with the corresponding Unicode character. This tool handles all standard escape sequences automatically. In JavaScript, JSON.parse() can unescape JSON-style escaped strings when wrapped in quotes." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is string escaping important for security?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Proper string escaping prevents injection attacks — the most common class of web security vulnerabilities. Without escaping, attackers can inject malicious code: SQL injection exploits unescaped quotes in database queries, XSS (Cross-Site Scripting) exploits unescaped HTML/JavaScript in web pages, and command injection exploits unescaped shell characters. Always escape user input before inserting it into SQL queries, HTML output, URLs, or shell commands." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .mode-tabs {
+      display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .mode-tab {
+      font-family: var(--mono); font-size: 11px;
+      padding: 6px 14px; border: 1px solid var(--border);
+      border-radius: var(--radius); background: transparent;
+      color: var(--text2); cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .mode-tab:hover { border-color: var(--border2); background: var(--bg3); }
+    .mode-tab.active {
+      border-color: rgba(0,208,132,.3); background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .dir-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 12px;
+    }
+    .dir-toggle button {
+      font-family: var(--mono); font-size: 12px;
+      padding: 5px 16px; border: 1px solid var(--border);
+      border-radius: var(--radius); background: transparent;
+      color: var(--text2); cursor: pointer;
+      transition: border-color .2s, background .2s, color .2s;
+    }
+    .dir-toggle button:hover { border-color: var(--border2); background: var(--bg3); }
+    .dir-toggle button.active {
+      border-color: rgba(0,208,132,.3); background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .dir-toggle .arrow { color: var(--text3); font-size: 14px; }
+    .char-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+    .io-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    @media (max-width: 700px) {
+      .io-grid { grid-template-columns: 1fr; }
+    }
+    .io-col label { display: block; margin-bottom: 4px; }
+    .ref-table {
+      width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .ref-table th {
+      background: var(--bg4); padding: 8px 12px; text-align: left;
+      font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--text3);
+    }
+    .ref-table td { padding: 6px 12px; border-top: 1px solid var(--border); }
+    .ref-table td:first-child { color: var(--accent); }
+    .ref-table td:nth-child(2) { color: var(--text2); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Text Tool</div>
+    <h1>String Escape & Unescape Tool</h1>
+    <p class="tool-description">
+      Escape and unescape strings online for <strong>JSON</strong>, <strong>HTML</strong>, <strong>JavaScript</strong>, <strong>URL</strong>, <strong>CSV</strong> and <strong>SQL</strong>. This free tool handles backslash escaping, escape sequences for newline, tab and quotes, HTML entities, URL percent-encoding, and SQL injection prevention. Paste any string to instantly see the escaped or unescaped result. Supports Unicode <code>\uXXXX</code> notation, special characters, and all common escape formats. All processing happens client-side in your browser — nothing is uploaded to a server.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">string-escape.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <!-- Mode selector -->
+      <label>Escape Mode</label>
+      <div class="mode-tabs" id="mode-tabs">
+        <button class="mode-tab active" data-mode="json" onclick="setMode('json',this)">JSON</button>
+        <button class="mode-tab" data-mode="html" onclick="setMode('html',this)">HTML</button>
+        <button class="mode-tab" data-mode="js" onclick="setMode('js',this)">JavaScript</button>
+        <button class="mode-tab" data-mode="url" onclick="setMode('url',this)">URL</button>
+        <button class="mode-tab" data-mode="csv" onclick="setMode('csv',this)">CSV</button>
+        <button class="mode-tab" data-mode="sql" onclick="setMode('sql',this)">SQL</button>
+      </div>
+
+      <!-- Direction toggle -->
+      <div class="dir-toggle">
+        <button id="dir-esc" class="active" onclick="setDir('escape')">Escape</button>
+        <span class="arrow">&harr;</span>
+        <button id="dir-unesc" onclick="setDir('unescape')">Unescape</button>
+      </div>
+
+      <!-- Input / Output -->
+      <div class="io-grid">
+        <div class="io-col">
+          <label id="input-label">Input</label>
+          <textarea id="input" rows="10" placeholder="Paste your string here..." oninput="convert()"></textarea>
+          <div class="char-count" id="input-count">0 characters</div>
+        </div>
+        <div class="io-col">
+          <div class="output-label">
+            <label id="output-label" style="margin:0">Output</label>
+            <button class="btn btn-ghost" onclick="copyOutput()">Copy</button>
+          </div>
+          <textarea id="output" rows="10" readonly placeholder="Result will appear here..."></textarea>
+          <div class="char-count" id="output-count">0 characters</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Quick Reference Table -->
+      <label>Common Escape Sequences Reference</label>
+      <table class="ref-table">
+        <tr><th>Sequence</th><th>Character</th><th>Description</th></tr>
+        <tr><td>\\</td><td>\</td><td>Backslash</td></tr>
+        <tr><td>\"</td><td>"</td><td>Double quote</td></tr>
+        <tr><td>\'</td><td>'</td><td>Single quote</td></tr>
+        <tr><td>\n</td><td>&crarr;</td><td>Newline (line feed)</td></tr>
+        <tr><td>\r</td><td></td><td>Carriage return</td></tr>
+        <tr><td>\t</td><td>&rarr;</td><td>Horizontal tab</td></tr>
+        <tr><td>\b</td><td></td><td>Backspace</td></tr>
+        <tr><td>\f</td><td></td><td>Form feed</td></tr>
+        <tr><td>\0</td><td></td><td>Null character</td></tr>
+        <tr><td>\uXXXX</td><td></td><td>Unicode code point (hex)</td></tr>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is string escaping and why is it needed?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        String escaping is the process of replacing special characters with <strong>escape sequences</strong> so they can be safely included in strings, code, or data formats. For example, a double quote inside a JSON string must be written as <code>\"</code> to avoid prematurely ending the string. Without proper escaping, special characters like quotes, backslashes, newlines, and tabs would break parsers, cause syntax errors, or create security vulnerabilities such as SQL injection and XSS attacks.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I escape special characters in a JSON string?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        In JSON, the following characters must be escaped inside strings: double quotes (<code>\"</code>), backslash (<code>\\</code>), newline (<code>\n</code>), tab (<code>\t</code>), carriage return (<code>\r</code>), form feed (<code>\f</code>), backspace (<code>\b</code>), and any Unicode control character using <code>\uXXXX</code> notation. JavaScript's <code>JSON.stringify()</code> handles this automatically. This tool performs the same escaping entirely in your browser.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between HTML encoding and URL encoding?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>HTML encoding</strong> converts characters to HTML entities (e.g., <code>&lt;</code> becomes <code>&amp;lt;</code>) so they display as visible text in web pages instead of being interpreted as markup. <strong>URL encoding</strong> (percent-encoding) converts characters to <code>%XX</code> format (e.g., a space becomes <code>%20</code>) so they can be safely included in URLs. They serve different purposes and are not interchangeable — HTML encoding prevents markup injection in pages, while URL encoding ensures characters are transmitted correctly in URLs.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I unescape a backslash-escaped string?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        To unescape a backslash-escaped string, replace each escape sequence with its corresponding character: <code>\n</code> with a newline, <code>\t</code> with a tab, <code>\"</code> with a double quote, <code>\\</code> with a single backslash, and <code>\uXXXX</code> with the corresponding Unicode character. This tool handles all standard escape sequences automatically. In JavaScript, <code>JSON.parse()</code> can unescape JSON-style escaped strings when the input is wrapped in double quotes.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Why is string escaping important for security?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Proper string escaping prevents <strong>injection attacks</strong> — the most common class of web security vulnerabilities. Without escaping, attackers can inject malicious code: <strong>SQL injection</strong> exploits unescaped quotes in database queries, <strong>XSS (Cross-Site Scripting)</strong> exploits unescaped HTML and JavaScript in web pages, and <strong>command injection</strong> exploits unescaped shell characters. Always escape user input before inserting it into SQL queries, HTML output, URLs, or shell commands.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+      <a class="related-card" href="url-encoder.html">
+        <div class="related-icon">&percnt;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">URL Encoder</div>
+          <div class="related-card-desc">Percent-encode and decode URLs</div>
+        </div>
+      </a>
+      <a class="related-card" href="html-entity.html">
+        <div class="related-icon">&amp;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">HTML Entity Encoder</div>
+          <div class="related-card-desc">Encode special characters to HTML entities</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — String Escape Tool</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+let currentMode = 'json';
+let currentDir = 'escape';
+
+function setMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  convert();
+}
+
+function setDir(dir) {
+  currentDir = dir;
+  document.getElementById('dir-esc').classList.toggle('active', dir === 'escape');
+  document.getElementById('dir-unesc').classList.toggle('active', dir === 'unescape');
+  document.getElementById('input-label').textContent = dir === 'escape' ? 'Input' : 'Escaped Input';
+  document.getElementById('output-label').textContent = dir === 'escape' ? 'Escaped Output' : 'Unescaped Output';
+  convert();
+}
+
+function convert() {
+  const input = document.getElementById('input').value;
+  const out = document.getElementById('output');
+  document.getElementById('input-count').textContent = input.length + ' characters';
+
+  if (!input) {
+    out.value = '';
+    document.getElementById('output-count').textContent = '0 characters';
+    return;
+  }
+
+  let result = '';
+  try {
+    if (currentDir === 'escape') {
+      result = escapeStr(input, currentMode);
+    } else {
+      result = unescapeStr(input, currentMode);
+    }
+    out.style.color = 'var(--text)';
+  } catch (e) {
+    result = 'Error: ' + e.message;
+    out.style.color = 'var(--red, #f55)';
+  }
+
+  out.value = result;
+  document.getElementById('output-count').textContent = result.length + ' characters';
+}
+
+/* ---- Escape functions ---- */
+function escapeStr(str, mode) {
+  switch (mode) {
+    case 'json': return escapeJSON(str);
+    case 'html': return escapeHTML(str);
+    case 'js':   return escapeJS(str);
+    case 'url':  return encodeURIComponent(str);
+    case 'csv':  return escapeCSV(str);
+    case 'sql':  return escapeSQL(str);
+    default:     return str;
+  }
+}
+
+function unescapeStr(str, mode) {
+  switch (mode) {
+    case 'json': return unescapeJSON(str);
+    case 'html': return unescapeHTML(str);
+    case 'js':   return unescapeJS(str);
+    case 'url':  return decodeURIComponent(str);
+    case 'csv':  return unescapeCSV(str);
+    case 'sql':  return unescapeSQL(str);
+    default:     return str;
+  }
+}
+
+/* JSON */
+function escapeJSON(str) {
+  // Use JSON.stringify then strip outer quotes
+  return JSON.stringify(str).slice(1, -1);
+}
+
+function unescapeJSON(str) {
+  // Wrap in quotes and parse
+  return JSON.parse('"' + str + '"');
+}
+
+/* HTML */
+function escapeHTML(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function unescapeHTML(str) {
+  const el = document.createElement('textarea');
+  el.innerHTML = str;
+  return el.value;
+}
+
+/* JavaScript */
+function escapeJS(str) {
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"')
+    .replace(/`/g, '\\`')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t')
+    .replace(/\f/g, '\\f')
+    .replace(/\b/g, '\\b')
+    .replace(/\0/g, '\\0')
+    .replace(/[\x00-\x1F\x7F]/g, function(c) {
+      return '\\x' + c.charCodeAt(0).toString(16).padStart(2, '0');
+    })
+    .replace(/[\u0080-\uFFFF]/g, function(c) {
+      return '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0');
+    });
+}
+
+function unescapeJS(str) {
+  // Handle standard JS escape sequences
+  let result = '';
+  let i = 0;
+  while (i < str.length) {
+    if (str[i] === '\\' && i + 1 < str.length) {
+      const next = str[i + 1];
+      switch (next) {
+        case 'n': result += '\n'; i += 2; break;
+        case 'r': result += '\r'; i += 2; break;
+        case 't': result += '\t'; i += 2; break;
+        case 'f': result += '\f'; i += 2; break;
+        case 'b': result += '\b'; i += 2; break;
+        case '0': result += '\0'; i += 2; break;
+        case '\\': result += '\\'; i += 2; break;
+        case "'": result += "'"; i += 2; break;
+        case '"': result += '"'; i += 2; break;
+        case '`': result += '`'; i += 2; break;
+        case 'x':
+          if (i + 3 < str.length) {
+            result += String.fromCharCode(parseInt(str.substring(i + 2, i + 4), 16));
+            i += 4;
+          } else { result += str[i]; i++; }
+          break;
+        case 'u':
+          if (str[i + 2] === '{') {
+            const end = str.indexOf('}', i + 3);
+            if (end !== -1) {
+              result += String.fromCodePoint(parseInt(str.substring(i + 3, end), 16));
+              i = end + 1;
+            } else { result += str[i]; i++; }
+          } else if (i + 5 < str.length) {
+            result += String.fromCharCode(parseInt(str.substring(i + 2, i + 6), 16));
+            i += 6;
+          } else { result += str[i]; i++; }
+          break;
+        default: result += str[i + 1]; i += 2; break;
+      }
+    } else {
+      result += str[i]; i++;
+    }
+  }
+  return result;
+}
+
+/* CSV */
+function escapeCSV(str) {
+  if (str.indexOf('"') !== -1 || str.indexOf(',') !== -1 || str.indexOf('\n') !== -1 || str.indexOf('\r') !== -1) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function unescapeCSV(str) {
+  if (str.length >= 2 && str[0] === '"' && str[str.length - 1] === '"') {
+    return str.slice(1, -1).replace(/""/g, '"');
+  }
+  return str;
+}
+
+/* SQL */
+function escapeSQL(str) {
+  return str.replace(/'/g, "''");
+}
+
+function unescapeSQL(str) {
+  return str.replace(/''/g, "'");
+}
+
+/* ---- Utility ---- */
+function copyOutput() {
+  const text = document.getElementById('output').value;
+  if (text) { navigator.clipboard.writeText(text); showToast(); }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

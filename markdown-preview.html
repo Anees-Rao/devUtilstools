@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor &amp; Preview Online — Convert Markdown to HTML Free | DevUtils</title>
+  <meta name="description" content="Write and preview markdown in real time with a split-screen editor. Convert markdown to clean HTML. Supports GitHub Flavored Markdown tables, code blocks and task lists. Free, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/markdown-preview">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Markdown Editor & Preview Online — Free">
+  <meta property="og:description" content="Live markdown editor with split-screen preview. Convert to HTML. GitHub Flavored Markdown supported.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Markdown Editor & Preview","url":"https://devutils.com/markdown-preview.html","description":"Write and preview markdown with live rendering. Convert markdown to clean HTML.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is GitHub Flavored Markdown (GFM)?","acceptedAnswer":{"@type":"Answer","text":"GFM is GitHub's extension of standard Markdown. It adds support for tables, fenced code blocks with syntax highlighting, task lists (checkboxes), strikethrough text, autolinked URLs, and more. GFM is the most widely used Markdown flavor in developer tools."}},
+    {"@type":"Question","name":"How do I convert Markdown to HTML?","acceptedAnswer":{"@type":"Answer","text":"Use a Markdown parser like marked.js, markdown-it, or this online tool to convert Markdown syntax to HTML. Paste your Markdown in the editor, and the tool generates clean, semantic HTML in real time. Click 'Copy HTML' to get the converted output."}},
+    {"@type":"Question","name":"What is the difference between Markdown and HTML?","acceptedAnswer":{"@type":"Answer","text":"Markdown is a lightweight markup language designed for readability — it uses simple symbols like # for headings and ** for bold. HTML is the full markup language of the web with tags like <h1> and <strong>. Markdown is converted to HTML for web rendering. Markdown is easier to write; HTML offers more control."}},
+    {"@type":"Question","name":"What is the Markdown syntax for tables?","acceptedAnswer":{"@type":"Answer","text":"Use pipes | and dashes - to create tables: '| Header | Header |\\n| --- | --- |\\n| Cell | Cell |'. Align columns with colons: :--- (left), :---: (center), ---: (right). Tables are a GitHub Flavored Markdown extension, not part of the original Markdown spec."}},
+    {"@type":"Question","name":"Can I use Markdown for SEO-optimized content?","acceptedAnswer":{"@type":"Answer","text":"Markdown itself doesn't affect SEO — what matters is the HTML it produces. Use proper heading hierarchy (H1 → H2 → H3), add alt text to images, use semantic elements, and ensure the generated HTML is clean and valid. Many static site generators (Hugo, Jekyll, Gatsby) convert Markdown to SEO-friendly HTML."}}
+  ]}
+  </script>
+
+  <style>
+    .editor-split { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; min-height:400px; }
+    @media(max-width:700px) { .editor-split { grid-template-columns:1fr; } }
+    .editor-pane { display:flex; flex-direction:column; }
+    .editor-pane:first-child { border-right:1px solid var(--border); }
+    @media(max-width:700px) { .editor-pane:first-child { border-right:none; border-bottom:1px solid var(--border); } }
+    .pane-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:8px 14px; background:var(--bg3); border-bottom:1px solid var(--border);
+      font-family:var(--mono); font-size:11px; color:var(--text3);
+    }
+    .editor-textarea {
+      flex:1; background:var(--bg); border:none; color:var(--text);
+      font-family:var(--mono); font-size:13px; padding:14px; resize:none; outline:none;
+      line-height:1.7; min-height:350px;
+    }
+    .preview-pane {
+      flex:1; padding:14px 18px; overflow:auto; background:var(--bg);
+      font-size:14px; line-height:1.7; color:var(--text); min-height:350px;
+    }
+    .preview-pane h1 { font-size:24px; margin:0 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+    .preview-pane h2 { font-size:20px; margin:20px 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+    .preview-pane h3 { font-size:16px; margin:16px 0 6px; }
+    .preview-pane p { margin:8px 0; }
+    .preview-pane code { font-family:var(--mono); font-size:12px; background:var(--bg4); color:var(--accent); padding:1px 6px; border-radius:4px; }
+    .preview-pane pre { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:12px 14px; overflow:auto; margin:10px 0; }
+    .preview-pane pre code { background:none; padding:0; color:var(--text); }
+    .preview-pane blockquote { border-left:3px solid var(--accent); padding:4px 14px; margin:10px 0; color:var(--text2); background:var(--bg3); border-radius:0 var(--radius) var(--radius) 0; }
+    .preview-pane ul, .preview-pane ol { padding-left:24px; margin:8px 0; }
+    .preview-pane li { margin:4px 0; }
+    .preview-pane table { border-collapse:collapse; width:100%; margin:10px 0; }
+    .preview-pane th, .preview-pane td { border:1px solid var(--border); padding:8px 12px; text-align:left; }
+    .preview-pane th { background:var(--bg3); font-weight:600; }
+    .preview-pane a { color:var(--accent); }
+    .preview-pane img { max-width:100%; border-radius:var(--radius); }
+    .preview-pane hr { border:none; border-top:1px solid var(--border); margin:16px 0; }
+    .preview-pane strong { color:var(--text); }
+    .html-output { margin-top:14px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Content Tool</div>
+    <h1>Markdown Editor &amp; Live Preview</h1>
+    <p class="tool-description">
+      Write markdown and see a live rendered preview side by side. This free online markdown editor supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, task lists, strikethrough, and autolinks. Convert your markdown to clean, semantic HTML with one click. Perfect for writing README files, documentation, blog posts, and technical content. All rendering happens in your browser — nothing is uploaded.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">markdown-preview.tool</span>
+    </div>
+    <div class="tool-body" style="padding:0">
+
+      <div class="editor-split">
+        <div class="editor-pane">
+          <div class="pane-header"><span>Markdown</span><span id="md-count">0 words</span></div>
+          <textarea class="editor-textarea" id="md-input" oninput="renderMd()" placeholder="# Hello World
+
+Write your **markdown** here...
+
+- Item 1
+- Item 2
+
+```js
+console.log('Hello!');
+```
+">
+# Welcome to DevUtils Markdown Editor
+
+Write **bold**, *italic*, and ~~strikethrough~~ text easily.
+
+## Features
+
+- Live preview as you type
+- GitHub Flavored Markdown
+- Code blocks with syntax hints
+- Tables, task lists, blockquotes
+
+## Code Example
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+## Table Example
+
+| Feature | Supported |
+| --- | --- |
+| Bold / Italic | ✓ |
+| Code Blocks | ✓ |
+| Tables | ✓ |
+| Task Lists | ✓ |
+
+> "Markdown is intended to be as easy-to-read and easy-to-write as is feasible." — John Gruber
+
+---
+
+Made with ♥ by [DevUtils](https://devutils.com)
+</textarea>
+        </div>
+        <div class="editor-pane">
+          <div class="pane-header"><span>Preview</span><button class="btn btn-ghost" style="padding:3px 8px;font-size:10px" onclick="copyHtml()">Copy HTML</button></div>
+          <div class="preview-pane" id="md-preview"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="html-output">
+    <div class="output-label">
+      <label style="margin:0">Generated HTML</label>
+      <button class="btn btn-ghost" onclick="copyHtml()">Copy</button>
+    </div>
+    <div class="output-block" id="html-output" style="font-size:12px; max-height:200px; overflow:auto"></div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">What is GitHub Flavored Markdown (GFM)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">GFM is GitHub's extension of John Gruber's original Markdown spec. It adds support for <strong>tables</strong> (using pipe syntax), <strong>fenced code blocks</strong> (triple backticks with language hints), <strong>task lists</strong> (<code>- [x]</code> checkboxes), <strong>strikethrough</strong> (<code>~~text~~</code>), <strong>autolinked URLs</strong>, and emoji shortcodes. GFM is the most widely used Markdown flavor across developer tools, documentation platforms, and content management systems.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I convert Markdown to clean HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Type or paste your Markdown in the editor above and the HTML is generated in real time. Click "Copy HTML" to get the converted output. The generated HTML uses semantic elements (<code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;blockquote&gt;</code>) that are SEO-friendly and accessible. For production use, popular libraries include <strong>marked.js</strong>, <strong>markdown-it</strong>, and <strong>remark</strong>.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between Markdown and HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Markdown</strong> is a lightweight markup language designed for human readability — it uses symbols like <code>#</code> for headings and <code>**</code> for bold. <strong>HTML</strong> is the full markup language of the web with tags like <code>&lt;h1&gt;</code> and <code>&lt;strong&gt;</code>. Markdown compiles to HTML for browser rendering. Markdown is faster to write and read; HTML offers granular control over structure and styling.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the Markdown syntax for tables?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Use pipes <code>|</code> and dashes <code>-</code>: <code>| Header | Header |</code> on the first line, <code>| --- | --- |</code> for the separator, then <code>| Cell | Cell |</code> for data rows. Align columns with colons: <code>:---</code> (left), <code>:---:</code> (center), <code>---:</code> (right). Tables are a GFM extension — they're not in the original Markdown specification by John Gruber.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I use Markdown for SEO-optimized content?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Markdown itself doesn't affect SEO — what matters is the <strong>HTML it produces</strong>. Use proper heading hierarchy (H1 → H2 → H3), add alt text to images (<code>![alt text](url)</code>), structure content with semantic elements, and ensure the generated HTML is clean. Many static site generators like <strong>Hugo</strong>, <strong>Jekyll</strong>, <strong>Next.js</strong>, and <strong>Astro</strong> convert Markdown to SEO-optimized HTML with metadata support.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity Encoder</div><div class="related-card-desc">Encode and decode HTML entities</div></div></a>
+      <a class="related-card" href="text-diff.html"><div class="related-icon">±</div><div class="related-card-info"><div class="related-card-name">Text Diff Checker</div><div class="related-card-desc">Compare two texts side by side</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Markdown Editor & Preview</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+// Simple Markdown parser (no dependencies)
+function parseMd(md) {
+  let html = md;
+  // Code blocks
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => '<pre><code>' + esc(code.trim()) + '</code></pre>');
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Headings
+  html = html.replace(/^######\s+(.+)$/gm, '<h6>$1</h6>');
+  html = html.replace(/^#####\s+(.+)$/gm, '<h5>$1</h5>');
+  html = html.replace(/^####\s+(.+)$/gm, '<h4>$1</h4>');
+  html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+  // HR
+  html = html.replace(/^---+$/gm, '<hr>');
+  // Blockquote
+  html = html.replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>');
+  // Bold & Italic
+  html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
+  // Links & Images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  // Tables
+  html = html.replace(/^(\|.+\|)\n(\|[-:\s|]+\|)\n((?:\|.+\|\n?)*)/gm, (m, header, sep, body) => {
+    const ths = header.split('|').filter(Boolean).map(c => '<th>' + c.trim() + '</th>').join('');
+    const rows = body.trim().split('\n').map(r => {
+      const tds = r.split('|').filter(Boolean).map(c => '<td>' + c.trim() + '</td>').join('');
+      return '<tr>' + tds + '</tr>';
+    }).join('');
+    return '<table><thead><tr>' + ths + '</tr></thead><tbody>' + rows + '</tbody></table>';
+  });
+  // Unordered lists
+  html = html.replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>');
+  html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+  // Task lists
+  html = html.replace(/<li>\[x\]\s*/gi, '<li>☑ ');
+  html = html.replace(/<li>\[\s?\]\s*/gi, '<li>☐ ');
+  // Paragraphs
+  html = html.split('\n\n').map(block => {
+    block = block.trim();
+    if (!block) return '';
+    if (/^<(h[1-6]|ul|ol|li|pre|blockquote|table|hr|div)/.test(block)) return block;
+    return '<p>' + block.replace(/\n/g, '<br>') + '</p>';
+  }).join('\n');
+  return html;
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderMd() {
+  const md = document.getElementById('md-input').value;
+  const html = parseMd(md);
+  document.getElementById('md-preview').innerHTML = html;
+  document.getElementById('html-output').textContent = html;
+  const words = md.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('md-count').textContent = words + ' words';
+}
+
+function copyHtml() {
+  const html = document.getElementById('html-output').textContent;
+  if (html) { navigator.clipboard.writeText(html); showToast(); }
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+renderMd();
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

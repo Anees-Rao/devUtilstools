@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Slug Generator Online — Create SEO-Friendly Slugs Free | DevUtils</title>
+  <meta name="description" content="Generate SEO-friendly URL slugs online for free. Slugify strings for API endpoints, create clean permalinks with kebab-case, transliterate accented characters, and build URL-friendly hyphenated slugs. No signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/slug-generator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="URL Slug Generator Online — Create SEO-Friendly Slugs Free">
+  <meta property="og:description" content="Generate clean, SEO-friendly URL slugs from any text. Slugify strings for permalinks and API endpoints with transliteration support.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "URL Slug Generator Online",
+    "url": "https://devutils.com/slug-generator.html",
+    "description": "Generate SEO-friendly URL slugs online. Slugify strings for API endpoints and create clean permalinks with transliteration.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a URL slug and why does it matter for SEO?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A URL slug is the human-readable part of a URL that identifies a specific page, typically appearing after the domain name (e.g., /my-blog-post). Slugs matter for SEO because search engines use them to understand page content. Clean, keyword-rich slugs improve click-through rates in search results, are easier to share, and signal relevance to search engine crawlers." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I create an SEO-friendly URL slug?",
+        "acceptedAnswer": { "@type": "Answer", "text": "To create an SEO-friendly URL slug: use lowercase letters, replace spaces with hyphens, remove special characters and punctuation, include your target keyword, keep it short (3-5 words), remove stop words like 'the', 'and', 'of' when possible, and avoid numbers that may change. A good slug is descriptive, concise, and readable." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use hyphens or underscores in URLs?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use hyphens (-) rather than underscores (_) in URL slugs. Google treats hyphens as word separators, so 'my-blog-post' is read as three separate words. Underscores are treated as word joiners, so 'my_blog_post' is read as one word. Google's John Mueller has confirmed that hyphens are the recommended separator for URLs." }
+      },
+      {
+        "@type": "Question",
+        "name": "How long should a URL slug be for SEO?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Keep URL slugs between 3-5 words or under 60 characters. Google displays approximately 50-60 characters of a URL in search results before truncating. Shorter slugs are easier to read, share, and remember. Focus on including your primary keyword and removing unnecessary words while keeping the slug descriptive enough to convey the page topic." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I handle special characters and accents in slugs?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Special characters and accented letters should be transliterated to their ASCII equivalents — for example, e with acute becomes e, n with tilde becomes n, u with umlaut becomes u. Non-alphanumeric characters (except the separator) should be removed entirely. This ensures maximum compatibility across browsers, servers, and social media platforms while keeping slugs clean and readable." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .slug-options {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .slug-options label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; text-transform: none; letter-spacing: normal;
+      cursor: pointer; margin: 0;
+    }
+    .slug-options .control-group {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .slug-options select,
+    .slug-options input[type="number"] {
+      padding: 8px 10px; font-size: 13px;
+    }
+    .slug-options input[type="number"] { width: 80px; }
+    .char-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+    .slug-preview {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      font-family: var(--mono); font-size: 13px;
+      color: var(--text2); margin-top: 12px;
+      word-break: break-all;
+    }
+    .slug-preview .preview-domain { color: var(--text3); }
+    .slug-preview .preview-slug { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Text Tool</div>
+    <h1>URL Slug Generator</h1>
+    <p class="tool-description">
+      Generate SEO-friendly URL slugs from any title or text. This free online slug generator creates clean, URL-friendly strings perfect for permalinks, blog post URLs, and API endpoints. Converts text to kebab-case with proper SEO URL structure, transliterates accented characters, and produces hyphenated slugs optimized for search engines. Build clean URLs that improve your site's SEO and readability — all processing happens in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">slug-generator.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Title or Text</label>
+      <textarea id="slug-input" placeholder="How to Create SEO-Friendly URLs for Your Blog — A Complete Guide!" oninput="generateSlug()" rows="3"></textarea>
+      <div class="char-count" id="input-count">0 characters</div>
+
+      <div class="slug-options">
+        <div class="control-group">
+          <label>Separator</label>
+          <select id="separator" onchange="generateSlug()">
+            <option value="-">Hyphen (-)</option>
+            <option value="_">Underscore (_)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label>Max Length</label>
+          <input type="number" id="max-length" placeholder="None" min="1" max="500" oninput="generateSlug()">
+        </div>
+        <label><input type="checkbox" id="opt-lowercase" checked onchange="generateSlug()"> Lowercase</label>
+        <label><input type="checkbox" id="opt-transliterate" checked onchange="generateSlug()"> Transliterate accents</label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="output-label">
+        <label style="margin:0">Generated Slug</label>
+        <button class="btn btn-ghost" onclick="copyOutput()">Copy</button>
+      </div>
+      <div class="output-block" id="slug-output" style="color:var(--text2); font-style:italic">Output will appear here...</div>
+      <div class="char-count" id="output-count"></div>
+
+      <div class="slug-preview" id="slug-preview">
+        <span class="preview-domain">https://example.com/blog/</span><span class="preview-slug">your-generated-slug</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is a URL slug and why does it matter for SEO?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A URL slug is the human-readable portion of a URL that identifies a specific page — for example, <code>/my-blog-post</code> in <code>https://example.com/my-blog-post</code>. Slugs are critical for SEO because search engines use them to understand what a page is about. Clean, descriptive, keyword-rich slugs improve click-through rates in search results, are easier to share on social media, and help search engine crawlers determine page relevance. A well-crafted slug can be the difference between a URL that ranks and one that gets overlooked.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I create an SEO-friendly URL slug?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Follow these best practices to create SEO-friendly slugs: <strong>use lowercase letters</strong> for consistency, <strong>replace spaces with hyphens</strong> (not underscores), <strong>remove special characters</strong> and punctuation, <strong>include your target keyword</strong>, and <strong>keep it short</strong> — ideally 3–5 words. Remove stop words like "the," "and," "of," and "a" when they don't add meaning. Avoid numbers that may change over time (like years). A good slug is descriptive, concise, and instantly tells readers and search engines what the page contains.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Should I use hyphens or underscores in URLs?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>Use hyphens (<code>-</code>).</strong> Google treats hyphens as word separators, so <code>my-blog-post</code> is interpreted as three separate words: "my," "blog," and "post." Underscores are treated as word joiners, meaning <code>my_blog_post</code> is read as one concatenated token. Google's own documentation and public statements from search advocates confirm that hyphens are the recommended separator for URLs. While underscores won't break your site, hyphens give you a slight SEO advantage and are the universally accepted web convention.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How long should a URL slug be for SEO?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Aim for <strong>3–5 words</strong> or roughly <strong>under 60 characters</strong>. Google typically displays about 50–60 characters of a URL in search result snippets before truncating with an ellipsis. Shorter slugs are easier to read, copy, share, and remember. Focus on including your primary keyword while removing unnecessary filler words. Studies show that shorter URLs tend to correlate with higher rankings, though this is likely because concise URLs signal focused, well-organized content rather than being a direct ranking factor.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I handle special characters and accents in slugs?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Accented and special characters should be <strong>transliterated</strong> to their closest ASCII equivalents — <code>e with acute accent</code> becomes <code>e</code>, <code>n with tilde</code> becomes <code>n</code>, <code>u with umlaut</code> becomes <code>u</code>, and so on. Any remaining non-alphanumeric characters (except the separator) should be stripped entirely. This ensures maximum compatibility across all browsers, web servers, email clients, and social media platforms. Some CMS platforms handle this automatically, but it's important to verify — broken or percent-encoded characters in slugs look unprofessional and can confuse both users and crawlers.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="case-converter.html">
+        <div class="related-icon">Aa</div>
+        <div class="related-card-info">
+          <div class="related-card-name">String Case Converter</div>
+          <div class="related-card-desc">Convert between camelCase, snake_case, kebab-case and more</div>
+        </div>
+      </a>
+      <a class="related-card" href="url-encoder.html">
+        <div class="related-icon">🔗</div>
+        <div class="related-card-info">
+          <div class="related-card-name">URL Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode URLs with percent-encoding</div>
+        </div>
+      </a>
+      <a class="related-card" href="lorem-ipsum.html">
+        <div class="related-icon">&para;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Lorem Ipsum Generator</div>
+          <div class="related-card-desc">Generate placeholder text for mockups and designs</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — URL Slug Generator</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const TRANSLITERATE_MAP = {
+  '\u00C0':'A','\u00C1':'A','\u00C2':'A','\u00C3':'A','\u00C4':'A','\u00C5':'A',
+  '\u00E0':'a','\u00E1':'a','\u00E2':'a','\u00E3':'a','\u00E4':'a','\u00E5':'a',
+  '\u00C6':'AE','\u00E6':'ae',
+  '\u00C7':'C','\u00E7':'c',
+  '\u00C8':'E','\u00C9':'E','\u00CA':'E','\u00CB':'E',
+  '\u00E8':'e','\u00E9':'e','\u00EA':'e','\u00EB':'e',
+  '\u00CC':'I','\u00CD':'I','\u00CE':'I','\u00CF':'I',
+  '\u00EC':'i','\u00ED':'i','\u00EE':'i','\u00EF':'i',
+  '\u00D0':'D','\u00F0':'d',
+  '\u00D1':'N','\u00F1':'n',
+  '\u00D2':'O','\u00D3':'O','\u00D4':'O','\u00D5':'O','\u00D6':'O','\u00D8':'O',
+  '\u00F2':'o','\u00F3':'o','\u00F4':'o','\u00F5':'o','\u00F6':'o','\u00F8':'o',
+  '\u00D9':'U','\u00DA':'U','\u00DB':'U','\u00DC':'U',
+  '\u00F9':'u','\u00FA':'u','\u00FB':'u','\u00FC':'u',
+  '\u00DD':'Y','\u00FD':'y','\u00FF':'y',
+  '\u00DE':'Th','\u00FE':'th','\u00DF':'ss',
+  '\u0100':'A','\u0101':'a','\u0102':'A','\u0103':'a','\u0104':'A','\u0105':'a',
+  '\u0106':'C','\u0107':'c','\u0108':'C','\u0109':'c','\u010A':'C','\u010B':'c','\u010C':'C','\u010D':'c',
+  '\u010E':'D','\u010F':'d','\u0110':'D','\u0111':'d',
+  '\u0112':'E','\u0113':'e','\u0114':'E','\u0115':'e','\u0116':'E','\u0117':'e','\u0118':'E','\u0119':'e','\u011A':'E','\u011B':'e',
+  '\u011C':'G','\u011D':'g','\u011E':'G','\u011F':'g','\u0120':'G','\u0121':'g','\u0122':'G','\u0123':'g',
+  '\u0124':'H','\u0125':'h','\u0126':'H','\u0127':'h',
+  '\u0128':'I','\u0129':'i','\u012A':'I','\u012B':'i','\u012C':'I','\u012D':'i','\u012E':'I','\u012F':'i','\u0130':'I','\u0131':'i',
+  '\u0134':'J','\u0135':'j',
+  '\u0136':'K','\u0137':'k',
+  '\u0139':'L','\u013A':'l','\u013B':'L','\u013C':'l','\u013D':'L','\u013E':'l','\u0141':'L','\u0142':'l',
+  '\u0143':'N','\u0144':'n','\u0145':'N','\u0146':'n','\u0147':'N','\u0148':'n',
+  '\u014C':'O','\u014D':'o','\u014E':'O','\u014F':'o','\u0150':'O','\u0151':'o','\u0152':'OE','\u0153':'oe',
+  '\u0154':'R','\u0155':'r','\u0156':'R','\u0157':'r','\u0158':'R','\u0159':'r',
+  '\u015A':'S','\u015B':'s','\u015C':'S','\u015D':'s','\u015E':'S','\u015F':'s','\u0160':'S','\u0161':'s',
+  '\u0162':'T','\u0163':'t','\u0164':'T','\u0165':'t','\u0166':'T','\u0167':'t',
+  '\u0168':'U','\u0169':'u','\u016A':'U','\u016B':'u','\u016C':'U','\u016D':'u','\u016E':'U','\u016F':'u','\u0170':'U','\u0171':'u','\u0172':'U','\u0173':'u',
+  '\u0174':'W','\u0175':'w','\u0176':'Y','\u0177':'y','\u0178':'Y',
+  '\u0179':'Z','\u017A':'z','\u017B':'Z','\u017C':'z','\u017D':'Z','\u017E':'z'
+};
+
+function transliterate(str) {
+  return str.replace(/[^\u0000-\u007E]/g, function(ch) {
+    return TRANSLITERATE_MAP[ch] || '';
+  });
+}
+
+function generateSlug() {
+  const input = document.getElementById('slug-input').value;
+  const sep = document.getElementById('separator').value;
+  const lowercase = document.getElementById('opt-lowercase').checked;
+  const doTranslit = document.getElementById('opt-transliterate').checked;
+  const maxLenRaw = document.getElementById('max-length').value;
+  const maxLen = maxLenRaw ? parseInt(maxLenRaw) : 0;
+
+  document.getElementById('input-count').textContent = input.length + ' characters';
+
+  const out = document.getElementById('slug-output');
+  const outCount = document.getElementById('output-count');
+  const preview = document.getElementById('slug-preview');
+
+  if (!input.trim()) {
+    out.textContent = 'Output will appear here...';
+    out.style.fontStyle = 'italic'; out.style.color = 'var(--text2)';
+    outCount.textContent = '';
+    preview.innerHTML = '<span class="preview-domain">https://example.com/blog/</span><span class="preview-slug">your-generated-slug</span>';
+    return;
+  }
+
+  let slug = input.trim();
+
+  // Transliterate accented characters
+  if (doTranslit) slug = transliterate(slug);
+
+  // Lowercase
+  if (lowercase) slug = slug.toLowerCase();
+
+  // Replace non-alphanumeric characters with separator
+  var sepRegex = sep === '-' ? /[^a-zA-Z0-9-]/g : /[^a-zA-Z0-9_]/g;
+  slug = slug.replace(sepRegex, sep);
+
+  // Collapse multiple separators
+  var collapseRegex = sep === '-' ? /-{2,}/g : /_{2,}/g;
+  slug = slug.replace(collapseRegex, sep);
+
+  // Trim separators from ends
+  var trimRegex = sep === '-' ? /^-+|-+$/g : /^_+|_+$/g;
+  slug = slug.replace(trimRegex, '');
+
+  // Max length — don't cut in the middle of a word
+  if (maxLen > 0 && slug.length > maxLen) {
+    slug = slug.substring(0, maxLen);
+    slug = slug.replace(trimRegex, '');
+  }
+
+  out.textContent = slug;
+  out.style.fontStyle = 'normal'; out.style.color = 'var(--text)';
+  outCount.textContent = slug.length + ' characters';
+
+  preview.innerHTML = '<span class="preview-domain">https://example.com/blog/</span><span class="preview-slug">' + escHtml(slug) + '</span>';
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyOutput() {
+  const text = document.getElementById('slug-output').textContent;
+  if (text && text !== 'Output will appear here...') {
+    navigator.clipboard.writeText(text);
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encoder / Decoder — Free Online Tool | DevUtils</title>
+  <meta name="description" content="Encode text or files to Base64 and decode Base64 strings instantly. Supports text, binary files and data URIs. Free, no signup, works offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/base64-encoder">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="Base64 Encoder / Decoder — Free Online Tool">
+  <meta property="og:description" content="Encode text and files to Base64 or decode Base64 strings. Fast, private, works offline.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Base64 Encoder / Decoder",
+    "url": "https://devutils.com/base64-encoder.html",
+    "description": "Encode text or files to Base64 and decode Base64 strings. Free online tool.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Base64 encoding?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Base64 is a binary-to-text encoding scheme that converts binary data into a string of ASCII characters using 64 printable characters (A-Z, a-z, 0-9, +, /). It is used to safely transmit binary data over text-based protocols like HTTP, email (MIME), or embed binary files in JSON and XML." }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use Base64 encoding?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use Base64 when you need to embed binary data (images, files, certificates) in a text format, send binary data over email or HTTP, store binary data in JSON, HTML, or CSS, or when working with Basic Auth headers in HTTP (username:password encoded as Base64)." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Base64 encoding encrypt my data?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Base64 is encoding, not encryption. It is trivially reversible and provides no security. Anyone can decode a Base64 string without a key. Do not use Base64 to secure sensitive data — use proper encryption (AES, RSA) for that purpose." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does Base64 output end with = or ==?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Base64 encodes every 3 bytes of input into 4 characters. If the input length is not divisible by 3, padding characters (=) are added to make the output length a multiple of 4. One = means 1 byte of padding was added, == means 2 bytes." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is URL-safe Base64?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Standard Base64 uses + and / which are reserved characters in URLs. URL-safe Base64 replaces + with - and / with _, making the output safe to use in URLs and filenames without percent-encoding." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .file-drop {
+      border: 2px dashed var(--border2);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .file-drop:hover, .file-drop.dragover {
+      border-color: var(--accent2);
+      background: var(--accent-dim);
+    }
+    .file-drop input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .file-drop-icon { font-size: 28px; margin-bottom: 8px; }
+    .file-drop p { font-size: 13px; color: var(--text2); }
+    .file-drop strong { color: var(--accent); }
+
+    .char-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Encoding Tool</div>
+    <h1>Base64 Encoder / Decoder</h1>
+    <p class="tool-description">
+      Encode any text or file to Base64, or decode a Base64 string back to plain text instantly. This free online Base64 encoder supports both standard and URL-safe Base64 encoding formats (RFC 4648). Paste your text, drag and drop a file, or switch to decode mode to convert Base64 back to readable content. All processing happens entirely in your browser using native JavaScript APIs — nothing is ever uploaded to a server. Works offline, no signup required.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">base64-encoder.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('encode', this)">Encode</button>
+        <button class="tab" onclick="setMode('decode', this)">Decode</button>
+        <button class="tab" onclick="setMode('file', this)">File → Base64</button>
+      </div>
+
+      <!-- ENCODE -->
+      <div id="mode-encode">
+        <label>Plain text to encode</label>
+        <textarea id="encode-input" placeholder="Enter text to encode..." oninput="doEncode()" rows="5"></textarea>
+        <div class="char-count" id="encode-count">0 characters</div>
+
+        <div style="display:flex; align-items:center; gap:12px; margin-top:10px; flex-wrap:wrap">
+          <label style="margin:0; display:flex; align-items:center; gap:6px; font-size:12px; text-transform:none; letter-spacing:normal; cursor:pointer">
+            <input type="checkbox" id="url-safe-enc" onchange="doEncode()"> URL-safe Base64
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="output-label">
+          <label style="margin:0">Base64 Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput('encode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="encode-output" style="color:var(--text2); font-style:italic">Output will appear here...</div>
+        <div class="char-count" id="encode-out-count"></div>
+      </div>
+
+      <!-- DECODE -->
+      <div id="mode-decode" style="display:none">
+        <label>Base64 string to decode</label>
+        <textarea id="decode-input" placeholder="Paste Base64 string here..." oninput="doDecode()" rows="5"></textarea>
+        <div class="char-count" id="decode-count">0 characters</div>
+
+        <div class="divider"></div>
+
+        <div class="output-label">
+          <label style="margin:0">Decoded Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput('decode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="decode-output" style="color:var(--text2); font-style:italic">Output will appear here...</div>
+        <div id="decode-status"></div>
+      </div>
+
+      <!-- FILE -->
+      <div id="mode-file" style="display:none">
+        <div class="file-drop" id="file-drop" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <input type="file" id="file-input" onchange="onFileSelect(event)">
+          <div class="file-drop-icon">📁</div>
+          <p><strong>Click to select a file</strong> or drag and drop it here</p>
+          <p style="margin-top:4px; font-size:12px">Any file type · Max 5 MB</p>
+        </div>
+
+        <div id="file-info" style="display:none; margin-top:12px">
+          <div class="status status-ok" id="file-status">—</div>
+          <div class="divider"></div>
+          <div class="output-label">
+            <label style="margin:0">Base64 Output</label>
+            <button class="btn btn-ghost" onclick="copyOutput('file-output')">Copy</button>
+          </div>
+          <div class="output-block" id="file-output" style="max-height:160px; overflow:auto"></div>
+
+          <div class="btn-row" style="margin-top:12px">
+            <button class="btn btn-secondary" onclick="copyDataUri()">Copy as Data URI</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is Base64 encoding?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Base64 is a binary-to-text encoding scheme that converts binary data into a safe string of 64 printable ASCII characters (A-Z, a-z, 0-9, +, /). It's used to transmit binary data over text-based systems like email (MIME attachments), HTTP headers, JSON payloads, CSS <code>data:</code> URIs, and HTML <code>src</code> attributes for images. It inflates data size by about 33%.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Does Base64 encrypt my data?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        No. Base64 is <strong>encoding</strong>, not encryption. It is trivially reversible by anyone without needing any key or password. Never use Base64 to "hide" sensitive information. Use proper encryption algorithms like AES-256 for security-sensitive data.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Why does my Base64 output end with = or ==?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Base64 encodes every 3 bytes of input into exactly 4 characters. If the input length isn't divisible by 3, padding characters (<code>=</code>) are appended to make the output length a multiple of 4. One <code>=</code> means 1 padding byte was added; <code>==</code> means 2 bytes. Padding is sometimes stripped in URL-safe variants.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between standard and URL-safe Base64?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Standard Base64 uses <code>+</code> and <code>/</code>, which are reserved characters in URLs. URL-safe Base64 (RFC 4648) replaces <code>+</code> with <code>-</code> and <code>/</code> with <code>_</code>, making it safe to include in URLs and filenames without percent-encoding. JWT tokens use URL-safe Base64 without padding.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I encode a file to Base64 in JavaScript?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Use a <code>FileReader</code>: <code>const reader = new FileReader(); reader.onload = e => console.log(e.target.result); reader.readAsDataURL(file);</code> — this gives you a full data URI including the MIME type prefix. To get just the Base64 string, split on the comma: <code>e.target.result.split(',')[1]</code>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is my data safe when using this tool?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Yes. All encoding and decoding happens entirely in your browser using native JavaScript APIs (<code>btoa</code>, <code>atob</code>, and <code>FileReader</code>). No data, text, or files are ever uploaded to a server. The tool works fully offline once loaded.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="unix-timestamp-converter.html">
+        <div class="related-icon">⏱</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UNIX Timestamp Converter</div>
+          <div class="related-card-desc">Convert epoch time to readable dates</div>
+        </div>
+      </a>
+      <a class="related-card" href="uuid-generator.html">
+        <div class="related-icon">uid</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UUID Generator</div>
+          <div class="related-card-desc">Generate v4 UUIDs in bulk</div>
+        </div>
+      </a>
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>© 2025 DevUtils — Base64 Encoder / Decoder</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+// Mode switching
+function setMode(mode, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['encode','decode','file'].forEach(m => {
+    document.getElementById('mode-' + m).style.display = m === mode ? '' : 'none';
+  });
+}
+
+// Encode
+function doEncode() {
+  const input = document.getElementById('encode-input').value;
+  document.getElementById('encode-count').textContent = input.length + ' characters';
+  if (!input) {
+    document.getElementById('encode-output').textContent = '';
+    document.getElementById('encode-output').style.fontStyle = 'italic';
+    document.getElementById('encode-output').style.color = 'var(--text2)';
+    document.getElementById('encode-out-count').textContent = '';
+    return;
+  }
+  try {
+    const bytes = new TextEncoder().encode(input);
+    let binary = '';
+    bytes.forEach(b => binary += String.fromCharCode(b));
+    let b64 = btoa(binary);
+    if (document.getElementById('url-safe-enc').checked) {
+      b64 = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    }
+    const out = document.getElementById('encode-output');
+    out.textContent = b64;
+    out.style.fontStyle = 'normal';
+    out.style.color = 'var(--text)';
+    document.getElementById('encode-out-count').textContent = b64.length + ' characters output';
+  } catch(e) {
+    document.getElementById('encode-output').textContent = 'Error: ' + e.message;
+  }
+}
+
+// Decode
+function doDecode() {
+  const input = document.getElementById('decode-input').value.trim();
+  document.getElementById('decode-count').textContent = input.length + ' characters';
+  const status = document.getElementById('decode-status');
+  if (!input) {
+    document.getElementById('decode-output').textContent = '';
+    document.getElementById('decode-output').style.fontStyle = 'italic';
+    document.getElementById('decode-output').style.color = 'var(--text2)';
+    status.innerHTML = '';
+    return;
+  }
+  try {
+    // Normalize URL-safe
+    const normalized = input.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = normalized + '=='.slice(0, (4 - normalized.length % 4) % 4);
+    const binary = atob(padded);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const decoded = new TextDecoder().decode(bytes);
+    const out = document.getElementById('decode-output');
+    out.textContent = decoded;
+    out.style.fontStyle = 'normal';
+    out.style.color = 'var(--text)';
+    status.innerHTML = '<div class="status status-ok">✓ Valid Base64 — decoded successfully</div>';
+  } catch(e) {
+    document.getElementById('decode-output').textContent = '';
+    status.innerHTML = '<div class="status status-err">✗ Invalid Base64 string</div>';
+  }
+}
+
+// File encoding
+let fileB64 = '', fileMime = '';
+function onFileSelect(e) { processFile(e.target.files[0]); }
+function onDragOver(e) { e.preventDefault(); document.getElementById('file-drop').classList.add('dragover'); }
+function onDragLeave() { document.getElementById('file-drop').classList.remove('dragover'); }
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('file-drop').classList.remove('dragover');
+  if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+}
+
+function processFile(file) {
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    document.getElementById('file-info').style.display = '';
+    document.getElementById('file-status').className = 'status status-err';
+    document.getElementById('file-status').textContent = '✗ File too large (max 5 MB)';
+    return;
+  }
+  fileMime = file.type || 'application/octet-stream';
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUri = e.target.result;
+    fileB64 = dataUri.split(',')[1];
+    document.getElementById('file-info').style.display = '';
+    document.getElementById('file-status').className = 'status status-ok';
+    document.getElementById('file-status').textContent = `✓ ${file.name} — ${(file.size/1024).toFixed(1)} KB — ${fileMime}`;
+    document.getElementById('file-output').textContent = fileB64;
+  };
+  reader.readAsDataURL(file);
+}
+
+function copyDataUri() {
+  navigator.clipboard.writeText(`data:${fileMime};base64,${fileB64}`);
+  showToast();
+}
+
+function copyOutput(id) {
+  const text = document.getElementById(id).textContent;
+  if (text) { navigator.clipboard.writeText(text); showToast(); }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

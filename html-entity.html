@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Entity Encoder / Decoder Online — Special Characters Tool | DevUtils</title>
+  <meta name="description" content="Encode special characters to HTML entities or decode HTML entities back to text. Prevent XSS attacks with proper HTML encoding. Free online tool, no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/html-entity">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="HTML Entity Encoder / Decoder — Free Online Tool">
+  <meta property="og:description" content="Encode special characters to HTML entities and decode HTML entities to text. XSS prevention.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"HTML Entity Encoder / Decoder","url":"https://devutils.com/html-entity.html","description":"Encode and decode HTML entities for special characters. Prevent XSS with proper encoding.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What are HTML entities and why are they used?","acceptedAnswer":{"@type":"Answer","text":"HTML entities are special codes that represent characters which have reserved meaning in HTML (like <, >, &, \") or aren't available on a standard keyboard (like ©, €, →). They start with & and end with ;. For example, &lt; represents <. Without entities, browsers would interpret these characters as HTML markup."}},
+    {"@type":"Question","name":"How does HTML encoding prevent XSS attacks?","acceptedAnswer":{"@type":"Answer","text":"Cross-Site Scripting (XSS) attacks inject malicious HTML/JavaScript into web pages. HTML encoding converts dangerous characters like < and > into their entity equivalents (&lt; and &gt;), so the browser renders them as text instead of executing them as code. Always encode user-generated content before inserting it into HTML."}},
+    {"@type":"Question","name":"What is the difference between HTML encoding and URL encoding?","acceptedAnswer":{"@type":"Answer","text":"HTML encoding converts characters to HTML entities (& → &amp;) for safe display in HTML documents. URL encoding converts characters to percent-encoded format (space → %20) for safe transmission in URLs. They serve different purposes and are not interchangeable."}},
+    {"@type":"Question","name":"What are the most common HTML entities?","acceptedAnswer":{"@type":"Answer","text":"The most common HTML entities are: &amp; (ampersand &), &lt; (less than <), &gt; (greater than >), &quot; (double quote \"), &#39; (single quote '), &nbsp; (non-breaking space), &copy; (copyright ©), &mdash; (em dash —), and &hellip; (ellipsis …)."}},
+    {"@type":"Question","name":"Should I use named or numeric HTML entities?","acceptedAnswer":{"@type":"Answer","text":"Named entities like &amp; are more readable but not all characters have named versions. Numeric entities like &#38; (decimal) or &#x26; (hex) work for any Unicode character. For common entities, use named versions for readability. For uncommon characters, use numeric. Both are valid in all modern browsers."}}
+  ]}
+  </script>
+
+  <style>
+    .char-count { font-family:var(--mono); font-size:11px; color:var(--text3); text-align:right; margin-top:4px; }
+    .entity-ref { margin-top:16px; }
+    .entity-table {
+      width:100%; border-collapse:collapse; font-family:var(--mono); font-size:12px;
+      background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;
+    }
+    .entity-table th { background:var(--bg4); padding:8px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.5px; color:var(--text3); }
+    .entity-table td { padding:6px 12px; border-top:1px solid var(--border); }
+    .entity-table td:first-child { font-size:16px; text-align:center; width:40px; }
+    .entity-table td:nth-child(2) { color:var(--accent); }
+    .entity-table td:nth-child(3) { color:var(--text2); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Encoding Tool</div>
+    <h1>HTML Entity Encoder / Decoder</h1>
+    <p class="tool-description">
+      Encode special characters to HTML entities or decode HTML entities back to readable text. This free online tool converts reserved HTML characters like <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, and <code>&quot;</code> to their entity equivalents, helping prevent Cross-Site Scripting (XSS) attacks. Supports both named entities (<code>&amp;amp;</code>) and numeric entities (<code>&amp;#38;</code>). All processing happens in your browser — nothing is sent to a server.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">html-entity.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('encode',this)">Encode</button>
+        <button class="tab" onclick="setMode('decode',this)">Decode</button>
+      </div>
+
+      <div id="mode-encode">
+        <label>Text with special characters</label>
+        <textarea id="encode-input" placeholder='<script>alert("XSS")</script> & "quotes" ©2025' oninput="doEncode()" rows="4"></textarea>
+        <div class="char-count" id="encode-count">0 characters</div>
+
+        <div style="margin-top:8px">
+          <label style="display:flex;align-items:center;gap:6px;text-transform:none;letter-spacing:normal;font-size:12px;cursor:pointer;margin:0">
+            <input type="checkbox" id="encode-all" onchange="doEncode()"> Encode all characters (not just reserved)
+          </label>
+        </div>
+
+        <div class="divider"></div>
+        <div class="output-label">
+          <label style="margin:0">HTML Entities Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput('encode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="encode-output" style="color:var(--text2);font-style:italic">Output will appear here...</div>
+      </div>
+
+      <div id="mode-decode" style="display:none">
+        <label>HTML entities to decode</label>
+        <textarea id="decode-input" placeholder="&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt; &amp; &quot;quotes&quot; &copy;2025" oninput="doDecode()" rows="4"></textarea>
+        <div class="char-count" id="decode-count">0 characters</div>
+
+        <div class="divider"></div>
+        <div class="output-label">
+          <label style="margin:0">Decoded Text</label>
+          <button class="btn btn-ghost" onclick="copyOutput('decode-output')">Copy</button>
+        </div>
+        <div class="output-block" id="decode-output" style="color:var(--text2);font-style:italic">Output will appear here...</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="entity-ref">
+        <label>Common HTML Entities Reference</label>
+        <table class="entity-table">
+          <tr><th>Char</th><th>Named</th><th>Numeric</th><th>Description</th></tr>
+          <tr><td>&amp;</td><td>&amp;amp;</td><td>&amp;#38;</td><td>Ampersand</td></tr>
+          <tr><td>&lt;</td><td>&amp;lt;</td><td>&amp;#60;</td><td>Less than</td></tr>
+          <tr><td>&gt;</td><td>&amp;gt;</td><td>&amp;#62;</td><td>Greater than</td></tr>
+          <tr><td>&quot;</td><td>&amp;quot;</td><td>&amp;#34;</td><td>Double quote</td></tr>
+          <tr><td>&#39;</td><td>&amp;#39;</td><td>&amp;#39;</td><td>Single quote</td></tr>
+          <tr><td>&nbsp;</td><td>&amp;nbsp;</td><td>&amp;#160;</td><td>Non-breaking space</td></tr>
+          <tr><td>&copy;</td><td>&amp;copy;</td><td>&amp;#169;</td><td>Copyright</td></tr>
+          <tr><td>&mdash;</td><td>&amp;mdash;</td><td>&amp;#8212;</td><td>Em dash</td></tr>
+          <tr><td>&rarr;</td><td>&amp;rarr;</td><td>&amp;#8594;</td><td>Right arrow</td></tr>
+          <tr><td>&hellip;</td><td>&amp;hellip;</td><td>&amp;#8230;</td><td>Ellipsis</td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">What are HTML entities and why are they used?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">HTML entities are special codes that represent characters which have <strong>reserved meaning in HTML</strong> (like <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>) or characters not available on a standard keyboard (like <code>&copy;</code>, <code>&euro;</code>, <code>&rarr;</code>). They follow the format <code>&amp;name;</code> or <code>&amp;#number;</code>. Without entities, browsers would misinterpret these characters as HTML tags or markup, breaking the page layout or creating security vulnerabilities.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How does HTML encoding prevent XSS attacks?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Cross-Site Scripting (XSS)</strong> attacks inject malicious HTML or JavaScript into web pages. HTML encoding converts dangerous characters like <code>&lt;</code> and <code>&gt;</code> into their entity equivalents (<code>&amp;lt;</code> and <code>&amp;gt;</code>), so the browser renders them as visible text instead of executing them as code. This is a critical defense — always encode user-generated content before inserting it into HTML. The OWASP Top 10 lists XSS as one of the most common web vulnerabilities.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between HTML encoding and URL encoding?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>HTML encoding</strong> converts characters to HTML entities (<code>&amp;</code> → <code>&amp;amp;</code>) for safe display inside HTML documents. <strong>URL encoding</strong> converts characters to percent-encoded format (<code>space</code> → <code>%20</code>) for safe use in URLs. They serve different purposes: HTML encoding prevents markup injection in web pages, URL encoding ensures special characters are transmitted correctly in URLs. They are not interchangeable.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Should I use named or numeric HTML entities?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Named entities like <code>&amp;amp;</code> are more human-readable but not every character has a named version. Numeric entities — decimal (<code>&amp;#38;</code>) or hexadecimal (<code>&amp;#x26;</code>) — work for <strong>any</strong> Unicode character. For common entities (<code>&amp;lt;</code>, <code>&amp;gt;</code>, <code>&amp;amp;</code>), use named versions for readability. For uncommon or Unicode characters, use numeric entities. Both are valid in all modern browsers and HTML5.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Which character encoding should I use — UTF-8 or ASCII?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>UTF-8</strong> — always. The W3C and WHATWG HTML5 spec both recommend UTF-8 as the default character encoding. UTF-8 supports all Unicode characters (emoji, CJK, Arabic, etc.) while remaining backward-compatible with ASCII. Set <code>&lt;meta charset="UTF-8"&gt;</code> in your HTML <code>&lt;head&gt;</code>. Over 98% of websites use UTF-8 as of 2026.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="url-encoder.html"><div class="related-icon">%</div><div class="related-card-info"><div class="related-card-name">URL Encoder / Decoder</div><div class="related-card-desc">Percent-encode and decode URLs</div></div></a>
+      <a class="related-card" href="base64-encoder.html"><div class="related-icon">b64</div><div class="related-card-info"><div class="related-card-name">Base64 Encoder</div><div class="related-card-desc">Encode and decode Base64 strings</div></div></a>
+      <a class="related-card" href="css-minifier.html"><div class="related-icon">CSS</div><div class="related-card-info"><div class="related-card-name">CSS Minifier</div><div class="related-card-desc">Minify and beautify CSS</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — HTML Entity Encoder / Decoder</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+function setMode(mode, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-encode').style.display = mode === 'encode' ? '' : 'none';
+  document.getElementById('mode-decode').style.display = mode === 'decode' ? '' : 'none';
+}
+
+function doEncode() {
+  const input = document.getElementById('encode-input').value;
+  document.getElementById('encode-count').textContent = input.length + ' characters';
+  const out = document.getElementById('encode-output');
+  if (!input) { out.textContent = 'Output will appear here...'; out.style.fontStyle='italic'; out.style.color='var(--text2)'; return; }
+  const encodeAll = document.getElementById('encode-all').checked;
+  let result;
+  if (encodeAll) {
+    result = [...input].map(c => '&#' + c.codePointAt(0) + ';').join('');
+  } else {
+    result = input.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  out.textContent = result; out.style.fontStyle='normal'; out.style.color='var(--text)';
+}
+
+function doDecode() {
+  const input = document.getElementById('decode-input').value;
+  document.getElementById('decode-count').textContent = input.length + ' characters';
+  const out = document.getElementById('decode-output');
+  if (!input) { out.textContent = 'Output will appear here...'; out.style.fontStyle='italic'; out.style.color='var(--text2)'; return; }
+  const el = document.createElement('textarea');
+  el.innerHTML = input;
+  out.textContent = el.value;
+  out.style.fontStyle='normal'; out.style.color='var(--text)';
+}
+
+function copyOutput(id) {
+  const t = document.getElementById(id).textContent;
+  if (t) { navigator.clipboard.writeText(t); showToast(); }
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

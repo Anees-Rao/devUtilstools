@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Case Converter Online — camelCase, snake_case, kebab-case Free | DevUtils</title>
+  <meta name="description" content="Convert text between camelCase, snake_case, kebab-case, PascalCase, UPPER_SNAKE_CASE, Title Case, dot.case, path/case and more. Free online programming naming convention converter with smart word splitting. No signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/case-converter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="Text Case Converter Online — camelCase, snake_case, kebab-case Free">
+  <meta property="og:description" content="Convert text between camelCase, snake_case, kebab-case, PascalCase, UPPER_SNAKE_CASE, Title Case and more. Free programming naming convention converter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/case-converter">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Text Case Converter Online",
+    "url": "https://devutils.com/case-converter.html",
+    "description": "Convert text between camelCase, snake_case, kebab-case, PascalCase, UPPER_SNAKE_CASE, Title Case, dot.case, path/case and more naming conventions.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the different naming conventions in programming?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The most common naming conventions in programming are camelCase (used in JavaScript, Java variables), PascalCase or UpperCamelCase (used for classes and components), snake_case (popular in Python and Ruby), UPPER_SNAKE_CASE or SCREAMING_SNAKE_CASE (used for constants), kebab-case or dash-case (used in CSS, URLs, and HTML attributes), Title Case (used for headings), dot.case (used in property paths and package names), and path/case (used in file paths and module imports). Each convention serves different purposes and is favored by different languages and communities." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I convert camelCase to snake_case?",
+        "acceptedAnswer": { "@type": "Answer", "text": "To convert camelCase to snake_case, insert an underscore before each uppercase letter and then lowercase the entire string. For example, 'myVariableName' becomes 'my_variable_name'. This tool automatically detects camelCase word boundaries and splits them for conversion to any target case. You can also handle edge cases like consecutive uppercase letters (e.g., 'parseHTMLString' becomes 'parse_html_string')." }
+      },
+      {
+        "@type": "Question",
+        "name": "When should I use kebab-case vs snake_case?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use kebab-case (dash-case) for CSS class names, HTML attributes, URL slugs, and CLI flags — it is the web standard convention. Use snake_case for Python variables and functions, Ruby identifiers, database column names, and file names in many systems. The choice often depends on the language or technology: JavaScript and CSS favor camelCase and kebab-case respectively, while Python and databases prefer snake_case. Consistency within a project matters more than the specific convention chosen." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is PascalCase and where is it used?",
+        "acceptedAnswer": { "@type": "Answer", "text": "PascalCase (also called UpperCamelCase) capitalizes the first letter of every word with no separators between them — for example, 'MyClassName' or 'UserProfileSettings'. It is used for class names in most object-oriented languages (Java, C#, Python, TypeScript), React and Vue component names, TypeScript interfaces and type aliases, C# method names and properties, and namespace declarations. PascalCase signals that an identifier represents a type, class, or constructor rather than a variable or function." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do programming languages differ in naming conventions?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Different languages have established conventions: JavaScript uses camelCase for variables and functions, PascalCase for classes and React components. Python uses snake_case for variables, functions, and modules, PascalCase for classes, and UPPER_SNAKE_CASE for constants. Java uses camelCase for methods and variables, PascalCase for classes. CSS uses kebab-case for properties and class names. Go uses camelCase for private and PascalCase for exported identifiers. Ruby uses snake_case for methods and variables, PascalCase for classes. Following these conventions improves code readability and collaboration." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .case-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      transition: border-color .2s var(--ease-out), box-shadow .2s;
+    }
+    .case-card:hover {
+      border-color: var(--border2);
+    }
+    .case-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .case-card-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .case-card-copy {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text3);
+      font-size: 11px;
+      font-family: var(--sans);
+      padding: 3px 8px;
+      cursor: pointer;
+      transition: all .2s var(--ease-out);
+    }
+    .case-card-copy:hover {
+      color: var(--accent);
+      border-color: rgba(0,208,132,.3);
+      background: var(--accent-dim);
+    }
+    .case-card-copy.copied {
+      color: var(--accent);
+      border-color: rgba(0,208,132,.4);
+    }
+    .case-card-output {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      word-break: break-all;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      min-height: 20px;
+    }
+    .case-card-output.placeholder {
+      color: var(--text3);
+      font-style: italic;
+    }
+    .input-meta {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+    }
+    @media (max-width: 580px) {
+      .case-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Text Tool</div>
+    <h1>String Case Converter</h1>
+    <p class="tool-description">
+      Convert text between camelCase, snake_case, kebab-case, PascalCase, UPPER_SNAKE_CASE, Title Case, dot.case, path/case and more programming naming conventions. This free online text case converter uses smart word splitting to detect camelCase boundaries, underscores, hyphens, dots, slashes, and spaces — then re-joins words in your target format. All processing happens in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">case-converter.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Source Text</label>
+      <textarea id="case-input" placeholder="myVariableName, some-kebab-text, or any_mixed input..." oninput="convertAll()" rows="3"></textarea>
+      <div class="input-meta">
+        <span id="char-count">0 chars</span>
+        <span id="word-count">0 words</span>
+      </div>
+
+      <div class="case-grid" id="case-grid">
+        <!-- Cards injected by JS -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What are the different naming conventions in programming?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        The most common naming conventions are <code>camelCase</code> (JavaScript, Java variables), <code>PascalCase</code> (classes, React components), <code>snake_case</code> (Python, Ruby), <code>UPPER_SNAKE_CASE</code> (constants), <code>kebab-case</code> (CSS, URLs, HTML attributes), <code>Title Case</code> (headings), <code>dot.case</code> (property paths, package names), and <code>path/case</code> (file paths, module imports). Each convention is favored by different languages and communities, and consistency within a project is key.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I convert camelCase to snake_case?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        To convert <code>camelCase</code> to <code>snake_case</code>, insert an underscore before each uppercase letter and then lowercase the entire string. For example, <code>myVariableName</code> becomes <code>my_variable_name</code>. This tool automatically detects camelCase word boundaries — including consecutive uppercase letters like <code>parseHTMLString</code> which becomes <code>parse_html_string</code>. Just paste your text and the conversion happens instantly.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        When should I use kebab-case vs snake_case?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Use <code>kebab-case</code> for CSS class names, HTML attributes, URL slugs, and CLI flags — it is the web standard convention. Use <code>snake_case</code> for Python variables and functions, Ruby identifiers, database column names, and file names in many systems. The choice depends on the language or technology you are working with. JavaScript and CSS favor <code>camelCase</code> and <code>kebab-case</code> respectively, while Python and databases prefer <code>snake_case</code>. Consistency within a project matters more than the specific convention chosen.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is PascalCase and where is it used?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <code>PascalCase</code> (also called UpperCamelCase) capitalizes the first letter of every word with no separators — for example, <code>MyClassName</code> or <code>UserProfileSettings</code>. It is used for class names in most object-oriented languages (Java, C#, Python, TypeScript), React and Vue component names, TypeScript interfaces and type aliases, C# method names and properties, and namespace declarations. PascalCase signals that an identifier represents a type, class, or constructor rather than a variable or function.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do programming languages differ in naming conventions?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Different languages have established conventions: <strong>JavaScript</strong> uses <code>camelCase</code> for variables and functions, <code>PascalCase</code> for classes. <strong>Python</strong> uses <code>snake_case</code> for variables and functions, <code>PascalCase</code> for classes, and <code>UPPER_SNAKE_CASE</code> for constants. <strong>Java</strong> uses <code>camelCase</code> for methods, <code>PascalCase</code> for classes. <strong>CSS</strong> uses <code>kebab-case</code> for properties and class names. <strong>Go</strong> uses <code>camelCase</code> for private and <code>PascalCase</code> for exported identifiers. <strong>Ruby</strong> uses <code>snake_case</code> for methods and variables, <code>PascalCase</code> for classes. Following these conventions improves readability and team collaboration.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="slug-generator.html">
+        <div class="related-icon">&#128279;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">URL Slug Generator</div>
+          <div class="related-card-desc">Generate SEO-friendly URL slugs from any text</div>
+        </div>
+      </a>
+      <a class="related-card" href="string-escape.html">
+        <div class="related-icon">\</div>
+        <div class="related-card-info">
+          <div class="related-card-name">String Escape Tool</div>
+          <div class="related-card-desc">Escape and unescape strings for various languages</div>
+        </div>
+      </a>
+      <a class="related-card" href="text-diff.html">
+        <div class="related-icon">&plusmn;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Text Diff Checker</div>
+          <div class="related-card-desc">Compare two texts and highlight differences</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils &mdash; String Case Converter</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Case Converter — Core Logic
+   ============================================================ */
+
+const CASES = [
+  { id: 'camel',       label: 'camelCase',         convert: toCamel },
+  { id: 'pascal',      label: 'PascalCase',        convert: toPascal },
+  { id: 'snake',       label: 'snake_case',        convert: toSnake },
+  { id: 'upper_snake', label: 'UPPER_SNAKE_CASE',  convert: toUpperSnake },
+  { id: 'kebab',       label: 'kebab-case',        convert: toKebab },
+  { id: 'upper_kebab', label: 'UPPER-KEBAB-CASE',  convert: toUpperKebab },
+  { id: 'title',       label: 'Title Case',        convert: toTitle },
+  { id: 'sentence',    label: 'Sentence case',     convert: toSentence },
+  { id: 'lower',       label: 'lowercase',         convert: toLower },
+  { id: 'upper',       label: 'UPPERCASE',         convert: toUpper },
+  { id: 'dot',         label: 'dot.case',          convert: toDot },
+  { id: 'path',        label: 'path/case',         convert: toPath }
+];
+
+// Build cards
+(function initGrid() {
+  const grid = document.getElementById('case-grid');
+  CASES.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'case-card';
+    card.innerHTML =
+      '<div class="case-card-header">' +
+        '<span class="case-card-label">' + escHtml(c.label) + '</span>' +
+        '<button class="case-card-copy" data-id="' + c.id + '" onclick="copyCard(this)">Copy</button>' +
+      '</div>' +
+      '<div class="case-card-output placeholder" id="out-' + c.id + '">' + escHtml(c.label) + '</div>';
+    grid.appendChild(card);
+  });
+})();
+
+/* ---- Smart Word Splitting ---- */
+function splitWords(str) {
+  if (!str.trim()) return [];
+
+  // Replace separators with space
+  var s = str
+    .replace(/[_\-./]/g, ' ')   // underscores, hyphens, dots, slashes
+    .replace(/\s+/g, ' ')        // collapse whitespace
+    .trim();
+
+  // Split on camelCase boundaries
+  // "parseHTMLString" -> "parse HTML String"
+  // Insert space before uppercase letter preceded by lowercase
+  s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
+  // Insert space between consecutive uppercase and uppercase followed by lowercase
+  // "HTMLParser" -> "HTML Parser"
+  s = s.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+
+  // Split on spaces and filter empty
+  var words = s.split(/\s+/).filter(function(w) { return w.length > 0; });
+  return words;
+}
+
+/* ---- Converters ---- */
+function toCamel(words) {
+  if (!words.length) return '';
+  return words.map(function(w, i) {
+    var lower = w.toLowerCase();
+    return i === 0 ? lower : lower.charAt(0).toUpperCase() + lower.slice(1);
+  }).join('');
+}
+
+function toPascal(words) {
+  return words.map(function(w) {
+    var lower = w.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  }).join('');
+}
+
+function toSnake(words) {
+  return words.map(function(w) { return w.toLowerCase(); }).join('_');
+}
+
+function toUpperSnake(words) {
+  return words.map(function(w) { return w.toUpperCase(); }).join('_');
+}
+
+function toKebab(words) {
+  return words.map(function(w) { return w.toLowerCase(); }).join('-');
+}
+
+function toUpperKebab(words) {
+  return words.map(function(w) { return w.toUpperCase(); }).join('-');
+}
+
+function toTitle(words) {
+  return words.map(function(w) {
+    var lower = w.toLowerCase();
+    return lower.charAt(0).toUpperCase() + lower.slice(1);
+  }).join(' ');
+}
+
+function toSentence(words) {
+  if (!words.length) return '';
+  return words.map(function(w, i) {
+    var lower = w.toLowerCase();
+    return i === 0 ? lower.charAt(0).toUpperCase() + lower.slice(1) : lower;
+  }).join(' ');
+}
+
+function toLower(words) {
+  return words.map(function(w) { return w.toLowerCase(); }).join(' ');
+}
+
+function toUpper(words) {
+  return words.map(function(w) { return w.toUpperCase(); }).join(' ');
+}
+
+function toDot(words) {
+  return words.map(function(w) { return w.toLowerCase(); }).join('.');
+}
+
+function toPath(words) {
+  return words.map(function(w) { return w.toLowerCase(); }).join('/');
+}
+
+/* ---- Convert All ---- */
+function convertAll() {
+  var input = document.getElementById('case-input').value;
+  var words = splitWords(input);
+
+  // Update counts
+  var charCount = input.length;
+  var wordCount = words.length;
+  document.getElementById('char-count').textContent = charCount + ' char' + (charCount !== 1 ? 's' : '');
+  document.getElementById('word-count').textContent = wordCount + ' word' + (wordCount !== 1 ? 's' : '');
+
+  CASES.forEach(function(c) {
+    var el = document.getElementById('out-' + c.id);
+    if (!input.trim()) {
+      el.textContent = c.label;
+      el.className = 'case-card-output placeholder';
+    } else {
+      el.textContent = c.convert(words);
+      el.className = 'case-card-output';
+    }
+  });
+}
+
+/* ---- Copy ---- */
+function copyCard(btn) {
+  var id = btn.getAttribute('data-id');
+  var el = document.getElementById('out-' + id);
+  if (el.classList.contains('placeholder')) return;
+
+  navigator.clipboard.writeText(el.textContent).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    showToast();
+    setTimeout(function() {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1500);
+  });
+}
+
+/* ---- Utilities ---- */
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showToast() {
+  var t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

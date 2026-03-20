@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Base Converter Online — Binary, Hex, Octal, Decimal Free | DevUtils</title>
+  <meta name="description" content="Convert between binary, decimal, hexadecimal, and octal instantly. Supports any base from 2 to 36 with BigInt precision, bit-length display, and grouped nibbles. Free online number base converter for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/number-base">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="Number Base Converter — Binary, Hex, Octal, Decimal Free Tool">
+  <meta property="og:description" content="Convert between binary, hexadecimal, octal, and decimal with BigInt support. Free radix conversion tool for developers.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Number Base Converter",
+    "url": "https://devutils.com/number-base.html",
+    "description": "Convert between binary, decimal, hexadecimal, octal, and any base (2-36) instantly. Free online number base converter with BigInt support.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I convert binary to decimal?",
+        "acceptedAnswer": { "@type": "Answer", "text": "To convert binary to decimal, multiply each bit by its positional power of 2 and sum the results. For example, binary 1011 = (1×2³) + (0×2²) + (1×2¹) + (1×2⁰) = 8 + 0 + 2 + 1 = 11 in decimal. This positional notation principle applies to all numeral systems — each digit is multiplied by the base raised to its position index." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is hexadecimal and why is it used in programming?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Hexadecimal (base-16) uses digits 0-9 and letters A-F. Each hex digit maps to exactly 4 binary bits, making it a compact way to represent binary data. For example, 0xFF = 11111111 in binary = 255 in decimal. Programmers use hex for memory addresses, color codes (#FF5733), byte values, and bitwise operations because it's far more readable than long binary strings while maintaining a direct relationship with the underlying binary." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I convert between octal and binary?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Each octal digit corresponds to exactly 3 binary bits. To convert octal to binary, replace each octal digit with its 3-bit binary equivalent: 0=000, 1=001, 2=010, 3=011, 4=100, 5=101, 6=110, 7=111. For example, octal 357 = 011 101 111 = 011101111 in binary. To go from binary to octal, group binary digits into sets of 3 from the right and convert each group." }
+      },
+      {
+        "@type": "Question",
+        "name": "What bases are commonly used in computer science?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The most common bases are: Binary (base-2) — the fundamental language of computers using 0s and 1s. Octal (base-8) — used in Unix file permissions and some legacy systems. Decimal (base-10) — the standard human numeral system. Hexadecimal (base-16) — widely used for memory addresses, color codes, and representing byte values compactly. Base-64 encoding is also common for data transfer, though it works differently from positional numeral systems." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between signed and unsigned binary numbers?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Unsigned binary numbers represent only non-negative values — an 8-bit unsigned number ranges from 0 to 255. Signed binary uses the most significant bit (MSB) as a sign indicator. In two's complement (the most common signed format), an 8-bit signed number ranges from -128 to 127. The binary value 11111111 is 255 unsigned but -1 in signed two's complement. Understanding this distinction is crucial when working with low-level programming, bitwise operations, and data types in languages like C and Rust." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .base-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 560px) {
+      .base-grid { grid-template-columns: 1fr; }
+    }
+
+    .base-field {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      transition: border-color .2s;
+    }
+    .base-field:hover { border-color: var(--border2); }
+    .base-field.has-error { border-color: var(--red); }
+
+    .base-field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .base-field-name {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .base-field-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .base-field textarea {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      padding: 10px 12px;
+      resize: vertical;
+      min-height: 44px;
+      line-height: 1.5;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .base-field textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .base-field textarea.invalid {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(255,90,90,.1);
+    }
+    .base-field .field-error {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--red);
+      margin-top: 4px;
+      display: none;
+    }
+
+    .base-field .copy-btn {
+      background: none;
+      border: none;
+      color: var(--text3);
+      font-family: var(--mono);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color .2s, background .2s;
+    }
+    .base-field .copy-btn:hover {
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .custom-base-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .custom-base-row label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text2);
+      white-space: nowrap;
+    }
+    .custom-base-row input[type="number"] {
+      width: 64px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .custom-base-row input[type="number"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .custom-base-row input[type="text"] {
+      flex: 1;
+    }
+
+    .info-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .info-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text2);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      white-space: nowrap;
+    }
+    .info-chip strong {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .nibble-display {
+      margin-top: 16px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .nibble-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px;
+    }
+    .nibble-value {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text);
+      word-break: break-all;
+      line-height: 1.7;
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .nibble-value:hover { color: var(--accent); }
+    .nibble-group {
+      background: var(--accent-dim);
+      border-radius: 3px;
+      padding: 2px 4px;
+      margin: 0 1px;
+    }
+    .nibble-group:nth-child(even) {
+      background: rgba(245,197,66,.06);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text2);
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .action-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Math Tool</div>
+    <h1>Number Base Converter</h1>
+    <p class="tool-description">
+      Convert between binary, decimal, hexadecimal, and octal number systems instantly. This free online number base converter supports radix conversion for any base from 2 to 36, with BigInt precision for arbitrarily large numbers. Explore positional notation across base-2, base-8, base-10, and base-16 numeral systems with grouped nibbles, bit-length display, and real-time input validation. All conversions happen client-side in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">number-base.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="base-grid">
+        <div class="base-field" id="field-bin">
+          <div class="base-field-label">
+            <span class="base-field-name">Binary</span>
+            <span class="base-field-tag">Base 2</span>
+            <button class="copy-btn" onclick="copyField('bin')">Copy</button>
+          </div>
+          <textarea id="input-bin" rows="2" placeholder="e.g. 11010110" spellcheck="false" oninput="convert('bin')"></textarea>
+          <div class="field-error" id="err-bin"></div>
+        </div>
+        <div class="base-field" id="field-oct">
+          <div class="base-field-label">
+            <span class="base-field-name">Octal</span>
+            <span class="base-field-tag">Base 8</span>
+            <button class="copy-btn" onclick="copyField('oct')">Copy</button>
+          </div>
+          <textarea id="input-oct" rows="2" placeholder="e.g. 326" spellcheck="false" oninput="convert('oct')"></textarea>
+          <div class="field-error" id="err-oct"></div>
+        </div>
+        <div class="base-field" id="field-dec">
+          <div class="base-field-label">
+            <span class="base-field-name">Decimal</span>
+            <span class="base-field-tag">Base 10</span>
+            <button class="copy-btn" onclick="copyField('dec')">Copy</button>
+          </div>
+          <textarea id="input-dec" rows="2" placeholder="e.g. 214" spellcheck="false" oninput="convert('dec')"></textarea>
+          <div class="field-error" id="err-dec"></div>
+        </div>
+        <div class="base-field" id="field-hex">
+          <div class="base-field-label">
+            <span class="base-field-name">Hexadecimal</span>
+            <span class="base-field-tag">Base 16</span>
+            <button class="copy-btn" onclick="copyField('hex')">Copy</button>
+          </div>
+          <textarea id="input-hex" rows="2" placeholder="e.g. D6" spellcheck="false" oninput="convert('hex')"></textarea>
+          <div class="field-error" id="err-hex"></div>
+        </div>
+      </div>
+
+      <div class="custom-base-row">
+        <label>Custom Base</label>
+        <input type="number" id="custom-radix" min="2" max="36" value="3" oninput="convert('custom')">
+        <input type="text" id="input-custom" placeholder="Enter value in custom base" spellcheck="false" oninput="convert('custom')">
+        <button class="copy-btn" onclick="copyField('custom')" style="flex-shrink:0;">Copy</button>
+      </div>
+      <div class="field-error" id="err-custom" style="margin-left:0;margin-top:4px;"></div>
+
+      <div class="action-row">
+        <button class="action-btn" onclick="swapEndian()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          Swap Endianness
+        </button>
+        <button class="action-btn" onclick="clearAll()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Clear All
+        </button>
+      </div>
+
+      <div class="info-bar" id="info-bar">
+        <div class="info-chip"><strong id="info-bits">—</strong>&nbsp;bits</div>
+        <div class="info-chip">Fits in <strong id="info-fit">—</strong></div>
+      </div>
+
+      <div class="nibble-display" id="nibble-display" style="display:none;">
+        <div class="nibble-label">Binary (Grouped Nibbles)</div>
+        <div class="nibble-value" id="nibble-value" onclick="copyNibble()"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I convert binary to decimal?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        To convert binary to decimal, multiply each bit by 2 raised to the power of its position (starting from 0 on the right) and sum the results. For example, binary <code>1011</code> = (1 &times; 2&sup3;) + (0 &times; 2&sup2;) + (1 &times; 2&sup1;) + (1 &times; 2&sup0;) = 8 + 0 + 2 + 1 = <strong>11</strong> in decimal. This positional notation principle applies to all numeral systems — the digit value is multiplied by the base raised to its position index.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is hexadecimal and why is it used in programming?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Hexadecimal (base-16) uses digits <code>0–9</code> and letters <code>A–F</code>. Each hex digit maps to exactly 4 binary bits (a nibble), making it a compact way to represent binary data. For example, <code>0xFF</code> = <code>11111111</code> in binary = <code>255</code> in decimal. Programmers use hex for memory addresses, color codes, byte values, and bitwise operations because it is far more readable than long binary strings while maintaining a direct relationship with the underlying binary system.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I convert between octal and binary?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Each octal digit corresponds to exactly 3 binary bits. To convert octal to binary, replace each digit with its 3-bit binary equivalent: 0=<code>000</code>, 1=<code>001</code>, 2=<code>010</code>, 3=<code>011</code>, 4=<code>100</code>, 5=<code>101</code>, 6=<code>110</code>, 7=<code>111</code>. For example, octal <code>357</code> = <code>011 101 111</code> in binary. To go from binary to octal, group binary digits into sets of 3 from the right and convert each group to its octal equivalent.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What bases are commonly used in computer science?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        The most common bases are: <strong>Binary (base-2)</strong> — the fundamental language of computers, using 0s and 1s. <strong>Octal (base-8)</strong> — used in Unix file permissions and some legacy systems. <strong>Decimal (base-10)</strong> — the standard human numeral system. <strong>Hexadecimal (base-16)</strong> — widely used for memory addresses, color codes, and representing byte values compactly. Some systems also use base-36 (digits + entire alphabet) for compact ID encoding.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between signed and unsigned binary numbers?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>Unsigned</strong> binary numbers represent only non-negative values — an 8-bit unsigned number ranges from 0 to 255. <strong>Signed</strong> binary uses the most significant bit (MSB) as a sign indicator. In two's complement (the most common signed representation), an 8-bit signed number ranges from &minus;128 to 127. The binary value <code>11111111</code> is 255 when unsigned, but &minus;1 in signed two's complement. Understanding this distinction is crucial for low-level programming and bitwise operations in languages like C and Rust.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="hash-generator.html">
+        <div class="related-icon">#</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Hash Generator</div>
+          <div class="related-card-desc">Generate MD5, SHA-256, SHA-512 hashes</div>
+        </div>
+      </a>
+      <a class="related-card" href="hex-to-rgb.html">
+        <div class="related-icon">&127912;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Hex to RGB</div>
+          <div class="related-card-desc">Convert hex color codes to RGB and HSL</div>
+        </div>
+      </a>
+      <a class="related-card" href="timestamp-diff.html">
+        <div class="related-icon">&9201;</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Timestamp Diff Calculator</div>
+          <div class="related-card-desc">Calculate time differences between timestamps</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Number Base Converter</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const BASES = {
+  bin: { radix: 2,  id: 'input-bin',  err: 'err-bin',  field: 'field-bin',  chars: /^[01]+$/ },
+  oct: { radix: 8,  id: 'input-oct',  err: 'err-oct',  field: 'field-oct',  chars: /^[0-7]+$/ },
+  dec: { radix: 10, id: 'input-dec',  err: 'err-dec',  field: 'field-dec',  chars: /^[0-9]+$/ },
+  hex: { radix: 16, id: 'input-hex',  err: 'err-hex',  field: 'field-hex',  chars: /^[0-9a-fA-F]+$/ }
+};
+
+function validCharsForBase(radix) {
+  const digits = '0123456789abcdefghijklmnopqrstuvwxyz'.slice(0, radix);
+  return new RegExp('^[' + digits + ']+$', 'i');
+}
+
+function bigIntToBase(n, radix) {
+  if (n === 0n) return '0';
+  const base = BigInt(radix);
+  const digits = '0123456789abcdefghijklmnopqrstuvwxyz';
+  let result = '';
+  let val = n < 0n ? -n : n;
+  while (val > 0n) {
+    result = digits[Number(val % base)] + result;
+    val = val / base;
+  }
+  return (n < 0n ? '-' : '') + result;
+}
+
+function parseBigInt(str, radix) {
+  str = str.trim().toLowerCase();
+  if (!str) return null;
+  const base = BigInt(radix);
+  const digits = '0123456789abcdefghijklmnopqrstuvwxyz';
+  let result = 0n;
+  for (let i = 0; i < str.length; i++) {
+    const d = digits.indexOf(str[i]);
+    if (d < 0 || d >= radix) return null;
+    result = result * base + BigInt(d);
+  }
+  return result;
+}
+
+function clearErrors() {
+  Object.keys(BASES).forEach(k => {
+    document.getElementById(BASES[k].err).style.display = 'none';
+    document.getElementById(BASES[k].id).classList.remove('invalid');
+    document.getElementById(BASES[k].field).classList.remove('has-error');
+  });
+  document.getElementById('err-custom').style.display = 'none';
+  document.getElementById('input-custom').classList.remove('invalid');
+}
+
+function showError(errId, inputId, fieldId, msg) {
+  const el = document.getElementById(errId);
+  el.textContent = '\u2717 ' + msg;
+  el.style.display = 'block';
+  if (inputId) document.getElementById(inputId).classList.add('invalid');
+  if (fieldId) document.getElementById(fieldId).classList.add('has-error');
+}
+
+function convert(source) {
+  clearErrors();
+
+  let value;
+  if (source === 'custom') {
+    const radix = parseInt(document.getElementById('custom-radix').value);
+    if (isNaN(radix) || radix < 2 || radix > 36) {
+      showError('err-custom', 'input-custom', null, 'Base must be between 2 and 36');
+      return;
+    }
+    const raw = document.getElementById('input-custom').value.trim();
+    if (!raw) { clearFields(); return; }
+    if (!validCharsForBase(radix).test(raw)) {
+      showError('err-custom', 'input-custom', null, 'Invalid characters for base ' + radix);
+      return;
+    }
+    value = parseBigInt(raw, radix);
+    if (value === null) {
+      showError('err-custom', 'input-custom', null, 'Invalid number');
+      return;
+    }
+  } else {
+    const b = BASES[source];
+    const raw = document.getElementById(b.id).value.trim();
+    if (!raw) { clearFields(); return; }
+    if (!b.chars.test(raw)) {
+      showError(b.err, b.id, b.field, 'Invalid characters for base ' + b.radix);
+      return;
+    }
+    value = parseBigInt(raw, b.radix);
+    if (value === null) {
+      showError(b.err, b.id, b.field, 'Invalid number');
+      return;
+    }
+  }
+
+  // Update all fields except source
+  Object.keys(BASES).forEach(k => {
+    if (k !== source) {
+      document.getElementById(BASES[k].id).value = bigIntToBase(value, BASES[k].radix).toUpperCase();
+    }
+  });
+  // Hex field: always uppercase
+  if (source === 'hex') {
+    // keep user input as-is
+  } else {
+    document.getElementById('input-hex').value = bigIntToBase(value, 16).toUpperCase();
+  }
+
+  // Update custom base
+  if (source !== 'custom') {
+    const radix = parseInt(document.getElementById('custom-radix').value);
+    if (!isNaN(radix) && radix >= 2 && radix <= 36) {
+      document.getElementById('input-custom').value = bigIntToBase(value, radix);
+    }
+  }
+
+  updateInfo(value);
+  updateNibbles(value);
+}
+
+function clearFields() {
+  Object.keys(BASES).forEach(k => {
+    document.getElementById(BASES[k].id).value = '';
+  });
+  document.getElementById('input-custom').value = '';
+  document.getElementById('info-bits').textContent = '\u2014';
+  document.getElementById('info-fit').textContent = '\u2014';
+  document.getElementById('nibble-display').style.display = 'none';
+}
+
+function updateInfo(value) {
+  if (value === null || value === undefined) return;
+  const binStr = bigIntToBase(value, 2);
+  const bits = binStr.length;
+  document.getElementById('info-bits').textContent = bits;
+
+  let fit;
+  if (bits <= 8) fit = '8-bit (uint8)';
+  else if (bits <= 16) fit = '16-bit (uint16)';
+  else if (bits <= 32) fit = '32-bit (uint32)';
+  else if (bits <= 64) fit = '64-bit (uint64)';
+  else fit = bits + '-bit (BigInt)';
+  document.getElementById('info-fit').textContent = fit;
+}
+
+function updateNibbles(value) {
+  if (value === null || value === undefined) {
+    document.getElementById('nibble-display').style.display = 'none';
+    return;
+  }
+  const binStr = bigIntToBase(value, 2);
+  // Pad to multiple of 4
+  const padded = binStr.padStart(Math.ceil(binStr.length / 4) * 4, '0');
+  const groups = padded.match(/.{4}/g);
+  const html = groups.map((g, i) =>
+    '<span class="nibble-group">' + g + '</span>'
+  ).join(' ');
+  document.getElementById('nibble-value').innerHTML = html;
+  document.getElementById('nibble-display').style.display = '';
+}
+
+function swapEndian() {
+  const hexVal = document.getElementById('input-hex').value.trim();
+  if (!hexVal) return;
+  // Pad to even length
+  let hex = hexVal.length % 2 ? '0' + hexVal : hexVal;
+  // Swap byte order
+  const bytes = hex.match(/.{2}/g);
+  if (!bytes) return;
+  bytes.reverse();
+  document.getElementById('input-hex').value = bytes.join('').toUpperCase();
+  convert('hex');
+}
+
+function clearAll() {
+  Object.keys(BASES).forEach(k => {
+    document.getElementById(BASES[k].id).value = '';
+  });
+  document.getElementById('input-custom').value = '';
+  clearErrors();
+  document.getElementById('info-bits').textContent = '\u2014';
+  document.getElementById('info-fit').textContent = '\u2014';
+  document.getElementById('nibble-display').style.display = 'none';
+}
+
+function copyField(key) {
+  let val;
+  if (key === 'custom') {
+    val = document.getElementById('input-custom').value;
+  } else {
+    val = document.getElementById(BASES[key].id).value;
+  }
+  if (!val) return;
+  navigator.clipboard.writeText(val);
+  showToast();
+}
+
+function copyNibble() {
+  const el = document.getElementById('nibble-value');
+  const text = el.textContent.replace(/\s+/g, ' ').trim();
+  navigator.clipboard.writeText(text);
+  showToast();
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

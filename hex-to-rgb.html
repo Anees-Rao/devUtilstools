@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hex to RGB Converter Online — Color Code Converter Free | DevUtils</title>
+  <meta name="description" content="Convert hex color codes to RGB, RGBA and HSL instantly. Supports 3-digit, 6-digit and 8-digit hex codes with alpha. Free online color converter for developers and designers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/hex-to-rgb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="Hex to RGB Converter — Free Online Color Code Tool">
+  <meta property="og:description" content="Convert hex color codes to RGB, RGBA and HSL. Supports 3/6/8-digit hex with live preview.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Hex to RGB Converter",
+    "url": "https://devutils.com/hex-to-rgb.html",
+    "description": "Convert hex color codes to RGB, RGBA and HSL instantly. Free online color converter.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do you convert a hex color code to RGB?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A 6-digit hex color like #FF5733 is split into three pairs: FF (red), 57 (green), 33 (blue). Each pair is converted from hexadecimal to decimal: FF=255, 57=87, 33=51. So #FF5733 = rgb(255, 87, 51). For 3-digit hex like #F53, each digit is doubled: F→FF, 5→55, 3→33, giving #FF5533." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between hex, RGB, and HSL color formats?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Hex is a compact hexadecimal notation (#RRGGBB). RGB defines colors as red, green, blue values from 0-255. HSL uses hue (0-360°), saturation (0-100%), and lightness (0-100%). All three can represent the same colors — they are just different ways to express them. HSL is often more intuitive for adjusting colors because you can change lightness or saturation independently." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can hex codes include alpha transparency?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. 8-digit hex codes (#RRGGBBAA) include an alpha channel. For example, #FF573380 has 50% opacity (80 hex = 128 decimal = ~50%). CSS also supports 4-digit shorthand (#RGBA). Modern browsers fully support 8-digit hex in CSS." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between 3-digit and 6-digit hex codes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "3-digit hex is shorthand where each digit is repeated: #F53 expands to #FF5533. It can only represent 4,096 colors (16^3), while 6-digit hex covers the full 16.7 million color range (16^6). Use 3-digit only when the color happens to have matching digit pairs." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I convert hex to RGB in JavaScript?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Use parseInt with base 16: const hex = '#FF5733'; const r = parseInt(hex.slice(1,3), 16); const g = parseInt(hex.slice(3,5), 16); const b = parseInt(hex.slice(5,7), 16); This gives you r=255, g=87, b=51. For a reusable function, also handle 3-digit and 8-digit hex codes." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .color-preview {
+      width: 100%; height: 80px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+      transition: background .15s, border-color .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .color-preview::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-conic-gradient(#2a2f36 0% 25%, #1a1d20 0% 50%) 50% / 16px 16px;
+      z-index: 0;
+    }
+    .color-preview-inner {
+      position: absolute; inset: 0; z-index: 1;
+      border-radius: var(--radius);
+      transition: background .15s;
+    }
+
+    .color-outputs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    @media (max-width: 500px) { .color-outputs { grid-template-columns: 1fr; } }
+
+    .color-out-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      transition: border-color .2s;
+    }
+    .color-out-card:hover { border-color: var(--border2); }
+    .color-out-label {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--text3); text-transform: uppercase; letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .color-out-value {
+      font-family: var(--mono); font-size: 14px;
+      color: var(--text); cursor: pointer;
+      transition: color .2s;
+    }
+    .color-out-value:hover { color: var(--accent); }
+
+    .rgb-sliders { margin-top: 16px; }
+    .slider-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 8px;
+    }
+    .slider-label {
+      font-family: var(--mono); font-size: 12px;
+      font-weight: 600; width: 16px; text-align: center;
+    }
+    .slider-label-r { color: #ff6b6b; }
+    .slider-label-g { color: #51cf66; }
+    .slider-label-b { color: #74b9ff; }
+    .slider-label-a { color: var(--text3); }
+    input[type="range"] {
+      flex: 1; height: 6px;
+      -webkit-appearance: none; appearance: none;
+      background: var(--bg4); border-radius: 3px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--accent); cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    }
+    .slider-val {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--text2); width: 32px; text-align: right;
+    }
+
+    .hex-input-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .hex-input-row input[type="text"] {
+      font-size: 18px; font-weight: 500;
+      letter-spacing: 1px; text-align: center;
+      max-width: 200px;
+    }
+    .hex-input-row input[type="color"] {
+      width: 42px; height: 42px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg3); cursor: pointer; padding: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Color Tool</div>
+    <h1>Hex to RGB Color Converter</h1>
+    <p class="tool-description">
+      Convert any hex color code to RGB, RGBA, and HSL instantly with a live preview. This free online hex to RGB converter supports 3-digit shorthand (<code>#F53</code>), standard 6-digit (<code>#FF5733</code>), and 8-digit hex codes with alpha transparency (<code>#FF573380</code>). Use the color picker or RGB sliders to find the perfect color for your CSS, Tailwind, or design system. All conversions happen client-side in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">hex-to-rgb.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Enter Hex Color Code</label>
+      <div class="hex-input-row">
+        <input type="text" id="hex-input" value="#00d084" placeholder="#FF5733" oninput="fromHex()" spellcheck="false">
+        <input type="color" id="color-picker" value="#00d084" oninput="fromPicker()">
+      </div>
+      <div id="hex-error" style="display:none"></div>
+
+      <div class="divider"></div>
+
+      <div class="color-preview">
+        <div class="color-preview-inner" id="color-preview"></div>
+      </div>
+
+      <div class="color-outputs">
+        <div class="color-out-card">
+          <div class="color-out-label">RGB</div>
+          <div class="color-out-value" id="out-rgb" onclick="copyVal(this)">rgb(0, 208, 132)</div>
+        </div>
+        <div class="color-out-card">
+          <div class="color-out-label">RGBA</div>
+          <div class="color-out-value" id="out-rgba" onclick="copyVal(this)">rgba(0, 208, 132, 1)</div>
+        </div>
+        <div class="color-out-card">
+          <div class="color-out-label">HSL</div>
+          <div class="color-out-value" id="out-hsl" onclick="copyVal(this)">hsl(158, 100%, 41%)</div>
+        </div>
+        <div class="color-out-card">
+          <div class="color-out-label">Hex (Normalized)</div>
+          <div class="color-out-value" id="out-hex" onclick="copyVal(this)">#00d084</div>
+        </div>
+      </div>
+
+      <div class="rgb-sliders">
+        <div class="divider"></div>
+        <label>Adjust with Sliders</label>
+        <div class="slider-row">
+          <span class="slider-label slider-label-r">R</span>
+          <input type="range" id="slider-r" min="0" max="255" value="0" oninput="fromSliders()">
+          <span class="slider-val" id="val-r">0</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label slider-label-g">G</span>
+          <input type="range" id="slider-g" min="0" max="255" value="208" oninput="fromSliders()">
+          <span class="slider-val" id="val-g">208</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label slider-label-b">B</span>
+          <input type="range" id="slider-b" min="0" max="255" value="132" oninput="fromSliders()">
+          <span class="slider-val" id="val-b">132</span>
+        </div>
+        <div class="slider-row">
+          <span class="slider-label slider-label-a">A</span>
+          <input type="range" id="slider-a" min="0" max="100" value="100" oninput="fromSliders()">
+          <span class="slider-val" id="val-a">100%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do you convert a hex color code to RGB manually?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A 6-digit hex color like <code>#FF5733</code> is split into three pairs: <strong>FF</strong> (red), <strong>57</strong> (green), <strong>33</strong> (blue). Convert each pair from hexadecimal to decimal: FF = 255, 57 = 87, 33 = 51. So <code>#FF5733</code> equals <code>rgb(255, 87, 51)</code>. For 3-digit shorthand like <code>#F53</code>, double each digit first: F→FF, 5→55, 3→33, giving <code>#FF5533</code>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between hex, RGB, and HSL?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>Hex</strong> is a compact hexadecimal notation (<code>#RRGGBB</code>). <strong>RGB</strong> defines colors as red, green, blue values from 0–255. <strong>HSL</strong> uses hue (0–360°), saturation (0–100%), and lightness (0–100%). All three can represent the same colors — they're different notation systems. HSL is often more intuitive for designers because you can independently adjust brightness and saturation without affecting hue.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Can hex codes include alpha transparency?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Yes. 8-digit hex codes (<code>#RRGGBBAA</code>) include an alpha channel. For example, <code>#FF573380</code> has ~50% opacity (80 in hex = 128 in decimal ≈ 50.2%). CSS also supports 4-digit shorthand (<code>#RGBA</code>). All modern browsers (Chrome 62+, Firefox 49+, Safari 10+) fully support 8-digit hex colors in CSS.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between 3-digit and 6-digit hex codes?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        3-digit hex is shorthand where each digit is repeated: <code>#F53</code> expands to <code>#FF5533</code>. This shorthand can represent 4,096 colors (16³), while 6-digit hex covers the full 16.7 million color range (16⁶). Use 3-digit shorthand only when each RGB pair has matching digits — it keeps CSS more concise.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Why do designers need to convert between hex and RGB?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Different tools and platforms use different color formats. Figma and design tools often show hex values, while CSS supports hex, RGB, and HSL. Some CSS properties (like gradients and opacity adjustments) work better with <code>rgba()</code>. Developers implementing designs need to convert between formats to match design specs exactly. Tailwind CSS configuration also uses hex codes that may need RGB equivalents for custom utility classes.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I convert hex to RGB in JavaScript?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Use <code>parseInt</code> with base 16: <code>const r = parseInt(hex.slice(1,3), 16); const g = parseInt(hex.slice(3,5), 16); const b = parseInt(hex.slice(5,7), 16);</code>. For 3-digit hex, expand each character first. A complete implementation should also handle the 8-digit <code>#RRGGBBAA</code> format by parsing the last two characters as the alpha channel (0–255, divided by 255 for a 0–1 range).
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="hash-generator.html">
+        <div class="related-icon">#</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Hash Generator</div>
+          <div class="related-card-desc">Generate MD5, SHA-256, SHA-512 hashes</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Hex to RGB Converter</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+let r = 0, g = 208, b = 132, a = 1;
+
+function parseHex(hex) {
+  hex = hex.replace(/^#/, '');
+  if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  if (hex.length === 4) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
+  if (hex.length === 6) hex += 'ff';
+  if (hex.length !== 8) return null;
+  const rr = parseInt(hex.slice(0,2), 16);
+  const gg = parseInt(hex.slice(2,4), 16);
+  const bb = parseInt(hex.slice(4,6), 16);
+  const aa = parseInt(hex.slice(6,8), 16) / 255;
+  if ([rr,gg,bb].some(isNaN) || isNaN(aa)) return null;
+  return { r: rr, g: gg, b: bb, a: aa };
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r,g,b), min = Math.min(r,g,b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+    else if (max === g) h = ((b - r) / d + 2) / 6;
+    else h = ((r - g) / d + 4) / 6;
+  }
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function toHex2(n) { return n.toString(16).padStart(2, '0'); }
+
+function updateUI() {
+  const errEl = document.getElementById('hex-error');
+  errEl.style.display = 'none';
+
+  document.getElementById('color-preview').style.background = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+  document.getElementById('out-rgb').textContent = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+  document.getElementById('out-rgba').textContent = 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a.toFixed(2).replace(/\.?0+$/, '') + ')';
+  const hsl = rgbToHsl(r, g, b);
+  document.getElementById('out-hsl').textContent = 'hsl(' + hsl.h + ', ' + hsl.s + '%, ' + hsl.l + '%)';
+  const hexStr = '#' + toHex2(r) + toHex2(g) + toHex2(b);
+  document.getElementById('out-hex').textContent = a < 1 ? hexStr + toHex2(Math.round(a * 255)) : hexStr;
+
+  document.getElementById('slider-r').value = r;
+  document.getElementById('slider-g').value = g;
+  document.getElementById('slider-b').value = b;
+  document.getElementById('slider-a').value = Math.round(a * 100);
+  document.getElementById('val-r').textContent = r;
+  document.getElementById('val-g').textContent = g;
+  document.getElementById('val-b').textContent = b;
+  document.getElementById('val-a').textContent = Math.round(a * 100) + '%';
+
+  document.getElementById('color-picker').value = '#' + toHex2(r) + toHex2(g) + toHex2(b);
+}
+
+function fromHex() {
+  const val = document.getElementById('hex-input').value.trim();
+  if (!val) return;
+  const parsed = parseHex(val);
+  if (!parsed) {
+    document.getElementById('hex-error').style.display = '';
+    document.getElementById('hex-error').className = 'status status-err';
+    document.getElementById('hex-error').textContent = '\u2717 Invalid hex code — use #RGB, #RRGGBB or #RRGGBBAA format';
+    return;
+  }
+  r = parsed.r; g = parsed.g; b = parsed.b; a = parsed.a;
+  updateUI();
+}
+
+function fromPicker() {
+  const val = document.getElementById('color-picker').value;
+  document.getElementById('hex-input').value = val;
+  fromHex();
+}
+
+function fromSliders() {
+  r = parseInt(document.getElementById('slider-r').value);
+  g = parseInt(document.getElementById('slider-g').value);
+  b = parseInt(document.getElementById('slider-b').value);
+  a = parseInt(document.getElementById('slider-a').value) / 100;
+  document.getElementById('hex-input').value = '#' + toHex2(r) + toHex2(g) + toHex2(b) + (a < 1 ? toHex2(Math.round(a*255)) : '');
+  updateUI();
+}
+
+function copyVal(el) {
+  navigator.clipboard.writeText(el.textContent);
+  showToast();
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// Init
+updateUI();
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

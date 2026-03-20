@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lorem Ipsum Generator — Free Placeholder Text Tool | DevUtils</title>
+  <meta name="description" content="Generate lorem ipsum placeholder text by paragraphs, sentences or words. Copy dummy text for web design, mockups and prototypes. Free, instant, no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/lorem-ipsum">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Lorem Ipsum Generator — Free Placeholder Text">
+  <meta property="og:description" content="Generate placeholder text for mockups and designs. Paragraphs, sentences or word count.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Lorem Ipsum Generator","url":"https://devutils.com/lorem-ipsum.html","description":"Generate lorem ipsum placeholder text by paragraphs, sentences or words.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is Lorem Ipsum and where does it come from?","acceptedAnswer":{"@type":"Answer","text":"Lorem Ipsum is dummy text used in the printing and typesetting industry since the 1500s. It is derived from sections 1.10.32 and 1.10.33 of 'De Finibus Bonorum et Malorum' (On the Ends of Good and Evil) by Cicero, written in 45 BC. The text was scrambled to create a natural-looking placeholder that doesn't distract from the visual layout."}},
+    {"@type":"Question","name":"Is it bad for SEO to leave Lorem Ipsum on a live page?","acceptedAnswer":{"@type":"Answer","text":"Yes. Google may view placeholder text as thin or low-quality content, which can hurt your rankings. Always replace lorem ipsum with real content before publishing. Google's helpful content update specifically targets pages that don't provide value to users."}},
+    {"@type":"Question","name":"How many words are in a standard Lorem Ipsum paragraph?","acceptedAnswer":{"@type":"Answer","text":"The classic Lorem Ipsum paragraph starting with 'Lorem ipsum dolor sit amet...' contains approximately 69 words. However, paragraph length varies — most generators produce paragraphs between 40-100 words depending on the randomization."}},
+    {"@type":"Question","name":"What are alternatives to Lorem Ipsum?","acceptedAnswer":{"@type":"Answer","text":"Popular alternatives include Bacon Ipsum (meat-themed), Hipster Ipsum (hipster jargon), Cupcake Ipsum (dessert words), Pirate Ipsum (pirate speak), and Corporate Ipsum (business buzzwords). For more realistic testing, some designers use excerpts from public domain literature or actual draft content."}},
+    {"@type":"Question","name":"How do I generate placeholder text for web design?","acceptedAnswer":{"@type":"Answer","text":"Use a Lorem Ipsum generator to produce the exact amount of text you need — by word count, sentence count, or paragraph count. Copy the generated text into your wireframes, mockups, or HTML templates. Replace with real content before going live."}}
+  ]}
+  </script>
+
+  <style>
+    .gen-controls { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+    .gen-controls .control-group { display:flex; flex-direction:column; gap:4px; }
+    .gen-controls input[type="number"] { width:80px; padding:10px 12px; }
+    .gen-controls select { padding:10px 12px; }
+    .gen-options { display:flex; gap:16px; margin-top:10px; flex-wrap:wrap; }
+    .gen-options label { display:flex; align-items:center; gap:6px; font-size:12px; text-transform:none; letter-spacing:normal; cursor:pointer; margin:0; }
+    .output-text {
+      background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);
+      padding:16px; font-size:14px; color:var(--text); line-height:1.75;
+      max-height:400px; overflow:auto; white-space:pre-wrap;
+    }
+    .word-stats {
+      display:flex; gap:16px; margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--text3);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Content Tool</div>
+    <h1>Lorem Ipsum Generator</h1>
+    <p class="tool-description">
+      Generate lorem ipsum placeholder text for web design, mockups, wireframes and prototypes. Choose the exact amount you need — by paragraphs, sentences, or word count. This free dummy text generator produces classic lorem ipsum derived from Cicero's "De Finibus Bonorum et Malorum" (45 BC). Optionally start with the traditional "Lorem ipsum dolor sit amet..." opening. All text is generated instantly in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">lorem-ipsum.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="gen-controls">
+        <div class="control-group">
+          <label>Amount</label>
+          <input type="number" id="amount" value="5" min="1" max="100">
+        </div>
+        <div class="control-group">
+          <label>Unit</label>
+          <select id="unit">
+            <option value="paragraphs">Paragraphs</option>
+            <option value="sentences">Sentences</option>
+            <option value="words">Words</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="generate()">Generate</button>
+      </div>
+
+      <div class="gen-options">
+        <label><input type="checkbox" id="start-lorem" checked> Start with "Lorem ipsum dolor sit amet..."</label>
+        <label><input type="checkbox" id="add-html"> Wrap in &lt;p&gt; tags</label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="output-label">
+        <label style="margin:0">Generated Text</label>
+        <button class="btn btn-ghost" onclick="copyOutput()">Copy</button>
+      </div>
+      <div class="output-text" id="output">Click "Generate" to create placeholder text...</div>
+      <div class="word-stats" id="stats"></div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">What is Lorem Ipsum and where does it come from?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Lorem Ipsum is dummy text used in printing and typesetting since the 1500s. It originates from sections 1.10.32 and 1.10.33 of <em>"De Finibus Bonorum et Malorum"</em> (On the Ends of Good and Evil) by the Roman philosopher Cicero, written in 45 BC. The original Latin text was deliberately scrambled to create a natural-looking placeholder that resembles readable text without distracting from the visual layout being designed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is it bad for SEO to leave Lorem Ipsum on a live page?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Yes.</strong> Google may classify pages with placeholder text as thin or low-quality content, which can harm your search rankings. Google's Helpful Content Update specifically targets pages that don't provide genuine value to users. Always replace lorem ipsum with real, relevant content before publishing any page. Some SEO auditing tools flag lorem ipsum as a critical issue.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How many words are in a standard Lorem Ipsum paragraph?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">The classic opening paragraph ("Lorem ipsum dolor sit amet, consectetur adipiscing elit...") contains approximately 69 words. Generated paragraphs typically range from 40–100 words depending on the tool and randomization. This generator produces paragraphs averaging 50–80 words to simulate realistic content length for web design layouts.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What are fun alternatives to Lorem Ipsum?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Popular alternatives include <strong>Bacon Ipsum</strong> (meat-themed text), <strong>Hipster Ipsum</strong> (artisanal buzzwords), <strong>Cupcake Ipsum</strong> (dessert-flavored), <strong>Pirate Ipsum</strong> (yarr!), and <strong>Corporate Ipsum</strong> (business jargon). For more realistic prototyping, some designers use public-domain literature excerpts or actual draft content to better test readability and layout.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I generate dummy text in different languages?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">This tool generates classical Latin lorem ipsum text. For other languages, you'd need specialized generators — for example, Chinese dummy text generators for CJK layouts, or Arabic generators for RTL designs. However, classic lorem ipsum remains the industry standard because it has a natural letter distribution similar to English, making it suitable for testing most Western-language typography.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="markdown-preview.html"><div class="related-icon">MD</div><div class="related-card-info"><div class="related-card-name">Markdown Preview</div><div class="related-card-desc">Write and preview markdown live</div></div></a>
+      <a class="related-card" href="password-generator.html"><div class="related-icon">🔑</div><div class="related-card-info"><div class="related-card-name">Password Generator</div><div class="related-card-desc">Generate secure random passwords</div></div></a>
+      <a class="related-card" href="uuid-generator.html"><div class="related-icon">uid</div><div class="related-card-info"><div class="related-card-name">UUID Generator</div><div class="related-card-desc">Generate v4 UUIDs in bulk</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Lorem Ipsum Generator</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+const WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure in reprehenderit voluptate velit esse cillum fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim id est laborum perspiciatis unde omnis iste natus error voluptatem accusantium doloremque laudantium totam rem aperiam eaque ipsa quae ab illo inventore veritatis quasi architecto beatae vitae dicta explicabo nemo ipsam quia voluptas aspernatur aut odit fugit consequuntur magni dolores eos ratione sequi nesciunt neque porro quisquam dolorem adipisci numquam eius modi tempora incidunt magnam aliquam quaerat autem vel eum iure quod nihil molestiae illum quo minus maxime placeat facere possimus omnis assumenda repudiandae libero tempore cum soluta nobis eligendi optio cumque impedit quo facilis distinctio nam vitae suscipit luctus fames ac turpis egestas'.split(' ');
+
+const OPENER = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+
+function randWord() { return WORDS[Math.floor(Math.random() * WORDS.length)]; }
+
+function randSentence(minW, maxW) {
+  const len = minW + Math.floor(Math.random() * (maxW - minW));
+  let s = '';
+  for (let i = 0; i < len; i++) s += (i ? ' ' : '') + randWord();
+  return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+}
+
+function randParagraph() {
+  const sCount = 3 + Math.floor(Math.random() * 5);
+  const sentences = [];
+  for (let i = 0; i < sCount; i++) sentences.push(randSentence(6, 16));
+  return sentences.join(' ');
+}
+
+function generate() {
+  const amount = Math.max(1, Math.min(100, parseInt(document.getElementById('amount').value) || 5));
+  const unit = document.getElementById('unit').value;
+  const startLorem = document.getElementById('start-lorem').checked;
+  const addHtml = document.getElementById('add-html').checked;
+
+  let parts = [];
+  if (unit === 'paragraphs') {
+    for (let i = 0; i < amount; i++) parts.push(randParagraph());
+    if (startLorem && parts.length) parts[0] = OPENER + ' ' + parts[0].split('. ').slice(1).join('. ');
+  } else if (unit === 'sentences') {
+    for (let i = 0; i < amount; i++) parts.push(randSentence(6, 16));
+    if (startLorem && parts.length) parts[0] = OPENER;
+  } else {
+    let words = [];
+    for (let i = 0; i < amount; i++) words.push(randWord());
+    if (startLorem && words.length >= 5) { words = 'lorem ipsum dolor sit amet'.split(' ').concat(words.slice(5)); }
+    parts = [words.join(' ')];
+  }
+
+  let text;
+  if (addHtml && unit === 'paragraphs') {
+    text = parts.map(p => '<p>' + p + '</p>').join('\n\n');
+  } else if (unit === 'paragraphs') {
+    text = parts.join('\n\n');
+  } else {
+    text = parts.join(' ');
+  }
+
+  document.getElementById('output').textContent = text;
+  const wordCount = text.replace(/<[^>]*>/g,'').split(/\s+/).filter(Boolean).length;
+  const charCount = text.length;
+  document.getElementById('stats').textContent = wordCount + ' words · ' + charCount + ' characters · ' + parts.length + ' ' + unit;
+}
+
+function copyOutput() {
+  const text = document.getElementById('output').textContent;
+  if (text) { navigator.clipboard.writeText(text); showToast(); }
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+generate();
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timestamp Diff Calculator — Compare Dates &amp; Unix Times Online | DevUtils</title>
+  <meta name="description" content="Calculate the difference between two Unix timestamps, dates or ISO 8601 values. Shows duration in days, hours, minutes and seconds. Free online time difference calculator for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/timestamp-diff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Timestamp Diff Calculator","url":"https://devutils.com/timestamp-diff.html","description":"Calculate difference between two timestamps or dates in days, hours, minutes, seconds.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I calculate the difference between two Unix timestamps?","acceptedAnswer":{"@type":"Answer","text":"Subtract one timestamp from the other to get the difference in seconds. Then convert: divide by 86400 for days, 3600 for hours, or 60 for minutes. This tool does the math automatically and shows the result in multiple units."}},{"@type":"Question","name":"What is a Unix epoch timestamp?","acceptedAnswer":{"@type":"Answer","text":"A Unix timestamp (epoch time) is the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC. It's used universally in programming for storing and comparing dates. Millisecond timestamps (13 digits) are common in JavaScript."}},{"@type":"Question","name":"What is the difference between seconds and milliseconds timestamps?","acceptedAnswer":{"@type":"Answer","text":"Unix timestamps in seconds are 10 digits (e.g., 1711065600). JavaScript and many APIs use millisecond timestamps which are 13 digits (e.g., 1711065600000). This tool auto-detects both formats."}},{"@type":"Question","name":"How do I calculate elapsed time between two ISO 8601 dates?","acceptedAnswer":{"@type":"Answer","text":"Enter both ISO dates (e.g., 2026-01-15T09:00:00Z) into this tool and it calculates the exact duration. ISO 8601 is the international standard for date/time representation used in APIs, JSON, and databases."}},{"@type":"Question","name":"Does this account for time zones and daylight saving?","acceptedAnswer":{"@type":"Answer","text":"Unix timestamps are always UTC-based, so timezone differences don't affect the calculation. When you enter human-readable dates, they're parsed in your browser's local timezone. For UTC-specific calculations, use ISO 8601 format with the Z suffix."}}]}</script>
+  <style>
+    .time-inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:600px){.time-inputs{grid-template-columns:1fr}}
+    .time-input-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+    .time-input-card label{color:var(--text3)}
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin-top:14px}
+    .result-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center}
+    .result-val{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--accent)}
+    .result-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+    .human-result{font-size:15px;color:var(--text);text-align:center;padding:14px;background:var(--accent-dim);border:1px solid rgba(0,208,132,.2);border-radius:var(--radius);margin-top:14px}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div id="copy-toast">Copied!</div>
+<div class="wrapper">
+  <div class="tool-header"><div class="tool-badge">Time Tool</div><h1>Timestamp Diff Calculator</h1><p class="tool-description">Calculate the exact difference between two Unix timestamps, ISO 8601 dates, or human-readable date/time values. See results in days, hours, minutes, seconds, and milliseconds. Supports both 10-digit (seconds) and 13-digit (milliseconds) epoch timestamps. Perfect for debugging log files, measuring API response times, and calculating durations. All computation runs in your browser.</p></div>
+  <div class="tool-card">
+    <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">timestamp-diff.tool</span></div>
+    <div class="tool-body">
+      <div class="time-inputs">
+        <div class="time-input-card">
+          <label>Start Time</label>
+          <input type="text" id="time-a" placeholder="Unix timestamp, ISO date, or date string" oninput="calc()" style="margin-top:4px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:4px" id="parsed-a"></div>
+          <button class="btn btn-ghost" style="margin-top:6px;font-size:10px" onclick="document.getElementById('time-a').value=Math.floor(Date.now()/1000);calc()">Now</button>
+        </div>
+        <div class="time-input-card">
+          <label>End Time</label>
+          <input type="text" id="time-b" placeholder="Unix timestamp, ISO date, or date string" oninput="calc()" style="margin-top:4px">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:4px" id="parsed-b"></div>
+          <button class="btn btn-ghost" style="margin-top:6px;font-size:10px" onclick="document.getElementById('time-b').value=Math.floor(Date.now()/1000);calc()">Now</button>
+        </div>
+      </div>
+      <div id="diff-error" style="display:none"></div>
+      <div class="human-result" id="human-result" style="display:none"></div>
+      <div class="result-grid" id="result-grid" style="display:none">
+        <div class="result-card"><div class="result-val" id="r-days">—</div><div class="result-label">Days</div></div>
+        <div class="result-card"><div class="result-val" id="r-hours">—</div><div class="result-label">Hours</div></div>
+        <div class="result-card"><div class="result-val" id="r-minutes">—</div><div class="result-label">Minutes</div></div>
+        <div class="result-card"><div class="result-val" id="r-seconds">—</div><div class="result-label">Seconds</div></div>
+        <div class="result-card"><div class="result-val" id="r-ms">—</div><div class="result-label">Milliseconds</div></div>
+        <div class="result-card"><div class="result-val" id="r-weeks">—</div><div class="result-label">Weeks</div></div>
+      </div>
+    </div>
+  </div>
+  <section class="faq-section"><h2>Frequently Asked Questions</h2>
+    <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">How do I calculate the difference between two Unix timestamps?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Subtract one timestamp from the other to get the difference in seconds: <code>diff = timestamp2 - timestamp1</code>. Then convert: divide by <strong>86,400</strong> for days, <strong>3,600</strong> for hours, <strong>60</strong> for minutes. This tool does the conversion automatically and shows results in all units simultaneously.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a Unix epoch timestamp?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A Unix timestamp (POSIX time / epoch time) is the number of <strong>seconds elapsed since January 1, 1970 00:00:00 UTC</strong>. It's the universal standard for storing and comparing dates in programming. JavaScript uses <strong>millisecond</strong> timestamps (13 digits), while most Unix systems use seconds (10 digits). This tool auto-detects both formats.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What date formats are accepted?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">This tool accepts: <strong>Unix timestamps</strong> in seconds (10 digits) or milliseconds (13 digits), <strong>ISO 8601</strong> dates (<code>2026-03-20T14:30:00Z</code>), and <strong>common date strings</strong> (<code>March 20, 2026</code>, <code>2026/03/20</code>). If a value looks like a number, it's treated as a timestamp; otherwise it's parsed as a date string.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this account for time zones?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Unix timestamps are always <strong>UTC-based</strong>, so timezone differences don't affect the calculation. When you enter human-readable dates, they're parsed in your browser's local timezone. For UTC-specific calculations, use ISO 8601 format with the <code>Z</code> suffix (e.g., <code>2026-03-20T09:00:00Z</code>).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How accurate is this for very large time spans?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">JavaScript's Date object is accurate to the millisecond for dates between approximately 271,821 BC and 275,760 AD. For practical purposes, this covers any realistic timestamp comparison. Note that "months" and "years" vary in length, so the tool shows exact units (days, hours, seconds) rather than approximate months.</div></div>
+  </section>
+  <section class="related-section"><h2>Related Tools</h2><div class="related-grid">
+    <a class="related-card" href="unix-timestamp-converter.html"><div class="related-icon">⏱</div><div class="related-card-info"><div class="related-card-name">UNIX Timestamp Converter</div><div class="related-card-desc">Convert epoch time to dates</div></div></a>
+    <a class="related-card" href="cron-parser.html"><div class="related-icon">⏰</div><div class="related-card-info"><div class="related-card-name">Cron Expression Generator</div><div class="related-card-desc">Parse and generate cron schedules</div></div></a>
+    <a class="related-card" href="number-base.html"><div class="related-icon">01</div><div class="related-card-info"><div class="related-card-name">Number Base Converter</div><div class="related-card-desc">Convert between binary, hex, decimal</div></div></a>
+  </div></section>
+</div>
+<footer><div>&copy; 2025 DevUtils — Timestamp Diff Calculator</div><div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div></footer>
+<script>
+function parseTime(val){val=val.trim();if(!val)return null;if(/^\d{10}$/.test(val))return new Date(parseInt(val)*1000);if(/^\d{13}$/.test(val))return new Date(parseInt(val));const d=new Date(val);return isNaN(d)?null:d}
+function formatDate(d){return d.toLocaleString()+' ('+d.toISOString()+')'}
+function calc(){const a=parseTime(document.getElementById('time-a').value);const b=parseTime(document.getElementById('time-b').value);const errEl=document.getElementById('diff-error');document.getElementById('parsed-a').textContent=a?formatDate(a):'';document.getElementById('parsed-b').textContent=b?formatDate(b):'';
+if(!a&&!b){errEl.style.display='none';document.getElementById('human-result').style.display='none';document.getElementById('result-grid').style.display='none';return}
+if(document.getElementById('time-a').value&&!a){errEl.style.display='';errEl.className='status status-err';errEl.textContent='\u2717 Cannot parse start time';document.getElementById('human-result').style.display='none';document.getElementById('result-grid').style.display='none';return}
+if(document.getElementById('time-b').value&&!b){errEl.style.display='';errEl.className='status status-err';errEl.textContent='\u2717 Cannot parse end time';document.getElementById('human-result').style.display='none';document.getElementById('result-grid').style.display='none';return}
+if(!a||!b){errEl.style.display='none';document.getElementById('human-result').style.display='none';document.getElementById('result-grid').style.display='none';return}
+errEl.style.display='none';const diffMs=Math.abs(b-a);const totalSec=Math.floor(diffMs/1000);const days=Math.floor(totalSec/86400);const hrs=Math.floor((totalSec%86400)/3600);const mins=Math.floor((totalSec%3600)/60);const secs=totalSec%60;
+document.getElementById('human-result').style.display='';document.getElementById('human-result').textContent=days+' days, '+hrs+' hours, '+mins+' minutes, '+secs+' seconds';document.getElementById('result-grid').style.display='';
+document.getElementById('r-days').textContent=Math.floor(diffMs/86400000).toLocaleString();document.getElementById('r-hours').textContent=Math.floor(diffMs/3600000).toLocaleString();document.getElementById('r-minutes').textContent=Math.floor(diffMs/60000).toLocaleString();document.getElementById('r-seconds').textContent=totalSec.toLocaleString();document.getElementById('r-ms').textContent=diffMs.toLocaleString();document.getElementById('r-weeks').textContent=(diffMs/604800000).toFixed(2)}
+function showToast(){const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function toggleFaq(el){el.parentElement.classList.toggle('open')}
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

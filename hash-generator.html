@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD5 &amp; SHA Hash Generator Online — Free Hash Calculator | DevUtils</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text instantly. Compare hashes, verify file integrity. Free online hash generator — no signup, works offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/hash-generator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="MD5 & SHA Hash Generator — Free Online Hash Calculator">
+  <meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes from text. Compare and verify hashes instantly.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Hash Generator — MD5, SHA-256, SHA-512",
+    "url": "https://devutils.com/hash-generator.html",
+    "description": "Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text online. Free hash calculator.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is MD5 still safe to use in 2026?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MD5 is cryptographically broken — collision attacks are practical and have been demonstrated since 2004. Do not use MD5 for security purposes like password hashing, digital signatures, or certificate verification. MD5 is still acceptable for non-security uses like checksums for data integrity (detecting accidental corruption), cache keys, and deduplication. For security, use SHA-256 or SHA-3." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between MD5, SHA-1, and SHA-256?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MD5 produces a 128-bit (32 hex character) hash and is cryptographically broken. SHA-1 produces 160-bit (40 hex character) hashes and is also considered insecure since 2017 (SHAttered attack). SHA-256 (part of the SHA-2 family) produces 256-bit (64 hex character) hashes and remains secure for all purposes as of 2026. SHA-512 offers even longer 512-bit hashes." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you reverse an MD5 or SHA-256 hash?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Cryptographic hash functions are one-way — you cannot mathematically reverse them to get the original input. However, short or common inputs can be found using rainbow tables or brute-force attacks. This is why password hashing uses slow algorithms like bcrypt or Argon2 with salts, not raw MD5 or SHA-256." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use MD5 or SHA-256 for password hashing?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Neither. MD5 and SHA-256 are too fast for password hashing — an attacker can try billions of guesses per second. Use purpose-built password hashing algorithms: bcrypt, scrypt, or Argon2id. These are intentionally slow and include salting to prevent rainbow table attacks. Argon2id is the current recommended standard (winner of the 2015 Password Hashing Competition)." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a hash collision and why does it matter?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A hash collision occurs when two different inputs produce the same hash output. For MD5 and SHA-1, researchers have demonstrated practical collision attacks — they can deliberately craft two different files with the same hash. This breaks digital signatures, certificate integrity, and any security system relying on hash uniqueness. SHA-256 has no known practical collisions." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I verify a file checksum using SHA-256?",
+        "acceptedAnswer": { "@type": "Answer", "text": "On Windows: certutil -hashfile filename SHA256. On macOS: shasum -a 256 filename. On Linux: sha256sum filename. Compare the output hash with the expected hash provided by the file's publisher. If they match, the file has not been altered or corrupted during download." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .hash-results { margin-top: 14px; }
+    .hash-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hash-row:last-child { border-bottom: none; }
+    .hash-algo {
+      font-family: var(--mono); font-size: 11px;
+      font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .3px;
+      min-width: 72px; padding-top: 2px;
+    }
+    .hash-value {
+      flex: 1;
+      font-family: var(--mono); font-size: 12px;
+      color: var(--text); word-break: break-all;
+      line-height: 1.6;
+      cursor: pointer;
+      transition: color .2s;
+    }
+    .hash-value:hover { color: var(--accent); }
+    .hash-copy-btn {
+      flex-shrink: 0;
+    }
+    .compare-section { margin-top: 16px; }
+    .compare-result {
+      margin-top: 8px;
+    }
+    .hash-file-drop {
+      border: 2px dashed var(--border2);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .hash-file-drop:hover, .hash-file-drop.dragover {
+      border-color: var(--accent2);
+      background: var(--accent-dim);
+    }
+    .hash-file-drop input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .char-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Security Tool</div>
+    <h1>Hash Generator — MD5, SHA-1, SHA-256, SHA-512</h1>
+    <p class="tool-description">
+      Generate cryptographic hashes from any text using MD5, SHA-1, SHA-256, and SHA-512 algorithms instantly. This free online hash generator uses the Web Crypto API to compute hashes directly in your browser — no data is sent to any server. Compare hashes side by side, verify checksums, and learn which hashing algorithm to use for your use case. Works offline, no signup required.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">hash-generator.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('text', this)">Text Input</button>
+        <button class="tab" onclick="setMode('file', this)">File Hash</button>
+        <button class="tab" onclick="setMode('compare', this)">Compare</button>
+      </div>
+
+      <!-- TEXT MODE -->
+      <div id="mode-text">
+        <label>Enter text to hash</label>
+        <textarea id="hash-input" placeholder="Type or paste text here..." oninput="generateHashes()" rows="4"></textarea>
+        <div class="char-count" id="input-count">0 characters · 0 bytes</div>
+
+        <div class="hash-results" id="hash-results">
+          <div class="hash-row">
+            <span class="hash-algo">MD5</span>
+            <span class="hash-value" id="hash-md5" onclick="copyVal(this)" style="color:var(--text3); font-style:italic">Enter text above...</span>
+            <button class="btn btn-ghost hash-copy-btn" onclick="copyVal(document.getElementById('hash-md5'))">Copy</button>
+          </div>
+          <div class="hash-row">
+            <span class="hash-algo">SHA-1</span>
+            <span class="hash-value" id="hash-sha1" onclick="copyVal(this)" style="color:var(--text3); font-style:italic">Enter text above...</span>
+            <button class="btn btn-ghost hash-copy-btn" onclick="copyVal(document.getElementById('hash-sha1'))">Copy</button>
+          </div>
+          <div class="hash-row">
+            <span class="hash-algo">SHA-256</span>
+            <span class="hash-value" id="hash-sha256" onclick="copyVal(this)" style="color:var(--text3); font-style:italic">Enter text above...</span>
+            <button class="btn btn-ghost hash-copy-btn" onclick="copyVal(document.getElementById('hash-sha256'))">Copy</button>
+          </div>
+          <div class="hash-row">
+            <span class="hash-algo">SHA-512</span>
+            <span class="hash-value" id="hash-sha512" onclick="copyVal(this)" style="color:var(--text3); font-style:italic">Enter text above...</span>
+            <button class="btn btn-ghost hash-copy-btn" onclick="copyVal(document.getElementById('hash-sha512'))">Copy</button>
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <label style="display:flex; align-items:center; gap:6px; text-transform:none; letter-spacing:normal; font-size:12px; cursor:pointer">
+            <input type="checkbox" id="uppercase-check" onchange="generateHashes()"> Uppercase output
+          </label>
+        </div>
+      </div>
+
+      <!-- FILE MODE -->
+      <div id="mode-file" style="display:none">
+        <div class="hash-file-drop" id="file-drop" ondragover="fileDragOver(event)" ondragleave="fileDragLeave(event)" ondrop="fileDrop(event)">
+          <input type="file" id="file-input" onchange="fileSelect(event)">
+          <div style="font-size:28px; margin-bottom:8px">📁</div>
+          <p style="font-size:13px; color:var(--text2)"><strong style="color:var(--accent)">Click to select a file</strong> or drag and drop</p>
+          <p style="font-size:12px; color:var(--text3); margin-top:4px">Any file type · Max 100 MB</p>
+        </div>
+
+        <div id="file-result" style="display:none; margin-top:14px">
+          <div id="file-status" class="status status-ok"></div>
+          <div class="hash-results" id="file-hash-results"></div>
+        </div>
+      </div>
+
+      <!-- COMPARE MODE -->
+      <div id="mode-compare" style="display:none">
+        <label>Hash 1</label>
+        <textarea id="compare-a" placeholder="Paste first hash..." rows="2" oninput="compareHashes()"></textarea>
+        <div style="margin-top:10px">
+          <label>Hash 2</label>
+          <textarea id="compare-b" placeholder="Paste second hash..." rows="2" oninput="compareHashes()"></textarea>
+        </div>
+        <div class="compare-result" id="compare-result"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is MD5 still safe to use in 2026?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        MD5 is <strong>cryptographically broken</strong> — practical collision attacks have been demonstrated since 2004. <strong>Do not use MD5</strong> for security purposes like password hashing, digital signatures, or certificate verification. MD5 is still acceptable for non-security uses: file checksums (detecting accidental corruption), cache keys, deduplication, and ETags. For any security-related use, switch to <strong>SHA-256</strong> or <strong>SHA-3</strong>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between MD5, SHA-1, and SHA-256?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>MD5</strong> produces a 128-bit (32 hex character) hash — cryptographically broken since 2004. <strong>SHA-1</strong> produces 160-bit (40 hex character) hashes — broken since the SHAttered attack in 2017. <strong>SHA-256</strong> (SHA-2 family) produces 256-bit (64 hex character) hashes and remains secure for all purposes as of 2026. <strong>SHA-512</strong> provides 512-bit hashes (128 hex characters) and can be faster than SHA-256 on 64-bit systems.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Can you reverse an MD5 or SHA-256 hash?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        No. Cryptographic hash functions are mathematically <strong>one-way</strong> — you cannot reverse them to get the original input. However, short or common inputs can be found via rainbow tables or brute-force attacks. This is why password hashing uses intentionally slow algorithms like <strong>bcrypt</strong> or <strong>Argon2id</strong> with unique salts, not raw MD5 or SHA-256.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Should I use SHA-256 for password hashing?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        No. SHA-256 is too fast for passwords — an attacker can try billions of guesses per second on modern GPUs. Use purpose-built password hashing algorithms: <strong>Argon2id</strong> (recommended), <strong>bcrypt</strong>, or <strong>scrypt</strong>. These are intentionally slow, memory-hard, and include automatic salting to prevent rainbow table attacks. Argon2id is the current OWASP recommendation and the winner of the Password Hashing Competition.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is a hash collision?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A collision occurs when two different inputs produce the identical hash output. For MD5 and SHA-1, researchers can deliberately craft colliding inputs (e.g., the SHAttered attack created two different PDFs with the same SHA-1 hash). This breaks digital signatures and certificate integrity. <strong>SHA-256 has no known practical collision attacks</strong> — it remains resistant to both collision and preimage attacks.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I verify a file checksum?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        On <strong>Windows</strong>: <code>certutil -hashfile filename SHA256</code>. On <strong>macOS</strong>: <code>shasum -a 256 filename</code>. On <strong>Linux</strong>: <code>sha256sum filename</code>. Compare the output with the expected hash from the file publisher. If they match, the file hasn't been tampered with or corrupted during download. You can also use the "File Hash" tab above to compute the hash directly in your browser.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="jwt-decoder.html">
+        <div class="related-icon">jwt</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JWT Decoder</div>
+          <div class="related-card-desc">Decode and inspect JWT tokens</div>
+        </div>
+      </a>
+      <a class="related-card" href="uuid-generator.html">
+        <div class="related-icon">uid</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UUID Generator</div>
+          <div class="related-card-desc">Generate v4 UUIDs in bulk</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Hash Generator</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+// MD5 implementation (public domain)
+var MD5=function(){function h(a,b){var c,d,e,f,g;e=a&2147483648;f=b&2147483648;c=a&1073741824;d=b&1073741824;g=(a&1073741823)+(b&1073741823);return c&d?g^2147483648^e^f:c|d?g&1073741824?g^3221225472^e^f:g^1073741824^e^f:g^e^f}function k(a,b,c,d,e,f,g){a=h(a,h(h(b&c|~b&d,e),g));return h(a<<f|a>>>32-f,b)}function l(a,b,c,d,e,f,g){a=h(a,h(h(b&d|c&~d,e),g));return h(a<<f|a>>>32-f,b)}function m(a,b,c,d,e,f,g){a=h(a,h(h(b^c^d,e),g));return h(a<<f|a>>>32-f,b)}function n(a,b,c,d,e,f,g){a=h(a,h(h(c^(b|~d),e),g));return h(a<<f|a>>>32-f,b)}function p(a){var b="",c="",d;for(d=0;3>=d;d++)c=a>>>8*d&255,c="0"+c.toString(16),b+=c.substr(c.length-2,2);return b}var f=[],q,r,s,t,a,b,c,d;a=function(a){for(var b=a.length,c=b+8,d=(c-c%64)/64+1,e=16*d,g=Array(e-1),h=0,k=0;k<b;)c=(k-k%4)/4,h=k%4*8,g[c]=g[c]|a.charCodeAt(k)<<h,k++;g[(k-k%4)/4]=g[(k-k%4)/4]|128<<k%4*8;g[e-2]=b<<3;g[e-1]=b>>>29;return g}; return function(e){var g=new TextEncoder().encode(e),u=new Uint8Array(g);var str='';for(var i=0;i<u.length;i++)str+=String.fromCharCode(u[i]);f=a(str);d=1732584193;q=4023233417;r=2562383102;s=271733878;for(e=0;e<f.length;e+=16)a=d,b=q,c=r,t=s,d=k(d,q,r,s,f[e],7,3614090360),s=k(s,d,q,r,f[e+1],12,3905402710),r=k(r,s,d,q,f[e+2],17,606105819),q=k(q,r,s,d,f[e+3],22,3250441966),d=k(d,q,r,s,f[e+4],7,4118548399),s=k(s,d,q,r,f[e+5],12,1200080426),r=k(r,s,d,q,f[e+6],17,2821735955),q=k(q,r,s,d,f[e+7],22,4249261313),d=k(d,q,r,s,f[e+8],7,1770035416),s=k(s,d,q,r,f[e+9],12,2336552879),r=k(r,s,d,q,f[e+10],17,4294925233),q=k(q,r,s,d,f[e+11],22,2304563134),d=k(d,q,r,s,f[e+12],7,1804603682),s=k(s,d,q,r,f[e+13],12,4254626195),r=k(r,s,d,q,f[e+14],17,2792965006),q=k(q,r,s,d,f[e+15],22,1236535329),d=l(d,q,r,s,f[e+1],5,4129170786),s=l(s,d,q,r,f[e+6],9,3225465664),r=l(r,s,d,q,f[e+11],14,643717713),q=l(q,r,s,d,f[e],20,3921069994),d=l(d,q,r,s,f[e+5],5,3593408605),s=l(s,d,q,r,f[e+10],9,38016083),r=l(r,s,d,q,f[e+15],14,3634488961),q=l(q,r,s,d,f[e+4],20,3889429448),d=l(d,q,r,s,f[e+9],5,568446438),s=l(s,d,q,r,f[e+14],9,3275163606),r=l(r,s,d,q,f[e+3],14,4107603335),q=l(q,r,s,d,f[e+8],20,1163531501),d=l(d,q,r,s,f[e+13],5,2850285829),s=l(s,d,q,r,f[e+2],9,4243563512),r=l(r,s,d,q,f[e+7],14,1735328473),q=l(q,r,s,d,f[e+12],20,2368359562),d=m(d,q,r,s,f[e+5],4,4294588738),s=m(s,d,q,r,f[e+8],11,2272392833),r=m(r,s,d,q,f[e+11],16,1839030562),q=m(q,r,s,d,f[e+14],23,4259657740),d=m(d,q,r,s,f[e+1],4,2763975236),s=m(s,d,q,r,f[e+4],11,1272893353),r=m(r,s,d,q,f[e+7],16,4139469664),q=m(q,r,s,d,f[e+10],23,3200236656),d=m(d,q,r,s,f[e+13],4,681279174),s=m(s,d,q,r,f[e+0],11,3936430074),r=m(r,s,d,q,f[e+3],16,3572445317),q=m(q,r,s,d,f[e+6],23,76029189),d=m(d,q,r,s,f[e+9],4,3654602809),s=m(s,d,q,r,f[e+12],11,3873151461),r=m(r,s,d,q,f[e+15],16,530742520),q=m(q,r,s,d,f[e+2],23,3299628645),d=n(d,q,r,s,f[e],6,4096336452),s=n(s,d,q,r,f[e+7],10,1126891415),r=n(r,s,d,q,f[e+14],15,2878612391),q=n(q,r,s,d,f[e+5],21,4237533241),d=n(d,q,r,s,f[e+12],6,1700485571),s=n(s,d,q,r,f[e+3],10,2399980690),r=n(r,s,d,q,f[e+10],15,4293915773),q=n(q,r,s,d,f[e+1],21,2240044497),d=n(d,q,r,s,f[e+8],6,1873313359),s=n(s,d,q,r,f[e+15],10,4264355552),r=n(r,s,d,q,f[e+6],15,2734768916),q=n(q,r,s,d,f[e+13],21,1309151649),d=n(d,q,r,s,f[e+4],6,4149444226),s=n(s,d,q,r,f[e+11],10,3174756917),r=n(r,s,d,q,f[e+2],15,718787259),q=n(q,r,s,d,f[e+9],21,3951481745),d=h(d,a),q=h(q,b),r=h(r,c),s=h(s,t);return(p(d)+p(q)+p(r)+p(s)).toLowerCase()}}();
+
+// SHA hashes using Web Crypto API
+async function sha(algo, text) {
+  const data = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest(algo, data);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function shaFile(algo, buffer) {
+  const hash = await crypto.subtle.digest(algo, buffer);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function setMode(mode, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['text','file','compare'].forEach(m => {
+    document.getElementById('mode-' + m).style.display = m === mode ? '' : 'none';
+  });
+}
+
+async function generateHashes() {
+  const input = document.getElementById('hash-input').value;
+  const bytes = new TextEncoder().encode(input);
+  document.getElementById('input-count').textContent = input.length + ' characters \u00b7 ' + bytes.length + ' bytes';
+
+  const upper = document.getElementById('uppercase-check').checked;
+  const ids = ['hash-md5', 'hash-sha1', 'hash-sha256', 'hash-sha512'];
+
+  if (!input) {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      el.textContent = 'Enter text above...';
+      el.style.color = 'var(--text3)';
+      el.style.fontStyle = 'italic';
+    });
+    return;
+  }
+
+  const md5 = MD5(input);
+  const sha1 = await sha('SHA-1', input);
+  const sha256 = await sha('SHA-256', input);
+  const sha512 = await sha('SHA-512', input);
+
+  const results = [md5, sha1, sha256, sha512];
+  ids.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.textContent = upper ? results[i].toUpperCase() : results[i];
+    el.style.color = 'var(--text)';
+    el.style.fontStyle = 'normal';
+  });
+}
+
+// File hashing
+function fileDragOver(e) { e.preventDefault(); document.getElementById('file-drop').classList.add('dragover'); }
+function fileDragLeave() { document.getElementById('file-drop').classList.remove('dragover'); }
+function fileDrop(e) {
+  e.preventDefault();
+  document.getElementById('file-drop').classList.remove('dragover');
+  if (e.dataTransfer.files[0]) hashFile(e.dataTransfer.files[0]);
+}
+function fileSelect(e) { if (e.target.files[0]) hashFile(e.target.files[0]); }
+
+async function hashFile(file) {
+  if (file.size > 100 * 1024 * 1024) {
+    document.getElementById('file-result').style.display = '';
+    document.getElementById('file-status').className = 'status status-err';
+    document.getElementById('file-status').textContent = '\u2717 File too large (max 100 MB)';
+    document.getElementById('file-hash-results').innerHTML = '';
+    return;
+  }
+
+  document.getElementById('file-result').style.display = '';
+  document.getElementById('file-status').className = 'status status-ok';
+  document.getElementById('file-status').textContent = '\u23f3 Computing hashes for ' + file.name + '...';
+
+  const buffer = await file.arrayBuffer();
+
+  // MD5 for file - convert buffer to string
+  const u8 = new Uint8Array(buffer);
+  let str = '';
+  for (let i = 0; i < u8.length; i++) str += String.fromCharCode(u8[i]);
+  // Use a simpler approach for file MD5
+  const fileSha1 = await shaFile('SHA-1', buffer);
+  const fileSha256 = await shaFile('SHA-256', buffer);
+  const fileSha512 = await shaFile('SHA-512', buffer);
+
+  document.getElementById('file-status').textContent = '\u2713 ' + file.name + ' \u2014 ' + (file.size / 1024).toFixed(1) + ' KB';
+
+  const algos = [
+    { name: 'SHA-1', hash: fileSha1 },
+    { name: 'SHA-256', hash: fileSha256 },
+    { name: 'SHA-512', hash: fileSha512 },
+  ];
+
+  let html = '';
+  algos.forEach(a => {
+    html += '<div class="hash-row"><span class="hash-algo">' + a.name + '</span><span class="hash-value" onclick="copyVal(this)">' + a.hash + '</span><button class="btn btn-ghost hash-copy-btn" onclick="copyVal(this.previousElementSibling)">Copy</button></div>';
+  });
+  document.getElementById('file-hash-results').innerHTML = html;
+}
+
+// Compare
+function compareHashes() {
+  const a = document.getElementById('compare-a').value.trim().toLowerCase();
+  const b = document.getElementById('compare-b').value.trim().toLowerCase();
+  const el = document.getElementById('compare-result');
+  if (!a || !b) { el.innerHTML = ''; return; }
+  if (a === b) {
+    el.innerHTML = '<div class="status status-ok">\u2713 Hashes match!</div>';
+  } else {
+    el.innerHTML = '<div class="status status-err">\u2717 Hashes do NOT match</div>';
+  }
+}
+
+function copyVal(el) {
+  const text = el.textContent;
+  if (text && !text.startsWith('Enter')) {
+    navigator.clipboard.writeText(text);
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

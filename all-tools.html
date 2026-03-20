@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All 28 Free Developer Tools — DevUtils</title>
+  <meta name="description" content="Browse all 28 free online developer tools — Base64, JSON, Regex, JWT, UUID, hashing, minifiers, color tools, IP lookup and more. No signup, runs in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/all-tools">
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="All 28 Free Developer Tools — DevUtils">
+  <meta property="og:description" content="Browse all 28 free developer micro-tools. No signup, runs in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/all-tools">
+
+  <style>
+    .tool-header {
+      text-align: center;
+      padding: 56px 0 40px;
+      animation: fadeInUp .6s var(--ease-out);
+    }
+    .tool-header .badge {
+      display: inline-block;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+      background: var(--accent-dim); border: 1px solid rgba(0,208,132,.15);
+      padding: 4px 14px; border-radius: 20px;
+    }
+    .tool-header h1 {
+      font-size: clamp(26px, 4.5vw, 40px);
+      font-weight: 600; line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .tool-header p {
+      color: var(--text2); font-size: 15px;
+      max-width: 520px; margin: 0 auto;
+    }
+
+    .search-bar {
+      position: relative; margin-bottom: 40px;
+      animation: fadeInUp .6s var(--ease-out) .2s both;
+    }
+    .search-bar input {
+      width: 100%; padding: 14px 44px 14px 18px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); color: var(--text);
+      font-size: 14px; font-family: var(--sans); outline: none;
+      transition: border-color .25s var(--ease-out), box-shadow .25s var(--ease-out), background .25s;
+    }
+    .search-bar input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(0,208,132,.08), 0 4px 20px rgba(0,0,0,.15);
+      background: var(--bg);
+    }
+    .search-bar input::placeholder { color: var(--text3); }
+    .search-icon {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); pointer-events: none; transition: color .2s;
+    }
+    .search-bar input:focus ~ .search-icon { color: var(--accent); }
+
+    .category-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text3); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px; padding-left: 2px;
+    }
+    .category-label::before {
+      content: ''; display: inline-block;
+      width: 3px; height: 12px; background: var(--accent);
+      border-radius: 2px; margin-right: 8px; vertical-align: middle;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px; margin-bottom: 40px;
+    }
+
+    .tool-tile {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px 18px;
+      text-decoration: none; color: var(--text);
+      position: relative;
+      transition: border-color .25s var(--ease-out), transform .25s var(--ease-out),
+                  box-shadow .25s var(--ease-out), background .25s;
+    }
+    .tool-tile::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 50% 50%, rgba(0,208,132,.06) 0%, transparent 70%);
+      opacity: 0; transition: opacity .35s var(--ease-out); pointer-events: none;
+    }
+    .tool-tile:hover::before { opacity: 1; }
+    .tool-tile:hover {
+      border-color: rgba(0,208,132,.45); transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.3), 0 0 0 1px rgba(0,208,132,.12);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.05) 100%);
+    }
+    .tool-tile:active { transform: translateY(-1px); }
+
+    .tool-tile.featured {
+      border-color: rgba(0,208,132,.2);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.03) 100%);
+    }
+
+    .tile-icon {
+      width: 40px; height: 40px; border-radius: 8px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 14px; color: var(--accent); flex-shrink: 0;
+      transition: transform .3s var(--ease-spring), background .25s;
+    }
+    .tool-tile:hover .tile-icon { transform: scale(1.1); background: var(--accent-dim); }
+
+    .tile-body { flex: 1; min-width: 0; }
+    .tile-name { font-size: 13.5px; font-weight: 500; transition: color .2s; }
+    .tool-tile:hover .tile-name { color: var(--accent); }
+    .tile-desc { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+
+    .tile-badge {
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--mono); font-size: 9px; font-weight: 600;
+      color: var(--accent); background: var(--accent-dim);
+      border: 1px solid rgba(0,208,132,.2);
+      padding: 2px 8px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .tile-badge.new {
+      color: #f59e0b; background: rgba(245,158,11,.1);
+      border-color: rgba(245,158,11,.25);
+    }
+
+    .no-results {
+      text-align: center; padding: 40px 20px;
+      color: var(--text3); font-size: 14px;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .tools-grid { grid-template-columns: 1fr; }
+      .tool-header { padding: 40px 0 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security & Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <span class="badge">All Tools</span>
+    <h1>All Developer Tools</h1>
+    <p>Browse all 28 free developer tools. Everything runs in your browser — no signup, no server calls, no data collection.</p>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="tool-search" placeholder="Search all 28 tools — base64, json, regex, jwt, color, ip, slug..." autocomplete="off">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  </div>
+
+  <!-- Encoding & Conversion -->
+  <p class="category-label">Encoding & Conversion</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile featured" href="base64-encoder.html" data-name="base64 encoder decoder encode decode">
+      <div class="tile-icon">b64</div>
+      <div class="tile-body">
+        <div class="tile-name">Base64 Encoder / Decoder</div>
+        <div class="tile-desc">Encode and decode Base64 strings instantly.</div>
+      </div>
+      <span class="tile-badge">Popular</span>
+    </a>
+    <a class="tool-tile" href="unix-timestamp-converter.html" data-name="unix timestamp converter epoch time date">
+      <div class="tile-icon">&#x23F1;</div>
+      <div class="tile-body">
+        <div class="tile-name">UNIX Timestamp Converter</div>
+        <div class="tile-desc">Convert between UNIX epoch and human-readable dates.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="url-encoder.html" data-name="url encoder decoder percent encoding query string">
+      <div class="tile-icon">%</div>
+      <div class="tile-body">
+        <div class="tile-name">URL Encoder / Decoder</div>
+        <div class="tile-desc">Encode and decode URL percent-encoded strings.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="hex-to-rgb.html" data-name="hex rgb rgba hsl color converter css">
+      <div class="tile-icon">&#x1F3A8;</div>
+      <div class="tile-body">
+        <div class="tile-name">Hex to RGB Converter</div>
+        <div class="tile-desc">Convert hex color codes to RGB, RGBA, and HSL.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="html-entity.html" data-name="html entity encoder decoder special characters xss">
+      <div class="tile-icon">&amp;</div>
+      <div class="tile-body">
+        <div class="tile-name">HTML Entity Encoder / Decoder</div>
+        <div class="tile-desc">Encode and decode HTML entities and special characters.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="base64-image.html" data-name="image base64 encoder data uri png jpg svg">
+      <div class="tile-icon">&#x1F5BC;</div>
+      <div class="tile-body">
+        <div class="tile-name">Image to Base64 Encoder</div>
+        <div class="tile-desc">Convert images to Base64 data URIs for embedding.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="json-to-csv.html" data-name="json csv converter download excel google sheets">
+      <div class="tile-icon">CSV</div>
+      <div class="tile-body">
+        <div class="tile-name">JSON to CSV Converter</div>
+        <div class="tile-desc">Convert JSON arrays to downloadable CSV files.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="number-base.html" data-name="number base converter binary decimal hex octal radix">
+      <div class="tile-icon">01</div>
+      <div class="tile-body">
+        <div class="tile-name">Number Base Converter</div>
+        <div class="tile-desc">Convert between binary, decimal, hex, and octal.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Generation & Formatting -->
+  <p class="category-label">Generation & Formatting</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile" href="uuid-generator.html" data-name="uuid generator v4 guid unique id">
+      <div class="tile-icon">uid</div>
+      <div class="tile-body">
+        <div class="tile-name">UUID Generator</div>
+        <div class="tile-desc">Generate random v4 UUIDs and GUIDs.</div>
+      </div>
+    </a>
+    <a class="tool-tile featured" href="json-formatter.html" data-name="json formatter validator pretty print beautifier">
+      <div class="tile-icon">{ }</div>
+      <div class="tile-body">
+        <div class="tile-name">JSON Formatter & Validator</div>
+        <div class="tile-desc">Pretty print, validate, and format JSON data.</div>
+      </div>
+      <span class="tile-badge">Popular</span>
+    </a>
+    <a class="tool-tile" href="lorem-ipsum.html" data-name="lorem ipsum generator placeholder dummy text">
+      <div class="tile-icon">Aa</div>
+      <div class="tile-body">
+        <div class="tile-name">Lorem Ipsum Generator</div>
+        <div class="tile-desc">Generate placeholder text for mockups and designs.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="password-generator.html" data-name="password generator strong random secure">
+      <div class="tile-icon">&#x1F511;</div>
+      <div class="tile-body">
+        <div class="tile-name">Password Generator</div>
+        <div class="tile-desc">Create strong, secure random passwords.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="qr-generator.html" data-name="qr code generator url wifi barcode">
+      <div class="tile-icon">QR</div>
+      <div class="tile-body">
+        <div class="tile-name">QR Code Generator</div>
+        <div class="tile-desc">Generate QR codes for URLs, text, and Wi-Fi.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="color-picker.html" data-name="color picker palette generator harmony complementary contrast">
+      <div class="tile-icon">&#x1F3A8;</div>
+      <div class="tile-body">
+        <div class="tile-name">Color Palette Generator</div>
+        <div class="tile-desc">Generate color palettes with harmony and contrast tools.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="slug-generator.html" data-name="url slug generator seo friendly permalink kebab case">
+      <div class="tile-icon">&#x1F517;</div>
+      <div class="tile-body">
+        <div class="tile-name">URL Slug Generator</div>
+        <div class="tile-desc">Create SEO-friendly URL slugs from any text.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Security & Hashing -->
+  <p class="category-label">Security & Hashing</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile featured" href="jwt-decoder.html" data-name="jwt decoder token inspector oauth bearer">
+      <div class="tile-icon">jwt</div>
+      <div class="tile-body">
+        <div class="tile-name">JWT Decoder & Inspector</div>
+        <div class="tile-desc">Decode and inspect JWT tokens, headers, and claims.</div>
+      </div>
+      <span class="tile-badge">Popular</span>
+    </a>
+    <a class="tool-tile" href="hash-generator.html" data-name="hash generator md5 sha256 sha512 sha1 checksum">
+      <div class="tile-icon">#</div>
+      <div class="tile-body">
+        <div class="tile-name">Hash Generator &mdash; MD5 / SHA</div>
+        <div class="tile-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Code & Text Tools -->
+  <p class="category-label">Code & Text Tools</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile featured" href="regex-tester.html" data-name="regex tester regular expression debugger pattern matcher">
+      <div class="tile-icon">.*</div>
+      <div class="tile-body">
+        <div class="tile-name">Regex Tester & Debugger</div>
+        <div class="tile-desc">Test and debug regular expressions with live matching.</div>
+      </div>
+      <span class="tile-badge">Popular</span>
+    </a>
+    <a class="tool-tile" href="text-diff.html" data-name="text diff checker compare side by side">
+      <div class="tile-icon">&plusmn;</div>
+      <div class="tile-body">
+        <div class="tile-name">Text Diff Checker</div>
+        <div class="tile-desc">Compare two texts side by side and highlight differences.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="markdown-preview.html" data-name="markdown editor preview live github flavored gfm">
+      <div class="tile-icon">MD</div>
+      <div class="tile-body">
+        <div class="tile-name">Markdown Editor & Preview</div>
+        <div class="tile-desc">Write and preview GitHub Flavored Markdown live.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="regex-explainer.html" data-name="regex explainer translator plain english breakdown">
+      <div class="tile-icon">?=</div>
+      <div class="tile-body">
+        <div class="tile-name">Regex Explainer</div>
+        <div class="tile-desc">Translate regular expressions into plain English.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="case-converter.html" data-name="case converter camelcase snake_case kebab pascal title">
+      <div class="tile-icon">Aa</div>
+      <div class="tile-body">
+        <div class="tile-name">String Case Converter</div>
+        <div class="tile-desc">Convert between camelCase, snake_case, kebab-case, and more.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="string-escape.html" data-name="string escape unescape json html url javascript backslash">
+      <div class="tile-icon">\\</div>
+      <div class="tile-body">
+        <div class="tile-name">String Escape & Unescape</div>
+        <div class="tile-desc">Escape and unescape strings for JSON, HTML, and URLs.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Optimization & DevOps -->
+  <p class="category-label">Optimization & DevOps</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile" href="css-minifier.html" data-name="css minifier beautifier compress optimize">
+      <div class="tile-icon">CSS</div>
+      <div class="tile-body">
+        <div class="tile-name">CSS Minifier & Beautifier</div>
+        <div class="tile-desc">Minify or beautify CSS code instantly.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="js-minifier.html" data-name="javascript minifier beautifier compress uglify js">
+      <div class="tile-icon">JS</div>
+      <div class="tile-body">
+        <div class="tile-name">JavaScript Minifier & Beautifier</div>
+        <div class="tile-desc">Minify or beautify JavaScript code.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="cron-parser.html" data-name="cron expression generator parser crontab scheduler">
+      <div class="tile-icon">&#x23F0;</div>
+      <div class="tile-body">
+        <div class="tile-name">Cron Expression Generator</div>
+        <div class="tile-desc">Build and parse cron expressions with a visual editor.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Network & Time -->
+  <p class="category-label">Network & Time</p>
+  <div class="tools-grid" data-category>
+    <a class="tool-tile featured" href="ip-lookup.html" data-name="ip address lookup subnet calculator cidr ipv4 ipv6 network">
+      <div class="tile-icon">IP</div>
+      <div class="tile-body">
+        <div class="tile-name">IP Address Lookup & Analyzer</div>
+        <div class="tile-desc">Look up IP address details, geolocation, and subnet info.</div>
+      </div>
+      <span class="tile-badge new">New</span>
+    </a>
+    <a class="tool-tile" href="timestamp-diff.html" data-name="timestamp diff calculator time difference duration unix epoch">
+      <div class="tile-icon">&#x23F1;</div>
+      <div class="tile-body">
+        <div class="tile-name">Timestamp Diff Calculator</div>
+        <div class="tile-desc">Calculate the difference between two timestamps.</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="no-results" id="no-results">No tools found matching your search.</div>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils &mdash; All Developer Tools</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const searchInput = document.getElementById('tool-search');
+const noResults = document.getElementById('no-results');
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  const tiles = document.querySelectorAll('.tool-tile');
+  const categories = document.querySelectorAll('[data-category]');
+  let totalVisible = 0;
+
+  tiles.forEach(tile => {
+    const name = (tile.getAttribute('data-name') || '') + ' ' + tile.querySelector('.tile-name').textContent.toLowerCase();
+    const match = !q || name.toLowerCase().includes(q);
+    tile.style.display = match ? '' : 'none';
+    if (match) totalVisible++;
+  });
+
+  categories.forEach(grid => {
+    const label = grid.previousElementSibling;
+    const visibleTiles = grid.querySelectorAll('.tool-tile:not([style*="display: none"])');
+    const hidden = visibleTiles.length === 0;
+    grid.style.display = hidden ? 'none' : '';
+    if (label && label.classList.contains('category-label')) {
+      label.style.display = hidden ? 'none' : '';
+    }
+  });
+
+  noResults.style.display = (q && totalVisible === 0) ? 'block' : 'none';
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', e => {
+  const dd = document.getElementById('tools-dropdown');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+</script>
+
+</body>
+</html>

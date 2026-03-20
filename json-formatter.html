@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter Online — Free JSON Beautifier & Validator | DevUtils</title>
+  <meta name="description" content="Pretty print, minify and validate JSON instantly. Highlights syntax errors with line numbers. Free JSON formatter online, no signup, works offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/json-formatter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="JSON Formatter Online — Free JSON Beautifier & Validator">
+  <meta property="og:description" content="Pretty print, minify and validate JSON. Error highlighting with line numbers. Free, no signup.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter & Validator",
+    "url": "https://devutils.com/json-formatter.html",
+    "description": "Pretty print, minify and validate JSON with instant error detection.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is JSON?",
+        "acceptedAnswer": { "@type": "Answer", "text": "JSON (JavaScript Object Notation) is a lightweight, human-readable data interchange format. It is based on JavaScript object syntax but is language-independent and supported by virtually every programming language. JSON uses key-value pairs, arrays, strings, numbers, booleans, and null values." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between JSON formatting and minifying?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Formatting (beautifying) adds indentation and line breaks to make JSON human-readable. Minifying removes all whitespace and newlines to reduce file size for transmission or storage. Both produce valid JSON — only the presentation differs." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is valid JSON?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Valid JSON must have keys quoted in double quotes (not single quotes), no trailing commas after the last element, no comments (// or /* */), and correct nesting of objects and arrays. Common mistakes include using single quotes, trailing commas, and unquoted keys." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between JSON and JavaScript objects?",
+        "acceptedAnswer": { "@type": "Answer", "text": "JavaScript objects allow unquoted keys, single quotes, functions, undefined, and trailing commas. JSON requires double-quoted keys, only supports strings, numbers, booleans, null, objects, and arrays — no functions, no undefined, and no comments." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I fix a JSON parse error?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Common fixes: 1) Replace single quotes with double quotes around keys and string values. 2) Remove trailing commas after the last item in an object or array. 3) Remove comments (JSON does not support // or /* */). 4) Make sure all strings are closed with matching quotes. 5) Check for missing commas between key-value pairs." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .editor-pane {
+      position: relative;
+    }
+    .editor-pane textarea {
+      min-height: 220px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+    .line-count {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); text-align: right; margin-top: 4px;
+    }
+    .output-pane {
+      position: relative;
+    }
+    .output-pane .output-block {
+      min-height: 220px;
+      max-height: 400px;
+      overflow: auto;
+      line-height: 1.7;
+    }
+
+    /* Syntax highlighting */
+    .json-key    { color: #7ec8e3; }
+    .json-str    { color: #98d48f; }
+    .json-num    { color: #f9c97c; }
+    .json-bool   { color: #c792ea; }
+    .json-null   { color: #ff8b8b; }
+    .json-punct  { color: var(--text2); }
+
+    .stats-row {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .stat-pill {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); background: var(--bg4);
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .stat-pill strong { color: var(--accent); }
+
+    .indent-row {
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap;
+    }
+    .indent-row label { margin: 0; font-size: 12px; }
+
+    .error-marker {
+      background: rgba(255,90,90,.08);
+      border-left: 3px solid var(--red);
+      padding: 12px 14px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-family: var(--mono); font-size: 12.5px;
+      color: var(--red);
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Formatter</div>
+    <h1>JSON Formatter &amp; Validator</h1>
+    <p class="tool-description">
+      Paste any JSON to instantly pretty print, minify, or validate it with this free online JSON formatter. Syntax errors are detected and displayed with exact line and column numbers so you can fix issues fast. Features include customizable indentation (2 spaces, 4 spaces, or tabs), alphabetical key sorting, full syntax highlighting with color-coded tokens, and real-time JSON statistics showing size, key count, array count, and nesting depth. All formatting happens entirely in your browser — no data is sent to any server. Works offline, no signup required.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">json-formatter.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <!-- Options row -->
+      <div class="indent-row" style="margin-bottom:16px">
+        <div>
+          <label>Indent</label>
+          <select id="indent-select" onchange="processInput()">
+            <option value="2">2 spaces</option>
+            <option value="4">4 spaces</option>
+            <option value="tab">Tab</option>
+          </select>
+        </div>
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px; text-transform:none; letter-spacing:normal; cursor:pointer; margin-top:18px">
+          <input type="checkbox" id="sort-keys" onchange="processInput()"> Sort keys A–Z
+        </label>
+      </div>
+
+      <!-- Input -->
+      <div class="editor-pane">
+        <label>JSON Input</label>
+        <textarea id="json-input" placeholder='Paste JSON here... e.g. {"name":"John","age":30}' oninput="processInput()" spellcheck="false"></textarea>
+        <div class="line-count" id="input-count">0 characters</div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="btn-row" style="margin: 14px 0">
+        <button class="btn btn-primary" onclick="doFormat()">Pretty Print</button>
+        <button class="btn btn-secondary" onclick="doMinify()">Minify</button>
+        <button class="btn btn-ghost" onclick="doValidateOnly()">Validate only</button>
+        <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+        <button class="btn btn-ghost" onclick="loadSample()">Load sample</button>
+      </div>
+
+      <!-- Status -->
+      <div id="json-status"></div>
+      <div id="json-error"></div>
+
+      <!-- Output -->
+      <div class="output-pane" style="margin-top:16px">
+        <div class="output-label">
+          <label style="margin:0">Output</label>
+          <button class="btn btn-ghost" onclick="copyOutput()">Copy</button>
+        </div>
+        <div class="output-block" id="json-output" style="color:var(--text2); font-style:italic">
+          Output will appear here...
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row" id="json-stats" style="display:none">
+        <span class="stat-pill">Size: <strong id="stat-size">—</strong></span>
+        <span class="stat-pill">Keys: <strong id="stat-keys">—</strong></span>
+        <span class="stat-pill">Arrays: <strong id="stat-arrays">—</strong></span>
+        <span class="stat-pill">Depth: <strong id="stat-depth">—</strong></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is JSON?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        JSON (JavaScript Object Notation) is a lightweight, human-readable text format for storing and transmitting data. It consists of key-value pairs in objects <code>{"key": "value"}</code> and ordered arrays <code>[1, 2, 3]</code>. JSON supports six data types: string, number, boolean, null, object, and array. It's the dominant data format for REST APIs, configuration files, and database storage.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What are the most common JSON errors?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        The top JSON errors are: <br>
+        1. <strong>Single quotes</strong> — JSON requires double quotes around keys and strings. <code>'name'</code> → <code>"name"</code><br>
+        2. <strong>Trailing commas</strong> — <code>{"a": 1,}</code> is invalid. Remove the comma after the last item.<br>
+        3. <strong>Unquoted keys</strong> — <code>{name: "John"}</code> is JavaScript, not JSON. Keys must be quoted.<br>
+        4. <strong>Comments</strong> — JSON does not support <code>//</code> or <code>/* */</code>.<br>
+        5. <strong>Undefined/NaN/Infinity</strong> — these JavaScript values are not valid JSON.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between JSON pretty print and minify?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>Pretty print</strong> adds indentation and line breaks, making JSON readable for humans. Use it for debugging, config files, and documentation. <strong>Minify</strong> removes all whitespace and newlines, reducing file size for network transmission. Minified JSON can be 20–30% smaller. Both produce equivalent data — only formatting differs.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Does JSON support comments?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        No. Standard JSON (RFC 8259) does not support comments. This is intentional — JSON was designed as a data format, not a configuration format. If you need comments in config files, consider JSONC (JSON with Comments, used by VS Code), YAML, or TOML instead.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I parse JSON in JavaScript, Python, and Go?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>JavaScript:</strong> <code>const obj = JSON.parse(jsonString);</code> — and serialize with <code>JSON.stringify(obj, null, 2)</code><br>
+        <strong>Python:</strong> <code>import json; obj = json.loads(json_string)</code> — serialize: <code>json.dumps(obj, indent=2)</code><br>
+        <strong>Go:</strong> <code>import "encoding/json"; json.Unmarshal([]byte(jsonString), &obj)</code><br>
+        <strong>PHP:</strong> <code>$obj = json_decode($jsonString, true);</code>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is my JSON data safe to paste here?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Yes. All processing is done entirely in your browser using JavaScript's built-in <code>JSON.parse()</code> and <code>JSON.stringify()</code> APIs. No data is ever sent to a server. The tool works fully offline. We strongly recommend not pasting production secrets or API keys into any online tool — as a general security practice.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="unix-timestamp-converter.html">
+        <div class="related-icon">⏱</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UNIX Timestamp Converter</div>
+          <div class="related-card-desc">Epoch time to readable dates</div>
+        </div>
+      </a>
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="uuid-generator.html">
+        <div class="related-icon">uid</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UUID Generator</div>
+          <div class="related-card-desc">Generate v4 UUIDs in bulk</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>© 2025 DevUtils — JSON Formatter & Validator</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+let lastParsed = null;
+let currentOutput = '';
+
+function getIndent() {
+  const v = document.getElementById('indent-select').value;
+  return v === 'tab' ? '\t' : parseInt(v);
+}
+
+function processInput() {
+  const input = document.getElementById('json-input').value;
+  document.getElementById('input-count').textContent = input.length + ' characters';
+  if (!input.trim()) {
+    clearStatus();
+    return;
+  }
+  tryParse(input);
+}
+
+function tryParse(input) {
+  try {
+    let parsed = JSON.parse(input);
+    if (document.getElementById('sort-keys').checked) parsed = sortKeys(parsed);
+    lastParsed = parsed;
+    showStatus('ok', '✓ Valid JSON');
+    document.getElementById('json-error').innerHTML = '';
+    return parsed;
+  } catch(e) {
+    lastParsed = null;
+    showStatus('err', '✗ Invalid JSON — ' + e.message);
+    const match = e.message.match(/position (\d+)/);
+    if (match) {
+      const pos = parseInt(match[1]);
+      const input = document.getElementById('json-input').value;
+      const lines = input.substring(0, pos).split('\n');
+      const line = lines.length;
+      const col = lines[lines.length - 1].length + 1;
+      document.getElementById('json-error').innerHTML =
+        `<div class="error-marker">Error at line ${line}, column ${col}: ${e.message}</div>`;
+    }
+    return null;
+  }
+}
+
+function doFormat() {
+  const input = document.getElementById('json-input').value.trim();
+  if (!input) return;
+  const parsed = tryParse(input);
+  if (!parsed && parsed !== null) return;
+  if (lastParsed === null && parsed === null) {
+    // Invalid
+    return;
+  }
+  const obj = lastParsed;
+  const indent = getIndent();
+  const formatted = JSON.stringify(obj, null, indent);
+  setOutput(formatted);
+  computeStats(obj, formatted);
+}
+
+function doMinify() {
+  const input = document.getElementById('json-input').value.trim();
+  if (!input) return;
+  const parsed = tryParse(input);
+  if (lastParsed === null) return;
+  const minified = JSON.stringify(lastParsed);
+  setOutput(minified);
+  computeStats(lastParsed, minified);
+}
+
+function doValidateOnly() {
+  const input = document.getElementById('json-input').value.trim();
+  if (!input) return;
+  tryParse(input);
+  clearOutput();
+}
+
+function setOutput(text) {
+  currentOutput = text;
+  const out = document.getElementById('json-output');
+  out.innerHTML = syntaxHighlight(text);
+  out.style.fontStyle = 'normal';
+  out.style.color = '';
+}
+
+function clearOutput() {
+  document.getElementById('json-output').textContent = '';
+  document.getElementById('json-stats').style.display = 'none';
+}
+
+function syntaxHighlight(json) {
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+    if (/^"/.test(match)) {
+      if (/:$/.test(match)) return `<span class="json-key">${match}</span>`;
+      return `<span class="json-str">${match}</span>`;
+    }
+    if (/true|false/.test(match)) return `<span class="json-bool">${match}</span>`;
+    if (/null/.test(match)) return `<span class="json-null">${match}</span>`;
+    return `<span class="json-num">${match}</span>`;
+  });
+}
+
+function computeStats(obj, text) {
+  document.getElementById('stat-size').textContent = formatBytes(new Blob([text]).size);
+  document.getElementById('stat-keys').textContent = countKeys(obj);
+  document.getElementById('stat-arrays').textContent = countArrays(obj);
+  document.getElementById('stat-depth').textContent = getDepth(obj);
+  document.getElementById('json-stats').style.display = 'flex';
+}
+
+function countKeys(obj, count = 0) {
+  if (typeof obj === 'object' && obj !== null) {
+    if (!Array.isArray(obj)) count += Object.keys(obj).length;
+    Object.values(obj).forEach(v => { count = countKeys(v, count); });
+  }
+  return count;
+}
+
+function countArrays(obj, count = 0) {
+  if (Array.isArray(obj)) {
+    count++;
+    obj.forEach(v => { count = countArrays(v, count); });
+  } else if (typeof obj === 'object' && obj !== null) {
+    Object.values(obj).forEach(v => { count = countArrays(v, count); });
+  }
+  return count;
+}
+
+function getDepth(obj, d = 0) {
+  if (typeof obj !== 'object' || obj === null) return d;
+  return Math.max(...Object.values(obj).map(v => getDepth(v, d + 1)), d + 1);
+}
+
+function sortKeys(obj) {
+  if (Array.isArray(obj)) return obj.map(sortKeys);
+  if (typeof obj !== 'object' || obj === null) return obj;
+  return Object.fromEntries(Object.keys(obj).sort().map(k => [k, sortKeys(obj[k])]));
+}
+
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+  return (b/1024/1024).toFixed(2) + ' MB';
+}
+
+function showStatus(type, msg) {
+  const el = document.getElementById('json-status');
+  el.innerHTML = `<div class="status status-${type === 'ok' ? 'ok' : 'err'}">${msg}</div>`;
+}
+
+function clearStatus() {
+  document.getElementById('json-status').innerHTML = '';
+  document.getElementById('json-error').innerHTML = '';
+  document.getElementById('json-stats').style.display = 'none';
+  lastParsed = null;
+}
+
+function clearAll() {
+  document.getElementById('json-input').value = '';
+  document.getElementById('json-output').textContent = '';
+  document.getElementById('json-output').style.fontStyle = 'italic';
+  document.getElementById('json-output').style.color = 'var(--text2)';
+  document.getElementById('json-output').innerHTML = 'Output will appear here...';
+  clearStatus();
+  document.getElementById('input-count').textContent = '0 characters';
+  currentOutput = '';
+}
+
+function loadSample() {
+  const sample = `{
+  "user": {
+    "id": "a3f7b2c1-4d8e-4f9a-b0c1-d2e3f4a5b6c7",
+    "name": "Ahmad Raza",
+    "email": "ahmad@example.com",
+    "role": "developer",
+    "createdAt": 1700000000,
+    "tags": ["backend", "typescript", "devops"],
+    "settings": {
+      "theme": "dark",
+      "notifications": true,
+      "timezone": "Asia/Karachi"
+    }
+  },
+  "meta": {
+    "version": "2.1.0",
+    "total": 1
+  }
+}`;
+  document.getElementById('json-input').value = sample;
+  processInput();
+  doFormat();
+}
+
+function copyOutput() {
+  if (!currentOutput) return;
+  navigator.clipboard.writeText(currentOutput);
+  showToast();
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

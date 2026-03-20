@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Explainer Online — Regex to Plain English Translator | DevUtils</title>
+  <meta name="description" content="Translate regular expressions to plain English with color-coded breakdowns. Understand capture groups, quantifiers, character classes, lookaheads, and anchors. Free regex visualizer — no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/regex-explainer">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Regex Explainer — Regex to Plain English Translator">
+  <meta property="og:description" content="Translate any regular expression into a plain English breakdown with color-coded tokens. Understand pattern matching instantly.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Regex Explainer Online","url":"https://devutils.com/regex-explainer.html","description":"Translate regular expressions to plain English with color-coded breakdowns of capture groups, quantifiers, character classes, lookaheads, and anchors.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How do I read a regular expression?","acceptedAnswer":{"@type":"Answer","text":"Read a regex left to right, breaking it into tokens: literal characters match themselves, special characters like \\d (digit), \\w (word character), and \\s (whitespace) match character classes, quantifiers like * (zero or more), + (one or more), and ? (optional) specify repetition, anchors like ^ and $ mark string boundaries, and parentheses create groups. Use a regex explainer tool to get an instant plain English translation of any pattern."}},
+    {"@type":"Question","name":"What does \\d, \\w, and \\s mean in regex?","acceptedAnswer":{"@type":"Answer","text":"These are shorthand character classes: \\d matches any digit (0-9), equivalent to [0-9]. \\w matches any word character (letters, digits, underscore), equivalent to [a-zA-Z0-9_]. \\s matches any whitespace character (space, tab, newline, etc.). Their uppercase versions \\D, \\W, \\S match the opposite — non-digit, non-word, non-whitespace respectively."}},
+    {"@type":"Question","name":"What is the difference between * and + in regex?","acceptedAnswer":{"@type":"Answer","text":"Both are quantifiers that specify repetition. The asterisk * means 'zero or more' — the preceding element can appear any number of times or not at all. The plus + means 'one or more' — the preceding element must appear at least once. For example, \\d* matches an empty string or any digits, while \\d+ requires at least one digit. Both are greedy by default; add ? after them (like *? or +?) to make them lazy (match as few as possible)."}},
+    {"@type":"Question","name":"How do capturing groups work in regular expressions?","acceptedAnswer":{"@type":"Answer","text":"Capturing groups are created with parentheses (). They serve two purposes: grouping parts of a pattern to apply quantifiers or alternation, and capturing the matched text for later use via backreferences (\\1, \\2) or in replacement strings ($1, $2). Non-capturing groups (?:...) group without capturing, which is more efficient when you don't need the matched text. Named groups (?<name>...) let you reference captures by name instead of number."}},
+    {"@type":"Question","name":"What are lookaheads and lookbehinds in regex?","acceptedAnswer":{"@type":"Answer","text":"Lookaheads and lookbehinds are zero-width assertions that check if a pattern exists ahead of or behind the current position without consuming characters. Positive lookahead (?=...) asserts that what follows matches the pattern. Negative lookahead (?!...) asserts that what follows does NOT match. Positive lookbehind (?<=...) checks what precedes, and negative lookbehind (?<!...) asserts the preceding text does NOT match. They're useful for complex pattern matching like password validation or conditional matching."}}
+  ]}
+  </script>
+
+  <style>
+    .regex-input-area { display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap; margin-bottom:12px; }
+    .regex-input-area textarea {
+      flex:1; min-width:200px; font-family:var(--mono); font-size:16px; font-weight:500;
+      padding:12px 14px; background:var(--bg3); border:1px solid var(--border); color:var(--accent);
+      border-radius:var(--radius); resize:vertical; min-height:52px; max-height:200px;
+      line-height:1.5;
+    }
+    .regex-input-area textarea:focus { border-color:var(--accent2); outline:none; }
+    .regex-input-area textarea::placeholder { color:var(--text3); }
+    .flags-input {
+      width:80px; font-family:var(--mono); font-size:14px; font-weight:500;
+      padding:12px 10px; background:var(--bg3); border:1px solid var(--border); color:var(--text);
+      border-radius:var(--radius); text-align:center;
+    }
+    .flags-input:focus { border-color:var(--accent2); outline:none; }
+    .flags-input::placeholder { color:var(--text3); }
+    .example-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+    .example-btn {
+      font-size:11px; padding:4px 10px; border-radius:var(--radius);
+      border:1px solid var(--border); background:var(--bg3); color:var(--text2);
+      cursor:pointer; font-family:var(--mono); transition:all .2s;
+    }
+    .example-btn:hover { border-color:var(--accent2); color:var(--accent); background:var(--accent-dim); }
+    .regex-summary {
+      font-size:14px; color:var(--text); text-align:left; margin-bottom:12px;
+      padding:12px 14px; background:var(--accent-dim); border:1px solid rgba(0,208,132,.2);
+      border-radius:var(--radius); line-height:1.5;
+    }
+    .regex-summary strong { color:var(--accent); }
+    .regex-flags-info {
+      font-size:12px; color:var(--text2); margin-bottom:12px;
+      padding:8px 12px; background:var(--bg3); border:1px solid var(--border);
+      border-radius:var(--radius); font-family:var(--mono);
+    }
+    .breakdown-list { list-style:none; margin:0; padding:0; }
+    .breakdown-item {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:10px 0; border-bottom:1px solid var(--border);
+      font-size:13px; line-height:1.5;
+    }
+    .breakdown-item:last-child { border-bottom:none; }
+    .breakdown-token {
+      font-family:var(--mono); font-weight:600; font-size:13px;
+      padding:2px 8px; border-radius:4px; white-space:nowrap; flex-shrink:0;
+      min-width:60px; text-align:center;
+    }
+    .breakdown-desc { color:var(--text); flex:1; }
+    .tok-literal   { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
+    .tok-class     { background:#1a1a2e; color:#a78bfa; border:1px solid #3b3270; }
+    .tok-quantifier{ background:#1c1917; color:#fbbf24; border:1px solid #534a2a; }
+    .tok-anchor    { background:#0f1f1a; color:#34d399; border:1px solid #1a4a3a; }
+    .tok-group     { background:#1e1028; color:#f472b6; border:1px solid #4a2060; }
+    .tok-charset   { background:#172030; color:#60a5fa; border:1px solid #1e3a5f; }
+    .tok-escape    { background:#1f1a14; color:#fb923c; border:1px solid #5a3a1a; }
+    .tok-alternation{ background:#1a1020; color:#e879f9; border:1px solid #4a2068; }
+    .tok-error     { background:#2a1015; color:#ff5a5a; border:1px solid #5a2020; }
+    .regex-error {
+      padding:12px 14px; background:rgba(255,90,90,.08); border:1px solid rgba(255,90,90,.25);
+      border-radius:var(--radius); color:var(--red); font-size:13px; font-family:var(--mono);
+    }
+    .legend { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+    .legend-item {
+      font-size:10px; padding:2px 8px; border-radius:4px;
+      font-family:var(--mono); opacity:.7;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Code Tool</div>
+    <h1>Regex Explainer Online</h1>
+    <p class="tool-description">
+      Translate any regular expression into plain English with a color-coded breakdown of every token. This free regex to plain English translator parses capture groups, quantifiers, character classes, lookahead and lookbehind assertions, anchors, alternation, and more. Paste a regex pattern to instantly visualize its structure — a powerful regular expression breakdown tool for understanding complex pattern matching. All processing runs client-side in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">regex-explainer.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Quick Examples</label>
+      <div class="example-row">
+        <button class="example-btn" onclick="setExample('email')">Email</button>
+        <button class="example-btn" onclick="setExample('url')">URL</button>
+        <button class="example-btn" onclick="setExample('ip')">IP Address</button>
+        <button class="example-btn" onclick="setExample('date')">Date</button>
+        <button class="example-btn" onclick="setExample('phone')">Phone</button>
+      </div>
+
+      <label>Regex Pattern</label>
+      <div class="regex-input-area">
+        <textarea id="regex-input" rows="2" spellcheck="false" placeholder="Enter a regex pattern, e.g. ^[\w.-]+@[\w-]+\.[\w.]+$" oninput="explainRegex()"></textarea>
+        <input class="flags-input" type="text" id="regex-flags" placeholder="gi" value="" spellcheck="false" oninput="explainRegex()">
+      </div>
+
+      <div id="regex-error" style="display:none" class="regex-error"></div>
+      <div id="regex-summary" style="display:none" class="regex-summary"></div>
+      <div id="flags-info" style="display:none" class="regex-flags-info"></div>
+
+      <div id="breakdown-area" style="display:none">
+        <label>Color Legend</label>
+        <div class="legend">
+          <span class="legend-item tok-literal">literal</span>
+          <span class="legend-item tok-class">class</span>
+          <span class="legend-item tok-quantifier">quantifier</span>
+          <span class="legend-item tok-anchor">anchor</span>
+          <span class="legend-item tok-group">group</span>
+          <span class="legend-item tok-charset">charset</span>
+          <span class="legend-item tok-escape">escape</span>
+          <span class="legend-item tok-alternation">alternation</span>
+        </div>
+        <label>Token Breakdown</label>
+        <ul class="breakdown-list" id="breakdown-list"></ul>
+      </div>
+
+      <div id="empty-state" class="regex-summary" style="border-color:var(--border);background:var(--bg3);">
+        <span style="color:var(--text3)">Enter a regex pattern above to see a plain English explanation.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I read a regular expression?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Read a regex <strong>left to right</strong>, breaking it into tokens. Literal characters match themselves. Special sequences like <code>\d</code>, <code>\w</code>, and <code>\s</code> match character classes (digits, word characters, whitespace). Quantifiers like <code>*</code>, <code>+</code>, and <code>?</code> control how many times the preceding token repeats. Anchors like <code>^</code> and <code>$</code> mark the start and end of the string. Parentheses <code>()</code> create capturing groups, and square brackets <code>[]</code> define character sets. Use this regex explainer tool to instantly translate any pattern into plain English.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What does \d, \w, and \s mean in regex?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">These are <strong>shorthand character classes</strong>: <code>\d</code> matches any digit (0–9), equivalent to <code>[0-9]</code>. <code>\w</code> matches any word character (letters, digits, underscore), equivalent to <code>[a-zA-Z0-9_]</code>. <code>\s</code> matches whitespace (space, tab, newline). Their uppercase counterparts <code>\D</code>, <code>\W</code>, <code>\S</code> match the <strong>opposite</strong> — non-digit, non-word character, and non-whitespace respectively. The dot <code>.</code> matches any character except newline (unless the <code>s</code> flag is set).</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between * and + in regex?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Both are <strong>quantifiers</strong>. The asterisk <code>*</code> means "zero or more" — the preceding element may appear any number of times or not at all. The plus <code>+</code> means "one or more" — the preceding element must appear at least once. For example, <code>\d*</code> matches an empty string or any sequence of digits, while <code>\d+</code> requires at least one digit. Add <code>?</code> after either (<code>*?</code>, <code>+?</code>) to make them <strong>lazy</strong>, matching as few characters as possible instead of as many.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do capturing groups work in regular expressions?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Capturing groups are created with <code>()</code>. They <strong>group</strong> parts of a pattern together (to apply quantifiers or alternation) and <strong>capture</strong> the matched text for backreferences (<code>\1</code>, <code>\2</code>) or replacement strings (<code>$1</code>, <code>$2</code>). Non-capturing groups <code>(?:...)</code> group without saving the match, which is more efficient. Named groups <code>(?&lt;name&gt;...)</code> allow referencing by name instead of number. Groups are numbered left to right by their opening parenthesis.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What are lookaheads and lookbehinds in regex?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Lookaheads and lookbehinds are <strong>zero-width assertions</strong> — they check if a pattern exists without consuming characters. <code>(?=...)</code> is a positive lookahead: it asserts that what follows matches the pattern. <code>(?!...)</code> is a negative lookahead: asserts what follows does NOT match. <code>(?&lt;=...)</code> is a positive lookbehind: checks what precedes. <code>(?&lt;!...)</code> is a negative lookbehind: asserts the preceding text does NOT match. They are essential for complex pattern matching like password validation or extracting text between delimiters.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="regex-tester.html"><div class="related-icon">.*</div><div class="related-card-info"><div class="related-card-name">Regex Tester</div><div class="related-card-desc">Test regular expressions live</div></div></a>
+      <a class="related-card" href="string-escape.html"><div class="related-icon">\</div><div class="related-card-info"><div class="related-card-name">String Escape Tool</div><div class="related-card-desc">Escape and unescape strings</div></div></a>
+      <a class="related-card" href="text-diff.html"><div class="related-icon">&plusmn;</div><div class="related-card-info"><div class="related-card-name">Text Diff Checker</div><div class="related-card-desc">Compare two texts side by side</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Regex Explainer</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+const EXAMPLES = {
+  email:  { pattern: '^[\\w.-]+@[\\w-]+\\.[\\w.]+$', flags: '' },
+  url:    { pattern: 'https?:\\/\\/[\\w.-]+(?:\\.[a-z]{2,})(?:\\/[\\w./?#&=-]*)?', flags: 'i' },
+  ip:     { pattern: '\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b', flags: 'g' },
+  date:   { pattern: '(\\d{4})-(\\d{2})-(\\d{2})', flags: '' },
+  phone:  { pattern: '\\+?1?[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}', flags: '' }
+};
+
+const KNOWN_PATTERNS = {
+  '^[\\w.-]+@[\\w-]+\\.[\\w.]+$': 'Matches: an email address pattern (local@domain.tld)',
+  'https?:\\/\\/[\\w.-]+(?:\\.[a-z]{2,})(?:\\/[\\w./?#&=-]*)?': 'Matches: a URL (http or https)',
+  '\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b': 'Matches: an IPv4 address (e.g. 192.168.1.1)',
+  '(\\d{4})-(\\d{2})-(\\d{2})': 'Matches: a date in YYYY-MM-DD format',
+  '\\+?1?[-.\\s]?\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}': 'Matches: a US/international phone number'
+};
+
+function setExample(name) {
+  const ex = EXAMPLES[name];
+  document.getElementById('regex-input').value = ex.pattern;
+  document.getElementById('regex-flags').value = ex.flags;
+  explainRegex();
+}
+
+/* ---- Tokenizer ---- */
+function tokenize(pattern) {
+  const tokens = [];
+  let i = 0, groupNum = 0;
+  while (i < pattern.length) {
+    const ch = pattern[i];
+
+    // Escaped characters
+    if (ch === '\\' && i + 1 < pattern.length) {
+      const next = pattern[i + 1];
+      const escMap = {
+        'd': ['\\d','digit (0-9)','class'],
+        'D': ['\\D','non-digit','class'],
+        'w': ['\\w','word character (a-z, A-Z, 0-9, _)','class'],
+        'W': ['\\W','non-word character','class'],
+        's': ['\\s','whitespace (space, tab, newline)','class'],
+        'S': ['\\S','non-whitespace','class'],
+        'b': ['\\b','word boundary','anchor'],
+        'B': ['\\B','non-word boundary','anchor'],
+        'n': ['\\n','newline','escape'],
+        'r': ['\\r','carriage return','escape'],
+        't': ['\\t','tab','escape'],
+        'f': ['\\f','form feed','escape'],
+        'v': ['\\v','vertical tab','escape'],
+        '0': ['\\0','null character','escape']
+      };
+      if (escMap[next]) {
+        tokens.push({ token: escMap[next][0], desc: escMap[next][1], type: escMap[next][2] });
+        i += 2; continue;
+      }
+      // Backreference \1-\9
+      if (next >= '1' && next <= '9') {
+        tokens.push({ token: '\\' + next, desc: 'backreference to group ' + next, type: 'group' });
+        i += 2; continue;
+      }
+      // Escaped literal
+      tokens.push({ token: '\\' + next, desc: 'literal "' + next + '"', type: 'escape' });
+      i += 2; continue;
+    }
+
+    // Character set [...]
+    if (ch === '[') {
+      let j = i + 1, negated = false;
+      if (pattern[j] === '^') { negated = true; j++; }
+      // Allow ] as first char in set
+      if (pattern[j] === ']') j++;
+      while (j < pattern.length && pattern[j] !== ']') {
+        if (pattern[j] === '\\') j++;
+        j++;
+      }
+      const setContent = pattern.slice(i + 1 + (negated ? 1 : 0), j);
+      const full = pattern.slice(i, j + 1);
+      let desc;
+      if (negated) {
+        desc = 'not one of: ' + describeCharset(setContent);
+      } else {
+        desc = 'one of: ' + describeCharset(setContent);
+      }
+      tokens.push({ token: full, desc: desc, type: 'charset' });
+      i = j + 1; continue;
+    }
+
+    // Groups
+    if (ch === '(') {
+      if (pattern.slice(i, i + 3) === '(?:') {
+        tokens.push({ token: '(?:', desc: 'start non-capturing group', type: 'group' });
+        i += 3; continue;
+      }
+      if (pattern.slice(i, i + 3) === '(?=') {
+        tokens.push({ token: '(?=', desc: 'start positive lookahead', type: 'group' });
+        i += 3; continue;
+      }
+      if (pattern.slice(i, i + 3) === '(?!') {
+        tokens.push({ token: '(?!', desc: 'start negative lookahead', type: 'group' });
+        i += 3; continue;
+      }
+      if (pattern.slice(i, i + 4) === '(?<=') {
+        tokens.push({ token: '(?<=', desc: 'start positive lookbehind', type: 'group' });
+        i += 4; continue;
+      }
+      if (pattern.slice(i, i + 4) === '(?<!') {
+        tokens.push({ token: '(?<!', desc: 'start negative lookbehind', type: 'group' });
+        i += 4; continue;
+      }
+      // Named group
+      const namedMatch = pattern.slice(i).match(/^\(\?<([^>]+)>/);
+      if (namedMatch) {
+        groupNum++;
+        tokens.push({ token: namedMatch[0], desc: 'start named capturing group "' + namedMatch[1] + '" (group ' + groupNum + ')', type: 'group' });
+        i += namedMatch[0].length; continue;
+      }
+      groupNum++;
+      tokens.push({ token: '(', desc: 'start capturing group ' + groupNum, type: 'group' });
+      i++; continue;
+    }
+    if (ch === ')') {
+      tokens.push({ token: ')', desc: 'end group', type: 'group' });
+      i++; continue;
+    }
+
+    // Anchors
+    if (ch === '^') {
+      tokens.push({ token: '^', desc: 'start of string', type: 'anchor' });
+      i++; continue;
+    }
+    if (ch === '$') {
+      tokens.push({ token: '$', desc: 'end of string', type: 'anchor' });
+      i++; continue;
+    }
+
+    // Alternation
+    if (ch === '|') {
+      tokens.push({ token: '|', desc: 'OR (alternation)', type: 'alternation' });
+      i++; continue;
+    }
+
+    // Dot
+    if (ch === '.') {
+      tokens.push({ token: '.', desc: 'any character (except newline)', type: 'class' });
+      i++; continue;
+    }
+
+    // Quantifiers
+    if (ch === '*' || ch === '+' || ch === '?') {
+      // Check for lazy modifier
+      if (ch === '?' && tokens.length > 0 && (tokens[tokens.length-1].type === 'quantifier')) {
+        tokens[tokens.length-1].token += '?';
+        tokens[tokens.length-1].desc += ' (lazy, match as few as possible)';
+        i++; continue;
+      }
+      const qMap = { '*': 'zero or more', '+': 'one or more', '?': 'optional (zero or one)' };
+      let qToken = ch, qDesc = qMap[ch];
+      if (i + 1 < pattern.length && pattern[i + 1] === '?') {
+        qToken += '?';
+        qDesc += ' (lazy, match as few as possible)';
+        i++;
+      }
+      tokens.push({ token: qToken, desc: qDesc, type: 'quantifier' });
+      i++; continue;
+    }
+
+    // Curly brace quantifier {n}, {n,}, {n,m}
+    if (ch === '{') {
+      const braceMatch = pattern.slice(i).match(/^\{(\d+)(?:(,)(\d*))?\}/);
+      if (braceMatch) {
+        const full = braceMatch[0];
+        const n = braceMatch[1];
+        const hasComma = braceMatch[2];
+        const m = braceMatch[3];
+        let desc;
+        if (!hasComma) {
+          desc = 'exactly ' + n + ' times';
+        } else if (m === '' || m === undefined) {
+          desc = n + ' or more times';
+        } else {
+          desc = 'between ' + n + ' and ' + m + ' times';
+        }
+        let qToken = full;
+        if (i + full.length < pattern.length && pattern[i + full.length] === '?') {
+          qToken += '?';
+          desc += ' (lazy)';
+          i++;
+        }
+        tokens.push({ token: qToken, desc: desc, type: 'quantifier' });
+        i += full.length; continue;
+      }
+    }
+
+    // Literal character
+    tokens.push({ token: ch, desc: 'literal "' + ch + '"', type: 'literal' });
+    i++;
+  }
+  return tokens;
+}
+
+function describeCharset(content) {
+  const parts = [];
+  let i = 0;
+  while (i < content.length) {
+    if (content[i] === '\\' && i + 1 < content.length) {
+      const escShort = { d:'digit', D:'non-digit', w:'word char', W:'non-word', s:'whitespace', S:'non-whitespace' };
+      if (escShort[content[i+1]]) {
+        parts.push(escShort[content[i+1]]);
+      } else {
+        parts.push(content[i+1]);
+      }
+      i += 2; continue;
+    }
+    // Range a-z
+    if (i + 2 < content.length && content[i + 1] === '-' && content[i + 2] !== ']') {
+      parts.push(content[i] + ' through ' + content[i + 2]);
+      i += 3; continue;
+    }
+    parts.push(content[i]);
+    i++;
+  }
+  return parts.join(', ');
+}
+
+function describeFlags(flags) {
+  const flagMap = {
+    g: 'global — find all matches, not just the first',
+    i: 'case-insensitive — ignore upper/lower case',
+    m: 'multiline — ^ and $ match start/end of each line',
+    s: 'dotAll — dot (.) also matches newline characters',
+    u: 'unicode — enable full Unicode matching'
+  };
+  const parts = [];
+  for (const f of flags) {
+    if (flagMap[f]) parts.push(f + ': ' + flagMap[f]);
+  }
+  return parts;
+}
+
+function explainRegex() {
+  const pattern = document.getElementById('regex-input').value;
+  const flags = document.getElementById('regex-flags').value.trim();
+  const errorEl = document.getElementById('regex-error');
+  const summaryEl = document.getElementById('regex-summary');
+  const flagsEl = document.getElementById('flags-info');
+  const breakdownEl = document.getElementById('breakdown-area');
+  const emptyEl = document.getElementById('empty-state');
+  const listEl = document.getElementById('breakdown-list');
+
+  errorEl.style.display = 'none';
+  summaryEl.style.display = 'none';
+  flagsEl.style.display = 'none';
+  breakdownEl.style.display = 'none';
+
+  if (!pattern) {
+    emptyEl.style.display = '';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  // Validate regex
+  try {
+    new RegExp(pattern, flags);
+  } catch (e) {
+    errorEl.style.display = '';
+    errorEl.textContent = '\u2717 ' + e.message;
+    return;
+  }
+
+  // Known pattern summary
+  if (KNOWN_PATTERNS[pattern]) {
+    summaryEl.style.display = '';
+    summaryEl.innerHTML = '<strong>' + KNOWN_PATTERNS[pattern] + '</strong>';
+  }
+
+  // Flags info
+  if (flags.length > 0) {
+    const flagDescs = describeFlags(flags);
+    if (flagDescs.length > 0) {
+      flagsEl.style.display = '';
+      flagsEl.innerHTML = '<strong>Flags:</strong> ' + flagDescs.join(' | ');
+    }
+  }
+
+  // Tokenize and render
+  const tokens = tokenize(pattern);
+  breakdownEl.style.display = '';
+  let html = '';
+  for (const t of tokens) {
+    const tokClass = 'tok-' + t.type;
+    const escapedToken = escHtml(t.token);
+    const escapedDesc = escHtml(t.desc);
+    html += '<li class="breakdown-item"><span class="breakdown-token ' + tokClass + '">' + escapedToken + '</span><span class="breakdown-desc">' + escapedDesc + '</span></li>';
+  }
+  listEl.innerHTML = html;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// Init
+explainRegex();
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

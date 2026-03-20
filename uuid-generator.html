@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator Online — Free v4 GUID Generator | DevUtils</title>
+  <meta name="description" content="Generate v4 UUIDs instantly. Bulk generate up to 100 UUIDs, copy all with one click. Free online UUID generator, no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/uuid-generator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="UUID Generator Online — Free v4 GUID Generator">
+  <meta property="og:description" content="Generate v4 UUIDs instantly. Bulk generate up to 100. Copy all with one click.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "UUID Generator",
+    "url": "https://devutils.com/uuid-generator.html",
+    "description": "Generate v4 UUIDs instantly. Bulk generate, copy all with one click.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a UUID?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized as RFC 4122. It is represented as 32 hexadecimal digits in the format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. UUIDs are designed to be unique across space and time without a central authority to coordinate generation." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between UUID v1, v4, and v5?",
+        "acceptedAnswer": { "@type": "Answer", "text": "UUID v1 is based on the current timestamp and MAC address. UUID v4 is randomly generated — it has no structure and is the most widely used version for generating unique IDs in applications. UUID v5 is deterministic — the same name and namespace always produce the same UUID using SHA-1 hashing." }
+      },
+      {
+        "@type": "Question",
+        "name": "Are v4 UUIDs truly unique?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Statistically yes. A v4 UUID has 122 random bits, meaning the probability of generating the same UUID twice is 1 in 2^122 — astronomically small. You would need to generate approximately 2.71 quintillion UUIDs to have a 50% chance of a single collision." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between UUID and GUID?",
+        "acceptedAnswer": { "@type": "Answer", "text": "GUID (Globally Unique Identifier) is Microsoft's implementation of UUID. They are technically the same format. GUID is the term used in Windows, .NET, and SQL Server, while UUID is the term used in the RFC standard and most other environments (Linux, Java, databases)." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use UUID as a database primary key?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, UUID is widely used as a primary key. Benefits: globally unique across distributed systems, no auto-increment reveals record count, safe to generate client-side. Downsides: 16 bytes vs 4-8 bytes for an integer, random UUIDs cause index fragmentation in B-tree indexes. UUID v7 (ordered) solves the fragmentation issue." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .uuid-list {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-height: 360px; overflow-y: auto;
+      font-family: var(--mono); font-size: 13px;
+    }
+    .uuid-item {
+      display: flex; align-items: center;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      transition: background .1s;
+    }
+    .uuid-item:last-child { border-bottom: none; }
+    .uuid-item:hover { background: var(--bg4); }
+    .uuid-num {
+      color: var(--text3); font-size: 11px;
+      width: 28px; flex-shrink: 0;
+    }
+    .uuid-val {
+      flex: 1; color: var(--accent); letter-spacing: .3px;
+      cursor: pointer; user-select: all;
+    }
+    .uuid-copy {
+      color: var(--text3); cursor: pointer;
+      background: none; border: none;
+      font-size: 12px; padding: 2px 8px;
+      border-radius: 4px; transition: color .1s, background .1s;
+    }
+    .uuid-copy:hover { color: var(--accent); background: var(--accent-dim); }
+
+    .controls-row {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .count-input { width: 80px; }
+
+    .options-row {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .opt {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--text2);
+      cursor: pointer; user-select: none;
+    }
+    .opt input[type="checkbox"] { accent-color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Generator</div>
+    <h1>UUID Generator Online</h1>
+    <p class="tool-description">
+      Generate cryptographically random v4 UUIDs instantly with this free online UUID generator. Bulk generate up to 100 UUIDs at once, copy individually or all together with one click, and download as a text file. Options include uppercase formatting, hyphen removal, and wrapping in curly braces for GUID-style output. This tool uses your browser's native <code style="font-family:var(--mono);font-size:13px;background:var(--bg3);padding:1px 5px;border-radius:3px">crypto.randomUUID()</code> API — the gold standard for cryptographically secure random ID generation. All UUIDs are generated entirely in your browser. Nothing is sent to a server. Works offline, no signup required.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">uuid-generator.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="controls-row">
+        <div>
+          <label>Count</label>
+          <input type="number" class="count-input" id="uuid-count" value="10" min="1" max="100">
+        </div>
+        <div style="align-self:flex-end">
+          <button class="btn btn-primary" onclick="generate()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Generate UUIDs
+          </button>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <label class="opt"><input type="checkbox" id="opt-upper"> Uppercase</label>
+        <label class="opt"><input type="checkbox" id="opt-no-hyphens"> Remove hyphens</label>
+        <label class="opt"><input type="checkbox" id="opt-braces"> Wrap in {braces}</label>
+      </div>
+
+      <!-- UUID List -->
+      <div class="output-label">
+        <span style="font-size:12px; color:var(--text3); font-weight:500; text-transform:uppercase; letter-spacing:.6px">Generated UUIDs</span>
+        <div style="display:flex; gap:6px">
+          <button class="btn btn-ghost" onclick="copyAll()">Copy all</button>
+          <button class="btn btn-ghost" onclick="downloadTxt()">Download .txt</button>
+        </div>
+      </div>
+
+      <div class="uuid-list" id="uuid-list">
+        <div style="padding:24px; text-align:center; color:var(--text3); font-size:13px">
+          Click "Generate UUIDs" to start
+        </div>
+      </div>
+
+      <div id="uuid-stats" style="margin-top:10px; font-size:12px; color:var(--text3); font-family:var(--mono)"></div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is a UUID?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A UUID (Universally Unique Identifier), also called GUID (Globally Unique Identifier), is a 128-bit identifier formatted as 32 hex digits in 5 groups: <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>. It is designed to be unique across distributed systems without a central coordinator. UUID is standardized in RFC 4122 and used in databases, APIs, file systems, and distributed architectures worldwide.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between UUID v1, v4, and v5?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>v1</strong> — timestamp + MAC address. Unique but reveals when and where it was generated, which is a privacy risk. <br><br>
+        <strong>v4</strong> — 122 bits of pure randomness. The most commonly used version. No structure, no reversibility. <br><br>
+        <strong>v5</strong> — deterministic: given the same name and namespace, you always get the same UUID (uses SHA-1). Good for content-addressed identifiers. <br><br>
+        <strong>v7</strong> — new standard: timestamp-ordered v4. Solves index fragmentation in databases while keeping randomness.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Are v4 UUIDs truly unique?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Statistically, yes. A v4 UUID has 122 random bits. The probability of generating even a single collision requires producing approximately <strong>2.71 quintillion UUIDs</strong>. For any real-world application, collisions are not a practical concern. This tool uses <code>crypto.randomUUID()</code> — a cryptographically secure random number generator — not <code>Math.random()</code>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        UUID vs GUID — what is the difference?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        They are the same format. GUID is Microsoft's term, used in Windows APIs, .NET, C#, and SQL Server. UUID is the RFC standard term, used in Linux, Java, Python, PostgreSQL, and most non-Microsoft ecosystems. Both are 128-bit identifiers in the same <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code> format.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Should I use UUID as a database primary key?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        UUIDs are excellent primary keys for distributed systems where you need to generate IDs on the client or across multiple services. Main benefits: globally unique, no ID enumeration attacks, client-generated. Main concern: random v4 UUIDs cause <strong>index fragmentation</strong> in MySQL/PostgreSQL B-tree indexes, which can harm write performance at scale. Solution: use UUID v7 (time-ordered) or ULID for high-write workloads.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I generate a UUID in JavaScript, Python, or Go?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>JavaScript (browser):</strong> <code>crypto.randomUUID()</code><br>
+        <strong>JavaScript (Node.js 14.17+):</strong> <code>require('crypto').randomUUID()</code><br>
+        <strong>Python:</strong> <code>import uuid; str(uuid.uuid4())</code><br>
+        <strong>Go:</strong> <code>import "github.com/google/uuid"; uuid.New().String()</code><br>
+        <strong>PostgreSQL:</strong> <code>SELECT gen_random_uuid();</code><br>
+        <strong>MySQL:</strong> <code>SELECT UUID();</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="unix-timestamp-converter.html">
+        <div class="related-icon">⏱</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UNIX Timestamp Converter</div>
+          <div class="related-card-desc">Epoch time to readable dates</div>
+        </div>
+      </a>
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>© 2025 DevUtils — UUID Generator Online</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+let uuids = [];
+
+function generate() {
+  const count = Math.min(Math.max(parseInt(document.getElementById('uuid-count').value) || 1, 1), 100);
+  const upper   = document.getElementById('opt-upper').checked;
+  const noHyph  = document.getElementById('opt-no-hyphens').checked;
+  const braces  = document.getElementById('opt-braces').checked;
+
+  uuids = Array.from({ length: count }, () => {
+    let u = crypto.randomUUID();
+    if (upper)  u = u.toUpperCase();
+    if (noHyph) u = u.replace(/-/g, '');
+    if (braces) u = `{${u}}`;
+    return u;
+  });
+
+  const list = document.getElementById('uuid-list');
+  list.innerHTML = uuids.map((u, i) =>
+    `<div class="uuid-item">
+      <span class="uuid-num">${i + 1}</span>
+      <span class="uuid-val" title="Click to copy" onclick="copyOne(this)">${u}</span>
+      <button class="uuid-copy" onclick="copyOne(this.previousElementSibling)">copy</button>
+    </div>`
+  ).join('');
+
+  document.getElementById('uuid-stats').textContent =
+    `${count} UUID${count > 1 ? 's' : ''} generated · ${uuids[0].length} chars each`;
+}
+
+function copyOne(el) {
+  navigator.clipboard.writeText(el.textContent);
+  el.style.color = 'var(--text)';
+  showToast();
+  setTimeout(() => el.style.color = '', 800);
+}
+
+function copyAll() {
+  if (!uuids.length) return;
+  navigator.clipboard.writeText(uuids.join('\n'));
+  showToast('All copied!');
+}
+
+function downloadTxt() {
+  if (!uuids.length) return;
+  const blob = new Blob([uuids.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `uuids-${Date.now()}.txt`;
+  a.click();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('copy-toast');
+  t.textContent = msg || 'Copied!';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// Generate on load
+generate();
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevUtils — Free Online Developer Tools | 28+ Tools for Base64, JSON, Regex, JWT & More</title>
+  <meta name="description" content="Free, fast, privacy-first developer tools. Encode Base64, format JSON, test regex, decode JWT, generate passwords, convert cases, minify CSS/JS, compare text, create QR codes, analyze IPs and more — all in your browser, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="DevUtils — Free Online Developer Tools">
+  <meta property="og:description" content="Fast, privacy-first developer micro-tools. No signup. Works offline.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "DevUtils",
+    "url": "https://devutils.com",
+    "description": "Free online developer tools — Base64, JSON, UUID, JWT, timestamps and more",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://devutils.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <style>
+    .hero {
+      text-align: center;
+      padding: 72px 0 56px;
+      position: relative;
+      animation: fadeInUp .6s var(--ease-out);
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(0,208,132,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+      animation: fadeIn .5s var(--ease-out) .1s both;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 600; line-height: 1.15;
+      margin-bottom: 16px;
+      animation: fadeInUp .6s var(--ease-out) .15s both;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      color: var(--text2); font-size: 15px;
+      max-width: 480px; margin: 0 auto 32px;
+      animation: fadeInUp .6s var(--ease-out) .25s both;
+    }
+    .hero-stats {
+      display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+      animation: fadeInUp .6s var(--ease-out) .35s both;
+    }
+    .stat {
+      text-align: center; padding: 12px 8px;
+      border-radius: var(--radius);
+      transition: transform .2s var(--ease-spring), background .2s;
+    }
+    .stat:hover { transform: translateY(-2px); background: var(--accent-dim); }
+    .stat-num { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+    .search-bar {
+      position: relative; margin-bottom: 40px;
+      animation: fadeInUp .6s var(--ease-out) .4s both;
+    }
+    .search-bar input {
+      width: 100%; padding: 14px 44px 14px 18px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); color: var(--text);
+      font-size: 14px; font-family: var(--sans); outline: none;
+      transition: border-color .25s var(--ease-out), box-shadow .25s var(--ease-out), background .25s;
+    }
+    .search-bar input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(0,208,132,.08), 0 4px 20px rgba(0,0,0,.15);
+      background: var(--bg);
+    }
+    .search-bar input::placeholder { color: var(--text3); }
+    .search-icon {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); pointer-events: none; transition: color .2s;
+    }
+    .search-bar input:focus ~ .search-icon { color: var(--accent); }
+
+    /* Search results dropdown */
+    .search-results {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 6px;
+      max-height: 320px; overflow-y: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,.4);
+      z-index: 150; display: none;
+    }
+    .search-results.visible { display: block; }
+    .search-results a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: var(--radius);
+      color: var(--text); text-decoration: none; font-size: 13px;
+      transition: background .15s, transform .1s;
+    }
+    .search-results a:hover { background: var(--accent-dim); transform: translateX(2px); }
+    .search-results a .sr-icon {
+      width: 28px; height: 28px; border-radius: 6px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--accent); flex-shrink: 0;
+    }
+    .search-results a .sr-name { font-weight: 500; }
+    .search-results a .sr-desc { font-size: 11px; color: var(--text3); }
+    .search-results .sr-empty { padding: 16px; text-align: center; color: var(--text3); font-size: 13px; }
+
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text3); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px; padding-left: 2px;
+    }
+    .section-label::before {
+      content: ''; display: inline-block;
+      width: 3px; height: 12px; background: var(--accent);
+      border-radius: 2px; margin-right: 8px; vertical-align: middle;
+    }
+
+    /* Featured tools grid */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px; margin-bottom: 48px;
+      animation: fadeInUp .5s var(--ease-out) .45s both;
+    }
+    .feat-tile {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px 18px;
+      text-decoration: none; color: var(--text);
+      transition: border-color .25s var(--ease-out), transform .25s var(--ease-out),
+                  box-shadow .25s var(--ease-out), background .25s;
+      position: relative;
+    }
+    .feat-tile::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 50% 50%, rgba(0,208,132,.06) 0%, transparent 70%);
+      opacity: 0; transition: opacity .35s var(--ease-out); pointer-events: none;
+    }
+    .feat-tile:hover::before { opacity: 1; }
+    .feat-tile:hover {
+      border-color: rgba(0,208,132,.45); transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.3), 0 0 0 1px rgba(0,208,132,.12);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.05) 100%);
+    }
+    .feat-tile:active { transform: translateY(-1px); }
+    .feat-icon {
+      width: 38px; height: 38px; border-radius: 8px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 14px; color: var(--accent); flex-shrink: 0;
+      transition: transform .3s var(--ease-spring), background .25s;
+    }
+    .feat-tile:hover .feat-icon { transform: scale(1.1); background: var(--accent-dim); }
+    .feat-name { font-size: 13.5px; font-weight: 500; transition: color .2s; }
+    .feat-tile:hover .feat-name { color: var(--accent); }
+    .feat-desc { font-size: 11.5px; color: var(--text3); margin-top: 1px; }
+
+    /* Category cards */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px; margin-bottom: 48px;
+      animation: fadeInUp .5s var(--ease-out) .55s both;
+    }
+    .cat-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+      text-decoration: none; color: var(--text);
+      transition: border-color .3s var(--ease-out), transform .3s var(--ease-out),
+                  box-shadow .3s var(--ease-out), background .3s;
+      position: relative; overflow: hidden;
+    }
+    .cat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .cat-card:hover::before { opacity: 1; }
+    .cat-card:hover {
+      border-color: rgba(0,208,132,.3); transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.3), 0 0 40px -10px rgba(0,208,132,.1);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.04) 100%);
+    }
+    .cat-card:active { transform: translateY(-1px); }
+    .cat-icon {
+      width: 44px; height: 44px; border-radius: 10px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 16px; color: var(--accent);
+      margin-bottom: 14px;
+      transition: transform .3s var(--ease-spring), background .25s, box-shadow .25s;
+    }
+    .cat-card:hover .cat-icon {
+      transform: scale(1.1); background: var(--accent-dim);
+      box-shadow: 0 0 16px rgba(0,208,132,.15);
+    }
+    .cat-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; transition: color .2s; }
+    .cat-card:hover .cat-name { color: var(--accent); }
+    .cat-desc { font-size: 12.5px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
+    .cat-count {
+      font-family: var(--mono); font-size: 11px; color: var(--accent);
+      background: var(--accent-dim); border: 1px solid rgba(0,208,132,.15);
+      padding: 3px 10px; border-radius: 20px; display: inline-block;
+    }
+    .cat-tools-preview {
+      display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .cat-tools-preview span {
+      font-size: 10px; font-family: var(--mono); color: var(--text3);
+      background: var(--bg4); padding: 2px 7px; border-radius: 4px;
+    }
+
+    .cta-strip {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 28px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap; margin-top: 8px;
+      transition: border-color .3s var(--ease-out), box-shadow .3s;
+      animation: fadeInUp .6s var(--ease-out) .65s both;
+      position: relative; overflow: hidden;
+    }
+    .cta-strip::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,208,132,.3), transparent);
+    }
+    .cta-strip:hover { border-color: rgba(0,208,132,.15); box-shadow: 0 4px 24px rgba(0,0,0,.15); }
+    .cta-strip h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .cta-strip p { font-size: 13px; color: var(--text2); }
+    .privacy-points { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; }
+    .pp {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px; color: var(--text2); padding: 4px 0; transition: color .2s;
+    }
+    .pp:hover { color: var(--text); }
+    .pp::before {
+      content: ''; width: 16px; height: 16px; border-radius: 50%;
+      background: var(--accent-dim); border: 1px solid rgba(0,208,132,.25);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2300d084' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: center;
+    }
+
+    @media (max-width: 600px) {
+      .featured-grid, .cat-grid { grid-template-columns: 1fr; }
+      .cta-strip { padding: 22px 20px; }
+      .hero { padding: 48px 0 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">8 tools</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">7 tools</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security & Hashing</div><div class="dd-count">2 tools</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">6 tools</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">3 tools</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">2 tools</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+  <section class="hero">
+    <p class="hero-eyebrow">Free · Instant · No Signup</p>
+    <h1>Developer tools that<br><span>actually work fast</span></h1>
+    <p class="hero-sub">Micro-tools for everyday dev tasks. Everything runs in your browser — nothing is sent to a server.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">28</div><div class="stat-label">Tools live</div></div>
+      <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Forever free</div></div>
+      <div class="stat"><div class="stat-num">0ms</div><div class="stat-label">Server calls</div></div>
+    </div>
+  </section>
+
+  <div class="search-bar">
+    <input type="text" id="tool-search" placeholder="Search tools — base64, json, regex, jwt, color, ip, slug..." autocomplete="off">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <p class="section-label">Popular Tools</p>
+  <div class="featured-grid">
+    <a class="feat-tile" href="json-formatter.html">
+      <div class="feat-icon">{ }</div>
+      <div><div class="feat-name">JSON Formatter</div><div class="feat-desc">Pretty print & validate</div></div>
+    </a>
+    <a class="feat-tile" href="base64-encoder.html">
+      <div class="feat-icon">b64</div>
+      <div><div class="feat-name">Base64 Encoder</div><div class="feat-desc">Encode & decode text</div></div>
+    </a>
+    <a class="feat-tile" href="regex-tester.html">
+      <div class="feat-icon">.*</div>
+      <div><div class="feat-name">Regex Tester</div><div class="feat-desc">Test & debug patterns</div></div>
+    </a>
+    <a class="feat-tile" href="jwt-decoder.html">
+      <div class="feat-icon">jwt</div>
+      <div><div class="feat-name">JWT Decoder</div><div class="feat-desc">Inspect tokens & claims</div></div>
+    </a>
+    <a class="feat-tile" href="uuid-generator.html">
+      <div class="feat-icon">uid</div>
+      <div><div class="feat-name">UUID Generator</div><div class="feat-desc">Generate v4 UUIDs</div></div>
+    </a>
+    <a class="feat-tile" href="password-generator.html">
+      <div class="feat-icon">🔑</div>
+      <div><div class="feat-name">Password Generator</div><div class="feat-desc">Secure random passwords</div></div>
+    </a>
+    <a class="feat-tile" href="hash-generator.html">
+      <div class="feat-icon">#</div>
+      <div><div class="feat-name">Hash Generator</div><div class="feat-desc">MD5, SHA-256, SHA-512</div></div>
+    </a>
+    <a class="feat-tile" href="color-picker.html">
+      <div class="feat-icon">🎨</div>
+      <div><div class="feat-name">Color Palette</div><div class="feat-desc">Harmony & contrast checker</div></div>
+    </a>
+  </div>
+
+  <p class="section-label">Browse by Category</p>
+  <div class="cat-grid">
+    <a class="cat-card" href="encoding-tools.html">
+      <div class="cat-icon">b64</div>
+      <div class="cat-name">Encoding & Conversion</div>
+      <div class="cat-desc">Base64, URL encoding, hex conversion, image encoding, JSON to CSV, and number base conversion tools.</div>
+      <span class="cat-count">8 tools</span>
+      <div class="cat-tools-preview"><span>Base64</span><span>URL Encode</span><span>Hex→RGB</span><span>JSON→CSV</span><span>+4</span></div>
+    </a>
+    <a class="cat-card" href="generation-tools.html">
+      <div class="cat-icon">{ }</div>
+      <div class="cat-name">Generation & Formatting</div>
+      <div class="cat-desc">JSON formatting, UUID generation, QR codes, color palettes, slugs, lorem ipsum, and passwords.</div>
+      <span class="cat-count">7 tools</span>
+      <div class="cat-tools-preview"><span>JSON</span><span>UUID</span><span>QR Code</span><span>Password</span><span>+3</span></div>
+    </a>
+    <a class="cat-card" href="security-tools.html">
+      <div class="cat-icon">#</div>
+      <div class="cat-name">Security & Hashing</div>
+      <div class="cat-desc">JWT token decoding, MD5/SHA hash generation, file checksums, and token inspection tools.</div>
+      <span class="cat-count">2 tools</span>
+      <div class="cat-tools-preview"><span>JWT Decoder</span><span>Hash Generator</span></div>
+    </a>
+    <a class="cat-card" href="text-tools.html">
+      <div class="cat-icon">.*</div>
+      <div class="cat-name">Code & Text Tools</div>
+      <div class="cat-desc">Regex testing, text comparison, markdown editing, case conversion, string escaping, and regex explanation.</div>
+      <span class="cat-count">6 tools</span>
+      <div class="cat-tools-preview"><span>Regex</span><span>Diff</span><span>Markdown</span><span>Case</span><span>+2</span></div>
+    </a>
+    <a class="cat-card" href="devops-tools.html">
+      <div class="cat-icon">JS</div>
+      <div class="cat-name">Optimization & DevOps</div>
+      <div class="cat-desc">CSS and JavaScript minification, code beautification, and cron expression parsing.</div>
+      <span class="cat-count">3 tools</span>
+      <div class="cat-tools-preview"><span>CSS Minify</span><span>JS Minify</span><span>Cron</span></div>
+    </a>
+    <a class="cat-card" href="network-tools.html">
+      <div class="cat-icon">IP</div>
+      <div class="cat-name">Network & Time</div>
+      <div class="cat-desc">IP address validation, subnet calculation, timestamp conversion, and time difference calculation.</div>
+      <span class="cat-count">2 tools</span>
+      <div class="cat-tools-preview"><span>IP Lookup</span><span>Timestamp Diff</span></div>
+    </a>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <h3>Privacy by design</h3>
+      <p>Every tool runs 100% client-side. Your data never leaves your browser.</p>
+      <div class="privacy-points">
+        <span class="pp">No signup required</span>
+        <span class="pp">No server processing</span>
+        <span class="pp">Works offline</span>
+        <span class="pp">No data logging</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links">
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const allTools=[
+  {name:"Base64 Encoder / Decoder",href:"base64-encoder.html",icon:"b64",keys:"base64 encoder decoder encode decode",cat:"Encoding"},
+  {name:"UNIX Timestamp Converter",href:"unix-timestamp-converter.html",icon:"⏱",keys:"unix timestamp converter epoch time date",cat:"Encoding"},
+  {name:"URL Encoder / Decoder",href:"url-encoder.html",icon:"%",keys:"url encoder decoder percent encoding query string",cat:"Encoding"},
+  {name:"Hex to RGB Converter",href:"hex-to-rgb.html",icon:"🎨",keys:"hex to rgb rgba hsl color converter css",cat:"Encoding"},
+  {name:"HTML Entity Encoder",href:"html-entity.html",icon:"&",keys:"html entity encoder decoder special characters xss",cat:"Encoding"},
+  {name:"Image to Base64 Encoder",href:"base64-image.html",icon:"🖼",keys:"image to base64 encoder data uri png jpg svg",cat:"Encoding"},
+  {name:"JSON to CSV Converter",href:"json-to-csv.html",icon:"CSV",keys:"json to csv converter download excel google sheets",cat:"Encoding"},
+  {name:"Number Base Converter",href:"number-base.html",icon:"01",keys:"number base converter binary decimal hex octal radix",cat:"Encoding"},
+  {name:"UUID Generator",href:"uuid-generator.html",icon:"uid",keys:"uuid generator v4 guid unique id",cat:"Generation"},
+  {name:"JSON Formatter & Validator",href:"json-formatter.html",icon:"{ }",keys:"json formatter validator pretty print beautifier",cat:"Generation"},
+  {name:"Lorem Ipsum Generator",href:"lorem-ipsum.html",icon:"Aa",keys:"lorem ipsum generator placeholder dummy text",cat:"Generation"},
+  {name:"Password Generator",href:"password-generator.html",icon:"🔑",keys:"password generator strong random secure",cat:"Generation"},
+  {name:"QR Code Generator",href:"qr-generator.html",icon:"QR",keys:"qr code generator url wifi barcode",cat:"Generation"},
+  {name:"Color Palette Generator",href:"color-picker.html",icon:"🎨",keys:"color picker palette generator harmony complementary contrast",cat:"Generation"},
+  {name:"URL Slug Generator",href:"slug-generator.html",icon:"🔗",keys:"url slug generator seo friendly permalink kebab case",cat:"Generation"},
+  {name:"JWT Decoder & Inspector",href:"jwt-decoder.html",icon:"jwt",keys:"jwt decoder token inspector oauth bearer",cat:"Security"},
+  {name:"Hash Generator — MD5 / SHA",href:"hash-generator.html",icon:"#",keys:"hash generator md5 sha256 sha512 sha1 checksum",cat:"Security"},
+  {name:"Regex Tester & Debugger",href:"regex-tester.html",icon:".*",keys:"regex tester regular expression debugger pattern matcher",cat:"Text"},
+  {name:"Text Diff Checker",href:"text-diff.html",icon:"±",keys:"text diff checker compare side by side",cat:"Text"},
+  {name:"Markdown Editor & Preview",href:"markdown-preview.html",icon:"MD",keys:"markdown editor preview live github flavored gfm",cat:"Text"},
+  {name:"Regex Explainer",href:"regex-explainer.html",icon:"?=",keys:"regex explainer translator plain english breakdown",cat:"Text"},
+  {name:"String Case Converter",href:"case-converter.html",icon:"Aa",keys:"case converter camelcase snake_case kebab pascal title",cat:"Text"},
+  {name:"String Escape & Unescape",href:"string-escape.html",icon:"\\",keys:"string escape unescape json html url javascript backslash",cat:"Text"},
+  {name:"CSS Minifier & Beautifier",href:"css-minifier.html",icon:"CSS",keys:"css minifier beautifier compress optimize",cat:"DevOps"},
+  {name:"JavaScript Minifier",href:"js-minifier.html",icon:"JS",keys:"javascript minifier beautifier compress uglify js",cat:"DevOps"},
+  {name:"Cron Expression Generator",href:"cron-parser.html",icon:"⏰",keys:"cron expression generator parser crontab scheduler",cat:"DevOps"},
+  {name:"IP Address Lookup",href:"ip-lookup.html",icon:"IP",keys:"ip address lookup subnet calculator cidr ipv4 ipv6 network",cat:"Network"},
+  {name:"Timestamp Diff Calculator",href:"timestamp-diff.html",icon:"⏱",keys:"timestamp diff calculator time difference duration unix epoch",cat:"Network"}
+];
+
+const searchInput=document.getElementById('tool-search');
+const searchResults=document.getElementById('search-results');
+
+searchInput.addEventListener('input',()=>{
+  const q=searchInput.value.toLowerCase().trim();
+  if(!q){searchResults.classList.remove('visible');return}
+  const matches=allTools.filter(t=>(t.name+' '+t.keys).toLowerCase().includes(q));
+  if(!matches.length){
+    searchResults.innerHTML='<div class="sr-empty">No tools found for "'+q+'"</div>';
+  } else {
+    searchResults.innerHTML=matches.map(t=>'<a href="'+t.href+'"><div class="sr-icon">'+t.icon+'</div><div><div class="sr-name">'+t.name+'</div><div class="sr-desc">'+t.cat+'</div></div></a>').join('');
+  }
+  searchResults.classList.add('visible');
+});
+
+searchInput.addEventListener('blur',()=>{setTimeout(()=>searchResults.classList.remove('visible'),200)});
+searchInput.addEventListener('focus',()=>{if(searchInput.value.trim())searchInput.dispatchEvent(new Event('input'))});
+
+// Close dropdown when clicking outside
+document.addEventListener('click',e=>{
+  const dd=document.getElementById('tools-dropdown');
+  if(dd && !dd.contains(e.target))dd.classList.remove('open');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Diff Checker Online — Compare Two Texts Free | DevUtils</title>
+  <meta name="description" content="Compare two texts side by side and find differences instantly. Highlights additions, deletions and modifications. Free online diff checker for code, JSON, HTML and plain text. No signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/text-diff">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Text Diff Checker — Compare Two Texts Online Free">
+  <meta property="og:description" content="Find differences between two texts instantly. Side-by-side comparison with highlighted changes.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Text Diff Checker","url":"https://devutils.com/text-diff.html","description":"Compare two texts and find differences with highlighted additions and deletions.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How do I compare two text files online?","acceptedAnswer":{"@type":"Answer","text":"Paste the original text in the left panel and the modified text in the right panel. The diff checker highlights additions (green), deletions (red), and unchanged lines. You can compare code, JSON, XML, HTML, or any plain text. All processing happens in your browser — no files are uploaded."}},
+    {"@type":"Question","name":"What is a diff checker and how does it work?","acceptedAnswer":{"@type":"Answer","text":"A diff checker compares two texts line by line and identifies differences using algorithms like the longest common subsequence (LCS). Lines present only in the original are marked as deletions, lines only in the modified version are additions, and matching lines are unchanged. This is the same concept behind git diff and code review tools."}},
+    {"@type":"Question","name":"What is the difference between unified diff and side-by-side diff?","acceptedAnswer":{"@type":"Answer","text":"Unified diff shows changes in a single column with + and - prefixes (like git diff output). Side-by-side diff shows the original and modified text in parallel columns, making it easier to visually compare changes. Side-by-side is better for reviewing; unified is more compact and commonly used in terminals and patches."}},
+    {"@type":"Question","name":"Can I compare code files online?","acceptedAnswer":{"@type":"Answer","text":"Yes. This diff checker works with any text format — JavaScript, Python, JSON, XML, HTML, CSS, YAML, SQL, and more. Paste your code in both panels to see line-by-line differences highlighted. For comparing entire files, copy-paste the file contents or use git diff for version-controlled files."}},
+    {"@type":"Question","name":"How do I find differences between two JSON files?","acceptedAnswer":{"@type":"Answer","text":"Paste both JSON documents into the left and right panels. The diff checker compares them line by line. For best results, format (pretty-print) both JSON objects first so that structural changes are visible on separate lines. Use our JSON Formatter tool to format JSON before comparing."}}
+  ]}
+  </script>
+
+  <style>
+    .diff-panels { display:grid; grid-template-columns:1fr 1fr; gap:0; margin-bottom:14px; }
+    @media(max-width:700px) { .diff-panels { grid-template-columns:1fr; } }
+    .diff-panel { }
+    .diff-panel:first-child textarea { border-radius:var(--radius) 0 0 var(--radius); border-right:none; }
+    .diff-panel:last-child textarea { border-radius:0 var(--radius) var(--radius) 0; }
+    @media(max-width:700px) {
+      .diff-panel:first-child textarea { border-radius:var(--radius) var(--radius) 0 0; border-right:1px solid var(--border); border-bottom:none; }
+      .diff-panel:last-child textarea { border-radius:0 0 var(--radius) var(--radius); }
+    }
+    .diff-panel textarea { min-height:200px; resize:vertical; width:100%; }
+    .diff-panel-label {
+      font-family:var(--mono); font-size:11px; color:var(--text3);
+      text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px;
+      display:flex; align-items:center; gap:6px;
+    }
+    .diff-panel-label .dot-sm { width:8px; height:8px; border-radius:50%; }
+    .dot-orig { background:var(--red); }
+    .dot-mod { background:var(--accent); }
+
+    .diff-output { font-family:var(--mono); font-size:13px; line-height:1.7; }
+    .diff-line { display:flex; padding:2px 0; border-bottom:1px solid rgba(42,47,54,.3); }
+    .diff-line-num { width:36px; text-align:right; padding-right:8px; color:var(--text3); font-size:11px; flex-shrink:0; user-select:none; }
+    .diff-line-content { flex:1; padding:1px 8px; white-space:pre-wrap; word-break:break-all; }
+    .diff-add { background:rgba(0,208,132,.1); }
+    .diff-add .diff-line-content { color:var(--accent); }
+    .diff-add .diff-line-num { color:rgba(0,208,132,.5); }
+    .diff-del { background:rgba(255,90,90,.08); }
+    .diff-del .diff-line-content { color:var(--red); }
+    .diff-del .diff-line-num { color:rgba(255,90,90,.4); }
+    .diff-prefix { font-weight:700; margin-right:4px; user-select:none; }
+    .diff-stats {
+      display:flex; gap:16px; margin-bottom:14px; font-family:var(--mono); font-size:12px;
+    }
+    .diff-stats span { display:flex; align-items:center; gap:4px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Developer Tool</div>
+    <h1>Text Diff Checker — Compare Two Texts</h1>
+    <p class="tool-description">
+      Compare two texts side by side and instantly find every difference. This free online diff checker highlights additions, deletions, and unchanged lines using a line-by-line comparison algorithm. Works with any text format — code (JavaScript, Python, Go), data formats (JSON, XML, YAML), configuration files, or plain text. Similar to <code>git diff</code> but in your browser. All processing runs client-side — nothing is uploaded to a server.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">text-diff.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="diff-panels">
+        <div class="diff-panel">
+          <div class="diff-panel-label"><span class="dot-sm dot-orig"></span> Original</div>
+          <textarea id="diff-a" placeholder="Paste original text here..." rows="8"></textarea>
+        </div>
+        <div class="diff-panel">
+          <div class="diff-panel-label"><span class="dot-sm dot-mod"></span> Modified</div>
+          <textarea id="diff-b" placeholder="Paste modified text here..." rows="8"></textarea>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="runDiff()">Compare</button>
+        <button class="btn btn-secondary" onclick="swapPanels()">Swap</button>
+        <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="diff-stats" id="diff-stats" style="display:none">
+        <span style="color:var(--accent)">+ <span id="stat-add">0</span> additions</span>
+        <span style="color:var(--red)">− <span id="stat-del">0</span> deletions</span>
+        <span style="color:var(--text3)"><span id="stat-same">0</span> unchanged</span>
+      </div>
+
+      <div class="output-block diff-output" id="diff-output" style="color:var(--text2);font-style:italic;min-height:80px">
+        Click "Compare" to see differences...
+      </div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I compare two text files online?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Paste the <strong>original text</strong> in the left panel and the <strong>modified text</strong> in the right panel, then click "Compare." The diff checker highlights additions (green with +), deletions (red with −), and unchanged lines. You can compare code, JSON, XML, HTML, config files, or any plain text. All comparison happens in your browser — nothing is uploaded to any server.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is a diff checker and how does it work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">A diff checker compares two texts <strong>line by line</strong> and identifies differences using algorithms like the longest common subsequence (LCS). Lines present only in the original are marked as <strong>deletions</strong> (−), lines only in the modified version are <strong>additions</strong> (+), and matching lines remain unchanged. This is the same concept behind <code>git diff</code>, GitHub pull request reviews, and code review tools.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between unified diff and side-by-side diff?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Unified diff</strong> shows changes in a single column with <code>+</code> and <code>-</code> prefixes — this is what <code>git diff</code> produces. <strong>Side-by-side diff</strong> shows original and modified text in parallel columns. Unified is more compact and commonly used in terminals, patches, and email; side-by-side is better for visual code reviews. This tool shows unified-style output.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I compare JSON files with this tool?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Yes. Paste both JSON documents into the panels and click Compare. For best results, <strong>pretty-print both JSON objects first</strong> so structural changes appear on separate lines. Use our <a href="json-formatter.html" style="color:var(--accent)">JSON Formatter</a> to format JSON before comparing — this ensures keys and values are on individual lines, making the diff much more readable.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is my data safe when comparing texts?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Yes.</strong> All comparison processing happens entirely in your browser using JavaScript. No text is ever sent to a server, stored, or logged. The tool works fully offline once loaded. You can safely compare sensitive code, configuration files, API responses, and credentials without privacy concerns.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+      <a class="related-card" href="regex-tester.html"><div class="related-icon">.*</div><div class="related-card-info"><div class="related-card-name">Regex Tester</div><div class="related-card-desc">Test regex patterns live</div></div></a>
+      <a class="related-card" href="hash-generator.html"><div class="related-icon">#</div><div class="related-card-info"><div class="related-card-name">Hash Generator</div><div class="related-card-desc">Generate MD5, SHA-256 hashes</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Text Diff Checker</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+// Simple LCS-based diff
+function diff(a, b) {
+  const linesA = a.split('\n');
+  const linesB = b.split('\n');
+  const m = linesA.length, n = linesB.length;
+
+  // Build LCS table
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = linesA[i-1] === linesB[j-1] ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+
+  // Backtrack
+  const result = [];
+  let i = m, j = n;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && linesA[i-1] === linesB[j-1]) {
+      result.unshift({ type: 'same', line: linesA[i-1], numA: i, numB: j });
+      i--; j--;
+    } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
+      result.unshift({ type: 'add', line: linesB[j-1], numB: j });
+      j--;
+    } else {
+      result.unshift({ type: 'del', line: linesA[i-1], numA: i });
+      i--;
+    }
+  }
+  return result;
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function runDiff() {
+  const a = document.getElementById('diff-a').value;
+  const b = document.getElementById('diff-b').value;
+  const outEl = document.getElementById('diff-output');
+
+  if (!a && !b) {
+    outEl.innerHTML = '<span style="color:var(--text2);font-style:italic">Paste text in both panels and click Compare</span>';
+    document.getElementById('diff-stats').style.display = 'none';
+    return;
+  }
+
+  const result = diff(a, b);
+  let adds = 0, dels = 0, same = 0;
+  let html = '';
+
+  result.forEach(r => {
+    if (r.type === 'same') {
+      same++;
+      html += '<div class="diff-line"><span class="diff-line-num">' + (r.numA||'') + '</span><span class="diff-line-content"><span class="diff-prefix" style="color:var(--text3)">&nbsp;</span>' + esc(r.line) + '</span></div>';
+    } else if (r.type === 'add') {
+      adds++;
+      html += '<div class="diff-line diff-add"><span class="diff-line-num">' + (r.numB||'') + '</span><span class="diff-line-content"><span class="diff-prefix">+</span>' + esc(r.line) + '</span></div>';
+    } else {
+      dels++;
+      html += '<div class="diff-line diff-del"><span class="diff-line-num">' + (r.numA||'') + '</span><span class="diff-line-content"><span class="diff-prefix">−</span>' + esc(r.line) + '</span></div>';
+    }
+  });
+
+  outEl.innerHTML = html || '<div style="color:var(--accent);padding:12px">✓ Both texts are identical</div>';
+  outEl.style.fontStyle = 'normal';
+
+  document.getElementById('stat-add').textContent = adds;
+  document.getElementById('stat-del').textContent = dels;
+  document.getElementById('stat-same').textContent = same;
+  document.getElementById('diff-stats').style.display = '';
+}
+
+function swapPanels() {
+  const a = document.getElementById('diff-a').value;
+  const b = document.getElementById('diff-b').value;
+  document.getElementById('diff-a').value = b;
+  document.getElementById('diff-b').value = a;
+}
+
+function clearAll() {
+  document.getElementById('diff-a').value = '';
+  document.getElementById('diff-b').value = '';
+  document.getElementById('diff-output').innerHTML = '<span style="color:var(--text2);font-style:italic">Click "Compare" to see differences...</span>';
+  document.getElementById('diff-stats').style.display = 'none';
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

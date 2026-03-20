@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Decoder Online — Decode &amp; Inspect JWT Tokens Free | DevUtils</title>
+  <meta name="description" content="Decode and inspect JWT tokens instantly. View header, payload, claims and expiration. Free online JWT decoder — no signup, works offline, nothing sent to a server.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/jwt-decoder">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="JWT Decoder Online — Free JWT Token Inspector">
+  <meta property="og:description" content="Decode JWT tokens, inspect header, payload and claims. Free, private, works offline.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JWT Decoder Online",
+    "url": "https://devutils.com/jwt-decoder.html",
+    "description": "Decode and inspect JWT tokens instantly. View header, payload and claims. Free online tool.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between decoding and verifying a JWT?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Decoding a JWT simply extracts the header and payload by Base64URL-decoding them — no secret key is needed. Verifying a JWT checks the signature against a secret or public key to confirm the token hasn't been tampered with. This tool decodes JWTs for inspection; always verify signatures server-side before trusting claims." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is it safe to decode a JWT token online?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It depends on the tool. This JWT decoder runs 100% in your browser — no data is ever sent to a server. Your token never leaves your device. Avoid online decoders that submit tokens to backend servers, as JWTs can contain sensitive user data and session information." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you decode a JWT without the secret key?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. JWT headers and payloads are Base64URL-encoded, not encrypted. Anyone can decode them without a key. The secret key is only needed to verify the signature. This is why you should never store sensitive data like passwords directly in a JWT payload." }
+      },
+      {
+        "@type": "Question",
+        "name": "What does the exp claim mean in a JWT?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The 'exp' (expiration time) claim identifies the time after which the JWT must not be accepted for processing. It is a UNIX timestamp (seconds since 1970-01-01). If the current time is past the exp value, the token is expired and should be rejected by the server." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I store sensitive data in a JWT?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. JWT payloads are only Base64URL-encoded, not encrypted. Anyone who intercepts a JWT can read its contents. Store only non-sensitive identifiers (user ID, role, permissions) in the payload. For truly confidential data, use JWE (JSON Web Encryption) or keep the data server-side." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between JWT and JWE?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A JWT (JSON Web Token) with JWS (JSON Web Signature) has a readable payload signed for integrity — anyone can read the claims but can't modify them. A JWE (JSON Web Encryption) encrypts the payload so only authorized parties with the decryption key can read the contents. Use JWE when the payload itself must remain confidential." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .jwt-parts { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+    .jwt-part {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: border-color .2s;
+    }
+    .jwt-part:hover { border-color: var(--border2); }
+    .jwt-part-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg4);
+      border-bottom: 1px solid var(--border);
+    }
+    .jwt-part-label {
+      font-family: var(--mono); font-size: 11px;
+      font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .jwt-part-label.header-label { color: #ff6b6b; }
+    .jwt-part-label.payload-label { color: #a78bfa; }
+    .jwt-part-label.sig-label { color: #4ecdc4; }
+    .jwt-part-body {
+      padding: 14px;
+      font-family: var(--mono); font-size: 13px;
+      color: var(--text); white-space: pre-wrap; word-break: break-all;
+      line-height: 1.65;
+    }
+    .claim-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .claim-row:last-child { border-bottom: none; }
+    .claim-key { color: var(--accent); font-weight: 500; }
+    .claim-val { color: var(--text2); text-align: right; max-width: 60%; word-break: break-all; }
+    .claim-time { font-size: 11px; color: var(--text3); display: block; }
+    .jwt-color-header { color: #ff6b6b; }
+    .jwt-color-payload { color: #a78bfa; }
+    .jwt-color-sig { color: #4ecdc4; }
+    .jwt-raw {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--text2); word-break: break-all; line-height: 1.6;
+      padding: 12px 14px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-top: 10px;
+    }
+    .exp-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 4px;
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .exp-valid { background: rgba(0,208,132,.12); color: var(--accent); }
+    .exp-expired { background: rgba(255,90,90,.12); color: var(--red); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Security Tool</div>
+    <h1>JWT Decoder &amp; Token Inspector</h1>
+    <p class="tool-description">
+      Decode any JSON Web Token (JWT) instantly and inspect its header, payload and claims. This free online JWT decoder parses tokens compliant with RFC 7519, displays registered claims like <code>iss</code>, <code>sub</code>, <code>exp</code>, <code>iat</code>, and highlights token expiration status in real time. Paste an OAuth bearer token, an API access token, or any JWS to view its decoded contents. All processing runs entirely in your browser — your token never leaves your device.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">jwt-decoder.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Paste your JWT token</label>
+      <textarea id="jwt-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" oninput="decodeJWT()" rows="4"></textarea>
+
+      <div id="jwt-error" style="display:none"></div>
+
+      <div id="jwt-result" style="display:none">
+        <div class="divider"></div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px">
+          <label style="margin:0">Token Status</label>
+          <span id="exp-status"></span>
+        </div>
+
+        <div class="jwt-parts">
+          <!-- Header -->
+          <div class="jwt-part">
+            <div class="jwt-part-header">
+              <span class="jwt-part-label header-label">Header (JOSE)</span>
+              <button class="btn btn-ghost" onclick="copyPart('header')">Copy</button>
+            </div>
+            <div class="jwt-part-body" id="jwt-header"></div>
+          </div>
+
+          <!-- Payload -->
+          <div class="jwt-part">
+            <div class="jwt-part-header">
+              <span class="jwt-part-label payload-label">Payload (Claims)</span>
+              <button class="btn btn-ghost" onclick="copyPart('payload')">Copy</button>
+            </div>
+            <div class="jwt-part-body" id="jwt-payload"></div>
+          </div>
+
+          <!-- Signature -->
+          <div class="jwt-part">
+            <div class="jwt-part-header">
+              <span class="jwt-part-label sig-label">Signature</span>
+              <button class="btn btn-ghost" onclick="copyPart('signature')">Copy</button>
+            </div>
+            <div class="jwt-part-body" id="jwt-signature" style="font-size:12px; color:var(--text2)"></div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <label>Claims Table</label>
+        <div id="jwt-claims"></div>
+
+        <div class="divider"></div>
+        <label>Color-Coded Raw Token</label>
+        <div class="jwt-raw" id="jwt-raw-colored"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between decoding and verifying a JWT?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        <strong>Decoding</strong> a JWT extracts the header and payload by Base64URL-decoding them — no secret key is needed. <strong>Verifying</strong> checks the cryptographic signature against a secret (HMAC) or public key (RSA/ECDSA) to confirm the token hasn't been tampered with. This tool decodes JWTs for inspection purposes. You should always verify signatures on your server before trusting any claims in production, as defined in <a href="https://datatracker.ietf.org/doc/html/rfc7519" style="color:var(--accent)">RFC 7519</a>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is it safe to decode a JWT token online?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        It depends on the tool. This JWT decoder runs <strong>100% in your browser</strong> using JavaScript — no data is ever sent to any server. Your token stays on your device. Avoid online decoders that submit tokens to backend APIs, because JWTs often contain user IDs, email addresses, roles, and session data that could be logged or intercepted.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Can you decode a JWT without the secret key?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Yes. A JWT consists of three Base64URL-encoded parts: header, payload, and signature. The header and payload are <strong>not encrypted</strong> — they are simply encoded. Anyone can decode them without any key. The secret key is only needed to <em>verify</em> the signature. This is why you should never store sensitive data like passwords or credit card numbers directly in a JWT payload.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What does the <code>exp</code> claim mean in a JWT?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        The <code>exp</code> (expiration time) claim is a registered JWT claim defined in RFC 7519. It specifies a UNIX timestamp (seconds since January 1, 1970 UTC) after which the token must not be accepted. If the current time exceeds the <code>exp</code> value, the token is expired. Servers should always check this claim. Common expiration times range from 15 minutes (access tokens) to 7 days (refresh tokens).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Should I store sensitive data in a JWT payload?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        No. JWT payloads are Base64URL-encoded, <strong>not encrypted</strong>. Anyone who intercepts a JWT can read its full payload. Store only non-sensitive identifiers (user ID, role, permissions) in the payload. For truly confidential data, use <strong>JWE</strong> (JSON Web Encryption) defined in RFC 7516, or keep the data server-side and reference it via a claim ID.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What are the registered claims in a JWT?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        RFC 7519 defines seven registered claims: <code>iss</code> (issuer), <code>sub</code> (subject), <code>aud</code> (audience), <code>exp</code> (expiration time), <code>nbf</code> (not before), <code>iat</code> (issued at), and <code>jti</code> (JWT ID). These are optional but recommended for interoperability. Most OAuth 2.0 and OpenID Connect implementations use these claims.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="url-encoder.html">
+        <div class="related-icon">%</div>
+        <div class="related-card-info">
+          <div class="related-card-name">URL Encoder / Decoder</div>
+          <div class="related-card-desc">Percent-encode and decode URLs</div>
+        </div>
+      </a>
+      <a class="related-card" href="hash-generator.html">
+        <div class="related-icon">#</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Hash Generator</div>
+          <div class="related-card-desc">Generate MD5, SHA-256, SHA-512 hashes</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — JWT Decoder Online</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const REGISTERED_CLAIMS = {
+  iss: 'Issuer', sub: 'Subject', aud: 'Audience',
+  exp: 'Expiration Time', nbf: 'Not Before', iat: 'Issued At', jti: 'JWT ID'
+};
+const TIME_CLAIMS = ['exp', 'nbf', 'iat'];
+
+let decodedHeader = '', decodedPayload = '', rawSignature = '';
+
+function base64UrlDecode(str) {
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+  const pad = str.length % 4;
+  if (pad) str += '='.repeat(4 - pad);
+  return atob(str);
+}
+
+function decodeJWT() {
+  const token = document.getElementById('jwt-input').value.trim();
+  const errEl = document.getElementById('jwt-error');
+  const resultEl = document.getElementById('jwt-result');
+
+  if (!token) {
+    errEl.style.display = 'none';
+    resultEl.style.display = 'none';
+    return;
+  }
+
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    errEl.style.display = '';
+    errEl.className = 'status status-err';
+    errEl.textContent = '\u2717 Invalid JWT — expected 3 parts separated by dots, got ' + parts.length;
+    resultEl.style.display = 'none';
+    return;
+  }
+
+  try {
+    const header = JSON.parse(base64UrlDecode(parts[0]));
+    const payload = JSON.parse(base64UrlDecode(parts[1]));
+    const sig = parts[2];
+
+    decodedHeader = JSON.stringify(header, null, 2);
+    decodedPayload = JSON.stringify(payload, null, 2);
+    rawSignature = sig;
+
+    errEl.style.display = 'none';
+    resultEl.style.display = '';
+
+    document.getElementById('jwt-header').textContent = decodedHeader;
+    document.getElementById('jwt-payload').textContent = decodedPayload;
+    document.getElementById('jwt-signature').textContent = sig;
+
+    // Expiration status
+    const expEl = document.getElementById('exp-status');
+    if (payload.exp) {
+      const now = Math.floor(Date.now() / 1000);
+      if (now > payload.exp) {
+        expEl.innerHTML = '<span class="exp-badge exp-expired">\u2717 Expired</span>';
+      } else {
+        const remaining = payload.exp - now;
+        const hrs = Math.floor(remaining / 3600);
+        const mins = Math.floor((remaining % 3600) / 60);
+        expEl.innerHTML = '<span class="exp-badge exp-valid">\u2713 Valid — expires in ' + hrs + 'h ' + mins + 'm</span>';
+      }
+    } else {
+      expEl.innerHTML = '<span class="exp-badge" style="background:var(--bg4);color:var(--text3)">No exp claim</span>';
+    }
+
+    // Claims table
+    const claimsEl = document.getElementById('jwt-claims');
+    let claimsHtml = '';
+    for (const [key, val] of Object.entries(payload)) {
+      const label = REGISTERED_CLAIMS[key] ? ' <span style="color:var(--text3);font-size:11px">(' + REGISTERED_CLAIMS[key] + ')</span>' : '';
+      let displayVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+      let timeStr = '';
+      if (TIME_CLAIMS.includes(key) && typeof val === 'number') {
+        const d = new Date(val * 1000);
+        timeStr = '<span class="claim-time">' + d.toUTCString() + '</span>';
+      }
+      claimsHtml += '<div class="claim-row"><span class="claim-key">' + key + label + '</span><span class="claim-val">' + escHtml(displayVal) + timeStr + '</span></div>';
+    }
+    claimsEl.innerHTML = claimsHtml || '<div style="color:var(--text3);font-size:13px">No claims found in payload</div>';
+
+    // Color-coded raw
+    document.getElementById('jwt-raw-colored').innerHTML =
+      '<span class="jwt-color-header">' + escHtml(parts[0]) + '</span>.<span class="jwt-color-payload">' + escHtml(parts[1]) + '</span>.<span class="jwt-color-sig">' + escHtml(parts[2]) + '</span>';
+
+  } catch(e) {
+    errEl.style.display = '';
+    errEl.className = 'status status-err';
+    errEl.textContent = '\u2717 Failed to decode JWT: ' + e.message;
+    resultEl.style.display = 'none';
+  }
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyPart(part) {
+  let text = '';
+  if (part === 'header') text = decodedHeader;
+  else if (part === 'payload') text = decodedPayload;
+  else text = rawSignature;
+  navigator.clipboard.writeText(text);
+  showToast();
+}
+
+function copyOutput(id) {
+  const text = document.getElementById(id).textContent;
+  if (text) { navigator.clipboard.writeText(text); showToast(); }
+}
+
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

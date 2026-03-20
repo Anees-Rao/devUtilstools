@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Optimization &amp; DevOps Tools &mdash; CSS/JS Minifier, Cron Parser | DevUtils</title>
+  <meta name="description" content="Free online optimization and DevOps tools for developers. CSS minifier and beautifier, JavaScript minifier and beautifier, and cron expression generator with human-readable descriptions. Optimize code for web performance, reduce bundle size, and schedule cron jobs — all client-side, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/devops-tools">
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Free Online Optimization &amp; DevOps Tools | DevUtils">
+  <meta property="og:description" content="CSS minifier, JavaScript minifier, and cron expression generator. Optimize code for faster page loads and schedule cron jobs — all client-side, no signup.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/devops-tools">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DevUtils Optimization & DevOps Tools",
+    "url": "https://devutils.com/devops-tools",
+    "description": "Free online optimization and DevOps tools for developers. CSS minifier and beautifier, JavaScript minifier and beautifier, and cron expression generator for scheduling cron jobs.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    .tool-header {
+      text-align: center;
+      padding: 56px 0 40px;
+      animation: fadeInUp .6s var(--ease-out);
+    }
+    .tool-badge {
+      display: inline-block;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 16px;
+      background: var(--accent-dim); border: 1px solid rgba(0,208,132,.15);
+      padding: 4px 14px; border-radius: 20px;
+    }
+    .tool-header h1 {
+      font-size: clamp(26px, 4.5vw, 40px);
+      font-weight: 600; line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .tool-description {
+      color: var(--text2); font-size: 15px;
+      max-width: 640px; margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .category-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--text3); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 16px; padding-left: 2px;
+    }
+    .category-label::before {
+      content: ''; display: inline-block;
+      width: 3px; height: 12px; background: var(--accent);
+      border-radius: 2px; margin-right: 8px; vertical-align: middle;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px; margin-bottom: 48px;
+      animation: fadeInUp .5s var(--ease-out) .2s both;
+    }
+
+    .tool-tile {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px 18px;
+      text-decoration: none; color: var(--text);
+      position: relative;
+      transition: border-color .25s var(--ease-out), transform .25s var(--ease-out),
+                  box-shadow .25s var(--ease-out), background .25s;
+    }
+    .tool-tile::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 50% 50%, rgba(0,208,132,.06) 0%, transparent 70%);
+      opacity: 0; transition: opacity .35s var(--ease-out); pointer-events: none;
+    }
+    .tool-tile:hover::before { opacity: 1; }
+    .tool-tile:hover {
+      border-color: rgba(0,208,132,.45); transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.3), 0 0 0 1px rgba(0,208,132,.12);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.05) 100%);
+    }
+    .tool-tile:active { transform: translateY(-1px); }
+
+    .tool-tile.featured {
+      border-color: rgba(0,208,132,.2);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.03) 100%);
+    }
+
+    .tile-icon {
+      width: 40px; height: 40px; border-radius: 8px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 14px; color: var(--accent); flex-shrink: 0;
+      transition: transform .3s var(--ease-spring), background .25s;
+    }
+    .tool-tile:hover .tile-icon { transform: scale(1.1); background: var(--accent-dim); }
+
+    .tile-body { flex: 1; min-width: 0; }
+    .tile-name { font-size: 13.5px; font-weight: 500; transition: color .2s; }
+    .tool-tile:hover .tile-name { color: var(--accent); }
+    .tile-desc { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+
+    .tile-badge {
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--mono); font-size: 9px; font-weight: 600;
+      color: var(--accent); background: var(--accent-dim);
+      border: 1px solid rgba(0,208,132,.2);
+      padding: 2px 8px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+
+    /* FAQ */
+    .faq-section { margin-bottom: 48px; }
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); margin-bottom: 10px;
+      overflow: hidden; transition: border-color .25s;
+    }
+    .faq-item:hover { border-color: rgba(0,208,132,.2); }
+    .faq-question {
+      width: 100%; padding: 18px 20px; background: none; border: none;
+      color: var(--text); font-family: var(--sans); font-size: 14px;
+      font-weight: 500; text-align: left; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-question .faq-arrow {
+      font-size: 12px; color: var(--text3);
+      transition: transform .25s var(--ease-out);
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-answer {
+      display: none; padding: 0 20px 18px;
+      color: var(--text2); font-size: 13.5px; line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* Related categories */
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px; margin-bottom: 48px;
+    }
+    .related-card {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px 18px;
+      text-decoration: none; color: var(--text);
+      transition: border-color .25s var(--ease-out), transform .25s var(--ease-out),
+                  box-shadow .25s var(--ease-out), background .25s;
+    }
+    .related-card:hover {
+      border-color: rgba(0,208,132,.45); transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.3), 0 0 0 1px rgba(0,208,132,.12);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.05) 100%);
+    }
+    .related-card .rc-icon {
+      width: 36px; height: 36px; border-radius: 8px; background: var(--bg4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 13px; color: var(--accent); flex-shrink: 0;
+    }
+    .related-card .rc-name { font-size: 13px; font-weight: 500; }
+    .related-card .rc-count { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+    @media (max-width: 600px) {
+      .tools-grid { grid-template-columns: 1fr; }
+      .related-grid { grid-template-columns: 1fr; }
+      .tool-header { padding: 40px 0 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security & Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <span class="tool-badge">Optimization &amp; DevOps</span>
+    <h1>Optimization &amp; DevOps Tools</h1>
+    <p class="tool-description">Speed up your websites and streamline your DevOps workflows with these free browser-based tools. Minify CSS to eliminate whitespace and reduce stylesheet file size for faster page loads, or beautify compressed CSS for readability and debugging. Compress JavaScript to shrink bundle sizes and improve web performance, or prettify minified JS when you need to inspect production code. Generate and parse cron expressions with human-readable schedule descriptions and upcoming run previews to simplify job scheduling in CI/CD pipelines and build automation &mdash; all running entirely client-side with no server calls and no signup required.</p>
+  </div>
+
+  <p class="category-label">3 Optimization &amp; DevOps Tools</p>
+  <div class="tools-grid">
+    <a class="tool-tile featured" href="css-minifier.html">
+      <div class="tile-icon">CSS</div>
+      <div class="tile-body">
+        <div class="tile-name">CSS Minifier &amp; Beautifier</div>
+        <div class="tile-desc">Minify CSS for faster page load or beautify minified CSS for readability.</div>
+      </div>
+      <span class="tile-badge">Popular</span>
+    </a>
+    <a class="tool-tile" href="js-minifier.html">
+      <div class="tile-icon">JS</div>
+      <div class="tile-body">
+        <div class="tile-name">JavaScript Minifier &amp; Beautifier</div>
+        <div class="tile-desc">Minify JS to reduce bundle size or beautify minified code for debugging.</div>
+      </div>
+    </a>
+    <a class="tool-tile" href="cron-parser.html">
+      <div class="tile-icon">&#9200;</div>
+      <div class="tile-body">
+        <div class="tile-name">Cron Expression Generator</div>
+        <div class="tile-desc">Parse and generate cron schedules with human-readable descriptions and next runs.</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- FAQ -->
+  <p class="category-label">Frequently Asked Questions</p>
+  <div class="faq-section">
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>What is CSS and JavaScript minification, and why does it matter?</span>
+        <span class="faq-arrow">&#9660;</span>
+      </button>
+      <div class="faq-answer">
+        Minification is the process of removing unnecessary characters from source code &mdash; whitespace, comments, line breaks, and sometimes shortening variable names &mdash; without changing the code's functionality. Minified CSS and JavaScript files are significantly smaller, which means faster downloads, reduced bandwidth usage, and improved page load times. This directly impacts user experience and SEO rankings, since search engines factor page speed into their algorithms. The CSS Minifier and JavaScript Minifier tools let you paste your code and get an optimized version instantly, right in the browser with no server uploads.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>When should I beautify minified code instead of minifying it?</span>
+        <span class="faq-arrow">&#9660;</span>
+      </button>
+      <div class="faq-answer">
+        Beautifying (or prettifying) minified code is essential when you need to read, debug, or understand compressed production code. If you encounter a minified CSS or JavaScript file from a third-party library, a production build, or a live website, beautifying it restores proper indentation, line breaks, and formatting so you can trace logic, find bugs, or learn how the code works. Both the CSS Minifier &amp; Beautifier and JavaScript Minifier &amp; Beautifier tools support toggling between minify and beautify modes, so you can switch between optimized output and human-readable formatting in a single click.
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span>How do cron expressions work and how can I build one?</span>
+        <span class="faq-arrow">&#9660;</span>
+      </button>
+      <div class="faq-answer">
+        A cron expression is a string of five (or six) fields that defines a recurring schedule: minute, hour, day of month, month, and day of week. Each field accepts specific values, ranges, wildcards, and step values to create anything from simple intervals like &ldquo;every 5 minutes&rdquo; to complex schedules like &ldquo;every weekday at 9:30 AM.&rdquo; The Cron Expression Generator tool lets you type or build an expression interactively, then shows a human-readable description of the schedule along with the next several execution times so you can verify it does exactly what you expect &mdash; perfect for setting up CI/CD pipelines, automated backups, or scheduled tasks in Linux and cloud environments.
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Categories -->
+  <p class="category-label">Other Categories</p>
+  <div class="related-grid">
+    <a class="related-card" href="encoding-tools.html">
+      <div class="rc-icon">b64</div>
+      <div>
+        <div class="rc-name">Encoding &amp; Conversion</div>
+        <div class="rc-count">8 tools</div>
+      </div>
+    </a>
+    <a class="related-card" href="generation-tools.html">
+      <div class="rc-icon">{ }</div>
+      <div>
+        <div class="rc-name">Generation &amp; Formatting</div>
+        <div class="rc-count">7 tools</div>
+      </div>
+    </a>
+    <a class="related-card" href="security-tools.html">
+      <div class="rc-icon">#</div>
+      <div>
+        <div class="rc-name">Security &amp; Hashing</div>
+        <div class="rc-count">2 tools</div>
+      </div>
+    </a>
+    <a class="related-card" href="text-tools.html">
+      <div class="rc-icon">.*</div>
+      <div>
+        <div class="rc-name">Code &amp; Text Tools</div>
+        <div class="rc-count">6 tools</div>
+      </div>
+    </a>
+    <a class="related-card" href="network-tools.html">
+      <div class="rc-icon">IP</div>
+      <div>
+        <div class="rc-name">Network &amp; Time</div>
+        <div class="rc-count">2 tools</div>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils &mdash; Optimization &amp; DevOps Tools</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  item.classList.toggle('open');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});
+</script>
+
+</body>
+</html>

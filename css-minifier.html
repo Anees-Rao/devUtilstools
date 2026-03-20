@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Minifier &amp; Beautifier Online — Compress CSS Free | DevUtils</title>
+  <meta name="description" content="Minify CSS to reduce file size and improve page speed, or beautify minified CSS for readability. Free online CSS minifier — optimize Core Web Vitals, no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/css-minifier">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="CSS Minifier & Beautifier — Compress CSS Online Free">
+  <meta property="og:description" content="Minify CSS for faster load times or beautify minified CSS. Improve Core Web Vitals.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"CSS Minifier & Beautifier","url":"https://devutils.com/css-minifier.html","description":"Minify CSS to reduce file size or beautify minified CSS for readability. Free online tool.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is CSS minification and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"CSS minification removes unnecessary whitespace, comments, and redundant code from stylesheets without changing functionality. This reduces file size, which means faster downloads, lower bandwidth costs, and improved page load speed. Smaller CSS files also reduce render-blocking time, directly improving Core Web Vitals scores like LCP and FCP."}},
+    {"@type":"Question","name":"How much can minifying CSS reduce file size?","acceptedAnswer":{"@type":"Answer","text":"Typical CSS minification reduces file size by 15-30%, depending on the original formatting. Well-commented stylesheets with lots of whitespace can see even greater reductions. Combined with gzip compression, total transfer size can be reduced by 70-90% from the original."}},
+    {"@type":"Question","name":"Does minifying CSS improve page speed and SEO?","acceptedAnswer":{"@type":"Answer","text":"Yes. CSS is render-blocking — browsers must download and parse all CSS before rendering the page. Smaller CSS files load faster, reducing First Contentful Paint (FCP) and Largest Contentful Paint (LCP). Google uses Core Web Vitals as ranking signals, so faster CSS directly contributes to better SEO rankings."}},
+    {"@type":"Question","name":"What is the difference between CSS minification and compression?","acceptedAnswer":{"@type":"Answer","text":"Minification removes unnecessary characters from the source code (whitespace, comments). Compression (gzip/brotli) is a server-level encoding that reduces transfer size by finding repeating patterns. They work together: minify your CSS first, then let the server compress it. Both are recommended for production."}},
+    {"@type":"Question","name":"Does CSS minification affect Core Web Vitals?","acceptedAnswer":{"@type":"Answer","text":"Yes, directly. CSS is render-blocking — the browser can't paint anything until CSS is parsed. Minified CSS loads faster, reducing FCP (First Contentful Paint) and LCP (Largest Contentful Paint). Since Google uses Core Web Vitals as ranking factors in 2026, minifying CSS is a low-effort, high-impact SEO optimization."}}
+  ]}
+  </script>
+
+  <style>
+    .size-stats {
+      display:flex; gap:16px; margin-top:12px; flex-wrap:wrap;
+    }
+    .size-stat {
+      background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);
+      padding:10px 14px; font-family:var(--mono); font-size:12px; text-align:center;
+      min-width:100px;
+    }
+    .size-stat-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .size-stat-val { font-size:16px; font-weight:600; }
+    .size-stat-val.green { color:var(--accent); }
+    .char-count { font-family:var(--mono); font-size:11px; color:var(--text3); text-align:right; margin-top:4px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Optimization Tool</div>
+    <h1>CSS Minifier &amp; Beautifier</h1>
+    <p class="tool-description">
+      Minify CSS to reduce file size and improve page load speed, or beautify minified CSS for readability. This free online CSS minifier removes whitespace, comments, and redundant formatting from your stylesheets to optimize Core Web Vitals. Smaller CSS files load faster, reducing First Contentful Paint (FCP) and Largest Contentful Paint (LCP) — both critical Google ranking factors in 2026. All processing runs in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">css-minifier.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('minify',this)">Minify</button>
+        <button class="tab" onclick="setMode('beautify',this)">Beautify</button>
+      </div>
+
+      <label>Paste your CSS</label>
+      <textarea id="css-input" placeholder="body {
+  margin: 0;
+  padding: 0;
+  /* Main font */
+  font-family: sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}" oninput="process()" rows="8"></textarea>
+      <div class="char-count" id="input-count">0 characters</div>
+
+      <div class="divider"></div>
+
+      <div class="output-label">
+        <label style="margin:0" id="output-label-text">Minified CSS</label>
+        <button class="btn btn-ghost" onclick="copyOutput()">Copy</button>
+      </div>
+      <div class="output-block" id="css-output" style="color:var(--text2);font-style:italic;max-height:300px;overflow:auto">Output will appear here...</div>
+
+      <div class="size-stats" id="size-stats" style="display:none">
+        <div class="size-stat"><div class="size-stat-label">Original</div><div class="size-stat-val" id="stat-original">0 B</div></div>
+        <div class="size-stat"><div class="size-stat-label">Output</div><div class="size-stat-val" id="stat-output">0 B</div></div>
+        <div class="size-stat"><div class="size-stat-label">Saved</div><div class="size-stat-val green" id="stat-saved">0%</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">What is CSS minification and why does it matter?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">CSS minification removes unnecessary whitespace, comments, line breaks, and redundant code from stylesheets <strong>without changing functionality</strong>. This reduces file size, which means faster downloads and lower bandwidth usage. Smaller CSS also reduces render-blocking time — browsers must fully parse CSS before painting the page, so every kilobyte saved improves <strong>First Contentful Paint (FCP)</strong> and <strong>Largest Contentful Paint (LCP)</strong>.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How much can minifying CSS reduce file size?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Typical minification reduces CSS file size by <strong>15–30%</strong>, depending on the original formatting style. Well-commented stylesheets with generous whitespace can see reductions of 40% or more. Combined with server-side <strong>gzip</strong> or <strong>brotli</strong> compression, total transfer size can be reduced by 70–90% from the original source.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Does minifying CSS improve SEO in 2026?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Yes.</strong> Google uses Core Web Vitals (LCP, INP, CLS) as ranking signals. CSS is render-blocking — the browser can't display anything until all CSS is downloaded and parsed. Minified CSS loads faster, directly improving LCP and FCP scores. It's one of the lowest-effort, highest-impact performance optimizations you can make for SEO.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between minification and compression?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Minification</strong> removes unnecessary characters from source code — whitespace, comments, semicolons. <strong>Compression</strong> (gzip/brotli) is server-level encoding that reduces transfer size by finding repeating byte patterns. They complement each other: minify first (removes redundancy), then compress (encoding). For best results, use both in your production build pipeline.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I beautify minified CSS?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Switch to the "Beautify" tab above and paste your minified CSS. The tool adds proper indentation, line breaks after each rule, and organizes selectors for readability. This is useful when debugging production CSS or reading third-party stylesheets that were shipped minified.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="js-minifier.html"><div class="related-icon">JS</div><div class="related-card-info"><div class="related-card-name">JavaScript Minifier</div><div class="related-card-desc">Minify and beautify JavaScript</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity Encoder</div><div class="related-card-desc">Encode and decode HTML entities</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Hex to RGB Converter</div><div class="related-card-desc">Convert hex colors to RGB/HSL</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — CSS Minifier & Beautifier</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+let currentMode = 'minify';
+function setMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('output-label-text').textContent = mode === 'minify' ? 'Minified CSS' : 'Beautified CSS';
+  process();
+}
+
+function minifyCSS(css) {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, '')  // Remove comments
+    .replace(/\s+/g, ' ')               // Collapse whitespace
+    .replace(/\s*([{}:;,>~+])\s*/g, '$1') // Remove spaces around symbols
+    .replace(/;}/g, '}')                // Remove last semicolon
+    .replace(/^\s+|\s+$/g, '')          // Trim
+    .trim();
+}
+
+function beautifyCSS(css) {
+  // First minify to normalize
+  let m = minifyCSS(css);
+  let out = '', indent = 0;
+  for (let i = 0; i < m.length; i++) {
+    const c = m[i];
+    if (c === '{') {
+      out += ' {\n' + '  '.repeat(indent + 1);
+      indent++;
+    } else if (c === '}') {
+      indent = Math.max(0, indent - 1);
+      out = out.trimEnd() + '\n' + '  '.repeat(indent) + '}\n' + (indent === 0 ? '\n' : '') + '  '.repeat(indent);
+    } else if (c === ';') {
+      out += ';\n' + '  '.repeat(indent);
+    } else if (c === ':' && m[i+1] !== ':') {
+      out += ': ';
+    } else if (c === ',') {
+      out += ', ';
+    } else {
+      out += c;
+    }
+  }
+  return out.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+}
+
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  return (b / 1024).toFixed(1) + ' KB';
+}
+
+function process() {
+  const input = document.getElementById('css-input').value;
+  const outEl = document.getElementById('css-output');
+  document.getElementById('input-count').textContent = input.length + ' characters';
+  if (!input.trim()) {
+    outEl.textContent = 'Output will appear here...';
+    outEl.style.fontStyle = 'italic'; outEl.style.color = 'var(--text2)';
+    document.getElementById('size-stats').style.display = 'none';
+    return;
+  }
+  const output = currentMode === 'minify' ? minifyCSS(input) : beautifyCSS(input);
+  outEl.textContent = output;
+  outEl.style.fontStyle = 'normal'; outEl.style.color = 'var(--text)';
+
+  const origSize = new TextEncoder().encode(input).length;
+  const outSize = new TextEncoder().encode(output).length;
+  const saved = origSize > 0 ? ((1 - outSize / origSize) * 100).toFixed(1) : 0;
+  document.getElementById('stat-original').textContent = formatBytes(origSize);
+  document.getElementById('stat-output').textContent = formatBytes(outSize);
+  document.getElementById('stat-saved').textContent = (saved > 0 ? '-' : '+') + Math.abs(saved) + '%';
+  document.getElementById('stat-saved').className = 'size-stat-val ' + (saved > 0 ? 'green' : '');
+  document.getElementById('size-stats').style.display = '';
+}
+
+function copyOutput() {
+  const t = document.getElementById('css-output').textContent;
+  if (t) { navigator.clipboard.writeText(t); showToast(); }
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

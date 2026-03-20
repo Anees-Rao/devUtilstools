@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNIX Timestamp Converter — Free Online Epoch Time Tool | DevUtils</title>
+  <meta name="description" content="Convert UNIX timestamps to human-readable dates and vice versa instantly. Live clock, bidirectional conversion, copy with one click. Free, no signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/unix-timestamp-converter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <meta property="og:title" content="UNIX Timestamp Converter — Free Online Epoch Time Tool">
+  <meta property="og:description" content="Convert epoch timestamps to readable dates instantly. Bidirectional, live clock, copy button. No signup.">
+  <meta property="og:url" content="https://devutils.com/unix-timestamp-converter">
+
+  <!-- WebApplication Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "UNIX Timestamp Converter",
+    "url": "https://devutils.com/unix-timestamp-converter.html",
+    "description": "Convert UNIX timestamps to human-readable dates and back. Free online tool, works in browser.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a UNIX timestamp?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A UNIX timestamp (also called epoch time) is the number of seconds that have elapsed since January 1, 1970 00:00:00 UTC, known as the Unix epoch. It is a widely used standard in programming for representing points in time as a single integer value, making date arithmetic simple and timezone-independent." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I convert a UNIX timestamp to a date?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Paste or type your UNIX timestamp (e.g. 1700000000) into the timestamp field on this page and the tool instantly shows the corresponding human-readable date and time in both UTC and your local timezone. You can also use JavaScript: new Date(timestamp * 1000).toISOString()." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the current UNIX timestamp?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The current UNIX timestamp is shown live at the top of this tool and updates every second. In JavaScript you can get it with Math.floor(Date.now() / 1000), and in Python with import time; int(time.time())." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does my timestamp have 13 digits instead of 10?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A 10-digit timestamp is in seconds. A 13-digit timestamp is in milliseconds (used by JavaScript's Date.now()). To convert milliseconds to seconds, divide by 1000. This tool auto-detects whether your input is in seconds or milliseconds." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this UNIX timestamp tool secure?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. All conversions happen entirely in your browser using JavaScript. No data is sent to any server. The tool works fully offline once the page is loaded." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum UNIX timestamp value?",
+        "acceptedAnswer": { "@type": "Answer", "text": "On 32-bit systems the maximum signed integer timestamp is 2147483647, which corresponds to January 19, 2038 — the Year 2038 problem. On 64-bit systems (modern Linux, macOS, Windows) the limit is effectively unlimited for practical purposes." }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    .live-clock {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 18px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .live-ts {
+      font-family: var(--mono); font-size: 22px;
+      font-weight: 700; color: var(--accent);
+      letter-spacing: -0.5px;
+    }
+    .live-ts-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; }
+    .live-date { font-family: var(--mono); font-size: 13px; color: var(--text2); }
+
+    .result-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media(max-width:560px){ .result-row { grid-template-columns: 1fr; } }
+
+    .result-box {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+    }
+    .result-box-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing:.5px; margin-bottom: 5px; }
+    .result-box-val { font-family: var(--mono); font-size: 13px; color: var(--text); word-break: break-all; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">Timestamp Tool</div>
+    <h1>UNIX Timestamp Converter</h1>
+    <p class="tool-description">
+      Convert between UNIX epoch timestamps and human-readable dates instantly with this free online timestamp converter. Paste any UNIX timestamp in seconds or milliseconds and get the full date breakdown in UTC, local time, ISO 8601 format, relative time, and day of the week. You can also convert any date string back to a UNIX timestamp. A live clock displays the current epoch time updating every second. Auto-detects whether your input is in seconds (10 digits) or milliseconds (13 digits). All processing runs entirely in your browser — no data is sent anywhere. Works offline, no signup required.
+    </p>
+  </div>
+
+  <!-- Live Clock -->
+  <div class="live-clock">
+    <div>
+      <div class="live-ts-label">Current UNIX timestamp</div>
+      <div class="live-ts" id="live-ts">—</div>
+    </div>
+    <div style="text-align:right">
+      <div class="live-ts-label">UTC time</div>
+      <div class="live-date" id="live-utc">—</div>
+    </div>
+  </div>
+
+  <!-- Tool Card -->
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+      <span class="tool-card-title">unix-timestamp-converter.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <!-- Mode Tabs -->
+      <div class="tabs">
+        <button class="tab active" onclick="setMode('ts2date',this)">Timestamp → Date</button>
+        <button class="tab" onclick="setMode('date2ts',this)">Date → Timestamp</button>
+      </div>
+
+      <!-- Timestamp to Date -->
+      <div id="mode-ts2date">
+        <label>UNIX Timestamp (seconds or milliseconds)</label>
+        <input type="number" id="ts-input" placeholder="e.g. 1700000000" oninput="convertTs()">
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="useNow()">Use current time</button>
+          <button class="btn btn-ghost" onclick="clearTs()">Clear</button>
+        </div>
+
+        <div id="ts-results" style="display:none; margin-top:18px;">
+          <div class="divider"></div>
+          <div class="result-row" style="margin-bottom:12px">
+            <div class="result-box">
+              <div class="result-box-label">UTC date & time</div>
+              <div class="result-box-val" id="res-utc">—</div>
+            </div>
+            <div class="result-box">
+              <div class="result-box-label">Local date & time</div>
+              <div class="result-box-val" id="res-local">—</div>
+            </div>
+          </div>
+          <div class="result-row" style="margin-bottom:12px">
+            <div class="result-box">
+              <div class="result-box-label">ISO 8601</div>
+              <div class="result-box-val" id="res-iso">—</div>
+            </div>
+            <div class="result-box">
+              <div class="result-box-label">Relative time</div>
+              <div class="result-box-val" id="res-relative">—</div>
+            </div>
+          </div>
+          <div class="result-row">
+            <div class="result-box">
+              <div class="result-box-label">Day of week</div>
+              <div class="result-box-val" id="res-day">—</div>
+            </div>
+            <div class="result-box">
+              <div class="result-box-label">Milliseconds</div>
+              <div class="result-box-val" id="res-ms">—</div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn btn-ghost" onclick="copyVal('res-iso')">Copy ISO</button>
+            <button class="btn btn-ghost" onclick="copyVal('res-utc')">Copy UTC</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date to Timestamp -->
+      <div id="mode-date2ts" style="display:none">
+        <label>Date & Time (local timezone)</label>
+        <input type="text" id="date-input" placeholder="e.g. 2024-11-14 12:00:00" oninput="convertDate()">
+        <p class="text-sm text-dim mt-8">Accepts: YYYY-MM-DD HH:MM:SS, YYYY-MM-DD, or any parseable date string</p>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="useNowDate()">Use current time</button>
+          <button class="btn btn-ghost" onclick="clearDate()">Clear</button>
+        </div>
+
+        <div id="date-results" style="display:none; margin-top:18px">
+          <div class="divider"></div>
+          <div class="result-row">
+            <div class="result-box">
+              <div class="result-box-label">UNIX timestamp (seconds)</div>
+              <div class="result-box-val" id="res-unix">—</div>
+            </div>
+            <div class="result-box">
+              <div class="result-box-label">Milliseconds</div>
+              <div class="result-box-val" id="res-unix-ms">—</div>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:14px">
+            <button class="btn btn-ghost" onclick="copyVal('res-unix')">Copy seconds</button>
+            <button class="btn btn-ghost" onclick="copyVal('res-unix-ms')">Copy milliseconds</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is a UNIX timestamp?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A UNIX timestamp — also called epoch time — is the number of seconds elapsed since <strong>January 1, 1970 00:00:00 UTC</strong>, known as the Unix epoch. Because it's just an integer, it's easy to store, compare, and do arithmetic with. It's used in databases, APIs, log files, JWT tokens, and virtually every programming language. The timestamp is always in UTC, making it timezone-independent.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I get the current UNIX timestamp?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        The live timestamp above this tool updates every second. In code: JavaScript uses <code>Math.floor(Date.now() / 1000)</code>, Python uses <code>int(time.time())</code>, PHP uses <code>time()</code>, and Go uses <code>time.Now().Unix()</code>. On Linux/macOS terminal: <code>date +%s</code>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Why is my timestamp 13 digits instead of 10?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        A 10-digit timestamp is in <strong>seconds</strong>. A 13-digit timestamp is in <strong>milliseconds</strong> — commonly used in JavaScript (<code>Date.now()</code> returns milliseconds). This tool auto-detects the unit: any input over 10 digits is treated as milliseconds. To convert manually, divide by 1000 to get seconds.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the Year 2038 problem?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        On 32-bit systems, a signed 32-bit integer can store timestamps up to <code>2147483647</code>, which equals January 19, 2038 at 03:14:07 UTC. After that, the value overflows to a large negative number. Modern 64-bit systems don't have this problem — they can store timestamps far beyond the year 292 billion. Most modern software uses 64-bit timestamps.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is this tool secure? Is my data sent anywhere?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        All conversions happen entirely in your browser using JavaScript. No data is sent to any server at any time. The tool works fully offline after the page loads. We do not log inputs, timestamps, or any other usage data.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between UTC and local time?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        UTC (Coordinated Universal Time) is the global time standard with no timezone offset. A UNIX timestamp always represents a UTC moment. Local time is UTC adjusted by your system's timezone offset. For example, Pakistan Standard Time (PKT) is UTC+5, so a UTC time of 12:00 would show as 17:00 in local time.
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="base64-encoder.html">
+        <div class="related-icon">b64</div>
+        <div class="related-card-info">
+          <div class="related-card-name">Base64 Encoder / Decoder</div>
+          <div class="related-card-desc">Encode and decode Base64 strings</div>
+        </div>
+      </a>
+      <a class="related-card" href="uuid-generator.html">
+        <div class="related-icon">uid</div>
+        <div class="related-card-info">
+          <div class="related-card-name">UUID Generator</div>
+          <div class="related-card-desc">Generate v4 UUIDs in bulk</div>
+        </div>
+      </a>
+      <a class="related-card" href="json-formatter.html">
+        <div class="related-icon">{ }</div>
+        <div class="related-card-info">
+          <div class="related-card-name">JSON Formatter</div>
+          <div class="related-card-desc">Pretty print and validate JSON</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>© 2025 DevUtils — UNIX Timestamp Converter</div>
+  <div class="footer-links">
+    <a href="index.html">All Tools</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+// Live clock
+function updateClock() {
+  const now = Date.now();
+  const secs = Math.floor(now / 1000);
+  document.getElementById('live-ts').textContent = secs;
+  document.getElementById('live-utc').textContent = new Date(now).toUTCString().replace(' GMT', ' UTC');
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Mode toggle
+function setMode(mode, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mode-ts2date').style.display = mode === 'ts2date' ? '' : 'none';
+  document.getElementById('mode-date2ts').style.display = mode === 'date2ts' ? '' : 'none';
+}
+
+// Timestamp → Date
+function convertTs() {
+  const raw = document.getElementById('ts-input').value.trim();
+  if (!raw) { document.getElementById('ts-results').style.display = 'none'; return; }
+  let num = parseFloat(raw);
+  if (isNaN(num)) return;
+  // Auto-detect ms vs seconds
+  if (raw.length >= 13) num = num; // already ms
+  else num = num * 1000;          // convert to ms
+  const d = new Date(num);
+  if (isNaN(d.getTime())) return;
+
+  document.getElementById('res-utc').textContent     = d.toUTCString().replace(' GMT', ' UTC');
+  document.getElementById('res-local').textContent   = d.toLocaleString();
+  document.getElementById('res-iso').textContent     = d.toISOString();
+  document.getElementById('res-ms').textContent      = d.getTime() + ' ms';
+  document.getElementById('res-relative').textContent = relativeTime(d);
+  document.getElementById('res-day').textContent     = d.toLocaleDateString('en-US', { weekday: 'long' });
+  document.getElementById('ts-results').style.display = '';
+}
+
+function relativeTime(d) {
+  const diff = Date.now() - d.getTime();
+  const abs = Math.abs(diff);
+  const future = diff < 0;
+  const sec = Math.floor(abs / 1000);
+  const min = Math.floor(sec / 60);
+  const hr  = Math.floor(min / 60);
+  const day = Math.floor(hr / 24);
+  let str;
+  if (day > 365) str = Math.floor(day/365) + ' years';
+  else if (day > 30) str = Math.floor(day/30) + ' months';
+  else if (day > 0) str = day + ' day' + (day > 1 ? 's' : '');
+  else if (hr > 0)  str = hr + ' hour' + (hr > 1 ? 's' : '');
+  else if (min > 0) str = min + ' minute' + (min > 1 ? 's' : '');
+  else str = sec + ' second' + (sec !== 1 ? 's' : '');
+  return future ? 'in ' + str : str + ' ago';
+}
+
+function useNow() {
+  document.getElementById('ts-input').value = Math.floor(Date.now() / 1000);
+  convertTs();
+}
+function clearTs() {
+  document.getElementById('ts-input').value = '';
+  document.getElementById('ts-results').style.display = 'none';
+}
+
+// Date → Timestamp
+function convertDate() {
+  const raw = document.getElementById('date-input').value.trim();
+  if (!raw) { document.getElementById('date-results').style.display = 'none'; return; }
+  const d = new Date(raw);
+  if (isNaN(d.getTime())) return;
+  const secs = Math.floor(d.getTime() / 1000);
+  document.getElementById('res-unix').textContent    = secs;
+  document.getElementById('res-unix-ms').textContent = d.getTime();
+  document.getElementById('date-results').style.display = '';
+}
+
+function useNowDate() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('date-input').value =
+    `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ` +
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  convertDate();
+}
+function clearDate() {
+  document.getElementById('date-input').value = '';
+  document.getElementById('date-results').style.display = 'none';
+}
+
+// Copy utility
+function copyVal(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text);
+  showToast();
+}
+function showToast() {
+  const t = document.getElementById('copy-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// FAQ accordion
+function toggleFaq(el) {
+  el.parentElement.classList.toggle('open');
+}
+</script>
+
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>

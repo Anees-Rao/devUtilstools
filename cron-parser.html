@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cron Expression Generator &amp; Parser Online — Crontab Guru Alternative | DevUtils</title>
+  <meta name="description" content="Generate, parse and validate cron expressions with human-readable descriptions and next run times. Free crontab guru alternative — supports standard 5-field cron syntax. No signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/cron-parser">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <meta property="og:title" content="Cron Expression Generator & Parser — Free Crontab Tool">
+  <meta property="og:description" content="Parse cron expressions to human-readable text. Generate cron schedules with next run times.">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Cron Expression Generator & Parser","url":"https://devutils.com/cron-parser.html","description":"Generate and parse cron expressions with human-readable descriptions and next run times.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"What is a cron expression and how does it work?","acceptedAnswer":{"@type":"Answer","text":"A cron expression is a string of five fields (minute, hour, day-of-month, month, day-of-week) that defines a recurring schedule. Each field can contain specific values, ranges, wildcards (*), or step values (*/5). For example, '0 9 * * 1-5' means 'at 9:00 AM, Monday through Friday'. Cron is used in Unix/Linux, Kubernetes CronJobs, CI/CD pipelines, and task schedulers."}},
+    {"@type":"Question","name":"How do I schedule a cron job to run every 5 minutes?","acceptedAnswer":{"@type":"Answer","text":"Use the expression: */5 * * * * — this means 'every 5th minute of every hour, every day'. The */5 in the minute field is a step value. Similarly, */10 runs every 10 minutes, */15 every 15 minutes, and 0 * * * * runs at the top of every hour."}},
+    {"@type":"Question","name":"What are the five fields in a cron expression?","acceptedAnswer":{"@type":"Answer","text":"The five standard cron fields are: (1) Minute (0-59), (2) Hour (0-23), (3) Day of month (1-31), (4) Month (1-12 or JAN-DEC), (5) Day of week (0-7 or SUN-SAT, where 0 and 7 are both Sunday). Some systems add a 6th field for seconds or year."}},
+    {"@type":"Question","name":"What is the difference between standard cron and Quartz cron?","acceptedAnswer":{"@type":"Answer","text":"Standard (Unix) cron has 5 fields: minute, hour, day-of-month, month, day-of-week. Quartz cron (used in Java's Quartz Scheduler) has 6-7 fields adding seconds and optionally year. Quartz also supports 'L' (last), 'W' (weekday), '#' (nth weekday), and '?' (no specific value) — features not available in standard cron."}},
+    {"@type":"Question","name":"Can I use cron expressions on Windows?","acceptedAnswer":{"@type":"Answer","text":"Windows doesn't natively support cron syntax, but alternatives exist: Windows Task Scheduler has its own GUI and XML format. WSL (Windows Subsystem for Linux) supports standard cron. Many tools like Jenkins, GitHub Actions, and Kubernetes use cron expressions cross-platform regardless of the host OS."}}
+  ]}
+  </script>
+
+  <style>
+    .cron-fields { display:flex; gap:6px; align-items:flex-end; flex-wrap:wrap; margin-bottom:12px; }
+    .cron-field { display:flex; flex-direction:column; gap:3px; text-align:center; }
+    .cron-field label { font-size:9px; text-transform:uppercase; letter-spacing:.3px; color:var(--text3); margin:0; }
+    .cron-field input[type="text"] {
+      width:60px; text-align:center; font-family:var(--mono); font-size:16px; font-weight:600;
+      padding:10px 4px; background:var(--bg3); border:1px solid var(--border); color:var(--text);
+    }
+    .cron-field input:focus { border-color:var(--accent2); }
+    .cron-full {
+      font-family:var(--mono); font-size:18px; font-weight:600; color:var(--accent);
+      background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);
+      padding:14px; text-align:center; letter-spacing:2px; margin-bottom:14px;
+    }
+    .cron-desc {
+      font-size:15px; color:var(--text); text-align:center; margin-bottom:8px;
+      padding:12px; background:var(--accent-dim); border:1px solid rgba(0,208,132,.2);
+      border-radius:var(--radius);
+    }
+    .next-runs { margin-top:14px; }
+    .next-run {
+      display:flex; align-items:center; gap:8px;
+      padding:8px 0; border-bottom:1px solid var(--border);
+      font-family:var(--mono); font-size:12px;
+    }
+    .next-run:last-child { border-bottom:none; }
+    .next-run-idx { color:var(--accent); font-weight:600; width:20px; }
+    .next-run-date { color:var(--text); }
+    .next-run-rel { color:var(--text3); font-size:11px; }
+    .preset-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+    .preset-btn {
+      font-size:11px; padding:4px 10px; border-radius:var(--radius);
+      border:1px solid var(--border); background:var(--bg3); color:var(--text2);
+      cursor:pointer; font-family:var(--mono); transition:all .2s;
+    }
+    .preset-btn:hover { border-color:var(--accent2); color:var(--accent); background:var(--accent-dim); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
+        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div id="copy-toast">Copied!</div>
+
+<div class="wrapper">
+
+  <div class="tool-header">
+    <div class="tool-badge">DevOps Tool</div>
+    <h1>Cron Expression Generator &amp; Parser</h1>
+    <p class="tool-description">
+      Parse, generate, and validate cron expressions with instant human-readable descriptions and next scheduled run times. This free online crontab tool supports standard 5-field Unix cron syntax used in Linux crontab, Kubernetes CronJobs, GitHub Actions, Jenkins, and CI/CD pipelines. Enter a cron expression or use presets to build your schedule. A powerful alternative to crontab.guru — all processing runs in your browser.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div class="tool-card-header">
+      <div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div>
+      <span class="tool-card-title">cron-parser.tool</span>
+    </div>
+    <div class="tool-body">
+
+      <label>Quick Presets</label>
+      <div class="preset-row">
+        <button class="preset-btn" onclick="setCron('* * * * *')">Every minute</button>
+        <button class="preset-btn" onclick="setCron('*/5 * * * *')">Every 5 min</button>
+        <button class="preset-btn" onclick="setCron('*/15 * * * *')">Every 15 min</button>
+        <button class="preset-btn" onclick="setCron('0 * * * *')">Every hour</button>
+        <button class="preset-btn" onclick="setCron('0 0 * * *')">Daily midnight</button>
+        <button class="preset-btn" onclick="setCron('0 9 * * 1-5')">Weekdays 9 AM</button>
+        <button class="preset-btn" onclick="setCron('0 0 * * 0')">Weekly Sunday</button>
+        <button class="preset-btn" onclick="setCron('0 0 1 * *')">Monthly 1st</button>
+      </div>
+
+      <label>Cron Expression (5 Fields)</label>
+      <div class="cron-full" id="cron-display" contenteditable="false">*/5 * * * *</div>
+
+      <div class="cron-fields">
+        <div class="cron-field"><label>Minute</label><input type="text" id="f-min" value="*/5" oninput="parseCron()" spellcheck="false"></div>
+        <div class="cron-field"><label>Hour</label><input type="text" id="f-hour" value="*" oninput="parseCron()" spellcheck="false"></div>
+        <div class="cron-field"><label>Day (Month)</label><input type="text" id="f-dom" value="*" oninput="parseCron()" spellcheck="false"></div>
+        <div class="cron-field"><label>Month</label><input type="text" id="f-month" value="*" oninput="parseCron()" spellcheck="false"></div>
+        <div class="cron-field"><label>Day (Week)</label><input type="text" id="f-dow" value="*" oninput="parseCron()" spellcheck="false"></div>
+        <button class="btn btn-ghost" style="margin-left:8px" onclick="copyCron()">Copy</button>
+      </div>
+
+      <div id="cron-error" style="display:none"></div>
+      <div class="cron-desc" id="cron-desc">Every 5 minutes</div>
+
+      <div class="next-runs">
+        <label>Next 5 Scheduled Runs</label>
+        <div id="next-runs"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)">What is a cron expression and how does it work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">A cron expression is a string of <strong>five space-separated fields</strong> that defines a recurring schedule: <code>minute hour day-of-month month day-of-week</code>. Each field accepts specific values, ranges (<code>1-5</code>), wildcards (<code>*</code>), or step values (<code>*/5</code>). For example, <code>0 9 * * 1-5</code> means "at 9:00 AM, Monday through Friday." Cron originated in Unix but is now used in Kubernetes CronJobs, GitHub Actions, Jenkins, AWS CloudWatch, and many CI/CD systems.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How do I schedule a cron job to run every 5 minutes?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Use: <code>*/5 * * * *</code>. The <code>*/5</code> in the minute field is a step value meaning "every 5th minute." Similarly: <code>*/10 * * * *</code> for every 10 minutes, <code>*/15 * * * *</code> for every 15 minutes, <code>0 * * * *</code> for the top of every hour, and <code>0 */2 * * *</code> for every 2 hours at minute 0.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What are the five fields in a cron expression?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>1. Minute</strong> (0–59) — <strong>2. Hour</strong> (0–23) — <strong>3. Day of month</strong> (1–31) — <strong>4. Month</strong> (1–12 or JAN–DEC) — <strong>5. Day of week</strong> (0–7 or SUN–SAT, where both 0 and 7 = Sunday). Some extended cron systems (Quartz, AWS) add a 6th field for seconds and a 7th for year, but standard Unix cron uses exactly five fields.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between standard cron and Quartz cron?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a"><strong>Standard (Unix) cron</strong> has 5 fields: minute, hour, day-of-month, month, day-of-week. <strong>Quartz cron</strong> (Java's Quartz Scheduler) has 6–7 fields adding seconds and optionally year. Quartz also supports special characters: <code>L</code> (last day), <code>W</code> (nearest weekday), <code>#</code> (nth weekday of month), and <code>?</code> (no specific value). This tool parses standard 5-field Unix cron expressions.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I use cron expressions on Windows?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Windows doesn't natively support cron syntax — it uses <strong>Task Scheduler</strong> with its own GUI/XML format. However: <strong>WSL</strong> (Windows Subsystem for Linux) supports standard cron, and many cross-platform tools like <strong>Jenkins</strong>, <strong>GitHub Actions</strong>, <strong>Kubernetes</strong>, and <strong>Docker</strong> use cron expressions regardless of the host OS. You can also use Node.js libraries like <code>node-cron</code> on Windows.</div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="unix-timestamp-converter.html"><div class="related-icon">⏱</div><div class="related-card-info"><div class="related-card-name">UNIX Timestamp Converter</div><div class="related-card-desc">Convert epoch time to dates</div></div></a>
+      <a class="related-card" href="regex-tester.html"><div class="related-icon">.*</div><div class="related-card-info"><div class="related-card-name">Regex Tester</div><div class="related-card-desc">Test regular expressions live</div></div></a>
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div>&copy; 2025 DevUtils — Cron Expression Generator & Parser</div>
+  <div class="footer-links"><a href="index.html">All Tools</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+
+<script>
+const DOW_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const MON_NAMES = ['','January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function setCron(expr) {
+  const parts = expr.split(' ');
+  document.getElementById('f-min').value = parts[0] || '*';
+  document.getElementById('f-hour').value = parts[1] || '*';
+  document.getElementById('f-dom').value = parts[2] || '*';
+  document.getElementById('f-month').value = parts[3] || '*';
+  document.getElementById('f-dow').value = parts[4] || '*';
+  parseCron();
+}
+
+function getCron() {
+  return [
+    document.getElementById('f-min').value.trim() || '*',
+    document.getElementById('f-hour').value.trim() || '*',
+    document.getElementById('f-dom').value.trim() || '*',
+    document.getElementById('f-month').value.trim() || '*',
+    document.getElementById('f-dow').value.trim() || '*'
+  ].join(' ');
+}
+
+function describeField(field, names, unit) {
+  if (field === '*') return 'every ' + unit;
+  if (field.startsWith('*/')) return 'every ' + field.slice(2) + ' ' + unit + 's';
+  if (field.includes(',')) return unit + 's ' + field.split(',').map(v => names ? (names[parseInt(v)] || v) : v).join(', ');
+  if (field.includes('-')) {
+    const [a, b] = field.split('-');
+    return (names ? (names[parseInt(a)] || a) : a) + ' through ' + (names ? (names[parseInt(b)] || b) : b);
+  }
+  return (names ? (names[parseInt(field)] || field) : field);
+}
+
+function describeCron(expr) {
+  const [min, hour, dom, mon, dow] = expr.split(' ');
+  let parts = [];
+
+  if (expr === '* * * * *') return 'Every minute';
+  if (min.startsWith('*/') && hour === '*' && dom === '*' && mon === '*' && dow === '*')
+    return 'Every ' + min.slice(2) + ' minutes';
+  if (/^\d+$/.test(min) && hour === '*' && dom === '*' && mon === '*' && dow === '*')
+    return 'At minute ' + min + ' of every hour';
+  if (/^\d+$/.test(min) && /^\d+$/.test(hour)) {
+    const h = parseInt(hour); const ampm = h >= 12 ? 'PM' : 'AM';
+    const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+    parts.push('At ' + h12 + ':' + min.padStart(2, '0') + ' ' + ampm);
+  } else {
+    if (min !== '*') parts.push('minute ' + describeField(min, null, 'minute'));
+    if (hour !== '*') parts.push('hour ' + describeField(hour, null, 'hour'));
+  }
+
+  if (dom !== '*') parts.push('on day ' + dom + ' of the month');
+  if (mon !== '*') parts.push('in ' + describeField(mon, MON_NAMES, 'month'));
+  if (dow !== '*') parts.push('on ' + describeField(dow, DOW_NAMES, 'day'));
+
+  return parts.join(', ') || 'Every minute';
+}
+
+function expandField(field, min, max) {
+  if (field === '*') { const arr = []; for (let i = min; i <= max; i++) arr.push(i); return arr; }
+  if (field.startsWith('*/')) {
+    const step = parseInt(field.slice(2)); const arr = [];
+    for (let i = min; i <= max; i += step) arr.push(i);
+    return arr;
+  }
+  const vals = new Set();
+  field.split(',').forEach(part => {
+    if (part.includes('-')) {
+      const [a, b] = part.split('-').map(Number);
+      for (let i = a; i <= b; i++) vals.add(i);
+    } else {
+      vals.add(parseInt(part));
+    }
+  });
+  return [...vals].sort((a, b) => a - b);
+}
+
+function getNextRuns(expr, count) {
+  const [minF, hourF, domF, monF, dowF] = expr.split(' ');
+  const mins = expandField(minF, 0, 59);
+  const hours = expandField(hourF, 0, 23);
+  const doms = expandField(domF, 1, 31);
+  const mons = expandField(monF, 1, 12);
+  const dows = expandField(dowF, 0, 6);
+
+  const results = [];
+  const now = new Date();
+  const d = new Date(now);
+  d.setSeconds(0); d.setMilliseconds(0);
+  d.setMinutes(d.getMinutes() + 1);
+
+  const limit = 525600; // 1 year in minutes
+  for (let i = 0; i < limit && results.length < count; i++) {
+    const m = d.getMinutes(), h = d.getHours(), dom = d.getDate(), mon = d.getMonth() + 1, dow = d.getDay();
+    if (mins.includes(m) && hours.includes(h) && doms.includes(dom) && mons.includes(mon) && (dowF === '*' || dows.includes(dow))) {
+      results.push(new Date(d));
+    }
+    d.setMinutes(d.getMinutes() + 1);
+  }
+  return results;
+}
+
+function relTime(date) {
+  const diff = (date - new Date()) / 1000;
+  if (diff < 60) return 'in ' + Math.ceil(diff) + 's';
+  if (diff < 3600) return 'in ' + Math.ceil(diff / 60) + ' min';
+  if (diff < 86400) return 'in ' + Math.floor(diff / 3600) + 'h ' + Math.floor((diff % 3600) / 60) + 'm';
+  return 'in ' + Math.floor(diff / 86400) + ' days';
+}
+
+function parseCron() {
+  const expr = getCron();
+  document.getElementById('cron-display').textContent = expr;
+  const errEl = document.getElementById('cron-error');
+
+  try {
+    const desc = describeCron(expr);
+    document.getElementById('cron-desc').textContent = desc;
+    errEl.style.display = 'none';
+
+    const runs = getNextRuns(expr, 5);
+    let html = '';
+    runs.forEach((r, i) => {
+      html += '<div class="next-run"><span class="next-run-idx">' + (i + 1) + '</span><span class="next-run-date">' + r.toLocaleString() + '</span><span class="next-run-rel">' + relTime(r) + '</span></div>';
+    });
+    document.getElementById('next-runs').innerHTML = html || '<div style="color:var(--text3);font-size:13px">No runs found in the next year</div>';
+  } catch (e) {
+    errEl.style.display = '';
+    errEl.className = 'status status-err';
+    errEl.textContent = '\u2717 Invalid cron expression';
+  }
+}
+
+function copyCron() {
+  navigator.clipboard.writeText(getCron());
+  showToast();
+}
+
+function showToast() { const t=document.getElementById('copy-toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800); }
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+parseCron();
+</script>
+<script>document.addEventListener('click',e=>{const dd=document.getElementById('tools-dropdown');if(dd&&!dd.contains(e.target))dd.classList.remove('open')});</script>
+</body>
+</html>
