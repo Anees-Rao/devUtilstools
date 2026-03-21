@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte Converter Online — Data Size Unit Converter Free | DevUtils</title>
+  <meta name="description" content="Convert between bytes, KB, MB, GB, TB, PB and more. Support for both binary (KiB, MiB, GiB) and decimal (KB, MB, GB) units. Free data size calculator for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/byte-converter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Byte Converter Online — Data Size Unit Converter Free">
+  <meta property="og:description" content="Convert between bytes, KB, MB, GB, TB. Binary and decimal units. Free calculator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/byte-converter.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Byte Converter Online","url":"https://devutils.com/byte-converter.html","description":"Convert between data size units — bytes, KB, MB, GB, TB with binary and decimal support.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between KB and KiB (binary vs decimal)?","acceptedAnswer":{"@type":"Answer","text":"KB (kilobyte) uses the SI decimal standard where 1 KB = 1,000 bytes. KiB (kibibyte) uses the IEC binary standard where 1 KiB = 1,024 bytes. The distinction matters because hard drive manufacturers use decimal (making drives appear larger), while operating systems traditionally use binary (showing less usable space). The IEC introduced KiB, MiB, GiB notation in 1998 to eliminate this ambiguity."}},{"@type":"Question","name":"How many bytes are in a gigabyte?","acceptedAnswer":{"@type":"Answer","text":"In decimal (SI): 1 GB = 1,000,000,000 bytes (10^9). In binary (IEC): 1 GiB = 1,073,741,824 bytes (2^30). The difference is about 7.4%. For a 500 GB hard drive, that's roughly 35 GB of 'missing' space when your OS reports in GiB."}},{"@type":"Question","name":"Why does my hard drive show less space than advertised?","acceptedAnswer":{"@type":"Answer","text":"Hard drive manufacturers measure capacity in decimal gigabytes (1 GB = 1 billion bytes) because it yields larger numbers. Operating systems like Windows display sizes in binary gibibytes (1 GiB = 1,073,741,824 bytes). A 1 TB drive (1,000,000,000,000 bytes) shows as approximately 931 GiB in Windows. macOS switched to decimal display in 2009, so Mac users see the advertised size."}}]}
+  </script>
+  <style>
+    .byte-input-row{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
+    .byte-input-row input{flex:1;min-width:200px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:16px}
+    .byte-input-row input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .byte-input-row select{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px}
+    .byte-results{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+    .byte-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg)}
+    .byte-row:hover{background:var(--bg2)}
+    .byte-label{font-size:12px;color:var(--text3);font-family:var(--mono)}
+    .byte-label .full{color:var(--text2);font-size:11px;display:block;margin-top:2px}
+    .byte-value{font-family:var(--mono);font-size:14px;color:var(--text);font-weight:500;cursor:pointer;transition:color .2s}
+    .byte-value:hover{color:var(--accent)}
+    .byte-section-label{grid-column:1/-1;padding:8px 16px;background:var(--bg4);font-size:11px;font-family:var(--mono);color:var(--accent);text-transform:uppercase;letter-spacing:1px}
+    .byte-presets{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+    .byte-presets button{padding:5px 12px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .byte-presets button:hover{border-color:var(--accent);color:var(--accent)}
+    @media(max-width:600px){.byte-results{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Conversion</span>
+    <h1>Byte Converter</h1>
+    <p>Convert between data size units instantly. Supports both decimal (SI) units like KB, MB, GB and binary (IEC) units like KiB, MiB, GiB. Click any value to copy it.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="byte-input-row">
+        <input type="number" id="byte-input" value="1" min="0" step="any" placeholder="Enter value...">
+        <select id="byte-unit">
+          <option value="b">Bytes</option>
+          <option value="kb">KB (Kilobyte)</option>
+          <option value="mb" selected>MB (Megabyte)</option>
+          <option value="gb">GB (Gigabyte)</option>
+          <option value="tb">TB (Terabyte)</option>
+          <option value="pb">PB (Petabyte)</option>
+          <option value="kib">KiB (Kibibyte)</option>
+          <option value="mib">MiB (Mebibyte)</option>
+          <option value="gib">GiB (Gibibyte)</option>
+          <option value="tib">TiB (Tebibyte)</option>
+          <option value="bit">Bits</option>
+        </select>
+      </div>
+      <div class="byte-presets">
+        <button onclick="setPreset(1,'mb')">1 MB</button>
+        <button onclick="setPreset(1,'gb')">1 GB</button>
+        <button onclick="setPreset(4,'gb')">4 GB</button>
+        <button onclick="setPreset(8,'gb')">8 GB</button>
+        <button onclick="setPreset(1,'tb')">1 TB</button>
+        <button onclick="setPreset(64,'gb')">64 GB</button>
+        <button onclick="setPreset(256,'gb')">256 GB</button>
+      </div>
+      <div class="byte-results" id="byte-results"></div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between KB and KiB (binary vs decimal)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>KB</strong> (kilobyte) uses the SI decimal standard: 1 KB = 1,000 bytes. <strong>KiB</strong> (kibibyte) uses the IEC binary standard: 1 KiB = 1,024 bytes. The distinction matters because storage manufacturers use decimal (making drives appear larger), while operating systems traditionally use binary (showing less usable space). The IEC introduced binary prefixes (KiB, MiB, GiB) in 1998 to eliminate this confusion.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How many bytes are in a gigabyte?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">In decimal (SI): <strong>1 GB = 1,000,000,000 bytes</strong> (10<sup>9</sup>). In binary (IEC): <strong>1 GiB = 1,073,741,824 bytes</strong> (2<sup>30</sup>). The difference is about 7.4%. For a 500 GB hard drive, that translates to roughly 35 GB of apparent "missing" space when your OS reports in GiB.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does my hard drive show less space than advertised?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Drive manufacturers measure in decimal gigabytes (1 GB = 1 billion bytes) because it yields larger numbers for marketing. Windows displays sizes in binary gibibytes (1 GiB = 1,073,741,824 bytes). So a 1 TB drive (1,000,000,000,000 bytes) shows as ~931 GiB in Windows. macOS switched to decimal display in 2009, so Macs show the advertised capacity.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="number-base.html"><div class="related-icon">01</div><div class="related-card-info"><div class="related-card-name">Number Base Converter</div><div class="related-card-desc">Binary, octal, decimal, hex</div></div></a>
+      <a class="related-card" href="unix-timestamp-converter.html"><div class="related-icon">⏱</div><div class="related-card-info"><div class="related-card-name">UNIX Timestamp</div><div class="related-card-desc">Convert timestamps and dates</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Hex to RGB</div><div class="related-card-desc">Convert hex colors to RGB</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const units={
+  bit:{bytes:1/8,label:'Bits',full:'Bit'},
+  b:{bytes:1,label:'Bytes',full:'Byte'},
+  kb:{bytes:1e3,label:'KB',full:'Kilobyte (10³)'},
+  kib:{bytes:1024,label:'KiB',full:'Kibibyte (2¹⁰)'},
+  mb:{bytes:1e6,label:'MB',full:'Megabyte (10⁶)'},
+  mib:{bytes:Math.pow(1024,2),label:'MiB',full:'Mebibyte (2²⁰)'},
+  gb:{bytes:1e9,label:'GB',full:'Gigabyte (10⁹)'},
+  gib:{bytes:Math.pow(1024,3),label:'GiB',full:'Gibibyte (2³⁰)'},
+  tb:{bytes:1e12,label:'TB',full:'Terabyte (10¹²)'},
+  tib:{bytes:Math.pow(1024,4),label:'TiB',full:'Tebibyte (2⁴⁰)'},
+  pb:{bytes:1e15,label:'PB',full:'Petabyte (10¹⁵)'},
+  pib:{bytes:Math.pow(1024,5),label:'PiB',full:'Pebibyte (2⁵⁰)'},
+  eb:{bytes:1e18,label:'EB',full:'Exabyte (10¹⁸)'},
+  eib:{bytes:Math.pow(1024,6),label:'EiB',full:'Exbibyte (2⁶⁰)'}
+};
+
+function fmt(n){
+  if(n===0)return'0';
+  if(n>=1e15)return n.toExponential(4);
+  if(n<0.001&&n>0)return n.toExponential(4);
+  if(Number.isInteger(n)&&n<1e15)return n.toLocaleString('en-US');
+  const s=n.toPrecision(10);
+  return parseFloat(s).toLocaleString('en-US',{maximumFractionDigits:6});
+}
+
+function convert(){
+  const val=parseFloat(document.getElementById('byte-input').value)||0;
+  const unit=document.getElementById('byte-unit').value;
+  const bytes=val*units[unit].bytes;
+  const decimalUnits=['bit','b','kb','mb','gb','tb','pb','eb'];
+  const binaryUnits=['kib','mib','gib','tib','pib','eib'];
+  let html='<div class="byte-section-label">Decimal (SI) Units</div>';
+  decimalUnits.forEach(u=>{
+    const v=bytes/units[u].bytes;
+    html+=`<div class="byte-row"><div class="byte-label">${units[u].label}<span class="full">${units[u].full}</span></div><div class="byte-value" onclick="copyVal('${fmt(v)}')" title="Click to copy">${fmt(v)}</div></div>`;
+  });
+  html+='<div class="byte-section-label">Binary (IEC) Units</div>';
+  binaryUnits.forEach(u=>{
+    const v=bytes/units[u].bytes;
+    html+=`<div class="byte-row"><div class="byte-label">${units[u].label}<span class="full">${units[u].full}</span></div><div class="byte-value" onclick="copyVal('${fmt(v)}')" title="Click to copy">${fmt(v)}</div></div>`;
+  });
+  document.getElementById('byte-results').innerHTML=html;
+}
+
+function setPreset(val,unit){
+  document.getElementById('byte-input').value=val;
+  document.getElementById('byte-unit').value=unit;
+  convert();
+}
+
+function copyVal(v){
+  navigator.clipboard.writeText(v.replace(/,/g,''));
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+document.getElementById('byte-input').addEventListener('input',convert);
+document.getElementById('byte-unit').addEventListener('change',convert);
+convert();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

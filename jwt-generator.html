@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Generator Online — Create JSON Web Tokens Free | DevUtils</title>
+  <meta name="description" content="Generate JSON Web Tokens (JWT) online with custom headers, payload claims and HMAC-SHA256 signing. Set expiration, issuer, subject and custom claims. Free, client-side, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/jwt-generator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="JWT Generator Online — Create JSON Web Tokens Free">
+  <meta property="og:description" content="Generate JWT tokens with custom claims and HMAC signing. Free browser-based tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/jwt-generator.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"JWT Generator Online","url":"https://devutils.com/jwt-generator.html","description":"Generate JSON Web Tokens with custom headers, payload claims and HMAC-SHA signing.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a JSON Web Token (JWT) and what are its parts?","acceptedAnswer":{"@type":"Answer","text":"A JWT is a compact, URL-safe token defined by RFC 7519 for securely transmitting claims between parties. It consists of three Base64URL-encoded parts separated by dots: the Header (specifying algorithm and token type), the Payload (containing claims like issuer, subject, expiration), and the Signature (created by signing the header and payload with a secret key)."}},{"@type":"Question","name":"How do I set an expiration time on a JWT?","acceptedAnswer":{"@type":"Answer","text":"The 'exp' (expiration) claim is a Unix timestamp indicating when the token expires. For example, to expire in 1 hour, set exp to the current time plus 3600 seconds. Related claims include 'iat' (issued at) and 'nbf' (not before). This tool provides quick buttons to set common expiration periods like 1 hour, 24 hours, 7 days, and 30 days."}},{"@type":"Question","name":"Is it safe to generate JWT tokens in an online tool?","acceptedAnswer":{"@type":"Answer","text":"Yes, when the tool runs client-side. This JWT generator uses the Web Crypto API in your browser to perform HMAC-SHA signing. Your secret key and token data never leave your machine. For production use, always generate tokens server-side and never expose your signing secret in client-side code."}}]}
+  </script>
+  <style>
+    .jwt-form{display:grid;gap:16px}
+    .jwt-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .jwt-field label{display:block;font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:6px}
+    .jwt-field textarea{width:100%;height:140px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;line-height:1.5;tab-size:2}
+    .jwt-field textarea:focus,.jwt-field input:focus,.jwt-field select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .jwt-field input,.jwt-field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:var(--mono);font-size:13px}
+    .quick-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+    .quick-btns button{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .quick-btns button:hover{border-color:var(--accent);color:var(--accent)}
+    .jwt-output-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;word-break:break-all;font-family:var(--mono);font-size:13px;line-height:1.6;min-height:60px;margin-top:12px}
+    .jwt-header-part{color:#ff6b6b}
+    .jwt-payload-part{color:#a78bfa}
+    .jwt-sig-part{color:#4ecdc4}
+    .jwt-dot{color:var(--text3)}
+    .jwt-error{margin-top:8px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:var(--radius);color:#ff6b6b;font-size:12px;font-family:var(--mono);display:none}
+    @media(max-width:700px){.jwt-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Security</span>
+    <h1>JWT Generator</h1>
+    <p>Generate signed JSON Web Tokens with custom headers, payload claims and HMAC-SHA signing. Your secret key never leaves your browser — signing uses the Web Crypto API client-side.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="jwt-form">
+        <div class="jwt-row">
+          <div class="jwt-field">
+            <label>Algorithm</label>
+            <select id="jwt-alg">
+              <option value="HS256" selected>HS256 (HMAC-SHA256)</option>
+              <option value="HS384">HS384 (HMAC-SHA384)</option>
+              <option value="HS512">HS512 (HMAC-SHA512)</option>
+            </select>
+          </div>
+          <div class="jwt-field">
+            <label>Secret Key</label>
+            <input type="text" id="jwt-secret" value="your-256-bit-secret" placeholder="Enter signing secret...">
+          </div>
+        </div>
+        <div class="jwt-row">
+          <div class="jwt-field">
+            <label>Header (JSON)</label>
+            <textarea id="jwt-header" spellcheck="false">{
+  "alg": "HS256",
+  "typ": "JWT"
+}</textarea>
+          </div>
+          <div class="jwt-field">
+            <label>Payload (JSON)</label>
+            <textarea id="jwt-payload" spellcheck="false">{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "iat": 1516239022
+}</textarea>
+            <div class="quick-btns">
+              <button onclick="addExp(3600)">+exp 1h</button>
+              <button onclick="addExp(86400)">+exp 24h</button>
+              <button onclick="addExp(604800)">+exp 7d</button>
+              <button onclick="addExp(2592000)">+exp 30d</button>
+              <button onclick="addIat()">+iat now</button>
+              <button onclick="addJti()">+jti</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="generateJWT()">Generate JWT</button>
+          <button class="btn btn-ghost" onclick="clearJWT()">Clear</button>
+        </div>
+      </div>
+      <div class="jwt-error" id="jwt-error"></div>
+      <div class="jwt-output-box" id="jwt-output">
+        <span style="color:var(--text3)">Generated JWT will appear here...</span>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="copyJWT()">Copy JWT</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a JSON Web Token (JWT) and what are its parts?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A JWT is a compact, URL-safe token defined by RFC 7519 for securely transmitting claims between two parties. It has three Base64URL-encoded parts separated by dots: the <strong>Header</strong> (algorithm and token type), the <strong>Payload</strong> (claims like <code>iss</code>, <code>sub</code>, <code>exp</code>, <code>iat</code>), and the <strong>Signature</strong> (HMAC or RSA signature of the header and payload). JWTs are widely used in OAuth 2.0, OpenID Connect, and stateless API authentication.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I set an expiration time on a JWT?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The <code>exp</code> claim is a Unix timestamp (seconds since epoch) indicating when the token expires. To expire in 1 hour, set <code>exp</code> to the current time plus 3600. Common companion claims include <code>iat</code> (issued at — when the token was created) and <code>nbf</code> (not before — the token is invalid before this time). Use the quick buttons above to auto-fill these values.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it safe to generate JWT tokens in an online tool?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes, when the tool runs entirely client-side. This generator uses the browser's <strong>Web Crypto API</strong> (<code>crypto.subtle</code>) for HMAC-SHA signing. Your secret key and payload data never leave your machine — no data is sent to any server. For production systems, always sign tokens on the server and never embed your signing secret in client-side JavaScript code.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="jwt-decoder.html"><div class="related-icon">jwt</div><div class="related-card-info"><div class="related-card-name">JWT Decoder</div><div class="related-card-desc">Decode and inspect JWT tokens</div></div></a>
+      <a class="related-card" href="hash-generator.html"><div class="related-icon">#</div><div class="related-card-info"><div class="related-card-name">Hash Generator</div><div class="related-card-desc">MD5, SHA-256, SHA-512 hashing</div></div></a>
+      <a class="related-card" href="base64-encoder.html"><div class="related-icon">b64</div><div class="related-card-info"><div class="related-card-name">Base64 Encoder</div><div class="related-card-desc">Encode and decode Base64</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+function b64url(str){return btoa(str).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b64urlEncode(uint8){let s='';uint8.forEach(b=>s+=String.fromCharCode(b));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+
+const algMap={'HS256':{name:'HMAC',hash:'SHA-256'},'HS384':{name:'HMAC',hash:'SHA-384'},'HS512':{name:'HMAC',hash:'SHA-512'}};
+
+async function generateJWT(){
+  const errEl=document.getElementById('jwt-error');errEl.style.display='none';
+  let header,payload;
+  try{header=JSON.parse(document.getElementById('jwt-header').value);}catch(e){errEl.textContent='Invalid Header JSON: '+e.message;errEl.style.display='block';return;}
+  try{payload=JSON.parse(document.getElementById('jwt-payload').value);}catch(e){errEl.textContent='Invalid Payload JSON: '+e.message;errEl.style.display='block';return;}
+  const alg=document.getElementById('jwt-alg').value;
+  const secret=document.getElementById('jwt-secret').value;
+  if(!secret){errEl.textContent='Please enter a secret key.';errEl.style.display='block';return;}
+  header.alg=alg;header.typ='JWT';
+  document.getElementById('jwt-header').value=JSON.stringify(header,null,2);
+  const headerB64=b64url(JSON.stringify(header));
+  const payloadB64=b64url(JSON.stringify(payload));
+  const signingInput=headerB64+'.'+payloadB64;
+  try{
+    const enc=new TextEncoder();
+    const keyData=enc.encode(secret);
+    const cryptoKey=await crypto.subtle.importKey('raw',keyData,algMap[alg],false,['sign']);
+    const sig=await crypto.subtle.sign('HMAC',cryptoKey,enc.encode(signingInput));
+    const sigB64=b64urlEncode(new Uint8Array(sig));
+    const jwt=signingInput+'.'+sigB64;
+    document.getElementById('jwt-output').innerHTML='<span class="jwt-header-part">'+headerB64+'</span><span class="jwt-dot">.</span><span class="jwt-payload-part">'+payloadB64+'</span><span class="jwt-dot">.</span><span class="jwt-sig-part">'+sigB64+'</span>';
+    document.getElementById('jwt-output').dataset.jwt=jwt;
+  }catch(e){errEl.textContent='Signing error: '+e.message;errEl.style.display='block';}
+}
+
+function addClaim(key,val){
+  try{
+    const p=JSON.parse(document.getElementById('jwt-payload').value);
+    p[key]=val;
+    document.getElementById('jwt-payload').value=JSON.stringify(p,null,2);
+  }catch(e){}
+}
+function addExp(secs){addClaim('exp',Math.floor(Date.now()/1000)+secs);}
+function addIat(){addClaim('iat',Math.floor(Date.now()/1000));}
+function addJti(){addClaim('jti',crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).substring(2));}
+function clearJWT(){
+  document.getElementById('jwt-header').value='{\n  "alg": "HS256",\n  "typ": "JWT"\n}';
+  document.getElementById('jwt-payload').value='{\n  "sub": "1234567890",\n  "name": "John Doe",\n  "iat": 1516239022\n}';
+  document.getElementById('jwt-secret').value='your-256-bit-secret';
+  document.getElementById('jwt-output').innerHTML='<span style="color:var(--text3)">Generated JWT will appear here...</span>';
+  document.getElementById('jwt-error').style.display='none';
+}
+function copyJWT(){const jwt=document.getElementById('jwt-output').dataset.jwt;if(!jwt)return;navigator.clipboard.writeText(jwt);const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);}
+document.getElementById('jwt-alg').addEventListener('change',function(){
+  try{const h=JSON.parse(document.getElementById('jwt-header').value);h.alg=this.value;document.getElementById('jwt-header').value=JSON.stringify(h,null,2);}catch(e){}
+});
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

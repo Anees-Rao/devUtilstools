@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XML Formatter & Validator Online — Beautify XML Free | DevUtils</title>
+  <meta name="description" content="Format, beautify and validate XML online. Pretty print XML documents with proper indentation and error detection. Minify XML to reduce file size. Free, runs in browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/xml-formatter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="XML Formatter & Validator Online — Beautify XML Free">
+  <meta property="og:description" content="Format, beautify, validate and minify XML online. Free browser-based tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/xml-formatter.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"XML Formatter & Validator Online","url":"https://devutils.com/xml-formatter.html","description":"Format, beautify and validate XML documents online with proper indentation and error detection.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is XML formatting and why is it important?","acceptedAnswer":{"@type":"Answer","text":"XML formatting adds consistent indentation and line breaks to XML documents, making deeply nested structures readable. Unformatted XML from APIs, SOAP services, RSS feeds, or configuration files is often a single long line. Proper formatting is essential for debugging XML parsing errors, reviewing configuration files, and understanding document structure."}},{"@type":"Question","name":"How do I validate XML syntax?","acceptedAnswer":{"@type":"Answer","text":"Well-formed XML must follow these rules: every opening tag must have a matching closing tag, tags must be properly nested (no overlapping), attribute values must be quoted, element names are case-sensitive, and there must be exactly one root element. This tool uses the browser's built-in DOMParser to validate XML and reports syntax errors with descriptions."}},{"@type":"Question","name":"What is the difference between XML and HTML?","acceptedAnswer":{"@type":"Answer","text":"XML is strict and extensible — you define your own tag names, all tags must be closed, attributes must be quoted, and element names are case-sensitive. HTML is more lenient — it has predefined tags, browsers auto-close some elements, and it's case-insensitive. XML is used for data transport (APIs, config files, RSS), while HTML is for rendering web pages."}}]}
+  </script>
+  <style>
+    .xml-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .xml-pane{display:flex;flex-direction:column;gap:6px}
+    .xml-pane label{font-size:12px;color:var(--text3);font-family:var(--mono)}
+    .xml-pane textarea{width:100%;height:340px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;color:var(--text);font-family:var(--mono);font-size:13px;resize:vertical;line-height:1.6;tab-size:2}
+    .xml-pane textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .xml-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+    .xml-stats{display:flex;gap:16px;font-size:11px;font-family:var(--mono);color:var(--text3);margin-top:6px}
+    .xml-error{margin-top:8px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:var(--radius);color:#ff6b6b;font-size:12px;font-family:var(--mono);display:none}
+    .xml-valid{margin-top:8px;padding:10px 14px;background:rgba(0,208,132,.1);border:1px solid rgba(0,208,132,.3);border-radius:var(--radius);color:var(--accent);font-size:12px;font-family:var(--mono);display:none}
+    @media(max-width:700px){.xml-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Formatting</span>
+    <h1>XML Formatter & Validator</h1>
+    <p>Format, beautify, validate and minify XML documents online. Uses the browser's native DOMParser for accurate validation — your data never leaves your machine.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="xml-controls">
+        <button class="btn btn-primary" onclick="formatXML()">Format / Beautify</button>
+        <button class="btn btn-ghost" onclick="minifyXML()">Minify</button>
+        <button class="btn btn-ghost" onclick="validateXML()">Validate</button>
+        <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+        <button class="btn btn-ghost" onclick="loadSample()">Sample</button>
+        <select id="indent-size" style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;color:var(--text);font-size:12px;font-family:var(--mono)">
+          <option value="2" selected>2 spaces</option>
+          <option value="4">4 spaces</option>
+          <option value="tab">Tab</option>
+        </select>
+      </div>
+      <div class="xml-grid">
+        <div class="xml-pane">
+          <label>Input XML</label>
+          <textarea id="xml-input" placeholder="Paste your XML here..." spellcheck="false"></textarea>
+          <div class="xml-stats"><span id="input-stats">0 lines, 0 chars</span></div>
+        </div>
+        <div class="xml-pane">
+          <label>Formatted Output</label>
+          <textarea id="xml-output" placeholder="Formatted XML will appear here..." readonly spellcheck="false"></textarea>
+          <div class="xml-stats">
+            <span id="output-stats">0 lines, 0 chars</span>
+            <button class="btn btn-ghost" onclick="copyOutput()" style="padding:2px 10px;font-size:11px">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="xml-error" id="xml-error"></div>
+      <div class="xml-valid" id="xml-valid"></div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is XML formatting and why is it important?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">XML formatting adds consistent indentation and line breaks to XML documents, making deeply nested structures human-readable. Unformatted XML from APIs, SOAP web services, RSS feeds, or configuration files is often compressed into a single line. Proper formatting is essential for debugging XML parsing errors, reviewing configuration files like <code>pom.xml</code>, <code>web.xml</code>, and <code>AndroidManifest.xml</code>, and understanding complex document structures.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I validate XML syntax?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Well-formed XML must follow these rules: every opening tag needs a matching closing tag, tags must be properly nested without overlapping, attribute values must be enclosed in quotes, element names are case-sensitive, and there must be exactly one root element. Self-closing tags like <code>&lt;br/&gt;</code> are also valid. This tool uses the browser's built-in <code>DOMParser</code> to validate XML and reports any syntax errors with descriptions.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between XML and HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>XML</strong> is strict and extensible — you define your own tag names, all tags must be explicitly closed, attributes must be quoted, and element names are case-sensitive. <strong>HTML</strong> is more lenient — it has predefined tags, browsers auto-close certain elements, and it's case-insensitive. XML is used for data transport (SOAP APIs, RSS feeds, config files, SVG), while HTML is for rendering web pages in browsers.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity Encoder</div><div class="related-card-desc">Encode special characters</div></div></a>
+      <a class="related-card" href="yaml-to-json.html"><div class="related-icon">yml</div><div class="related-card-info"><div class="related-card-name">YAML to JSON</div><div class="related-card-desc">Convert YAML and JSON formats</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+function getIndent(){const v=document.getElementById('indent-size').value;return v==='tab'?'\t':' '.repeat(parseInt(v));}
+
+function parseAndFormat(xmlStr,indent){
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(xmlStr,'application/xml');
+  const err=doc.querySelector('parsererror');
+  if(err)throw new Error(err.textContent.split('\n')[0]);
+  return serializeNode(doc,0,indent).trim();
+}
+
+function serializeNode(node,depth,indent){
+  let result='';
+  const pad=indent.repeat(depth);
+  if(node.nodeType===9){// Document
+    // Check for XML declaration
+    for(let i=0;i<node.childNodes.length;i++){
+      result+=serializeNode(node.childNodes[i],depth,indent);
+    }
+    return result;
+  }
+  if(node.nodeType===7){// Processing instruction
+    return pad+'<?'+node.target+' '+node.data+'?>\n';
+  }
+  if(node.nodeType===8){// Comment
+    return pad+'<!--'+node.data+'-->\n';
+  }
+  if(node.nodeType===4){// CDATA
+    return pad+'<![CDATA['+node.data+']]>\n';
+  }
+  if(node.nodeType===3){// Text
+    const text=node.data.trim();
+    if(!text)return'';
+    return pad+text+'\n';
+  }
+  if(node.nodeType===1){// Element
+    result+=pad+'<'+node.tagName;
+    for(let i=0;i<node.attributes.length;i++){
+      const a=node.attributes[i];
+      result+=' '+a.name+'="'+escAttr(a.value)+'"';
+    }
+    // Check children
+    const children=[];
+    let hasElements=false,textOnly='';
+    for(let i=0;i<node.childNodes.length;i++){
+      const c=node.childNodes[i];
+      if(c.nodeType===1||c.nodeType===8||c.nodeType===4||c.nodeType===7){hasElements=true;children.push(c);}
+      else if(c.nodeType===3){
+        const t=c.data.trim();
+        if(t){textOnly+=t;children.push(c);}
+      }
+    }
+    if(children.length===0){
+      result+='/>\n';
+    }else if(!hasElements&&textOnly){
+      // Text-only element — inline
+      result+='>'+escXml(textOnly)+'</'+node.tagName+'>\n';
+    }else{
+      result+='>\n';
+      for(let i=0;i<node.childNodes.length;i++){
+        result+=serializeNode(node.childNodes[i],depth+1,indent);
+      }
+      result+=pad+'</'+node.tagName+'>\n';
+    }
+  }
+  return result;
+}
+
+function escAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function escXml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function formatXML(){
+  hideMessages();
+  const xml=document.getElementById('xml-input').value;
+  if(!xml.trim())return;
+  try{
+    // Preserve XML declaration if present
+    let decl='';
+    const declMatch=xml.match(/^<\?xml[^?]*\?>/);
+    if(declMatch)decl=declMatch[0]+'\n';
+    const formatted=parseAndFormat(xml,getIndent());
+    document.getElementById('xml-output').value=(decl?decl:'')+formatted;
+    showValid('XML is well-formed and formatted successfully.');
+    updateStats();
+  }catch(e){
+    showError('XML Error: '+e.message);
+  }
+}
+
+function minifyXML(){
+  hideMessages();
+  const xml=document.getElementById('xml-input').value;
+  if(!xml.trim())return;
+  try{
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(xml,'application/xml');
+    const err=doc.querySelector('parsererror');
+    if(err)throw new Error(err.textContent.split('\n')[0]);
+    const serializer=new XMLSerializer();
+    let result=serializer.serializeToString(doc);
+    // Remove whitespace between tags
+    result=result.replace(/>\s+</g,'><').replace(/\n/g,'').trim();
+    document.getElementById('xml-output').value=result;
+    updateStats();
+    const original=xml.length,minified=result.length;
+    const saved=((1-minified/original)*100).toFixed(1);
+    showValid('Minified: '+original+' → '+minified+' chars ('+saved+'% smaller)');
+  }catch(e){showError('XML Error: '+e.message);}
+}
+
+function validateXML(){
+  hideMessages();
+  const xml=document.getElementById('xml-input').value;
+  if(!xml.trim()){showError('Please enter XML to validate.');return;}
+  try{
+    const parser=new DOMParser();
+    const doc=parser.parseFromString(xml,'application/xml');
+    const err=doc.querySelector('parsererror');
+    if(err)throw new Error(err.textContent.split('\n')[0]);
+    // Count elements
+    const all=doc.querySelectorAll('*');
+    showValid('Valid XML — '+all.length+' element'+(all.length!==1?'s':'')+' found. Document is well-formed.');
+  }catch(e){showError('Invalid XML: '+e.message);}
+}
+
+function loadSample(){
+  document.getElementById('xml-input').value=`<?xml version="1.0" encoding="UTF-8"?><bookstore><book category="fiction"><title lang="en">The Great Gatsby</title><author>F. Scott Fitzgerald</author><year>1925</year><price>10.99</price></book><book category="tech"><title lang="en">Learning XML</title><author>Erik T. Ray</author><year>2003</year><price>39.95</price><publisher><name>O'Reilly Media</name><city>Sebastopol</city></publisher></book><book category="fiction"><title lang="es">Cien años de soledad</title><author>Gabriel García Márquez</author><year>1967</year><price>14.50</price></book></bookstore>`;
+  formatXML();
+}
+
+function clearAll(){document.getElementById('xml-input').value='';document.getElementById('xml-output').value='';hideMessages();updateStats();}
+function copyOutput(){const v=document.getElementById('xml-output').value;if(!v)return;navigator.clipboard.writeText(v);const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);}
+function showError(msg){const e=document.getElementById('xml-error');e.textContent=msg;e.style.display='block';}
+function showValid(msg){const e=document.getElementById('xml-valid');e.textContent=msg;e.style.display='block';}
+function hideMessages(){document.getElementById('xml-error').style.display='none';document.getElementById('xml-valid').style.display='none';}
+function updateStats(){
+  const i=document.getElementById('xml-input').value,o=document.getElementById('xml-output').value;
+  document.getElementById('input-stats').textContent=(i?i.split('\n').length:0)+' lines, '+i.length+' chars';
+  document.getElementById('output-stats').textContent=(o?o.split('\n').length:0)+' lines, '+o.length+' chars';
+}
+document.getElementById('xml-input').addEventListener('input',updateStats);
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

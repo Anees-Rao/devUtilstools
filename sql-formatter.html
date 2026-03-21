@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Formatter & Beautifier Online — Format SQL Queries Free | DevUtils</title>
+  <meta name="description" content="Format, beautify and minify SQL queries online. Support for MySQL, PostgreSQL, SQL Server, Oracle syntax. Indent, uppercase keywords, validate SQL statements. Free, no signup, runs in browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/sql-formatter">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="SQL Formatter & Beautifier Online — Format SQL Queries Free">
+  <meta property="og:description" content="Format, beautify and minify SQL queries online. Indent, uppercase keywords, validate statements. Free browser-based SQL formatter.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/sql-formatter.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"SQL Formatter & Beautifier Online","url":"https://devutils.com/sql-formatter.html","description":"Format, beautify and minify SQL queries online with proper indentation and keyword highlighting.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is SQL formatting and why should I format my SQL queries?","acceptedAnswer":{"@type":"Answer","text":"SQL formatting is the process of restructuring SQL code with consistent indentation, line breaks, and keyword casing to improve readability. Properly formatted SQL is easier to debug, review in code reviews, and maintain across teams. Most SQL style guides recommend uppercase keywords (SELECT, FROM, WHERE) and consistent indentation for subqueries and JOIN clauses."}},{"@type":"Question","name":"Does this SQL formatter support different database dialects?","acceptedAnswer":{"@type":"Answer","text":"This formatter handles standard SQL keywords used across MySQL, PostgreSQL, SQL Server, Oracle, and SQLite. It recognizes keywords like SELECT, FROM, WHERE, JOIN, GROUP BY, ORDER BY, HAVING, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, and more. Dialect-specific functions are preserved as-is."}},{"@type":"Question","name":"Is it safe to paste production SQL queries into an online formatter?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool processes everything 100% client-side in your browser using JavaScript. Your SQL queries are never sent to any server, stored, or logged. You can verify this by using the tool offline after the page loads."}}]}
+  </script>
+  <style>
+    .sql-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .sql-pane{display:flex;flex-direction:column;gap:6px}
+    .sql-pane label{font-size:12px;color:var(--text3);font-family:var(--mono)}
+    .sql-pane textarea{width:100%;height:320px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;color:var(--text);font-family:var(--mono);font-size:13px;resize:vertical;line-height:1.6;tab-size:2}
+    .sql-pane textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .sql-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+    .sql-controls select,.sql-controls label{font-size:12px;font-family:var(--mono);color:var(--text2)}
+    .sql-controls select{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 10px;color:var(--text)}
+    .sql-stats{display:flex;gap:16px;font-size:11px;font-family:var(--mono);color:var(--text3);margin-top:6px}
+    .chk-label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer}
+    .chk-label input{accent-color:var(--accent)}
+    @media(max-width:700px){.sql-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <a href="all-tools.html">All Tools</a>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Formatting</span>
+    <h1>SQL Formatter & Beautifier</h1>
+    <p>Format, beautify and minify SQL queries online. Proper indentation, keyword uppercasing and clean structure — processed entirely in your browser for complete privacy.</p>
+  </section>
+
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="sql-controls">
+        <button class="btn btn-primary" onclick="formatSQL()">Format / Beautify</button>
+        <button class="btn btn-ghost" onclick="minifySQL()">Minify</button>
+        <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+        <button class="btn btn-ghost" onclick="loadSample()">Sample</button>
+        <select id="indent-size">
+          <option value="2">2 spaces</option>
+          <option value="4" selected>4 spaces</option>
+          <option value="tab">Tab</option>
+        </select>
+        <label class="chk-label"><input type="checkbox" id="uppercase-kw" checked> Uppercase keywords</label>
+      </div>
+
+      <div class="sql-grid">
+        <div class="sql-pane">
+          <label>Input SQL</label>
+          <textarea id="sql-input" placeholder="Paste your SQL query here..." spellcheck="false"></textarea>
+          <div class="sql-stats"><span id="input-stats">0 lines, 0 chars</span></div>
+        </div>
+        <div class="sql-pane">
+          <label>Formatted Output</label>
+          <textarea id="sql-output" placeholder="Formatted SQL will appear here..." readonly spellcheck="false"></textarea>
+          <div class="sql-stats">
+            <span id="output-stats">0 lines, 0 chars</span>
+            <button class="btn btn-ghost" onclick="copyOutput()" style="padding:2px 10px;font-size:11px">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is SQL formatting and why should I format my SQL queries?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">SQL formatting restructures your code with consistent indentation, line breaks after major keywords, and proper keyword casing. Well-formatted SQL is significantly easier to debug, review in pull requests, and maintain over time. Most SQL style guides recommend uppercase keywords like SELECT, FROM, WHERE and consistent indentation for JOIN clauses, subqueries, and CASE expressions. This tool handles all of that automatically.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this SQL formatter support different database dialects?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">This formatter handles standard SQL keywords shared across MySQL, PostgreSQL, SQL Server, Oracle, and SQLite. It recognizes major clauses including SELECT, FROM, WHERE, JOIN variants (INNER, LEFT, RIGHT, FULL, CROSS), GROUP BY, ORDER BY, HAVING, UNION, INSERT INTO, UPDATE, DELETE FROM, CREATE TABLE, ALTER TABLE, and more. Dialect-specific functions and syntax are preserved as-is during formatting.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it safe to paste production SQL queries into an online formatter?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. This tool runs entirely in your browser using client-side JavaScript. Your SQL queries never leave your machine — nothing is sent to a server, stored, or logged. You can disconnect from the internet and the formatter continues to work. This makes it safe for formatting queries containing sensitive table names, column names, or data values.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+      <a class="related-card" href="css-minifier.html"><div class="related-icon">CSS</div><div class="related-card-info"><div class="related-card-name">CSS Minifier</div><div class="related-card-desc">Minify and beautify CSS code</div></div></a>
+      <a class="related-card" href="js-minifier.html"><div class="related-icon">JS</div><div class="related-card-info"><div class="related-card-name">JS Minifier</div><div class="related-card-desc">Minify and beautify JavaScript</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const SQL_KW = ['SELECT','FROM','WHERE','JOIN','INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','FULL OUTER JOIN','CROSS JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN','ON','AND','OR','NOT','IN','EXISTS','BETWEEN','LIKE','IS NULL','IS NOT NULL','ORDER BY','GROUP BY','HAVING','LIMIT','OFFSET','UNION','UNION ALL','INTERSECT','EXCEPT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','DELETE','CREATE TABLE','CREATE INDEX','CREATE VIEW','ALTER TABLE','DROP TABLE','DROP INDEX','DROP VIEW','ADD COLUMN','DROP COLUMN','MODIFY','CASE','WHEN','THEN','ELSE','END','AS','DISTINCT','ALL','TOP','INTO','IF','BEGIN','COMMIT','ROLLBACK','GRANT','REVOKE','WITH','RECURSIVE','OVER','PARTITION BY','ROWS','RANGE','FETCH','NEXT','ONLY','FOR','RETURNING','CASCADE','RESTRICT','REFERENCES','FOREIGN KEY','PRIMARY KEY','UNIQUE','CHECK','DEFAULT','INDEX','CONSTRAINT','TRIGGER','PROCEDURE','FUNCTION','DECLARE','CURSOR','OPEN','CLOSE','DEALLOCATE','EXEC','EXECUTE','USE','DATABASE','SCHEMA','TABLE','VIEW','TEMPORARY','TEMP','TRUNCATE','EXPLAIN','ANALYZE','VACUUM','REINDEX','CLUSTER'];
+const MAJOR_CLAUSES = ['SELECT','FROM','WHERE','JOIN','INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','FULL OUTER JOIN','CROSS JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN','ORDER BY','GROUP BY','HAVING','LIMIT','OFFSET','UNION','UNION ALL','INTERSECT','EXCEPT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','DELETE','CREATE TABLE','ALTER TABLE','DROP TABLE','WITH','RETURNING','ON'];
+const MINOR_KW = ['AND','OR','WHEN','THEN','ELSE','END'];
+
+function getIndent(){const v=document.getElementById('indent-size').value;return v==='tab'?'\t':' '.repeat(parseInt(v));}
+
+function tokenize(sql){
+  const tokens=[];let i=0;
+  while(i<sql.length){
+    if(sql[i]==="'"||sql[i]==='"'){
+      const q=sql[i];let j=i+1;
+      while(j<sql.length&&sql[j]!==q){if(sql[j]==='\\')j++;j++;}
+      tokens.push({type:'string',value:sql.substring(i,j+1)});i=j+1;
+    }else if(sql[i]==='-'&&sql[i+1]==='-'){
+      let j=i;while(j<sql.length&&sql[j]!=='\n')j++;
+      tokens.push({type:'comment',value:sql.substring(i,j)});i=j;
+    }else if(sql[i]==='/'&&sql[i+1]==='*'){
+      let j=i+2;while(j<sql.length-1&&!(sql[j]==='*'&&sql[j+1]==='/'))j++;
+      tokens.push({type:'comment',value:sql.substring(i,j+2)});i=j+2;
+    }else if(sql[i]==='('){tokens.push({type:'paren',value:'('});i++;
+    }else if(sql[i]===')'){tokens.push({type:'paren',value:')'});i++;
+    }else if(sql[i]===','){tokens.push({type:'comma',value:','});i++;
+    }else if(sql[i]===';'){tokens.push({type:'semi',value:';'});i++;
+    }else if(/\s/.test(sql[i])){while(i<sql.length&&/\s/.test(sql[i]))i++;tokens.push({type:'ws',value:' '});
+    }else{
+      let j=i;while(j<sql.length&&!/[\s()',;"]/.test(sql[j])&&!(sql[j]==='-'&&sql[j+1]==='-')&&!(sql[j]==='/'&&sql[j+1]==='*'))j++;
+      tokens.push({type:'word',value:sql.substring(i,j)});i=j;
+    }
+  }
+  return tokens.filter(t=>t.type!=='ws'||false);
+}
+
+function formatSQL(){
+  const sql=document.getElementById('sql-input').value;
+  if(!sql.trim())return;
+  const uc=document.getElementById('uppercase-kw').checked;
+  const ind=getIndent();
+  const tokens=tokenize(sql).filter(t=>t.type!=='ws');
+  let result='',depth=0,newline=true;
+  function nl(){result+='\n'+ind.repeat(depth);newline=true;}
+  function addSpace(){if(!newline&&result.length>0&&!result.endsWith(' ')&&!result.endsWith('\n')&&!result.endsWith(ind))result+=' ';}
+  for(let i=0;i<tokens.length;i++){
+    const t=tokens[i];
+    if(t.type==='comment'){addSpace();result+=t.value;nl();continue;}
+    if(t.type==='string'){addSpace();result+=t.value;newline=false;continue;}
+    if(t.type==='semi'){result+=';';nl();nl();continue;}
+    if(t.type==='comma'){result+=',';nl();continue;}
+    if(t.type==='paren'){
+      if(t.value==='('){addSpace();result+='(';depth++;nl();}
+      else{depth=Math.max(0,depth-1);nl();result+=')';}
+      newline=false;continue;
+    }
+    if(t.type==='word'){
+      const upper=t.value.toUpperCase();
+      let matched='';
+      // Check multi-word keywords
+      if(i+1<tokens.length){
+        const next=tokens.slice(i+1).find(x=>x.type==='word');
+        if(next){
+          const combo=upper+' '+next.value.toUpperCase();
+          const combo3=i+2<tokens.length?(function(){const nn=tokens.slice(i+2).find(x=>x.type==='word');return nn?combo+' '+nn.value.toUpperCase():''})():'';
+          if(MAJOR_CLAUSES.includes(combo3))matched=combo3;
+          else if(MAJOR_CLAUSES.includes(combo))matched=combo;
+        }
+      }
+      if(!matched&&MAJOR_CLAUSES.includes(upper))matched=upper;
+      if(matched){
+        const words=matched.split(' ');
+        if(matched!=='ON'||depth===0){
+          if(!newline&&result.trim().length>0)nl();
+        }
+        const kw=uc?matched:matched.toLowerCase();
+        result+=kw;newline=false;
+        // Skip consumed tokens
+        let skip=words.length-1;
+        while(skip>0&&i+1<tokens.length){i++;if(tokens[i].type==='word')skip--;}
+        continue;
+      }
+      if(MINOR_KW.includes(upper)){
+        nl();result+=uc?upper:upper.toLowerCase();newline=false;continue;
+      }
+      // Regular word
+      addSpace();
+      const isKW=SQL_KW.includes(upper);
+      result+=isKW&&uc?upper:t.value;
+      newline=false;
+    }
+  }
+  document.getElementById('sql-output').value=result.trim();
+  updateStats();
+}
+
+function minifySQL(){
+  const sql=document.getElementById('sql-input').value;
+  if(!sql.trim())return;
+  const tokens=tokenize(sql).filter(t=>t.type!=='ws'&&t.type!=='comment');
+  let result='';
+  for(let i=0;i<tokens.length;i++){
+    const t=tokens[i];
+    if(t.type==='word'||t.type==='string'){
+      if(result.length>0&&!result.endsWith(' ')&&!result.endsWith('(')&&!result.endsWith(','))result+=' ';
+      result+=t.value;
+    }else{result+=t.value;}
+  }
+  document.getElementById('sql-output').value=result.replace(/\s+/g,' ').trim();
+  updateStats();
+}
+
+function loadSample(){
+  document.getElementById('sql-input').value=`SELECT u.id, u.name, u.email, COUNT(o.id) AS order_count, SUM(o.total) AS total_spent FROM users u INNER JOIN orders o ON u.id = o.user_id LEFT JOIN addresses a ON u.id = a.user_id WHERE u.created_at >= '2024-01-01' AND u.status = 'active' AND o.total > 50 GROUP BY u.id, u.name, u.email HAVING COUNT(o.id) > 3 ORDER BY total_spent DESC LIMIT 100 OFFSET 0;`;
+  formatSQL();
+}
+function clearAll(){document.getElementById('sql-input').value='';document.getElementById('sql-output').value='';updateStats();}
+function copyOutput(){const v=document.getElementById('sql-output').value;if(!v)return;navigator.clipboard.writeText(v);const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);}
+function updateStats(){
+  const i=document.getElementById('sql-input').value,o=document.getElementById('sql-output').value;
+  document.getElementById('input-stats').textContent=(i?i.split('\n').length:0)+' lines, '+i.length+' chars';
+  document.getElementById('output-stats').textContent=(o?o.split('\n').length:0)+' lines, '+o.length+' chars';
+}
+document.getElementById('sql-input').addEventListener('input',updateStats);
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

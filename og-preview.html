@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Graph Preview Tool Online — OG Tag Tester & Generator Free | DevUtils</title>
+  <meta name="description" content="Preview how your website looks when shared on Facebook, Twitter, LinkedIn and WhatsApp. Test Open Graph meta tags, Twitter Cards and generate OG tag code. Free, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/og-preview">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Open Graph Preview Tool — OG Tag Tester & Generator">
+  <meta property="og:description" content="Preview social media share cards for Facebook, Twitter, LinkedIn, WhatsApp.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/og-preview.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Open Graph Preview Tool","url":"https://devutils.com/og-preview.html","description":"Preview how your website looks when shared on social media. Test OG tags and Twitter Cards.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Open Graph tags and why do they matter?","acceptedAnswer":{"@type":"Answer","text":"Open Graph (OG) tags are HTML meta tags that control how your URL appears when shared on social media platforms like Facebook, LinkedIn, and WhatsApp. They define the title, description, image, and URL shown in the share card. Without OG tags, platforms guess what to display, often resulting in poor-looking previews. Well-configured OG tags can increase click-through rates by up to 2-3x."}},{"@type":"Question","name":"What image size should I use for Open Graph?","acceptedAnswer":{"@type":"Answer","text":"The recommended OG image size is 1200×630 pixels (aspect ratio 1.91:1). The minimum is 200×200px, but images below 600px wide may not display as large cards on Facebook. For Twitter summary_large_image cards, use 1200×628px. Keep file size under 8MB. Use JPG or PNG format for best compatibility across all platforms."}},{"@type":"Question","name":"What is the difference between Open Graph and Twitter Cards?","acceptedAnswer":{"@type":"Answer","text":"Open Graph uses og: prefix tags (og:title, og:description, og:image) and was created by Facebook. Twitter Cards use twitter: prefix tags (twitter:card, twitter:title, twitter:image). Twitter will fall back to OG tags if twitter-specific tags are not present, so you can often just use OG tags for both platforms. The main Twitter-specific tag is twitter:card which sets the card type (summary or summary_large_image)."}}]}
+  </script>
+  <style>
+    .og-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    .og-form{display:flex;flex-direction:column;gap:12px}
+    .og-field label{display:block;font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:4px;text-transform:uppercase}
+    .og-field input,.og-field textarea,.og-field select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:var(--mono);font-size:12px}
+    .og-field input:focus,.og-field textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .og-field textarea{height:50px;resize:vertical}
+    .og-previews{display:flex;flex-direction:column;gap:20px}
+    .platform-label{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+    .card-fb{background:#242526;border:1px solid #3a3b3c;border-radius:8px;overflow:hidden;max-width:500px}
+    .card-fb .card-img{width:100%;height:160px;background:#18191a;display:flex;align-items:center;justify-content:center;color:#65676b;font-size:12px;font-family:var(--mono);background-size:cover;background-position:center}
+    .card-fb .card-body{padding:10px 12px;border-top:1px solid #3a3b3c}
+    .card-fb .card-site{font-size:11px;color:#65676b;text-transform:uppercase;margin-bottom:2px}
+    .card-fb .card-title{font-size:15px;font-weight:600;color:#e4e6eb;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .card-fb .card-desc{font-size:13px;color:#b0b3b8;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .card-tw{background:#15202b;border:1px solid #38444d;border-radius:16px;overflow:hidden;max-width:500px}
+    .card-tw .card-img{width:100%;height:150px;background:#192734;display:flex;align-items:center;justify-content:center;color:#8899a6;font-size:12px;font-family:var(--mono);background-size:cover;background-position:center}
+    .card-tw .card-body{padding:10px 12px}
+    .card-tw .card-site{font-size:12px;color:#8899a6;margin-bottom:2px}
+    .card-tw .card-title{font-size:14px;font-weight:700;color:#d9d9d9;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .card-tw .card-desc{font-size:13px;color:#8899a6;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .card-li{background:#1b1f23;border:1px solid #313335;border-radius:8px;overflow:hidden;max-width:500px}
+    .card-li .card-img{width:100%;height:140px;background:#1b1f23;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;font-family:var(--mono);background-size:cover;background-position:center}
+    .card-li .card-body{padding:10px 12px}
+    .card-li .card-title{font-size:14px;font-weight:600;color:#e0e0e0;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .card-li .card-site{font-size:11px;color:#999}
+    .og-code{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:var(--mono);font-size:11px;color:var(--text);line-height:1.7;white-space:pre-wrap;max-height:250px;overflow-y:auto;margin-top:20px;position:relative}
+    .og-code button{position:absolute;top:8px;right:8px}
+    @media(max-width:800px){.og-layout{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">SEO</span>
+    <h1>Open Graph Preview Tool</h1>
+    <p>Preview how your website appears when shared on Facebook, Twitter/X, LinkedIn and WhatsApp. Edit Open Graph and Twitter Card meta tags and see live social media card mockups instantly.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="og-layout">
+        <div class="og-form">
+          <div class="og-field"><label>og:title</label><input type="text" id="og-title" placeholder="Your Page Title" oninput="updateOG()"></div>
+          <div class="og-field"><label>og:description</label><textarea id="og-desc" placeholder="A brief description of your page..." oninput="updateOG()"></textarea></div>
+          <div class="og-field"><label>og:image (URL)</label><input type="text" id="og-image" placeholder="https://example.com/image.jpg" oninput="updateOG()"></div>
+          <div class="og-field"><label>og:url</label><input type="text" id="og-url" placeholder="https://example.com/page" oninput="updateOG()"></div>
+          <div class="og-field"><label>og:site_name</label><input type="text" id="og-sitename" placeholder="My Website" oninput="updateOG()"></div>
+          <div class="og-field"><label>og:type</label>
+            <select id="og-type" onchange="updateOG()"><option value="website">website</option><option value="article">article</option><option value="product">product</option></select>
+          </div>
+          <div class="og-field"><label>twitter:card</label>
+            <select id="tw-card" onchange="updateOG()"><option value="summary_large_image">summary_large_image</option><option value="summary">summary</option></select>
+          </div>
+          <div class="og-field"><label>twitter:site</label><input type="text" id="tw-site" placeholder="@yourhandle" oninput="updateOG()"></div>
+        </div>
+        <div class="og-previews">
+          <div>
+            <div class="platform-label">Facebook / LinkedIn</div>
+            <div class="card-fb">
+              <div class="card-img" id="fb-img">1200 × 630 image</div>
+              <div class="card-body">
+                <div class="card-site" id="fb-site">example.com</div>
+                <div class="card-title" id="fb-title">Page Title</div>
+                <div class="card-desc" id="fb-desc">Description...</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="platform-label">Twitter / X</div>
+            <div class="card-tw">
+              <div class="card-img" id="tw-img">1200 × 628 image</div>
+              <div class="card-body">
+                <div class="card-site" id="tw-sitename">example.com</div>
+                <div class="card-title" id="tw-title">Page Title</div>
+                <div class="card-desc" id="tw-desc">Description...</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="platform-label">WhatsApp</div>
+            <div class="card-li">
+              <div class="card-img" id="wa-img">Image preview</div>
+              <div class="card-body">
+                <div class="card-title" id="wa-title">Page Title</div>
+                <div class="card-site" id="wa-site">example.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="og-code">
+        <button class="btn btn-ghost" onclick="copyOG()" style="padding:4px 12px;font-size:11px">Copy</button>
+        <code id="og-code-output"></code>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are Open Graph tags and why do they matter?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Open Graph tags are HTML meta tags (prefixed with <code>og:</code>) that control how your URL appears when shared on Facebook, LinkedIn, WhatsApp and other platforms. They define the title, description, image and URL displayed in the share card. Without OG tags, platforms attempt to guess what to display, often resulting in poor-looking previews with wrong images or truncated text. Well-configured OG tags can increase social click-through rates significantly.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What image size should I use for Open Graph?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The recommended size is <strong>1200×630 pixels</strong> (aspect ratio 1.91:1). Minimum is 200×200px, but images below 600px wide won't display as large cards on Facebook. For Twitter <code>summary_large_image</code> cards, use 1200×628px. Keep file size under 8MB and use JPG or PNG format for maximum compatibility across all platforms.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between Open Graph and Twitter Cards?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Open Graph uses <code>og:</code> prefix tags and was created by Facebook for universal social sharing. Twitter Cards use <code>twitter:</code> prefix tags specifically for Twitter/X. The key difference: Twitter will <strong>fall back to OG tags</strong> if twitter-specific tags aren't present, so you can often use just OG tags for both. The unique Twitter tag is <code>twitter:card</code> which sets the card layout type (<code>summary</code> or <code>summary_large_image</code>).</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="meta-tag-generator.html"><div class="related-icon">SEO</div><div class="related-card-info"><div class="related-card-name">Meta Tag Generator</div><div class="related-card-desc">Generate all HTML meta tags</div></div></a>
+      <a class="related-card" href="slug-generator.html"><div class="related-icon">🔗</div><div class="related-card-info"><div class="related-card-name">Slug Generator</div><div class="related-card-desc">Create SEO-friendly URL slugs</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity Encoder</div><div class="related-card-desc">Encode special characters</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function getDomain(url){
+  if(!url)return'example.com';
+  try{return new URL(url.startsWith('http')?url:'https://'+url).hostname;}catch(e){return'example.com';}
+}
+
+function setImg(id,url,fallback){
+  const el=document.getElementById(id);
+  if(url){el.style.backgroundImage='url('+url+')';el.textContent='';}
+  else{el.style.backgroundImage='';el.textContent=fallback;}
+}
+
+function updateOG(){
+  const title=document.getElementById('og-title').value||'Page Title';
+  const desc=document.getElementById('og-desc').value||'Description...';
+  const image=document.getElementById('og-image').value;
+  const url=document.getElementById('og-url').value;
+  const sitename=document.getElementById('og-sitename').value;
+  const domain=getDomain(url);
+  const site=sitename||domain;
+
+  // Facebook
+  setImg('fb-img',image,'1200 × 630 image');
+  document.getElementById('fb-site').textContent=domain.toUpperCase();
+  document.getElementById('fb-title').textContent=title;
+  document.getElementById('fb-desc').textContent=desc;
+
+  // Twitter
+  setImg('tw-img',image,'1200 × 628 image');
+  document.getElementById('tw-sitename').textContent=document.getElementById('tw-site').value||domain;
+  document.getElementById('tw-title').textContent=title;
+  document.getElementById('tw-desc').textContent=desc;
+
+  // WhatsApp
+  setImg('wa-img',image,'Image preview');
+  document.getElementById('wa-title').textContent=title;
+  document.getElementById('wa-site').textContent=domain;
+
+  // Code
+  let code='<!-- Open Graph -->\n';
+  code+='<meta property="og:title" content="'+esc(document.getElementById('og-title').value)+'">\n';
+  code+='<meta property="og:description" content="'+esc(document.getElementById('og-desc').value)+'">\n';
+  code+='<meta property="og:type" content="'+document.getElementById('og-type').value+'">\n';
+  if(url)code+='<meta property="og:url" content="'+esc(url)+'">\n';
+  if(image)code+='<meta property="og:image" content="'+esc(image)+'">\n';
+  if(sitename)code+='<meta property="og:site_name" content="'+esc(sitename)+'">\n';
+  code+='\n<!-- Twitter Card -->\n';
+  code+='<meta name="twitter:card" content="'+document.getElementById('tw-card').value+'">\n';
+  code+='<meta name="twitter:title" content="'+esc(document.getElementById('og-title').value)+'">\n';
+  code+='<meta name="twitter:description" content="'+esc(document.getElementById('og-desc').value)+'">\n';
+  if(image)code+='<meta name="twitter:image" content="'+esc(image)+'">\n';
+  const twSite=document.getElementById('tw-site').value;
+  if(twSite)code+='<meta name="twitter:site" content="'+esc(twSite)+'">\n';
+  document.getElementById('og-code-output').textContent=code;
+}
+
+function copyOG(){
+  navigator.clipboard.writeText(document.getElementById('og-code-output').textContent);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+updateOG();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

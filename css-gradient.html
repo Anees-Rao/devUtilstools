@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Gradient Generator Online — Linear & Radial Gradient Maker Free | DevUtils</title>
+  <meta name="description" content="Create beautiful CSS gradients with this free online generator. Build linear, radial and conic gradients visually. Copy CSS code instantly. Multiple color stops, angle control and live preview.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/css-gradient">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="CSS Gradient Generator Online — Linear & Radial Gradient Maker">
+  <meta property="og:description" content="Create CSS gradients visually. Linear, radial, conic. Copy code instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/css-gradient.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"CSS Gradient Generator","url":"https://devutils.com/css-gradient.html","description":"Create beautiful CSS gradients visually with live preview and instant code output.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the different types of CSS gradients?","acceptedAnswer":{"@type":"Answer","text":"CSS supports three gradient types: linear-gradient (colors transition along a straight line at any angle), radial-gradient (colors radiate outward from a center point as a circle or ellipse), and conic-gradient (colors rotate around a center point like a color wheel). Each has a repeating variant (repeating-linear-gradient, etc.) for creating patterns."}},{"@type":"Question","name":"How do I create a gradient with multiple color stops in CSS?","acceptedAnswer":{"@type":"Answer","text":"Add multiple color stops separated by commas: background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%). Each stop has a color and optional position (percentage or length). Browsers automatically distribute colors evenly if positions are omitted. You can add as many stops as needed for complex gradients."}},{"@type":"Question","name":"Can I use CSS gradients as text backgrounds?","acceptedAnswer":{"@type":"Answer","text":"Yes. Apply the gradient as background, then use background-clip: text and -webkit-background-clip: text with color: transparent. This clips the gradient to the text shape, creating gradient-colored text. This technique works in all modern browsers and is commonly used for hero headings and decorative typography."}}]}
+  </script>
+  <style>
+    .grad-preview{width:100%;height:220px;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;transition:all .3s}
+    .grad-controls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .grad-field label{display:block;font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase}
+    .grad-field select,.grad-field input[type="range"]{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;color:var(--text);font-family:var(--mono);font-size:12px}
+    .grad-field input[type="range"]{padding:4px 0;accent-color:var(--accent)}
+    .angle-val{font-family:var(--mono);font-size:12px;color:var(--accent);float:right}
+    .stops-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .stop-row{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px}
+    .stop-row input[type="color"]{width:36px;height:30px;border:none;background:none;cursor:pointer;border-radius:4px}
+    .stop-row input[type="range"]{flex:1;accent-color:var(--accent)}
+    .stop-row .stop-pos{font-family:var(--mono);font-size:11px;color:var(--text3);width:36px;text-align:right}
+    .stop-row button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 4px;transition:color .2s}
+    .stop-row button:hover{color:#ff6b6b}
+    .grad-code{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:var(--mono);font-size:12px;color:var(--text);line-height:1.6;word-break:break-all;position:relative}
+    .grad-code button{position:absolute;top:8px;right:8px}
+    .presets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:20px}
+    .preset-swatch{height:50px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;transition:transform .2s,border-color .2s}
+    .preset-swatch:hover{transform:scale(1.05);border-color:var(--accent)}
+    @media(max-width:600px){.grad-controls{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">CSS</span>
+    <h1>CSS Gradient Generator</h1>
+    <p>Create stunning CSS gradients visually with live preview. Build linear, radial and conic gradients with multiple color stops, custom angles and instant CSS code output.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="grad-preview" id="grad-preview"></div>
+      <div class="grad-controls">
+        <div class="grad-field">
+          <label>Gradient Type</label>
+          <select id="grad-type" onchange="updateGradient()">
+            <option value="linear">Linear</option>
+            <option value="radial">Radial</option>
+            <option value="conic">Conic</option>
+          </select>
+        </div>
+        <div class="grad-field" id="angle-field">
+          <label>Angle <span class="angle-val" id="angle-val">135°</span></label>
+          <input type="range" id="grad-angle" min="0" max="360" value="135" oninput="updateGradient()">
+        </div>
+      </div>
+      <label style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;display:block;margin-bottom:8px">Color Stops</label>
+      <div class="stops-list" id="stops-list"></div>
+      <button class="btn btn-ghost" onclick="addStop()" style="margin-bottom:16px">+ Add Color Stop</button>
+
+      <label style="font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;display:block;margin-bottom:8px">Presets</label>
+      <div class="presets-grid" id="presets-grid"></div>
+
+      <div class="grad-code" id="grad-code">
+        <button class="btn btn-ghost" onclick="copyCSS()" style="padding:4px 12px;font-size:11px">Copy</button>
+        <span id="css-output"></span>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are the different types of CSS gradients?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">CSS supports three gradient types: <strong>linear-gradient</strong> transitions colors along a straight line at any angle, <strong>radial-gradient</strong> radiates colors outward from a center point as a circle or ellipse, and <strong>conic-gradient</strong> rotates colors around a center point like a color wheel. Each type also has a repeating variant (<code>repeating-linear-gradient</code>, etc.) useful for creating stripe and pattern effects.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I create a gradient with multiple color stops in CSS?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Add multiple color stops separated by commas: <code>background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%)</code>. Each stop consists of a color and an optional position. Browsers distribute colors evenly if you omit positions. You can add as many stops as needed — use this tool's "+ Add Color Stop" button to experiment visually.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I use CSS gradients as text backgrounds?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. Apply the gradient as <code>background</code>, then use <code>background-clip: text</code> and <code>-webkit-background-clip: text</code> with <code>color: transparent</code>. This clips the gradient to the text shape. It works in all modern browsers and is popular for hero section headings, logos, and decorative typography.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="color-picker.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Color Palette</div><div class="related-card-desc">Color harmony and contrast checker</div></div></a>
+      <a class="related-card" href="css-minifier.html"><div class="related-icon">CSS</div><div class="related-card-info"><div class="related-card-name">CSS Minifier</div><div class="related-card-desc">Minify and beautify CSS</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Hex to RGB</div><div class="related-card-desc">Convert hex to RGB/HSL</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+let stops=[{color:'#667eea',pos:0},{color:'#764ba2',pos:100}];
+
+const presets=[
+  [{color:'#667eea',pos:0},{color:'#764ba2',pos:100}],
+  [{color:'#f093fb',pos:0},{color:'#f5576c',pos:100}],
+  [{color:'#4facfe',pos:0},{color:'#00f2fe',pos:100}],
+  [{color:'#43e97b',pos:0},{color:'#38f9d7',pos:100}],
+  [{color:'#fa709a',pos:0},{color:'#fee140',pos:100}],
+  [{color:'#a18cd1',pos:0},{color:'#fbc2eb',pos:100}],
+  [{color:'#ffecd2',pos:0},{color:'#fcb69f',pos:100}],
+  [{color:'#ff9a9e',pos:0},{color:'#fecfef',pos:50},{color:'#fecfef',pos:100}],
+  [{color:'#0c3483',pos:0},{color:'#a2b6df',pos:50},{color:'#6b8cce',pos:100}],
+  [{color:'#11998e',pos:0},{color:'#38ef7d',pos:100}]
+];
+
+function renderPresets(){
+  const grid=document.getElementById('presets-grid');
+  grid.innerHTML=presets.map((p,i)=>{
+    const css=buildGradientCSS(p,'linear',135);
+    return`<div class="preset-swatch" style="background:${css}" onclick="applyPreset(${i})"></div>`;
+  }).join('');
+}
+
+function applyPreset(i){stops=presets[i].map(s=>({...s}));renderStops();updateGradient();}
+
+function renderStops(){
+  const list=document.getElementById('stops-list');
+  list.innerHTML=stops.map((s,i)=>`<div class="stop-row">
+    <input type="color" value="${s.color}" onchange="stops[${i}].color=this.value;updateGradient()">
+    <input type="range" min="0" max="100" value="${s.pos}" oninput="stops[${i}].pos=parseInt(this.value);this.nextElementSibling.textContent=this.value+'%';updateGradient()">
+    <span class="stop-pos">${s.pos}%</span>
+    ${stops.length>2?`<button onclick="removeStop(${i})">×</button>`:''}
+  </div>`).join('');
+}
+
+function addStop(){
+  const lastColor=stops[stops.length-1].color;
+  // Generate a slightly different color
+  const r=Math.floor(Math.random()*256),g=Math.floor(Math.random()*256),b=Math.floor(Math.random()*256);
+  const hex='#'+[r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+  stops.push({color:hex,pos:100});
+  // Redistribute positions
+  stops.forEach((s,i)=>s.pos=Math.round(i/(stops.length-1)*100));
+  renderStops();updateGradient();
+}
+
+function removeStop(i){if(stops.length<=2)return;stops.splice(i,1);renderStops();updateGradient();}
+
+function buildGradientCSS(stps,type,angle){
+  const colorStops=stps.map(s=>s.color+' '+s.pos+'%').join(', ');
+  if(type==='linear')return`linear-gradient(${angle}deg, ${colorStops})`;
+  if(type==='radial')return`radial-gradient(circle, ${colorStops})`;
+  if(type==='conic')return`conic-gradient(from ${angle}deg, ${colorStops})`;
+  return`linear-gradient(${angle}deg, ${colorStops})`;
+}
+
+function updateGradient(){
+  const type=document.getElementById('grad-type').value;
+  const angle=parseInt(document.getElementById('grad-angle').value);
+  document.getElementById('angle-val').textContent=angle+'°';
+  const css=buildGradientCSS(stops,type,angle);
+  document.getElementById('grad-preview').style.background=css;
+  document.getElementById('css-output').textContent='background: '+css+';';
+  // Show/hide angle for radial
+  document.getElementById('angle-field').style.display=(type==='radial')?'none':'block';
+}
+
+function copyCSS(){
+  const css=document.getElementById('css-output').textContent;
+  navigator.clipboard.writeText(css);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+renderPresets();renderStops();updateGradient();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

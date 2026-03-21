@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Status Codes Reference — Complete List with Examples | DevUtils</title>
+  <meta name="description" content="Complete HTTP status codes reference with descriptions, examples and use cases. Search 1xx informational, 2xx success, 3xx redirect, 4xx client error, 5xx server error codes. Free developer lookup tool.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/http-status">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="HTTP Status Codes Reference — Complete List with Examples">
+  <meta property="og:description" content="Complete HTTP response codes reference. Search, filter and learn all status codes from 100 to 511.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/http-status.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"HTTP Status Codes Reference","url":"https://devutils.com/http-status.html","description":"Complete HTTP status codes reference with descriptions, examples and use cases for developers.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are HTTP status codes and why are they important?","acceptedAnswer":{"@type":"Answer","text":"HTTP status codes are three-digit numbers returned by a server in response to a client request, defined in RFC 7231. They fall into five categories: 1xx (informational), 2xx (success), 3xx (redirection), 4xx (client error), and 5xx (server error). Understanding them is essential for debugging APIs, configuring web servers, handling errors in frontend code, and SEO optimization."}},{"@type":"Question","name":"What is the difference between 301 and 302 redirects?","acceptedAnswer":{"@type":"Answer","text":"A 301 (Moved Permanently) tells browsers and search engines the resource has permanently moved to a new URL. Search engines transfer SEO ranking to the new URL. A 302 (Found) indicates a temporary redirect — the original URL should still be indexed. Using the wrong redirect type can negatively impact SEO rankings."}},{"@type":"Question","name":"Which HTTP status codes should I use in my REST API?","acceptedAnswer":{"@type":"Answer","text":"Common REST API status codes: 200 OK (successful GET/PUT), 201 Created (successful POST), 204 No Content (successful DELETE), 400 Bad Request (invalid input), 401 Unauthorized (missing auth), 403 Forbidden (insufficient permissions), 404 Not Found (resource missing), 409 Conflict (duplicate resource), 422 Unprocessable Entity (validation error), 500 Internal Server Error (unexpected failure)."}}]}
+  </script>
+  <style>
+    .http-search{position:relative;margin-bottom:20px}
+    .http-search input{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px}
+    .http-search input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .http-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+    .http-filters button{padding:6px 14px;font-size:12px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .http-filters button:hover,.http-filters button.active{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+    .http-list{display:grid;gap:8px}
+    .http-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;cursor:pointer;transition:all .2s;display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:start}
+    .http-item:hover{border-color:rgba(0,208,132,.3);transform:translateX(2px)}
+    .http-code{font-family:var(--mono);font-size:18px;font-weight:700;border-radius:6px;padding:4px 0;text-align:center}
+    .http-1xx .http-code{color:#60a5fa}
+    .http-2xx .http-code{color:#4ade80}
+    .http-3xx .http-code{color:#facc15}
+    .http-4xx .http-code{color:#fb923c}
+    .http-5xx .http-code{color:#f87171}
+    .http-name{font-size:14px;font-weight:600;color:var(--text)}
+    .http-desc{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5}
+    .http-use{font-size:11px;color:var(--text3);margin-top:6px;font-family:var(--mono);display:none}
+    .http-item.open .http-use{display:block}
+    .http-count{font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:16px}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Reference</span>
+    <h1>HTTP Status Codes Reference</h1>
+    <p>Complete list of HTTP response status codes with descriptions, use cases and examples. Search by code number or keyword to quickly find what you need for API development, debugging and server configuration.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="http-search">
+        <input type="text" id="http-search" placeholder="Search by code number or keyword — e.g. 404, redirect, unauthorized..." autocomplete="off">
+      </div>
+      <div class="http-filters">
+        <button class="active" onclick="filterCodes('all',this)">All</button>
+        <button onclick="filterCodes('1',this)">1xx Info</button>
+        <button onclick="filterCodes('2',this)">2xx Success</button>
+        <button onclick="filterCodes('3',this)">3xx Redirect</button>
+        <button onclick="filterCodes('4',this)">4xx Client Error</button>
+        <button onclick="filterCodes('5',this)">5xx Server Error</button>
+      </div>
+      <div class="http-count" id="http-count"></div>
+      <div class="http-list" id="http-list"></div>
+    </div>
+  </div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are HTTP status codes and why are they important?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">HTTP status codes are three-digit numbers returned by a web server in response to a client's request, standardized in RFC 7231 and related RFCs. They are grouped into five categories: 1xx (informational), 2xx (success), 3xx (redirection), 4xx (client error), and 5xx (server error). Understanding these codes is essential for API development, web server configuration, frontend error handling, SEO optimization, and debugging network issues.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between 301 and 302 redirects?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A <strong>301 Moved Permanently</strong> tells browsers and search engines the resource has permanently moved. Search engines transfer link equity (SEO ranking) to the new URL and update their index. A <strong>302 Found</strong> indicates a temporary redirect — the original URL remains in search indexes. Using 301 when you mean 302 (or vice versa) can negatively impact your search rankings and user experience.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Which HTTP status codes should I use in my REST API?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Common REST API codes: <strong>200</strong> OK (successful GET/PUT), <strong>201</strong> Created (successful POST), <strong>204</strong> No Content (successful DELETE), <strong>400</strong> Bad Request (malformed input), <strong>401</strong> Unauthorized (missing authentication), <strong>403</strong> Forbidden (insufficient permissions), <strong>404</strong> Not Found, <strong>409</strong> Conflict (duplicate resource), <strong>422</strong> Unprocessable Entity (validation failure), and <strong>500</strong> Internal Server Error for unexpected failures.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>
+      <a class="related-card" href="url-encoder.html"><div class="related-icon">%</div><div class="related-card-info"><div class="related-card-name">URL Encoder</div><div class="related-card-desc">Encode and decode URLs</div></div></a>
+      <a class="related-card" href="regex-tester.html"><div class="related-icon">.*</div><div class="related-card-info"><div class="related-card-name">Regex Tester</div><div class="related-card-desc">Test regular expressions</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const codes=[
+  {code:100,name:"Continue",desc:"Server received request headers; client should proceed to send the body.",use:"Used in large file uploads with Expect: 100-continue header."},
+  {code:101,name:"Switching Protocols",desc:"Server is switching to the protocol requested by the client.",use:"Used when upgrading HTTP to WebSocket (Upgrade: websocket header)."},
+  {code:102,name:"Processing",desc:"Server has received the request and is processing it (WebDAV).",use:"Prevents client timeout for long-running WebDAV operations."},
+  {code:103,name:"Early Hints",desc:"Server sends preliminary headers before the final response.",use:"Used with Link headers to let browsers preload resources."},
+  {code:200,name:"OK",desc:"The request succeeded. Response body contains the requested resource.",use:"Standard response for successful GET, POST, PUT, PATCH requests."},
+  {code:201,name:"Created",desc:"The request succeeded and a new resource was created.",use:"Returned after successful POST that creates a resource. Include Location header."},
+  {code:202,name:"Accepted",desc:"The request has been accepted for processing but is not yet complete.",use:"Used for async operations like batch jobs, email sending, report generation."},
+  {code:204,name:"No Content",desc:"The request succeeded but there is no content to send back.",use:"Common response for successful DELETE or PUT that doesn't return a body."},
+  {code:206,name:"Partial Content",desc:"Server is delivering only part of the resource due to a Range header.",use:"Used for resumable downloads and video streaming (Range requests)."},
+  {code:207,name:"Multi-Status",desc:"Response contains multiple status codes for multiple sub-requests (WebDAV).",use:"WebDAV batch operations where each sub-request may have a different status."},
+  {code:301,name:"Moved Permanently",desc:"The resource has been permanently moved to a new URL.",use:"SEO-safe permanent redirects. Search engines transfer ranking to new URL."},
+  {code:302,name:"Found",desc:"The resource is temporarily located at a different URL.",use:"Temporary redirects (e.g., maintenance). Original URL stays in search index."},
+  {code:303,name:"See Other",desc:"Response to the request can be found at another URL using GET.",use:"Redirect after POST (Post/Redirect/Get pattern) to prevent form resubmission."},
+  {code:304,name:"Not Modified",desc:"The resource has not been modified since the last request.",use:"Browser cache validation via If-None-Match (ETag) or If-Modified-Since headers."},
+  {code:307,name:"Temporary Redirect",desc:"Temporary redirect that preserves the HTTP method.",use:"Like 302 but guarantees the method (POST stays POST). Strict HTTP/1.1."},
+  {code:308,name:"Permanent Redirect",desc:"Permanent redirect that preserves the HTTP method.",use:"Like 301 but guarantees method preservation. Used for API endpoint moves."},
+  {code:400,name:"Bad Request",desc:"The server cannot process the request due to malformed syntax.",use:"Invalid JSON body, missing required fields, wrong Content-Type header."},
+  {code:401,name:"Unauthorized",desc:"Authentication is required and has not been provided or is invalid.",use:"Missing or expired Bearer token, invalid API key, expired session."},
+  {code:403,name:"Forbidden",desc:"The server understood the request but refuses to authorize it.",use:"Valid auth but insufficient permissions. User cannot access admin endpoints."},
+  {code:404,name:"Not Found",desc:"The server cannot find the requested resource.",use:"Resource doesn't exist at the URL. Most common error code on the web."},
+  {code:405,name:"Method Not Allowed",desc:"The HTTP method is not supported for this resource.",use:"Sending POST to a read-only endpoint, DELETE to a non-deletable resource."},
+  {code:406,name:"Not Acceptable",desc:"The server cannot produce a response matching the Accept headers.",use:"Client requests application/xml but server only supports application/json."},
+  {code:408,name:"Request Timeout",desc:"The server timed out waiting for the client to send the request.",use:"Client took too long to transmit. Common with slow network connections."},
+  {code:409,name:"Conflict",desc:"The request conflicts with the current state of the resource.",use:"Duplicate resource creation, version conflict in optimistic locking."},
+  {code:410,name:"Gone",desc:"The resource is permanently gone and will not be available again.",use:"Stronger than 404. Tells search engines to remove the URL from index."},
+  {code:411,name:"Length Required",desc:"The server requires a Content-Length header.",use:"Server needs to know request body size before processing."},
+  {code:413,name:"Payload Too Large",desc:"The request body exceeds the server's size limits.",use:"File upload exceeds max size (e.g., nginx client_max_body_size)."},
+  {code:414,name:"URI Too Long",desc:"The request URL is longer than the server can handle.",use:"Query string too long. Consider using POST with body instead."},
+  {code:415,name:"Unsupported Media Type",desc:"The server does not support the request's Content-Type.",use:"Sending text/plain when the endpoint expects application/json."},
+  {code:418,name:"I'm a Teapot",desc:"The server refuses to brew coffee because it is a teapot (RFC 2324).",use:"April Fools' RFC joke. Some APIs use it as an easter egg response."},
+  {code:422,name:"Unprocessable Entity",desc:"The request is well-formed but contains semantic errors.",use:"Valid JSON but failed validation (e.g., email format, required fields)."},
+  {code:429,name:"Too Many Requests",desc:"The client has sent too many requests in a given time period.",use:"Rate limiting. Include Retry-After header with seconds until next allowed request."},
+  {code:431,name:"Request Header Fields Too Large",desc:"The server refuses the request because headers are too large.",use:"Cookie header too large, or excessive custom headers."},
+  {code:451,name:"Unavailable For Legal Reasons",desc:"The resource is unavailable due to legal demands (censorship).",use:"GDPR compliance, government censorship, DMCA takedown."},
+  {code:500,name:"Internal Server Error",desc:"The server encountered an unexpected condition.",use:"Unhandled exception, null pointer, database connection failure."},
+  {code:501,name:"Not Implemented",desc:"The server does not support the functionality required.",use:"Server doesn't recognize the HTTP method (e.g., PATCH not implemented)."},
+  {code:502,name:"Bad Gateway",desc:"The server acting as gateway received an invalid response from upstream.",use:"Reverse proxy (nginx) cannot reach the backend application server."},
+  {code:503,name:"Service Unavailable",desc:"The server is temporarily unable to handle the request.",use:"Server overloaded, under maintenance, or starting up. Use Retry-After header."},
+  {code:504,name:"Gateway Timeout",desc:"The gateway server did not receive a timely response from upstream.",use:"Backend server too slow. Check database queries, external API calls."},
+  {code:511,name:"Network Authentication Required",desc:"The client needs to authenticate to gain network access.",use:"Captive portal (hotel/airport WiFi) requiring login before internet access."}
+];
+
+let currentFilter='all';
+function getCategory(code){return String(code)[0];}
+function getCategoryClass(code){return'http-'+getCategory(code)+'xx';}
+
+function renderCodes(filter,search){
+  const list=document.getElementById('http-list');
+  let filtered=codes;
+  if(filter!=='all')filtered=filtered.filter(c=>String(c.code).startsWith(filter));
+  if(search){const q=search.toLowerCase();filtered=filtered.filter(c=>String(c.code).includes(q)||c.name.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q)||c.use.toLowerCase().includes(q));}
+  document.getElementById('http-count').textContent='Showing '+filtered.length+' of '+codes.length+' status codes';
+  list.innerHTML=filtered.map(c=>`<div class="http-item ${getCategoryClass(c.code)}" onclick="this.classList.toggle('open')"><div class="http-code">${c.code}</div><div><div class="http-name">${c.name}</div><div class="http-desc">${c.desc}</div><div class="http-use">Use case: ${c.use}</div></div></div>`).join('');
+}
+
+function filterCodes(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.http-filters button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCodes(f,document.getElementById('http-search').value);
+}
+
+document.getElementById('http-search').addEventListener('input',function(){renderCodes(currentFilter,this.value);});
+renderCodes('all','');
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

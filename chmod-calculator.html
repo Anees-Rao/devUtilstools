@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chmod Calculator Online — Unix File Permissions Calculator Free | DevUtils</title>
+  <meta name="description" content="Calculate Unix and Linux file permissions with this free chmod calculator. Convert between symbolic (rwxr-xr--) and octal (754) notation. Generate chmod commands instantly. No signup required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutils.com/chmod-calculator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Chmod Calculator Online — Unix File Permissions Calculator">
+  <meta property="og:description" content="Calculate Unix file permissions. Convert between symbolic and octal notation. Free chmod command generator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutils.com/chmod-calculator.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Chmod Calculator Online","url":"https://devutils.com/chmod-calculator.html","description":"Calculate Unix file permissions with symbolic and octal notation conversion.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is chmod and how do Unix file permissions work?","acceptedAnswer":{"@type":"Answer","text":"chmod (change mode) is a Unix/Linux command that sets file and directory permissions. Permissions are grouped into three classes: Owner, Group, and Others. Each class can have Read (4), Write (2), and Execute (1) permissions. The values are added together to form an octal number — for example, 755 means Owner has rwx (7), Group has r-x (5), Others have r-x (5)."}},{"@type":"Question","name":"What does chmod 755 mean?","acceptedAnswer":{"@type":"Answer","text":"chmod 755 sets: Owner = rwx (read + write + execute = 7), Group = r-x (read + execute = 5), Others = r-x (read + execute = 5). This is the most common permission for web directories and executable scripts — the owner can modify files while everyone else can read and execute them."}},{"@type":"Question","name":"What is the difference between chmod symbolic and numeric mode?","acceptedAnswer":{"@type":"Answer","text":"Numeric (octal) mode uses three digits like 755 or 644 to set all permissions at once. Symbolic mode uses letters like u+x (add execute for user), g-w (remove write for group), o=r (set others to read-only). Symbolic mode is better for changing specific permissions without affecting others, while numeric mode is faster for setting exact permissions."}}]}
+  </script>
+  <style>
+    .chmod-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+    .perm-table{width:100%;border-collapse:collapse}
+    .perm-table th,.perm-table td{padding:10px 12px;text-align:center;border-bottom:1px solid var(--border)}
+    .perm-table th{font-size:12px;color:var(--accent);font-family:var(--mono);font-weight:600;text-transform:uppercase}
+    .perm-table td{font-size:13px}
+    .perm-table input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+    .perm-table .row-label{text-align:left;font-family:var(--mono);color:var(--text2);font-weight:500}
+    .chmod-result{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:grid;gap:16px}
+    .chmod-val{text-align:center}
+    .chmod-val .label{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;margin-bottom:6px}
+    .chmod-val .value{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);letter-spacing:4px}
+    .chmod-val .symbolic{font-family:var(--mono);font-size:18px;color:var(--text);letter-spacing:1px;margin-top:4px}
+    .chmod-cmd{background:var(--bg4);border-radius:var(--radius);padding:12px 16px;font-family:var(--mono);font-size:13px;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+    .chmod-cmd button{padding:4px 12px;font-size:11px}
+    .chmod-desc{font-size:12px;color:var(--text2);line-height:1.6}
+    .presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+    .presets button{padding:6px 14px;font-size:12px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .presets button:hover{border-color:var(--accent);color:var(--accent)}
+    .octal-input{display:flex;align-items:center;gap:8px;margin-top:12px}
+    .octal-input label{font-size:12px;color:var(--text3);font-family:var(--mono)}
+    .octal-input input{width:80px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;color:var(--accent);font-family:var(--mono);font-size:18px;font-weight:700;text-align:center;letter-spacing:4px}
+    .octal-input input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .ls-preview{font-family:var(--mono);font-size:16px;color:var(--text);text-align:center;margin-top:8px;letter-spacing:1px}
+    @media(max-width:700px){.chmod-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links"><a href="all-tools.html">All Tools</a><a href="about.html">About</a><a href="privacy.html">Privacy</a></div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">DevOps</span>
+    <h1>Chmod Calculator</h1>
+    <p>Calculate Unix and Linux file permissions visually. Toggle checkboxes or type an octal number to instantly see symbolic notation, the chmod command, and a human-readable description of each permission set.</p>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="chmod-grid">
+        <div>
+          <table class="perm-table">
+            <thead><tr><th></th><th>Read (4)</th><th>Write (2)</th><th>Execute (1)</th></tr></thead>
+            <tbody>
+              <tr><td class="row-label">Owner</td><td><input type="checkbox" data-who="u" data-perm="r" checked></td><td><input type="checkbox" data-who="u" data-perm="w" checked></td><td><input type="checkbox" data-who="u" data-perm="x" checked></td></tr>
+              <tr><td class="row-label">Group</td><td><input type="checkbox" data-who="g" data-perm="r" checked></td><td><input type="checkbox" data-who="g" data-perm="w"></td><td><input type="checkbox" data-who="g" data-perm="x" checked></td></tr>
+              <tr><td class="row-label">Others</td><td><input type="checkbox" data-who="o" data-perm="r" checked></td><td><input type="checkbox" data-who="o" data-perm="w"></td><td><input type="checkbox" data-who="o" data-perm="x" checked></td></tr>
+            </tbody>
+          </table>
+          <div class="octal-input">
+            <label>Octal:</label>
+            <input type="text" id="octal-input" value="755" maxlength="4" placeholder="755">
+          </div>
+          <div class="presets">
+            <button onclick="setOctal('644')">644 (files)</button>
+            <button onclick="setOctal('755')">755 (dirs)</button>
+            <button onclick="setOctal('600')">600 (private)</button>
+            <button onclick="setOctal('777')">777 (all)</button>
+            <button onclick="setOctal('400')">400 (read-only)</button>
+            <button onclick="setOctal('750')">750 (group)</button>
+          </div>
+        </div>
+        <div class="chmod-result">
+          <div class="chmod-val">
+            <div class="label">Octal Notation</div>
+            <div class="value" id="octal-display">755</div>
+          </div>
+          <div class="chmod-val">
+            <div class="label">Symbolic Notation</div>
+            <div class="symbolic" id="symbolic-display">rwxr-xr-x</div>
+          </div>
+          <div class="ls-preview" id="ls-preview">-rwxr-xr-x</div>
+          <div class="chmod-cmd">
+            <span id="chmod-cmd">chmod 755 filename</span>
+            <button class="btn btn-ghost" onclick="copyCmd()">Copy</button>
+          </div>
+          <div class="chmod-desc" id="chmod-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is chmod and how do Unix file permissions work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><code>chmod</code> (change mode) is a Unix/Linux command that modifies file and directory permissions. Permissions are organized into three classes: <strong>Owner</strong> (user who owns the file), <strong>Group</strong> (users in the file's group), and <strong>Others</strong> (everyone else). Each class can have <strong>Read</strong> (value 4), <strong>Write</strong> (value 2), and <strong>Execute</strong> (value 1). These values are summed per class to produce an octal digit — for example, <code>chmod 755</code> means Owner=rwx(7), Group=r-x(5), Others=r-x(5).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does chmod 755 mean?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><code>chmod 755</code> sets Owner to read+write+execute (7), Group to read+execute (5), and Others to read+execute (5). This is the standard permission for web server directories and executable scripts — the owner can fully manage files while group members and the public can read and execute but not modify them.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between chmod symbolic and numeric mode?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>Numeric (octal) mode</strong> uses three digits like <code>755</code> or <code>644</code> to set all permissions at once. <strong>Symbolic mode</strong> uses letter notation like <code>u+x</code> (add execute for user), <code>g-w</code> (remove write for group), or <code>o=r</code> (set others to read-only). Symbolic mode is ideal for changing specific permissions without affecting others, while numeric mode is faster when you need to set exact permissions from scratch.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="cron-parser.html"><div class="related-icon">⏰</div><div class="related-card-info"><div class="related-card-name">Cron Expression</div><div class="related-card-desc">Parse and generate cron schedules</div></div></a>
+      <a class="related-card" href="hash-generator.html"><div class="related-icon">#</div><div class="related-card-info"><div class="related-card-name">Hash Generator</div><div class="related-card-desc">MD5, SHA-256, SHA-512 hashing</div></div></a>
+      <a class="related-card" href="number-base.html"><div class="related-icon">01</div><div class="related-card-info"><div class="related-card-name">Number Base Converter</div><div class="related-card-desc">Binary, octal, decimal, hex</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const checks=document.querySelectorAll('.perm-table input[type="checkbox"]');
+const octalInput=document.getElementById('octal-input');
+
+function getPerms(){
+  const p={u:{r:false,w:false,x:false},g:{r:false,w:false,x:false},o:{r:false,w:false,x:false}};
+  checks.forEach(cb=>{p[cb.dataset.who][cb.dataset.perm]=cb.checked;});
+  return p;
+}
+
+function calcOctal(p){
+  function val(who){return(p[who].r?4:0)+(p[who].w?2:0)+(p[who].x?1:0);}
+  return''+val('u')+val('g')+val('o');
+}
+
+function calcSymbolic(p){
+  function s(who){return(p[who].r?'r':'-')+(p[who].w?'w':'-')+(p[who].x?'x':'-');}
+  return s('u')+s('g')+s('o');
+}
+
+function describePerms(p){
+  function d(who,label){
+    const parts=[];
+    if(p[who].r)parts.push('read');if(p[who].w)parts.push('write');if(p[who].x)parts.push('execute');
+    return'<strong>'+label+'</strong>: '+(parts.length?parts.join(', '):'no permissions');
+  }
+  return d('u','Owner')+' · '+d('g','Group')+' · '+d('o','Others');
+}
+
+function update(){
+  const p=getPerms();
+  const oct=calcOctal(p);
+  const sym=calcSymbolic(p);
+  document.getElementById('octal-display').textContent=oct;
+  document.getElementById('symbolic-display').textContent=sym;
+  document.getElementById('ls-preview').textContent='-'+sym;
+  document.getElementById('chmod-cmd').textContent='chmod '+oct+' filename';
+  document.getElementById('chmod-desc').innerHTML=describePerms(p);
+  octalInput.value=oct;
+}
+
+checks.forEach(cb=>cb.addEventListener('change',update));
+
+octalInput.addEventListener('input',function(){
+  const val=this.value.replace(/[^0-7]/g,'').substring(0,3);
+  this.value=val;
+  if(val.length===3){
+    const digits=val.split('').map(Number);
+    const map=['u','g','o'];
+    map.forEach((who,i)=>{
+      const d=digits[i];
+      checks.forEach(cb=>{
+        if(cb.dataset.who===who){
+          if(cb.dataset.perm==='r')cb.checked=!!(d&4);
+          if(cb.dataset.perm==='w')cb.checked=!!(d&2);
+          if(cb.dataset.perm==='x')cb.checked=!!(d&1);
+        }
+      });
+    });
+    update();
+  }
+});
+
+function setOctal(val){octalInput.value=val;octalInput.dispatchEvent(new Event('input'));}
+
+function copyCmd(){
+  navigator.clipboard.writeText(document.getElementById('chmod-cmd').textContent);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+update();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>
