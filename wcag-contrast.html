@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCAG Contrast Checker — Free Accessibility Tool | DevUtils</title>
+  <meta name="description" content="Check WCAG AA and AAA color contrast ratios instantly. Live preview, auto-suggest passing colors, swap and hex input. Accessible design. Free, no sign-up.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/wcag-contrast.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="WCAG Contrast Checker — Free Accessibility Tool">
+  <meta property="og:description" content="Test color contrast against WCAG AA and AAA. Live preview, auto-suggest, swap colors — all client-side.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/wcag-contrast.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"WCAG Contrast Checker","url":"https://devutilstools.pages.dev/wcag-contrast.html","description":"Check foreground and background color contrast ratios against WCAG AA and AAA guidelines.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a WCAG contrast ratio?","acceptedAnswer":{"@type":"Answer","text":"A WCAG contrast ratio is a number between 1:1 (no contrast) and 21:1 (black on white) that measures how distinguishable two colors are. It is calculated from the relative luminance of each color using the formula (L1 + 0.05) / (L2 + 0.05). The higher the ratio, the more readable text becomes for users with low vision, color-blindness, aging eyes, or difficult viewing conditions like direct sunlight."}},{"@type":"Question","name":"What are the WCAG AA and AAA thresholds?","acceptedAnswer":{"@type":"Answer","text":"WCAG 2.1 defines four thresholds. AA Normal text requires at least 4.5:1. AA Large text (18pt or 14pt bold and larger) requires 3:1. AAA Normal requires 7:1 and AAA Large requires 4.5:1. Non-text UI components and graphical elements need at least 3:1 against adjacent colors (WCAG 1.4.11). Most laws, including the ADA, Section 508, and the EU EN 301 549, reference the AA level as the minimum."}},{"@type":"Question","name":"What counts as large text under WCAG?","acceptedAnswer":{"@type":"Answer","text":"Large text is defined as 18pt (24px) or larger for regular weight, or 14pt (19px) or larger when bold. The rationale is that thicker strokes and taller letterforms remain legible at lower contrast. Note that pt and px conversions assume the default 96 DPI browser baseline. Always confirm rendered size on real devices, because CSS transforms or zoom can change the perceived size."}},{"@type":"Question","name":"Why does the auto-suggest change lightness, not hue?","acceptedAnswer":{"@type":"Answer","text":"Contrast depends on relative luminance, which is driven primarily by the lightness channel. Adjusting lightness preserves your brand hue while nudging the luminance just enough to pass AA. Shifting hue or saturation instead often produces surprising perceived color changes without reliably fixing the ratio. The suggester walks the HSL lightness in small steps until the chosen color combination crosses the 4.5:1 AA Normal threshold."}},{"@type":"Question","name":"Are contrast ratios the only accessibility check I need?","acceptedAnswer":{"@type":"Answer","text":"No — contrast is one of many WCAG success criteria. You also need visible focus indicators (1.4.11), text-resizable up to 200% (1.4.4), no reliance on color alone to convey meaning (1.4.1), motion-reduction preferences respected (2.3.3), and proper semantic HTML for screen readers. Use this tool as the first pass, then run a full audit with tools like Axe, Lighthouse, or the W3C validator before shipping."}}]}
+  </script>
+  <style>
+    .wcag-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    @media(max-width:700px){.wcag-grid{grid-template-columns:1fr}}
+    .wcag-pick{display:flex;gap:10px;align-items:center;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)}
+    .wcag-pick label{font-size:11px;font-family:var(--mono);color:var(--text3);min-width:70px;text-transform:uppercase;letter-spacing:1px}
+    .wcag-pick input[type=color]{width:44px;height:36px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);cursor:pointer;padding:2px}
+    .wcag-pick input[type=text]{flex:1;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px}
+    .wcag-ratio{text-align:center;padding:22px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px}
+    .wcag-ratio .val{font-size:44px;font-family:var(--mono);font-weight:700;color:var(--text);line-height:1}
+    .wcag-ratio .lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;margin-top:6px;font-family:var(--mono)}
+    .wcag-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+    @media(max-width:700px){.wcag-badges{grid-template-columns:repeat(2,1fr)}}
+    .wcag-badge{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);text-align:center}
+    .wcag-badge .t{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .wcag-badge .s{font-size:13px;font-family:var(--mono);font-weight:600}
+    .wcag-badge.pass{border-color:rgba(0,208,132,.4)}
+    .wcag-badge.pass .s{color:var(--accent)}
+    .wcag-badge.fail{border-color:rgba(248,113,113,.35)}
+    .wcag-badge.fail .s{color:#f87171}
+    .wcag-preview{padding:28px;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:14px}
+    .wcag-preview .small{font-size:14px;line-height:1.55;margin-bottom:12px}
+    .wcag-preview .large{font-size:24px;font-weight:700;line-height:1.3}
+    .wcag-actions{display:flex;gap:8px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Accessibility</span>
+    <h1>WCAG Contrast Checker</h1>
+    <p>This WCAG contrast checker measures the ratio between any two colors and tells you, in real time, whether your text meets WCAG 2.1 Level AA or AAA for both normal and large text. Enter hex codes directly, drag the color picker, or click <strong>Swap</strong> to flip foreground and background. A live preview panel shows exactly how the combination reads at regular and 18pt+ sizes. If a pair fails, <strong>Auto-suggest</strong> walks the nearest HSL lightness until it passes AA. Free, no sign-up, works offline after first load.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="wcag-grid">
+        <div class="wcag-pick">
+          <label>Foreground</label>
+          <input type="color" id="fg" value="#111827">
+          <input type="text" id="fg-hex" value="#111827" maxlength="7">
+        </div>
+        <div class="wcag-pick">
+          <label>Background</label>
+          <input type="color" id="bg" value="#ffffff">
+          <input type="text" id="bg-hex" value="#ffffff" maxlength="7">
+        </div>
+      </div>
+      <div class="wcag-ratio">
+        <div class="val" id="ratio-val">21.00:1</div>
+        <div class="lbl">Contrast Ratio</div>
+      </div>
+      <div class="wcag-badges" id="wcag-badges"></div>
+      <div class="wcag-preview" id="wcag-preview">
+        <div class="small">The quick brown fox jumps over the lazy dog — sample text at 14px regular.</div>
+        <div class="large">Large heading sample</div>
+      </div>
+      <div class="wcag-actions">
+        <button class="btn btn-primary" onclick="swap()">Swap Colors</button>
+        <button class="btn btn-ghost" onclick="autoSuggest()">Auto-suggest AA</button>
+        <button class="btn btn-ghost" onclick="copyReport()">Copy Report</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a WCAG contrast ratio?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A WCAG contrast ratio is a number between <strong>1:1</strong> (no contrast) and <strong>21:1</strong> (pure black on pure white) that measures how distinguishable two colors are. It is calculated from the relative luminance of each color using the formula <code>(L1 + 0.05) / (L2 + 0.05)</code> where <em>L1</em> is the lighter color. The higher the ratio, the more readable text becomes for users with low vision, color-blindness, aging eyes, or difficult viewing conditions like direct sunlight on a phone screen.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are the WCAG AA and AAA thresholds?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">WCAG 2.1 defines four main text thresholds: <strong>AA Normal</strong> requires at least <strong>4.5:1</strong>; <strong>AA Large</strong> (18pt / 24px or 14pt / 19px bold and larger) requires <strong>3:1</strong>; <strong>AAA Normal</strong> requires <strong>7:1</strong>; and <strong>AAA Large</strong> requires <strong>4.5:1</strong>. Non-text UI components (form borders, focus rings, icons) and graphical elements need at least <strong>3:1</strong> against adjacent colors under WCAG 1.4.11. Most accessibility laws — including the ADA, Section 508, and the EU EN 301 549 — reference the AA level as the minimum.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What counts as large text under WCAG?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Large text is defined as <strong>18pt (24px) or larger</strong> for regular weight, or <strong>14pt (19px) or larger</strong> when bold. The rationale is that thicker strokes and taller letterforms remain legible at lower contrast, so the threshold drops from 4.5:1 to 3:1. Note that pt and px conversions assume the default 96 DPI browser baseline — always confirm the rendered size on real devices, because CSS transforms, zoom, or user-agent stylesheets can change the perceived size.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does the auto-suggest change lightness, not hue?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Contrast depends on <strong>relative luminance</strong>, which is driven primarily by the lightness channel. Adjusting lightness preserves your brand hue while nudging the luminance just enough to pass AA. Shifting hue or saturation instead often produces surprising perceived color changes without reliably fixing the ratio — a slightly darker blue reads as the same blue, but a slightly more saturated blue can feel like a completely different brand color. The suggester walks the HSL lightness in small steps until the combination crosses the 4.5:1 AA Normal threshold.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Are contrast ratios the only accessibility check I need?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">No — contrast is one of many WCAG success criteria. You also need <strong>visible focus indicators</strong> (WCAG 2.4.7 and 1.4.11), text resizable up to 200% without loss of content (1.4.4), no reliance on color alone to convey meaning (1.4.1), motion-reduction preferences respected (2.3.3), and proper semantic HTML with ARIA where native elements are insufficient. Use this tool as the first pass, then run a full audit with Axe DevTools, Lighthouse, or the W3C validator before shipping.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does opacity affect contrast calculations?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes — when you use <code>rgba()</code> or <code>opacity</code>, the actual rendered color is the result of compositing the foreground over whatever is behind it. WCAG expects you to test the <em>final rendered</em> color pair. If you are evaluating a semi-transparent text color, first calculate the composited sRGB value against its true background, then feed that composited color into the checker. This tool assumes opaque input for simplicity; use the computed RGB from browser DevTools for translucent UI.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Will the upcoming WCAG 3 / APCA change these rules?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">WCAG 3 introduces a new contrast model called <strong>APCA</strong> (Accessible Perceptual Contrast Algorithm) that reports a signed lightness-contrast value rather than a ratio. APCA accounts for font weight, size, and polarity (light-on-dark vs dark-on-light) more accurately than the luminance-ratio method. As of 2026, WCAG 2.1 / 2.2 ratio rules remain the legal standard in most jurisdictions. This tool implements the WCAG 2.x formula; expect a dedicated APCA checker once WCAG 3 is ratified.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="color-picker.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Color Picker</div><div class="related-card-desc">HEX, RGB, HSL values</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Hex to RGB</div><div class="related-card-desc">Convert hex colors to RGB</div></div></a>
+      <a class="related-card" href="css-gradient.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">CSS Gradient Generator</div><div class="related-card-desc">Visual linear and radial gradients</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+function parseHex(h){
+  h=(h||'').trim().replace('#','');
+  if(h.length===3)h=h.split('').map(c=>c+c).join('');
+  if(!/^[0-9a-f]{6}$/i.test(h))return null;
+  return [parseInt(h.substring(0,2),16),parseInt(h.substring(2,4),16),parseInt(h.substring(4,6),16)];
+}
+function rgbToHex(r,g,b){
+  const h=n=>Math.max(0,Math.min(255,Math.round(n))).toString(16).padStart(2,'0');
+  return '#'+h(r)+h(g)+h(b);
+}
+function relLum(rgb){
+  const [r,g,b]=rgb.map(v=>{
+    const s=v/255;
+    return s<=0.03928?s/12.92:Math.pow((s+0.055)/1.055,2.4);
+  });
+  return 0.2126*r+0.7152*g+0.0722*b;
+}
+function ratio(fg,bg){
+  const l1=relLum(fg),l2=relLum(bg);
+  const [a,b]=l1>l2?[l1,l2]:[l2,l1];
+  return (a+0.05)/(b+0.05);
+}
+function rgbToHsl(r,g,b){
+  r/=255;g/=255;b/=255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+  let h,s,l=(mx+mn)/2;
+  if(mx===mn){h=s=0;}
+  else{
+    const d=mx-mn;
+    s=l>0.5?d/(2-mx-mn):d/(mx+mn);
+    switch(mx){
+      case r:h=(g-b)/d+(g<b?6:0);break;
+      case g:h=(b-r)/d+2;break;
+      case b:h=(r-g)/d+4;break;
+    }
+    h/=6;
+  }
+  return [h,s,l];
+}
+function hslToRgb(h,s,l){
+  let r,g,b;
+  if(s===0){r=g=b=l;}
+  else{
+    const hue2rgb=(p,q,t)=>{
+      if(t<0)t+=1;if(t>1)t-=1;
+      if(t<1/6)return p+(q-p)*6*t;
+      if(t<1/2)return q;
+      if(t<2/3)return p+(q-p)*(2/3-t)*6;
+      return p;
+    };
+    const q=l<0.5?l*(1+s):l+s-l*s;
+    const p=2*l-q;
+    r=hue2rgb(p,q,h+1/3);
+    g=hue2rgb(p,q,h);
+    b=hue2rgb(p,q,h-1/3);
+  }
+  return [r*255,g*255,b*255];
+}
+
+function update(){
+  const fg=parseHex(document.getElementById('fg-hex').value)||[17,24,39];
+  const bg=parseHex(document.getElementById('bg-hex').value)||[255,255,255];
+  const r=ratio(fg,bg);
+  document.getElementById('ratio-val').textContent=r.toFixed(2)+':1';
+  const defs=[
+    ['AA Normal',4.5],
+    ['AA Large',3],
+    ['AAA Normal',7],
+    ['AAA Large',4.5]
+  ];
+  document.getElementById('wcag-badges').innerHTML=defs.map(([n,th])=>{
+    const pass=r>=th;
+    return `<div class="wcag-badge ${pass?'pass':'fail'}"><div class="t">${n}</div><div class="s">${pass?'PASS':'FAIL'} (${th}:1)</div></div>`;
+  }).join('');
+  const prev=document.getElementById('wcag-preview');
+  prev.style.background=rgbToHex(...bg);
+  prev.style.color=rgbToHex(...fg);
+  prev.style.borderColor=rgbToHex(...fg);
+}
+
+function syncFromPicker(pickerId,hexId){
+  document.getElementById(pickerId).addEventListener('input',e=>{
+    document.getElementById(hexId).value=e.target.value;
+    update();
+  });
+  document.getElementById(hexId).addEventListener('input',e=>{
+    const v=e.target.value.trim();
+    if(parseHex(v)){document.getElementById(pickerId).value=parseHex(v)?rgbToHex(...parseHex(v)):'#000000';update();}
+  });
+}
+syncFromPicker('fg','fg-hex');
+syncFromPicker('bg','bg-hex');
+
+function swap(){
+  const f=document.getElementById('fg-hex').value;
+  const b=document.getElementById('bg-hex').value;
+  document.getElementById('fg-hex').value=b;
+  document.getElementById('bg-hex').value=f;
+  document.getElementById('fg').value=b;
+  document.getElementById('bg').value=f;
+  update();
+}
+
+function autoSuggest(){
+  const fgHex=document.getElementById('fg-hex').value;
+  const bgHex=document.getElementById('bg-hex').value;
+  const fg=parseHex(fgHex);
+  const bg=parseHex(bgHex);
+  if(!fg||!bg)return;
+  // Adjust fg lightness to reach 4.5
+  let [h,s,l]=rgbToHsl(...fg);
+  const bgLum=relLum(bg);
+  // Decide direction: make fg darker if bg is light, lighter if bg is dark
+  const goDark=bgLum>0.5;
+  let bestL=l,found=false;
+  for(let step=0;step<=100;step++){
+    const tryL=goDark?Math.max(0,l-step/100):Math.min(1,l+step/100);
+    const rgb=hslToRgb(h,s,tryL);
+    if(ratio(rgb,bg)>=4.5){bestL=tryL;found=true;break;}
+  }
+  if(found){
+    const newRgb=hslToRgb(h,s,bestL);
+    const hex=rgbToHex(...newRgb);
+    document.getElementById('fg-hex').value=hex;
+    document.getElementById('fg').value=hex;
+    update();
+    showToast('Adjusted to pass AA');
+  }else{
+    showToast('Could not reach AA — try different hue');
+  }
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg||'Copied!';
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1600);
+}
+
+function copyReport(){
+  const fg=document.getElementById('fg-hex').value;
+  const bg=document.getElementById('bg-hex').value;
+  const r=document.getElementById('ratio-val').textContent;
+  const text=`Foreground: ${fg}\nBackground: ${bg}\nRatio: ${r}`;
+  navigator.clipboard.writeText(text);
+  showToast('Report copied');
+}
+
+update();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

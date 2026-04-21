@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Minifier Online — Free Minify & Beautify Tool | DevUtils</title>
+  <meta name="description" content="Minify HTML online free. Strip comments, collapse whitespace, shrink file size or beautify HTML with 2-space indent. No sign-up, works offline in browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/html-minifier.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="HTML Minifier Online — Free Minify & Beautify Tool">
+  <meta property="og:description" content="Minify or beautify HTML online. Strip comments, collapse whitespace, preserve pre/script/style. Free, no sign-up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/html-minifier.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"HTML Minifier Online","url":"https://devutilstools.pages.dev/html-minifier.html","description":"Minify and beautify HTML online. Strip comments, collapse whitespace, preserve pre/script/style content.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does an HTML minifier do?","acceptedAnswer":{"@type":"Answer","text":"An HTML minifier reduces the file size of an HTML document by removing unnecessary characters without changing the rendered output. Typical operations include stripping HTML comments, collapsing multiple whitespace characters into a single space, removing whitespace between adjacent tags, and trimming leading/trailing whitespace in attributes. The result is smaller payloads, faster network transfer, and lower bandwidth bills."}},{"@type":"Question","name":"Is it safe to minify HTML automatically?","acceptedAnswer":{"@type":"Answer","text":"Generally yes, provided the minifier preserves the contents of whitespace-sensitive tags such as pre, textarea, script, and style. Our tool leaves those blocks untouched. However, whitespace inside inline elements can matter visually (for example a space between two links), so always test the minified output against the original in a browser before deploying."}},{"@type":"Question","name":"How much smaller does minified HTML get?","acceptedAnswer":{"@type":"Answer","text":"Typical savings range from 10% to 40% depending on how much whitespace and commenting exists in the source. Hand-written templates with lots of indentation and developer comments compress more; generated markup that was already compact compresses less. Enabling gzip or Brotli on the server provides additional compression on top of minification."}},{"@type":"Question","name":"Does minifying HTML improve SEO or Core Web Vitals?","acceptedAnswer":{"@type":"Answer","text":"Minification reduces transfer size which improves Largest Contentful Paint (LCP) and Time to First Byte (TTFB), both ranking signals in Google's Core Web Vitals. Smaller HTML also parses faster on low-powered devices, helping First Input Delay (FID) and Interaction to Next Paint (INP). The SEO impact is indirect but real."}},{"@type":"Question","name":"Should I minify HTML in development or production only?","acceptedAnswer":{"@type":"Answer","text":"Only minify production builds. During development, readable HTML is critical for debugging in DevTools, viewing source, and diffing in version control. Most static site generators and bundlers (Next.js, Astro, Eleventy) minify automatically at build time so you get both worlds."}}]}
+  </script>
+  <style>
+    .hm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .hm-col label{display:block;font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .hm-col textarea{width:100%;min-height:320px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box}
+    .hm-col textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .hm-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .hm-actions button{padding:10px 18px;font-size:13px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);cursor:pointer;transition:all .2s}
+    .hm-actions button:hover{border-color:var(--accent);color:var(--accent)}
+    .hm-actions button.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+    .hm-actions button.primary:hover{opacity:.9;color:#000}
+    .hm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-top:16px}
+    .hm-stat{padding:12px 14px;background:var(--bg);text-align:center}
+    .hm-stat-label{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .hm-stat-val{font-family:var(--mono);font-size:15px;color:var(--text);font-weight:500}
+    .hm-stat-val.good{color:var(--accent)}
+    .hm-out-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .hm-copy{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer}
+    .hm-copy:hover{border-color:var(--accent);color:var(--accent)}
+    @media(max-width:800px){.hm-grid{grid-template-columns:1fr}.hm-col textarea{min-height:220px}.hm-stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">HTML</span>
+    <h1>HTML Minifier & Beautifier</h1>
+    <p>Looking for a reliable HTML minifier online? Paste any HTML document below and this free tool will strip comments, collapse redundant whitespace, and shrink your markup without breaking layout. Switch to Beautify mode to re-indent minified or tangled source into clean, readable code with a 2-space indent. Content inside pre, textarea, script, and style tags is preserved byte-for-byte so code samples and inline scripts remain intact. Everything runs locally in your browser — no upload, no sign-up, no tracking. See live byte-savings stats the moment you minify so you know exactly how much you shaved off.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="hm-actions">
+        <button class="primary" onclick="doMinify()">Minify</button>
+        <button onclick="doBeautify()">Beautify / Pretty Print</button>
+        <button onclick="loadSample()">Sample</button>
+        <button onclick="clearAll()">Clear</button>
+      </div>
+      <div class="hm-grid">
+        <div class="hm-col">
+          <label for="hm-input">Input HTML</label>
+          <textarea id="hm-input" placeholder="Paste your HTML here..." spellcheck="false"></textarea>
+        </div>
+        <div class="hm-col">
+          <div class="hm-out-head">
+            <label for="hm-output" style="margin-bottom:0">Output</label>
+            <button class="hm-copy" onclick="copyOut()">Copy</button>
+          </div>
+          <textarea id="hm-output" readonly spellcheck="false" placeholder="Result appears here..."></textarea>
+        </div>
+      </div>
+      <div class="hm-stats">
+        <div class="hm-stat"><div class="hm-stat-label">Original</div><div class="hm-stat-val" id="hm-orig">0 B</div></div>
+        <div class="hm-stat"><div class="hm-stat-label">Output</div><div class="hm-stat-val" id="hm-out">0 B</div></div>
+        <div class="hm-stat"><div class="hm-stat-label">Savings</div><div class="hm-stat-val good" id="hm-save">—</div></div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does an HTML minifier do?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">An HTML minifier reduces the file size of an HTML document by removing unnecessary characters without changing how the page renders. Typical operations include stripping HTML comments, collapsing multiple whitespace characters into a single space, removing whitespace between adjacent tags, and trimming leading/trailing whitespace inside attribute values. The result is smaller payloads, faster network transfer, and lower bandwidth bills on high-traffic sites. A good minifier also leaves anything semantically meaningful — like the contents of <code>&lt;pre&gt;</code> or <code>&lt;script&gt;</code> blocks — completely untouched.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is it safe to minify HTML automatically?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Generally yes, provided the minifier preserves the contents of whitespace-sensitive tags such as <code>&lt;pre&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;script&gt;</code>, and <code>&lt;style&gt;</code>. This tool leaves those blocks untouched. However, whitespace between inline elements can sometimes matter visually (for example, a space between two adjacent links), so always diff the minified output against the original in a browser before deploying to production. Conditional comments for legacy IE like <code>&lt;!--[if IE]&gt;</code> are also preserved.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How much smaller does minified HTML get?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Typical savings range from 10% to 40% depending on how much whitespace and commenting exists in the source. Hand-written templates with lots of indentation and developer comments compress more; generated markup that was already compact compresses less. Enabling gzip or Brotli on the server provides additional compression on top of minification — combined, you can often ship a page in 70–85% fewer bytes than the raw source. For a page above the LCP fold, those savings translate directly into faster perceived load.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does minifying HTML improve SEO or Core Web Vitals?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Minification reduces transfer size, which improves Largest Contentful Paint (LCP) and Time to First Byte (TTFB), both ranking signals tracked in Google's Core Web Vitals report. Smaller HTML also parses faster on low-powered mobile devices, helping First Input Delay (FID) and the newer Interaction to Next Paint (INP) metric. The SEO impact is indirect but real: Google has stated that speed is a ranking factor, and the Chrome UX Report feeds real-user metrics back into Search Console.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Should I minify HTML in development or only in production?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Only minify production builds. During development, readable HTML is critical for debugging in DevTools, viewing source, and diffing in version control. Most modern static site generators and bundlers — including Next.js, Astro, Eleventy, and Gatsby — minify at build time automatically so you get readable dev output and compact production output without any manual step. Use this tool when you're working with a legacy pipeline or need to minify a one-off snippet.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What about inline CSS and JavaScript?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">This tool preserves the contents of <code>&lt;script&gt;</code> and <code>&lt;style&gt;</code> blocks verbatim so your inline logic keeps working exactly as written. If you also want to minify those, run the extracted CSS through our CSS Minifier and the JavaScript through our JS Minifier, then paste the results back into your HTML. Splitting the concerns this way gives you safer, more predictable output than a single tool that tries to do everything at once.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="css-minifier.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">CSS Minifier</div><div class="related-card-desc">Compress stylesheets</div></div></a>
+      <a class="related-card" href="js-minifier.html"><div class="related-icon">JS</div><div class="related-card-info"><div class="related-card-name">JS Minifier</div><div class="related-card-desc">Shrink JavaScript files</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity Encoder</div><div class="related-card-desc">Encode/decode entities</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const SAMPLE_HTML=`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>   Demo   Page   </title>
+  <!-- This is a developer comment that can be stripped -->
+  <!--[if IE]><link rel="stylesheet" href="ie.css"><![endif]-->
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    .hero { padding: 40px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <h1>  Hello,   World!  </h1>
+    <p>Welcome to the    demo.</p>
+  </header>
+
+  <pre>
+    This  whitespace
+      must be preserved
+  </pre>
+
+  <script>
+    // inline JS stays untouched
+    console.log("hi");
+  <\/script>
+</body>
+</html>`;
+
+function byteLen(s){return new Blob([s]).size}
+function fmtBytes(n){
+  if(n<1024)return n+' B';
+  if(n<1024*1024)return (n/1024).toFixed(2)+' KB';
+  return (n/1024/1024).toFixed(2)+' MB';
+}
+
+// Minifier: preserves <pre>, <textarea>, <script>, <style>, and conditional comments
+function minifyHTML(src){
+  const placeholders=[];
+  const stash=(match)=>{placeholders.push(match);return '\u0001PH'+(placeholders.length-1)+'\u0001'};
+  // 1. Stash preserved blocks
+  let out=src.replace(/<pre\b[^>]*>[\s\S]*?<\/pre>/gi,stash);
+  out=out.replace(/<textarea\b[^>]*>[\s\S]*?<\/textarea>/gi,stash);
+  out=out.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,stash);
+  out=out.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,stash);
+  // 2. Stash conditional comments
+  out=out.replace(/<!--\[if[\s\S]*?<!\[endif\]-->/gi,stash);
+  // 3. Remove regular comments
+  out=out.replace(/<!--[\s\S]*?-->/g,'');
+  // 4. Collapse whitespace between tags
+  out=out.replace(/>\s+</g,'><');
+  // 5. Collapse consecutive whitespace inside text/attrs
+  out=out.replace(/\s{2,}/g,' ');
+  // 6. Trim whitespace around attribute equals (a = "b" -> a="b")
+  out=out.replace(/\s*=\s*"/g,'="');
+  out=out.replace(/\s*=\s*'/g,"='");
+  // 7. Trim leading/trailing whitespace
+  out=out.trim();
+  // 8. Restore placeholders
+  out=out.replace(/\u0001PH(\d+)\u0001/g,(_,i)=>placeholders[+i]);
+  return out;
+}
+
+// Beautify: tokenize tags and re-indent
+function beautifyHTML(src){
+  // First, collapse the source so indentation is deterministic
+  const mini=minifyHTML(src);
+  const voidTags=new Set(['area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr']);
+  const preserveTags=new Set(['pre','textarea','script','style']);
+  const tokens=[];
+  let i=0;
+  while(i<mini.length){
+    if(mini[i]==='<'){
+      // Preserved block? emit as single token
+      const tagMatch=mini.slice(i).match(/^<([a-zA-Z][a-zA-Z0-9]*)\b/);
+      if(tagMatch && preserveTags.has(tagMatch[1].toLowerCase())){
+        const tag=tagMatch[1].toLowerCase();
+        const closeRe=new RegExp('</'+tag+'\\s*>','i');
+        const rest=mini.slice(i);
+        const m=rest.match(closeRe);
+        if(m){
+          const end=i+m.index+m[0].length;
+          tokens.push({type:'preserved',text:mini.slice(i,end)});
+          i=end;continue;
+        }
+      }
+      // Conditional comment
+      if(mini.slice(i,i+5)==='<!--['){
+        const end=mini.indexOf('<![endif]-->',i);
+        if(end>-1){tokens.push({type:'text',text:mini.slice(i,end+12)});i=end+12;continue}
+      }
+      // Comment
+      if(mini.slice(i,i+4)==='<!--'){
+        const end=mini.indexOf('-->',i);
+        if(end>-1){tokens.push({type:'text',text:mini.slice(i,end+3)});i=end+3;continue}
+      }
+      // Doctype
+      if(mini.slice(i,i+9).toLowerCase()==='<!doctype'){
+        const end=mini.indexOf('>',i);
+        tokens.push({type:'doctype',text:mini.slice(i,end+1)});
+        i=end+1;continue;
+      }
+      // Normal tag
+      const end=mini.indexOf('>',i);
+      if(end===-1){tokens.push({type:'text',text:mini.slice(i)});break}
+      const raw=mini.slice(i,end+1);
+      const isClose=raw.startsWith('</');
+      const isSelf=raw.endsWith('/>');
+      const nameMatch=raw.match(/^<\/?([a-zA-Z][a-zA-Z0-9]*)/);
+      const name=nameMatch?nameMatch[1].toLowerCase():'';
+      const isVoid=voidTags.has(name);
+      tokens.push({type:isClose?'close':(isSelf||isVoid?'self':'open'),text:raw,name});
+      i=end+1;
+    } else {
+      const end=mini.indexOf('<',i);
+      const text=end===-1?mini.slice(i):mini.slice(i,end);
+      if(text.trim())tokens.push({type:'text',text:text.trim()});
+      i=end===-1?mini.length:end;
+    }
+  }
+  let depth=0;
+  const pad=()=>'  '.repeat(Math.max(0,depth));
+  const lines=[];
+  for(const t of tokens){
+    if(t.type==='close'){depth=Math.max(0,depth-1);lines.push(pad()+t.text)}
+    else if(t.type==='open'){lines.push(pad()+t.text);depth++}
+    else if(t.type==='self'||t.type==='doctype'||t.type==='text'||t.type==='preserved'){lines.push(pad()+t.text)}
+  }
+  return lines.join('\n');
+}
+
+function updateStats(orig,out){
+  const ob=byteLen(orig),nb=byteLen(out);
+  document.getElementById('hm-orig').textContent=fmtBytes(ob);
+  document.getElementById('hm-out').textContent=fmtBytes(nb);
+  if(ob===0){document.getElementById('hm-save').textContent='—';return}
+  const saved=ob-nb;
+  const pct=((saved/ob)*100).toFixed(1);
+  const el=document.getElementById('hm-save');
+  if(saved>=0){el.textContent=fmtBytes(saved)+' ('+pct+'%)';el.classList.add('good')}
+  else{el.textContent='+'+fmtBytes(-saved)+' ('+(-pct)+'%)';el.classList.remove('good')}
+}
+
+function doMinify(){
+  const input=document.getElementById('hm-input').value;
+  if(!input.trim()){toast('Paste some HTML first');return}
+  const out=minifyHTML(input);
+  document.getElementById('hm-output').value=out;
+  updateStats(input,out);
+}
+function doBeautify(){
+  const input=document.getElementById('hm-input').value;
+  if(!input.trim()){toast('Paste some HTML first');return}
+  const out=beautifyHTML(input);
+  document.getElementById('hm-output').value=out;
+  updateStats(input,out);
+}
+function loadSample(){
+  document.getElementById('hm-input').value=SAMPLE_HTML;
+  doMinify();
+}
+function clearAll(){
+  document.getElementById('hm-input').value='';
+  document.getElementById('hm-output').value='';
+  document.getElementById('hm-orig').textContent='0 B';
+  document.getElementById('hm-out').textContent='0 B';
+  document.getElementById('hm-save').textContent='—';
+}
+function copyOut(){
+  const v=document.getElementById('hm-output').value;
+  if(!v){toast('Nothing to copy');return}
+  navigator.clipboard.writeText(v);
+  toast('Copied!');
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1500);
+}
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

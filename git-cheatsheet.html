@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Commands Cheatsheet — 60+ Commands Reference | DevUtils</title>
+  <meta name="description" content="Browse a searchable git commands cheatsheet with 60+ commands, real examples, and a 10-step learning path. Covers branching, rebasing, stashing, and more.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/git-cheatsheet.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Git Commands Cheatsheet — 60+ Commands Reference">
+  <meta property="og:description" content="Searchable git cheatsheet with examples, categories, and a 10-step learning path for newcomers.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/git-cheatsheet.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Git Commands Cheatsheet","url":"https://devutilstools.pages.dev/git-cheatsheet.html","description":"Searchable reference of 60+ git commands with examples and a learning path.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between git reset and git revert?","acceptedAnswer":{"@type":"Answer","text":"git reset rewrites history by moving the branch pointer backward; git revert creates a new commit that undoes the changes of a previous commit without altering history. Use revert on shared branches — reset is only safe on private branches nobody else has pulled."}},{"@type":"Question","name":"When should I use git rebase instead of merge?","acceptedAnswer":{"@type":"Answer","text":"Use rebase when you want a linear history on your feature branch before merging. Use merge when you want to preserve the exact history of branches, including the merge point. The golden rule: never rebase commits that exist outside your local repo and that other people may have based work on."}},{"@type":"Question","name":"How do I undo the last commit in git?","acceptedAnswer":{"@type":"Answer","text":"If you haven't pushed yet: git reset --soft HEAD~1 keeps your changes staged, git reset --mixed HEAD~1 keeps them unstaged, git reset --hard HEAD~1 discards them entirely. If you've already pushed: use git revert HEAD to create an inverse commit that's safe on shared branches."}},{"@type":"Question","name":"What does git stash do?","acceptedAnswer":{"@type":"Answer","text":"git stash saves your uncommitted changes (tracked files) onto a stack and reverts your working directory to HEAD. Useful when you need to quickly switch branches without committing half-finished work. Restore with git stash pop (removes from stack) or git stash apply (keeps it)."}},{"@type":"Question","name":"How do I resolve a merge conflict?","acceptedAnswer":{"@type":"Answer","text":"When git reports a conflict, open the conflicted files — you'll see markers <<<<<<< HEAD, =======, and >>>>>>> branch-name surrounding the conflicting regions. Edit the file to the desired final state (removing the markers), then git add the file and git commit to complete the merge. You can also run git merge --abort to cancel the merge entirely."}}]}
+  </script>
+  <style>
+    .gc-search{width:100%;padding:14px 18px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:15px;margin-bottom:20px}
+    .gc-search:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .gc-path{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:24px}
+    .gc-path h3{margin:0 0 14px;font-size:13px;color:var(--accent);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px}
+    .gc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+    .gc-step{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;font-family:var(--mono);font-size:12px;color:var(--text2);display:flex;gap:8px;align-items:flex-start}
+    .gc-step-n{color:var(--accent);font-weight:600;flex-shrink:0}
+    .gc-cat{margin-bottom:28px}
+    .gc-cat h3{margin:0 0 12px;font-size:11px;color:var(--accent);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+    .gc-cmd{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px}
+    .gc-cmd-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+    .gc-cmd-code{font-family:var(--mono);font-size:13px;color:var(--text);background:var(--bg2);padding:6px 10px;border-radius:4px;flex:1;word-break:break-word;white-space:pre-wrap}
+    .gc-cmd-copy{padding:5px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer;flex-shrink:0}
+    .gc-cmd-copy:hover{border-color:var(--accent);color:var(--accent)}
+    .gc-cmd-desc{font-size:13px;color:var(--text2);line-height:1.5;margin:6px 0 0}
+    .gc-cmd-example{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:6px;padding:6px 10px;background:var(--bg2);border-radius:4px;white-space:pre-wrap;word-break:break-word}
+    .gc-empty{color:var(--text3);font-family:var(--mono);font-size:13px;padding:20px;text-align:center}
+    .gc-content{margin-top:32px;color:var(--text2);line-height:1.7;font-size:14px}
+    .gc-content h2{color:var(--text);font-size:20px;margin:24px 0 10px}
+    .gc-content h3{color:var(--text);font-size:15px;margin:18px 0 8px}
+    .gc-content p{margin:0 0 12px}
+    .gc-content code{font-family:var(--mono);background:var(--bg2);padding:2px 6px;border-radius:3px;font-size:12px;color:var(--accent)}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Reference</span>
+    <h1>Git Commands Cheatsheet</h1>
+    <p>A complete git commands cheatsheet with more than 60 commands organized into 11 practical categories. Every entry includes a concise description, a real-world example, and a one-click copy button. The live search at the top filters across names, descriptions, and examples so you can jump directly to what you need. Whether you're setting up your first repository, untangling a messy history, rebasing a feature branch, or managing submodules on a large monorepo, this page is designed to be the single page you keep open in a tab. Skim the 10-step learning path if you're new.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <input type="text" class="gc-search" id="gc-search" placeholder="Filter commands... (e.g. 'branch', 'undo', 'remote')">
+
+      <div class="gc-path">
+        <h3>10-Step Learning Path for Newcomers</h3>
+        <div class="gc-steps">
+          <div class="gc-step"><span class="gc-step-n">1.</span><span>Configure your name and email with <code>git config</code></span></div>
+          <div class="gc-step"><span class="gc-step-n">2.</span><span>Create a repo with <code>git init</code> or clone one</span></div>
+          <div class="gc-step"><span class="gc-step-n">3.</span><span>Check status and diff your changes</span></div>
+          <div class="gc-step"><span class="gc-step-n">4.</span><span>Stage files with <code>git add</code></span></div>
+          <div class="gc-step"><span class="gc-step-n">5.</span><span>Commit with a clear message</span></div>
+          <div class="gc-step"><span class="gc-step-n">6.</span><span>Push and pull from a remote</span></div>
+          <div class="gc-step"><span class="gc-step-n">7.</span><span>Create and switch branches</span></div>
+          <div class="gc-step"><span class="gc-step-n">8.</span><span>Merge branches and resolve conflicts</span></div>
+          <div class="gc-step"><span class="gc-step-n">9.</span><span>Learn to undo safely (reset, revert, reflog)</span></div>
+          <div class="gc-step"><span class="gc-step-n">10.</span><span>Explore rebase, stash, and tags</span></div>
+        </div>
+      </div>
+
+      <div id="gc-list"></div>
+      <div class="gc-empty" id="gc-empty" style="display:none">No commands match your filter.</div>
+
+      <div class="gc-content">
+        <h2>Why learn git deeply?</h2>
+        <p>Git is the distributed version control system that powers nearly every open-source project, every internal company codebase, and every modern deployment pipeline. It was created by Linus Torvalds in 2005 to manage Linux kernel development after the team lost access to BitKeeper, and its design reflects that origin: it's built to handle thousands of contributors working across disconnected forks with no central authority, and it's ruthlessly fast at operating on full histories of hundreds of thousands of commits. Learning git well is one of the highest-leverage investments a developer can make. Most engineers get by knowing five commands: <code>clone</code>, <code>add</code>, <code>commit</code>, <code>push</code>, and <code>pull</code>. That's enough to function, but it leaves you helpless when anything goes wrong — a bad merge, a lost commit, a branch you can't remember creating. The engineers who can debug git state, cherry-pick fixes across branches, and rewrite history safely are disproportionately valuable on any team.</p>
+
+        <h2>The mental model that unlocks git</h2>
+        <p>Git is not a pile of patches. It's a content-addressable filesystem with a version control interface bolted on top. Every file you commit is stored as a <em>blob</em> identified by a SHA-1 hash of its contents. Every directory snapshot is a <em>tree</em> that references blobs by hash. A <em>commit</em> is an object that references one tree (the state of the whole project), plus its parent commit(s), plus author metadata. A <em>branch</em> is just a movable pointer to a commit — nothing more. A <em>tag</em> is a fixed pointer. Remote-tracking branches like <code>origin/main</code> are pointers that mirror what the remote had at the last fetch. Once this model clicks, everything else follows. <code>git reset</code> moves a branch pointer. <code>git merge</code> creates a new commit with two parents. <code>git rebase</code> rewrites a series of commits so they have different parents. <code>git cherry-pick</code> copies the diff from one commit onto another branch as a new commit with a new hash.</p>
+
+        <h2>Staging area: the feature that confuses everyone first</h2>
+        <p>Unlike Subversion or Mercurial, git has a three-layer structure: your <strong>working directory</strong> (the files on disk), the <strong>index</strong> or <strong>staging area</strong> (a snapshot of what the next commit will contain), and the <strong>repository</strong> (the committed history). You move changes between layers with <code>git add</code> (working → staged), <code>git reset</code> (staged → working), and <code>git commit</code> (staged → committed). The staging area feels like extra friction when you're starting out, but it becomes indispensable when you need to split a messy working directory into several small, focused commits. Use <code>git add -p</code> to stage individual hunks interactively — it's one of the most underused features in git.</p>
+
+        <h2>The golden rule of rebasing</h2>
+        <p>Never rebase commits that exist outside your local repository. When you rebase, you're rewriting history — new commits are created with new SHAs, and the old commits become orphaned. If someone else has already pulled the old commits and based work on them, your rebased history will create a painful divergence that's hard to reconcile. The safe pattern: rebase your local feature branch onto the latest main before opening a PR (so history is linear), but once the PR is under review and other people may have pulled it, prefer merge commits. Some teams adopt a stricter "merge-only" policy on main to avoid any history rewriting in public branches.</p>
+
+        <h2>Recovering from mistakes</h2>
+        <p>Git almost never loses data. Commits that are no longer reachable from any branch or tag stay in the object database for at least 30 days (controlled by <code>gc.reflogExpire</code>) before garbage collection. The <code>git reflog</code> command shows every change to HEAD — every commit, checkout, reset, and merge — giving you a way to recover from almost anything. If you accidentally <code>reset --hard</code> and lose work, run <code>git reflog</code>, find the SHA of the state you want, and <code>git reset --hard &lt;sha&gt;</code> back to it. This is one of the most reassuring features in the whole tool, and it's why you should never be afraid to experiment with git commands.</p>
+
+        <h2>Branching strategies in practice</h2>
+        <p>The two dominant strategies are <strong>trunk-based development</strong> (everyone commits to main with short-lived feature branches, protected by CI) and <strong>Git Flow</strong> (long-lived develop and release branches, hotfix branches, and semver tags). Trunk-based suits teams with strong test automation and continuous deployment; Git Flow suits teams shipping versioned software to customers on slower release cadences. GitHub Flow is a lightweight variant — main is always deployable, and every change happens through a feature branch and PR. Pick the simplest model your team's release cadence supports.</p>
+
+        <h2>Power commands worth knowing</h2>
+        <p><code>git bisect</code> performs a binary search through history to find the commit that introduced a bug. You mark a known-good commit and a known-bad commit, then git checks out the middle commit; you test it and mark good or bad; git narrows down, and within <em>log₂(n)</em> steps you've found the culprit. <code>git blame</code> shows who last modified each line of a file — invaluable for archaeology. <code>git log --oneline --graph --all</code> draws an ASCII graph of the full branch topology. <code>git show &lt;sha&gt;</code> displays a commit's diff and metadata. <code>git diff --stat</code> summarizes changes across many files. Master these and you can navigate any codebase's history fluently.</p>
+
+        <h2>Configuring git for humans</h2>
+        <p>A few config settings make daily git much nicer. <code>git config --global init.defaultBranch main</code> uses <code>main</code> instead of <code>master</code>. <code>git config --global pull.rebase true</code> rebases instead of merging on pull (avoids noisy merge commits). <code>git config --global core.editor "code --wait"</code> uses VS Code for commit messages. Set up <code>~/.gitignore_global</code> for editor files and OS clutter. Add SSH key authentication to GitHub/GitLab to skip password prompts. Enable commit signing with GPG or SSH to prove commits are yours. These take ten minutes to set up once and save hours over a career.</p>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between git reset and git revert?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>git reset</strong> rewrites history by moving the current branch pointer backward — the commits it moves past become unreachable (though recoverable via reflog for a while). <strong>git revert</strong> creates a new commit that applies the inverse of a previous commit's changes, leaving history intact. Use <code>revert</code> on shared branches where other people may have pulled the commits you want to undo; reset is only safe on private branches nobody else has seen.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">When should I use git rebase instead of merge?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Use <strong>rebase</strong> when you want a clean linear history on a feature branch before merging it into main — it replays your commits on top of the latest base, avoiding merge commits. Use <strong>merge</strong> when you want to preserve the exact parallel history of branches including the point they joined. The golden rule: <em>never rebase commits that exist outside your local repo and that other people may have based work on</em>. Rebase private work; merge public work.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I undo the last commit in git?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">If you haven't pushed yet: <code>git reset --soft HEAD~1</code> keeps your changes staged, <code>git reset --mixed HEAD~1</code> (the default) keeps them unstaged but in your working tree, and <code>git reset --hard HEAD~1</code> discards them entirely. If you've already pushed, don't reset — use <code>git revert HEAD</code> to create an inverse commit that's safe to push on shared branches. To fix just the commit message, <code>git commit --amend</code> opens your editor to edit the previous commit.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does git stash do?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">git stash saves your uncommitted changes (tracked files by default) onto a stack and reverts your working directory back to the state of HEAD. It's perfect when you need to quickly switch branches without committing half-finished work. Restore with <code>git stash pop</code> (applies the top stash and removes it from the stack) or <code>git stash apply</code> (applies without removing). Add untracked files with <code>git stash -u</code>, and name stashes with <code>git stash push -m "message"</code>.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I resolve a merge conflict?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">When git reports a conflict, it inserts markers into the affected files: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code> surrounding the conflicting regions. Open each conflicted file, edit it to the desired final state (removing all markers), then <code>git add</code> the file to mark the conflict resolved. When all conflicts are resolved, <code>git commit</code> completes the merge. To bail out, <code>git merge --abort</code> returns to the pre-merge state. For rebases, use <code>git rebase --continue</code> or <code>git rebase --abort</code>.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What's the safest way to rewrite history on a shared branch?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Don't. Seriously — if other people have pulled the branch, rewriting it forces them to untangle their local state, which is error-prone and frustrating. If you <em>must</em> force-push (for example, to remove leaked secrets), coordinate with your team first, use <code>git push --force-with-lease</code> (safer than <code>--force</code> because it fails if someone else pushed in the meantime), and make sure everyone re-clones or runs <code>git fetch && git reset --hard origin/branch</code> after. For routine history cleanup, squash locally before pushing.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="regex-tester.html"><div class="related-icon">.*</div><div class="related-card-info"><div class="related-card-name">Regex Tester</div><div class="related-card-desc">Test regular expressions</div></div></a>
+      <a class="related-card" href="json-formatter.html"><div class="related-icon">{}</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Format and validate JSON</div></div></a>
+      <a class="related-card" href="cron-parser.html"><div class="related-icon">*</div><div class="related-card-info"><div class="related-card-name">Cron Parser</div><div class="related-card-desc">Decode cron expressions</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const GIT_COMMANDS=[
+  // Setup & Config
+  {cat:'Setup & Config',cmd:'git config --global user.name "Your Name"',desc:'Set your name for all commits on this machine.',ex:'git config --global user.name "Ada Lovelace"'},
+  {cat:'Setup & Config',cmd:'git config --global user.email "you@example.com"',desc:'Set your email for all commits.',ex:''},
+  {cat:'Setup & Config',cmd:'git config --global init.defaultBranch main',desc:'Use "main" instead of "master" for new repos.',ex:''},
+  {cat:'Setup & Config',cmd:'git config --global pull.rebase true',desc:'Rebase instead of merge on git pull.',ex:''},
+  {cat:'Setup & Config',cmd:'git config --global core.editor "code --wait"',desc:'Use VS Code as the default editor for commit messages.',ex:''},
+  {cat:'Setup & Config',cmd:'git config --list',desc:'Show all configured values (global, system, and local).',ex:''},
+  {cat:'Setup & Config',cmd:'git config --global alias.co checkout',desc:'Create a shortcut: now `git co` works like `git checkout`.',ex:''},
+
+  // Starting a Repo
+  {cat:'Starting a Repo',cmd:'git init',desc:'Create a new empty repository in the current directory.',ex:'Initialized empty Git repository in /path/.git/'},
+  {cat:'Starting a Repo',cmd:'git clone <url>',desc:'Copy a remote repository into a new local directory.',ex:'git clone https://github.com/user/repo.git'},
+  {cat:'Starting a Repo',cmd:'git clone <url> <folder>',desc:'Clone into a specific folder name.',ex:'git clone https://github.com/user/repo.git my-folder'},
+  {cat:'Starting a Repo',cmd:'git clone --depth 1 <url>',desc:'Shallow clone: only the most recent commit. Much faster for large repos.',ex:''},
+
+  // Staging & Committing
+  {cat:'Staging & Committing',cmd:'git status',desc:'Show what has changed since the last commit.',ex:'On branch main\\nChanges not staged for commit:\\n  modified:   README.md'},
+  {cat:'Staging & Committing',cmd:'git add <file>',desc:'Stage a specific file for the next commit.',ex:'git add src/index.js'},
+  {cat:'Staging & Committing',cmd:'git add .',desc:'Stage all changes in the current directory and below.',ex:''},
+  {cat:'Staging & Committing',cmd:'git add -p',desc:'Interactively stage individual hunks. Best for crafting clean commits.',ex:''},
+  {cat:'Staging & Committing',cmd:'git restore --staged <file>',desc:'Unstage a file (keep the changes in your working tree).',ex:''},
+  {cat:'Staging & Committing',cmd:'git commit -m "message"',desc:'Commit staged changes with a short message.',ex:'git commit -m "Fix null pointer in auth handler"'},
+  {cat:'Staging & Committing',cmd:'git commit -am "message"',desc:'Stage all tracked-file modifications and commit in one step.',ex:''},
+  {cat:'Staging & Committing',cmd:'git commit --amend',desc:'Modify the most recent commit (message or contents). Do not do this after pushing.',ex:''},
+  {cat:'Staging & Committing',cmd:'git diff',desc:'Show unstaged changes.',ex:''},
+  {cat:'Staging & Committing',cmd:'git diff --staged',desc:'Show staged changes (what will be in the next commit).',ex:''},
+  {cat:'Staging & Committing',cmd:'git diff <branch1>..<branch2>',desc:'Compare two branches.',ex:''},
+
+  // Branching & Merging
+  {cat:'Branching & Merging',cmd:'git branch',desc:'List all local branches. Current branch marked with *.',ex:'* main\\n  feature/login'},
+  {cat:'Branching & Merging',cmd:'git branch <name>',desc:'Create a new branch from the current HEAD (but do not switch).',ex:'git branch feature/checkout'},
+  {cat:'Branching & Merging',cmd:'git switch <name>',desc:'Switch to an existing branch (replaces old `checkout <name>`).',ex:'git switch main'},
+  {cat:'Branching & Merging',cmd:'git switch -c <name>',desc:'Create and switch to a new branch in one command.',ex:'git switch -c feature/payments'},
+  {cat:'Branching & Merging',cmd:'git branch -d <name>',desc:'Delete a branch (only if merged).',ex:''},
+  {cat:'Branching & Merging',cmd:'git branch -D <name>',desc:'Force-delete a branch, even if unmerged.',ex:''},
+  {cat:'Branching & Merging',cmd:'git merge <branch>',desc:'Merge another branch into the current one.',ex:'git merge feature/login'},
+  {cat:'Branching & Merging',cmd:'git merge --no-ff <branch>',desc:'Force a merge commit even if fast-forward is possible.',ex:''},
+  {cat:'Branching & Merging',cmd:'git merge --abort',desc:'Cancel an in-progress merge and return to pre-merge state.',ex:''},
+  {cat:'Branching & Merging',cmd:'git branch -m <new-name>',desc:'Rename the current branch.',ex:'git branch -m feature/v2'},
+
+  // Remote Operations
+  {cat:'Remote Operations',cmd:'git remote -v',desc:'List configured remotes and their URLs.',ex:'origin  git@github.com:user/repo.git (fetch)\\norigin  git@github.com:user/repo.git (push)'},
+  {cat:'Remote Operations',cmd:'git remote add <name> <url>',desc:'Add a new remote.',ex:'git remote add upstream https://github.com/org/repo.git'},
+  {cat:'Remote Operations',cmd:'git remote set-url <name> <url>',desc:'Change the URL of an existing remote.',ex:''},
+  {cat:'Remote Operations',cmd:'git fetch',desc:'Download changes from remote without merging them.',ex:''},
+  {cat:'Remote Operations',cmd:'git pull',desc:'Fetch and merge (or rebase) changes from the tracked remote branch.',ex:''},
+  {cat:'Remote Operations',cmd:'git push',desc:'Upload local commits to the tracked remote branch.',ex:''},
+  {cat:'Remote Operations',cmd:'git push -u origin <branch>',desc:'Push and set upstream tracking. Only needed once per new branch.',ex:''},
+  {cat:'Remote Operations',cmd:'git push --force-with-lease',desc:'Safer force push: fails if someone else pushed in the meantime.',ex:''},
+  {cat:'Remote Operations',cmd:'git push origin --delete <branch>',desc:'Delete a branch on the remote.',ex:''},
+
+  // Inspection & History
+  {cat:'Inspection & History',cmd:'git log',desc:'Show commit history from HEAD backwards.',ex:''},
+  {cat:'Inspection & History',cmd:'git log --oneline',desc:'Compact one-line-per-commit log.',ex:'a3f12c Fix auth bug\\nb2e901 Add login tests'},
+  {cat:'Inspection & History',cmd:'git log --oneline --graph --all',desc:'ASCII graph of every branch. Indispensable.',ex:''},
+  {cat:'Inspection & History',cmd:'git log -p <file>',desc:'Show every change to a specific file with diffs.',ex:''},
+  {cat:'Inspection & History',cmd:'git log --author="name"',desc:'Filter log to commits by one author.',ex:''},
+  {cat:'Inspection & History',cmd:'git show <sha>',desc:"Display a commit's message, metadata, and diff.",ex:''},
+  {cat:'Inspection & History',cmd:'git blame <file>',desc:'Annotate each line of a file with the commit that last modified it.',ex:''},
+  {cat:'Inspection & History',cmd:'git bisect start',desc:'Start binary search for a buggy commit. Mark good/bad until found.',ex:''},
+  {cat:'Inspection & History',cmd:'git reflog',desc:'Show every change to HEAD. Your safety net for "lost" commits.',ex:''},
+
+  // Undoing Changes
+  {cat:'Undoing Changes',cmd:'git restore <file>',desc:'Discard working-tree changes to a file (revert to HEAD version).',ex:''},
+  {cat:'Undoing Changes',cmd:'git reset --soft HEAD~1',desc:'Undo the last commit, keeping changes staged.',ex:''},
+  {cat:'Undoing Changes',cmd:'git reset --mixed HEAD~1',desc:'Undo the last commit, keeping changes unstaged (default).',ex:''},
+  {cat:'Undoing Changes',cmd:'git reset --hard HEAD~1',desc:'Undo the last commit AND discard its changes. Destructive.',ex:''},
+  {cat:'Undoing Changes',cmd:'git revert <sha>',desc:'Create a new commit that undoes the given commit. Safe on shared branches.',ex:''},
+  {cat:'Undoing Changes',cmd:'git clean -fd',desc:'Remove untracked files and directories. Destructive — review with `-n` first.',ex:''},
+
+  // Stashing
+  {cat:'Stashing',cmd:'git stash',desc:'Save uncommitted tracked changes and revert working tree to HEAD.',ex:''},
+  {cat:'Stashing',cmd:'git stash -u',desc:'Stash including untracked files.',ex:''},
+  {cat:'Stashing',cmd:'git stash push -m "message"',desc:'Stash with a descriptive label.',ex:''},
+  {cat:'Stashing',cmd:'git stash list',desc:'List all stashes on the stack.',ex:'stash@{0}: On main: WIP on checkout form'},
+  {cat:'Stashing',cmd:'git stash pop',desc:'Apply the most recent stash and remove it from the stack.',ex:''},
+  {cat:'Stashing',cmd:'git stash apply stash@{2}',desc:'Apply a specific stash without removing it.',ex:''},
+  {cat:'Stashing',cmd:'git stash drop stash@{0}',desc:'Delete a specific stash entry.',ex:''},
+
+  // Rebasing
+  {cat:'Rebasing',cmd:'git rebase <branch>',desc:"Replay your current branch's commits on top of another branch.",ex:'git rebase main'},
+  {cat:'Rebasing',cmd:'git rebase -i HEAD~3',desc:'Interactively rebase the last 3 commits — squash, reword, reorder, drop.',ex:''},
+  {cat:'Rebasing',cmd:'git rebase --continue',desc:'Continue a rebase after resolving conflicts.',ex:''},
+  {cat:'Rebasing',cmd:'git rebase --abort',desc:'Cancel an in-progress rebase and return to the original state.',ex:''},
+  {cat:'Rebasing',cmd:'git cherry-pick <sha>',desc:'Apply the diff of one commit onto the current branch.',ex:''},
+
+  // Tagging
+  {cat:'Tagging',cmd:'git tag',desc:'List all tags.',ex:''},
+  {cat:'Tagging',cmd:'git tag <name>',desc:'Create a lightweight tag at the current commit.',ex:'git tag v1.0.0'},
+  {cat:'Tagging',cmd:'git tag -a <name> -m "message"',desc:'Create an annotated tag (includes message and metadata).',ex:'git tag -a v1.0.0 -m "First stable release"'},
+  {cat:'Tagging',cmd:'git push origin <tag>',desc:'Push a single tag to the remote.',ex:''},
+  {cat:'Tagging',cmd:'git push --tags',desc:'Push all local tags.',ex:''},
+  {cat:'Tagging',cmd:'git tag -d <name>',desc:'Delete a local tag.',ex:''},
+
+  // Submodules
+  {cat:'Submodules',cmd:'git submodule add <url> <path>',desc:'Add a repository as a submodule at the given path.',ex:'git submodule add https://github.com/org/lib.git vendor/lib'},
+  {cat:'Submodules',cmd:'git submodule update --init --recursive',desc:'Initialize and clone submodules after cloning a parent repo.',ex:''},
+  {cat:'Submodules',cmd:'git submodule foreach git pull',desc:'Run a command in every submodule.',ex:''},
+  {cat:'Submodules',cmd:'git submodule deinit <path>',desc:'Unregister a submodule (before removing).',ex:''}
+];
+
+function render(q=''){
+  q=q.toLowerCase();
+  const filtered=GIT_COMMANDS.filter(c=>
+    !q||c.cmd.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q)||c.cat.toLowerCase().includes(q)||(c.ex&&c.ex.toLowerCase().includes(q))
+  );
+  const empty=document.getElementById('gc-empty');
+  const list=document.getElementById('gc-list');
+  if(filtered.length===0){list.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  const cats={};
+  filtered.forEach(c=>{(cats[c.cat]=cats[c.cat]||[]).push(c);});
+  list.innerHTML=Object.entries(cats).map(([cat,cmds])=>
+    `<div class="gc-cat"><h3>${cat}</h3>${cmds.map((c,i)=>
+      `<div class="gc-cmd"><div class="gc-cmd-head"><div class="gc-cmd-code">${escape(c.cmd)}</div><button class="gc-cmd-copy" onclick="copyCmd(this,${GIT_COMMANDS.indexOf(c)})">Copy</button></div><div class="gc-cmd-desc">${c.desc}</div>${c.ex?`<div class="gc-cmd-example">${escape(c.ex.replace(/\\n/g,'\n'))}</div>`:''}</div>`
+    ).join('')}</div>`
+  ).join('');
+}
+function escape(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function copyCmd(btn,i){
+  navigator.clipboard.writeText(GIT_COMMANDS[i].cmd);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+document.getElementById('gc-search').addEventListener('input',e=>render(e.target.value));
+render();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

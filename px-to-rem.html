@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PX to REM Converter — Free Pixel to REM/EM Tool | DevUtils</title>
+  <meta name="description" content="Convert px to rem and em instantly. Bidirectional live calculator, size reference table, custom base, and CSS variables export. Free, no sign-up, works offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/px-to-rem.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="PX to REM Converter — Free Pixel to REM/EM Tool">
+  <meta property="og:description" content="Convert pixels to rem and em with a live bidirectional calculator, reference table, and CSS variables export.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/px-to-rem.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"PX to REM Converter","url":"https://devutilstools.pages.dev/px-to-rem.html","description":"Bidirectional pixel, rem, and em converter with reference table and CSS variables export.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the formula to convert px to rem?","acceptedAnswer":{"@type":"Answer","text":"The formula is rem = pixels divided by the root font size. By default browsers render the root element (html) at 16px, so 16px equals 1rem, 24px equals 1.5rem, and 32px equals 2rem. If a design system sets html { font-size: 10px }, the math becomes simpler — 10px equals 1rem and each 10px step is 1rem — but that approach can break user accessibility settings."}},{"@type":"Question","name":"What is the difference between rem and em?","acceptedAnswer":{"@type":"Answer","text":"rem (root em) is always relative to the root element (html) font size — consistent across the entire document. em is relative to the current element's parent font size, so nested em values compound. Use rem for predictable spacing, typography scales, and breakpoints. Use em for component-local sizing where you want a child (icon, padding) to scale with its parent's font-size."}},{"@type":"Question","name":"Should I use px, rem, or em in my CSS?","acceptedAnswer":{"@type":"Answer","text":"Use rem for font sizes, spacing, layout dimensions, and media query breakpoints so they respect the user's browser zoom and accessibility font-size settings. Use em for properties that should scale with the current element (padding, border-radius on buttons). Use px only for borders, shadow offsets, and rare cases where an exact pixel value is required regardless of zoom."}},{"@type":"Question","name":"Why do designers hand off mockups in px?","acceptedAnswer":{"@type":"Answer","text":"Design tools like Figma, Sketch, and Adobe XD work in absolute pixels because a designer needs to see exactly what something looks like at a specific size. Converting those px values to rem in code is a build-time concern. A good workflow is: designer delivers px, developer converts to rem using this tool or a PostCSS plugin, output respects user zoom."}},{"@type":"Question","name":"What if my project uses a base font size other than 16px?","acceptedAnswer":{"@type":"Answer","text":"Enter your custom base in the Base font size field and the entire reference table plus the live converter updates instantly. Common non-default bases are 10px (makes math simple: 1rem = 10px, 1.6rem = 16px) and 14px (tighter UIs like dashboards). Remember that overriding the root font size affects every rem-based value in your stylesheet, so choose early and stick with it."}}]}
+  </script>
+  <style>
+    .pr-base{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap;padding:12px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius)}
+    .pr-base label{font-size:12px;font-family:var(--mono);color:var(--text2);white-space:nowrap}
+    .pr-base input{width:90px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px}
+    .pr-base input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .pr-base .pr-quick{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+    .pr-base .pr-quick button{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg);border:1px solid var(--border);border-radius:14px;color:var(--text2);cursor:pointer}
+    .pr-base .pr-quick button:hover,.pr-base .pr-quick button.active{border-color:var(--accent);color:var(--accent)}
+
+    .pr-live{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px}
+    .pr-live .pr-field{background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+    .pr-live .pr-unit{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .pr-live .pr-input{display:flex;align-items:center;gap:8px}
+    .pr-live input{flex:1;width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:16px;box-sizing:border-box;min-width:0}
+    .pr-live input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .pr-live .pr-suffix{font-family:var(--mono);font-size:13px;color:var(--text3)}
+    .pr-live .pr-hint{margin-top:8px;font-size:11px;color:var(--text3);line-height:1.4}
+
+    .pr-section-h{font-size:13px;font-family:var(--mono);color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin:24px 0 10px;display:flex;justify-content:space-between;align-items:center}
+    .pr-table{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden}
+    .pr-cell{padding:12px;background:var(--bg);cursor:pointer;transition:background .15s}
+    .pr-cell:hover{background:var(--bg2)}
+    .pr-cell-px{font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:600}
+    .pr-cell-rem{font-family:var(--mono);font-size:13px;color:var(--text);margin-top:4px}
+    .pr-cell-em{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:2px}
+
+    .pr-cssvar{margin-top:24px}
+    .pr-cssvar button{padding:10px 18px;font-size:13px;font-family:var(--mono);background:var(--accent);color:#000;border:none;border-radius:var(--radius);cursor:pointer;font-weight:600}
+    .pr-cssvar button:hover{opacity:.9}
+    .pr-cssvar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+    .pr-cssvar-copy{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer}
+    .pr-cssvar-copy:hover{border-color:var(--accent);color:var(--accent)}
+    .pr-cssvar-out{width:100%;min-height:160px;margin-top:12px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box;display:none}
+
+    .pr-explain{margin-top:20px;padding:14px;background:var(--bg4);border-left:3px solid var(--accent);border-radius:4px;font-size:13px;color:var(--text2);line-height:1.6}
+    .pr-explain strong{color:var(--text)}
+    @media(max-width:720px){.pr-live{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">CSS</span>
+    <h1>PX to REM Converter</h1>
+    <p>This px to rem converter turns any pixel value into the equivalent rem (and em) unit instantly, with a live bidirectional calculator: type in pixels and see rem, or type in rem and see pixels. Change the base font size and the reference table below updates in real time. The default base is 16px — the browser standard — but you can enter 10px, 14px, or any custom root value your design system uses. Click any cell in the reference grid to copy its value. A one-click CSS variables export generates a ready-to-paste :root block with a standard typography scale.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="pr-base">
+        <label for="pr-base-input">Base font size (root):</label>
+        <input type="number" id="pr-base-input" value="16" min="1" step="0.5">
+        <span style="font-size:12px;color:var(--text3);font-family:var(--mono)">px</span>
+        <div class="pr-quick">
+          <button onclick="setBase(10)">10</button>
+          <button onclick="setBase(12)">12</button>
+          <button onclick="setBase(14)">14</button>
+          <button class="active" onclick="setBase(16)" id="pr-q16">16</button>
+          <button onclick="setBase(18)">18</button>
+          <button onclick="setBase(20)">20</button>
+        </div>
+      </div>
+
+      <div class="pr-live">
+        <div class="pr-field">
+          <div class="pr-unit">Pixels</div>
+          <div class="pr-input">
+            <input type="number" id="pr-px" value="16" step="any">
+            <span class="pr-suffix">px</span>
+          </div>
+          <div class="pr-hint">Type a pixel value to convert</div>
+        </div>
+        <div class="pr-field">
+          <div class="pr-unit">REM (root)</div>
+          <div class="pr-input">
+            <input type="number" id="pr-rem" value="1" step="any">
+            <span class="pr-suffix">rem</span>
+          </div>
+          <div class="pr-hint">Relative to html font-size</div>
+        </div>
+        <div class="pr-field">
+          <div class="pr-unit">EM (parent)</div>
+          <div class="pr-input">
+            <input type="number" id="pr-em" value="1" step="any">
+            <span class="pr-suffix">em</span>
+          </div>
+          <div class="pr-hint">Relative to parent font-size</div>
+        </div>
+      </div>
+
+      <div class="pr-explain">
+        <strong>rem vs em:</strong> <code>rem</code> is always relative to the <em>root</em> element's font-size, making it predictable across your document. <code>em</code> is relative to the <em>parent</em> element's font-size, so nested em values compound. Use rem for typography scales, spacing, and breakpoints; use em for component-local sizing (padding, gap) that should scale with the component's own text.
+      </div>
+
+      <div class="pr-section-h"><span>Common Sizes (click to copy rem)</span></div>
+      <div class="pr-table" id="pr-table"></div>
+
+      <div class="pr-cssvar">
+        <div class="pr-section-h"><span>CSS Variables Export</span><button class="pr-cssvar-copy" onclick="copyVars()" id="pr-copy-vars" style="display:none">Copy</button></div>
+        <button onclick="generateVars()">Generate CSS Variables</button>
+        <textarea id="pr-vars-out" class="pr-cssvar-out" readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the formula to convert px to rem?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The formula is <code>rem = pixels / root-font-size</code>. By default browsers render the root element (<code>html</code>) at 16px, so 16px equals 1rem, 24px equals 1.5rem, and 32px equals 2rem. If a design system sets <code>html { font-size: 10px }</code>, the math becomes simpler — 10px equals 1rem and each 10px step is 1rem — but that approach can break user accessibility settings, so most teams stick with the 16px default and do conversion in their build tooling or with a tool like this.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between rem and em?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>rem</strong> (root em) is always relative to the root element (<code>html</code>) font-size — consistent across the entire document. <strong>em</strong> is relative to the <em>current</em> element's parent font-size, so nested em values compound: an em inside an em-sized container gets multiplied. Use rem for predictable spacing, typography scales, and media query breakpoints. Use em for component-local sizing where you want a child element (an icon, padding, border-radius) to scale naturally with its parent's font-size.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Should I use px, rem, or em in my CSS?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Use <strong>rem</strong> for font sizes, spacing, layout dimensions, and media query breakpoints so they respect the user's browser zoom and accessibility font-size preferences. Use <strong>em</strong> for properties that should scale with the current element (padding and border-radius on buttons, inline icon sizing). Use <strong>px</strong> only for hairline borders, shadow offsets, and the rare case where an exact pixel value is required regardless of zoom. Modern component libraries like shadcn/ui and Tailwind default to rem for this reason.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why do designers hand off mockups in px?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Design tools like Figma, Sketch, and Adobe XD work in absolute pixels because a designer needs to see exactly what something looks like at a specific size, and px is the universal design reference. Converting those px values to rem in code is a build-time or author-time concern. A good workflow: designer delivers px, developer converts to rem using this tool or a PostCSS plugin like <code>postcss-pxtorem</code>, shipped CSS respects user zoom and accessibility settings.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What if my project uses a base font size other than 16px?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Enter your custom base in the <strong>Base font size</strong> field and the entire reference table plus the live converter update instantly. Common non-default bases are 10px (makes math simple: 1rem = 10px, 1.6rem = 16px) and 14px (tighter UIs like admin dashboards). Remember that overriding the root font size affects every rem-based value in your stylesheet, so choose early and stick with it. If you want simpler math without breaking accessibility, use the 62.5% trick: <code>html { font-size: 62.5% }</code> sets rem to 10px while still respecting user zoom.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does using rem help with accessibility?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes, significantly. Users with low vision often increase their browser's default font size in system settings. CSS built with px values ignores that preference entirely — text stays the same physical size. Rem-based CSS scales proportionally, so a user bumping from 16px to 20px gets everything 25% larger. WCAG 2.1 success criterion 1.4.4 requires text to scale to at least 200% without loss of content, and rem is the easiest way to meet that.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="css-minifier.html"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">CSS Minifier</div><div class="related-card-desc">Compress stylesheets</div></div></a>
+      <a class="related-card" href="css-gradient.html"><div class="related-icon">&#9650;</div><div class="related-card-info"><div class="related-card-name">CSS Gradient</div><div class="related-card-desc">Generate gradients</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">#</div><div class="related-card-info"><div class="related-card-name">Hex to RGB</div><div class="related-card-desc">Convert hex colors</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const COMMON_SIZES=[10,12,14,16,18,20,24,28,32,40,48,64,80,96];
+let base=16;
+let lastEdited='px';
+
+function fmt(n){
+  if(n===0)return '0';
+  const r=Math.round(n*10000)/10000;
+  return r.toString();
+}
+
+function renderTable(){
+  const tbl=document.getElementById('pr-table');
+  tbl.innerHTML=COMMON_SIZES.map(px=>{
+    const r=fmt(px/base);
+    return `<div class="pr-cell" onclick="copyVal('${r}rem')" title="Click to copy ${r}rem"><div class="pr-cell-px">${px}px</div><div class="pr-cell-rem">${r} rem</div><div class="pr-cell-em">${r} em</div></div>`;
+  }).join('');
+}
+
+function syncFromPx(){
+  const px=parseFloat(document.getElementById('pr-px').value);
+  if(isNaN(px))return;
+  document.getElementById('pr-rem').value=fmt(px/base);
+  document.getElementById('pr-em').value=fmt(px/base);
+}
+function syncFromRem(){
+  const r=parseFloat(document.getElementById('pr-rem').value);
+  if(isNaN(r))return;
+  document.getElementById('pr-px').value=fmt(r*base);
+  document.getElementById('pr-em').value=fmt(r);
+}
+function syncFromEm(){
+  const em=parseFloat(document.getElementById('pr-em').value);
+  if(isNaN(em))return;
+  document.getElementById('pr-px').value=fmt(em*base);
+  document.getElementById('pr-rem').value=fmt(em);
+}
+
+function setBase(v){
+  base=v;
+  document.getElementById('pr-base-input').value=v;
+  // update quick button active state
+  document.querySelectorAll('.pr-quick button').forEach(b=>{
+    b.classList.toggle('active',parseFloat(b.textContent)===v);
+  });
+  // re-sync from the last-edited field to preserve user intent
+  if(lastEdited==='rem')syncFromRem();
+  else if(lastEdited==='em')syncFromEm();
+  else syncFromPx();
+  renderTable();
+}
+
+function generateVars(){
+  const scale={
+    '--text-xs':12,
+    '--text-sm':14,
+    '--text-base':16,
+    '--text-lg':18,
+    '--text-xl':20,
+    '--text-2xl':24,
+    '--text-3xl':30,
+    '--text-4xl':36,
+    '--text-5xl':48,
+    '--space-1':4,
+    '--space-2':8,
+    '--space-3':12,
+    '--space-4':16,
+    '--space-6':24,
+    '--space-8':32
+  };
+  let out=':root {\n';
+  for(const [k,pxVal] of Object.entries(scale)){
+    out+=`  ${k}: ${fmt(pxVal/base)}rem; /* ${pxVal}px */\n`;
+  }
+  out+='}';
+  const ta=document.getElementById('pr-vars-out');
+  ta.value=out;
+  ta.style.display='block';
+  document.getElementById('pr-copy-vars').style.display='inline-block';
+}
+
+function copyVars(){
+  const v=document.getElementById('pr-vars-out').value;
+  if(!v)return;
+  navigator.clipboard.writeText(v);
+  toast('CSS copied!');
+}
+function copyVal(v){
+  navigator.clipboard.writeText(v);
+  toast('Copied '+v);
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1500);
+}
+
+document.getElementById('pr-base-input').addEventListener('input',e=>{
+  const v=parseFloat(e.target.value);
+  if(!isNaN(v)&&v>0){base=v;
+    document.querySelectorAll('.pr-quick button').forEach(b=>{
+      b.classList.toggle('active',parseFloat(b.textContent)===v);
+    });
+    if(lastEdited==='rem')syncFromRem();
+    else if(lastEdited==='em')syncFromEm();
+    else syncFromPx();
+    renderTable();
+  }
+});
+document.getElementById('pr-px').addEventListener('input',()=>{lastEdited='px';syncFromPx()});
+document.getElementById('pr-rem').addEventListener('input',()=>{lastEdited='rem';syncFromRem()});
+document.getElementById('pr-em').addEventListener('input',()=>{lastEdited='em';syncFromEm()});
+
+renderTable();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

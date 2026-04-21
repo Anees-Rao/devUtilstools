@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP Request Builder — Free Online cURL Generator | DevUtils</title>
+  <meta name="description" content="Build HTTP requests visually and generate cURL, fetch, axios, Python requests, and Node fetch code. Test endpoints live with headers and body. Free for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/http-request-builder.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="HTTP Request Builder — Free Online cURL Generator">
+  <meta property="og:description" content="Build HTTP requests, generate cURL/fetch/axios/Python code, and send requests live in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/http-request-builder.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"HTTP Request Builder","url":"https://devutilstools.pages.dev/http-request-builder.html","description":"Visual HTTP request builder that generates cURL, fetch, axios, Python requests, and Node fetch code with live request sending.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an HTTP request builder?","acceptedAnswer":{"@type":"Answer","text":"An HTTP request builder is a tool for composing HTTP requests through a visual UI — choosing a method, URL, headers, query parameters, and body — and generating the corresponding code in different languages and libraries. It speeds up prototyping API calls, reproducing issues, sharing requests with teammates, and embedding calls in scripts or production code."}},{"@type":"Question","name":"What code formats does this tool generate?","acceptedAnswer":{"@type":"Answer","text":"Five output formats are produced live as you edit the request: cURL (with proper single-quote escaping and backslash line continuations), browser fetch() in JavaScript, axios, Python requests (with json= or data= depending on content), and Node.js fetch. Each output tab has its own copy button."}},{"@type":"Question","name":"Why does sending the request fail with a CORS error?","acceptedAnswer":{"@type":"Answer","text":"The browser enforces the Same-Origin Policy, so requests to third-party APIs only succeed when the server explicitly returns the Access-Control-Allow-Origin header. APIs that don't set permissive CORS headers (most private or internal APIs) will fail from a browser. Use the generated cURL or Python code from a terminal to bypass CORS — it only restricts browser JS, not server-side or CLI clients."}},{"@type":"Question","name":"Does this tool store or log my requests?","acceptedAnswer":{"@type":"Answer","text":"No. The entire tool runs client-side in your browser; code generation happens in JavaScript locally. When you use the 'Send request' feature, the request goes directly from your browser to the target URL — it never touches this site's servers. Still, avoid pasting long-lived production API keys into any online builder."}},{"@type":"Question","name":"How do I send a JSON body?","acceptedAnswer":{"@type":"Answer","text":"Select POST, PUT, or PATCH, click 'Content-Type: application/json' in the header quick-add row, and paste your JSON into the body textarea. Toggle 'Validate JSON' to confirm syntax before sending. The generated Python code will automatically use json= (so requests serializes and sets the header), and the cURL output quotes the body safely with single quotes."}}]}
+  </script>
+  <style>
+    .rb-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    .rb-row select,.rb-row input{padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px}
+    .rb-row select{min-width:110px}
+    .rb-row input.rb-url{flex:1;min-width:240px}
+    .rb-row input:focus,.rb-row select:focus,.rb-row textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .rb-section{margin-top:18px}
+    .rb-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .rb-section h3{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-family:var(--mono);margin:0;font-weight:600}
+    .rb-add{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--text2);cursor:pointer}
+    .rb-add:hover{border-color:var(--accent);color:var(--accent)}
+    .rb-kv{display:flex;gap:6px;margin-bottom:6px}
+    .rb-kv input{flex:1;min-width:0;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:12px}
+    .rb-kv button{padding:6px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text3);font-family:var(--mono);font-size:12px;cursor:pointer}
+    .rb-kv button:hover{border-color:#ff6b6b;color:#ff6b6b}
+    .rb-quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+    .rb-quick button{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .rb-quick button:hover{border-color:var(--accent);color:var(--accent)}
+    .rb-body textarea{width:100%;min-height:110px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;box-sizing:border-box}
+    .rb-body-meta{display:flex;gap:12px;font-size:11px;font-family:var(--mono);color:var(--text3);margin-top:6px;align-items:center}
+    .rb-body-meta label{cursor:pointer}
+    .rb-body-meta .valid{color:var(--accent)}
+    .rb-body-meta .invalid{color:#ff6b6b}
+    .rb-tabs{display:flex;gap:2px;margin-top:22px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+    .rb-tab{padding:9px 14px;font-size:12px;font-family:var(--mono);background:transparent;border:0;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+    .rb-tab:hover{color:var(--text2)}
+    .rb-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+    .rb-output{position:relative;margin-top:0}
+    .rb-output pre{margin:0;padding:14px;background:var(--bg);border:1px solid var(--border);border-top:0;border-radius:0 0 var(--radius) var(--radius);max-height:360px;overflow:auto;font-family:var(--mono);font-size:12px;color:var(--text);white-space:pre-wrap;word-break:break-all}
+    .rb-copy{position:absolute;top:8px;right:8px;padding:5px 12px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-family:var(--mono);font-size:11px;cursor:pointer;z-index:2}
+    .rb-copy:hover{border-color:var(--accent);color:var(--accent)}
+    .rb-send{margin-top:18px;padding:12px 22px;background:var(--accent);color:#000;border:0;border-radius:var(--radius);font-family:var(--mono);font-weight:600;font-size:13px;cursor:pointer}
+    .rb-send:hover{opacity:.85}
+    .rb-send:disabled{opacity:.5;cursor:not-allowed}
+    .rb-response{margin-top:14px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:12px;display:none}
+    .rb-response.show{display:block}
+    .rb-resp-status{font-weight:600;margin-bottom:6px}
+    .rb-resp-status.ok{color:var(--accent)}
+    .rb-resp-status.err{color:#ff8888}
+    .rb-resp-headers{max-height:140px;overflow:auto;color:var(--text3);margin-bottom:8px;white-space:pre-wrap}
+    .rb-resp-body{max-height:260px;overflow:auto;color:var(--text);white-space:pre-wrap;word-break:break-all;padding-top:8px;border-top:1px solid var(--border)}
+    .rb-cors-note{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:8px;line-height:1.6}
+    .rb-cors-note strong{color:var(--text2)}
+    @media(max-width:600px){.rb-row input.rb-url{min-width:100%}.rb-tab{padding:8px 10px;font-size:11px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Network</span>
+    <h1>HTTP Request Builder</h1>
+    <p>This HTTP request builder lets you compose a full HTTP call — method, URL, headers, query parameters, and body — through a visual UI, then instantly generates the equivalent code as a cURL command, browser <code>fetch()</code>, axios, Python <code>requests</code>, and Node fetch. You can also fire the request live from your browser to inspect the status, response headers, and body (subject to CORS). It's ideal for drafting API calls, reproducing bug reports, sharing reproducible curl snippets with teammates, and bootstrapping HTTP client code in multiple languages without leaving the tab.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="rb-row">
+        <select id="rb-method">
+          <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>OPTIONS</option><option>HEAD</option>
+        </select>
+        <input type="text" class="rb-url" id="rb-url" value="https://api.github.com/repos/nodejs/node" placeholder="https://example.com/api" spellcheck="false" autocomplete="off">
+      </div>
+
+      <div class="rb-section">
+        <div class="rb-section-head"><h3>Headers</h3><button class="rb-add" onclick="addHeader()">+ Add header</button></div>
+        <div class="rb-quick">
+          <button onclick="quickHeader('Authorization','Bearer YOUR_TOKEN')">Authorization: Bearer</button>
+          <button onclick="quickHeader('Content-Type','application/json')">Content-Type: json</button>
+          <button onclick="quickHeader('Accept','application/json')">Accept: json</button>
+          <button onclick="quickHeader('User-Agent','devutils/1.0')">User-Agent</button>
+        </div>
+        <div id="rb-headers"></div>
+      </div>
+
+      <div class="rb-section">
+        <div class="rb-section-head"><h3>Query Parameters</h3><button class="rb-add" onclick="addParam()">+ Add param</button></div>
+        <div id="rb-params"></div>
+      </div>
+
+      <div class="rb-section rb-body" id="rb-body-section" style="display:none">
+        <div class="rb-section-head"><h3>Request Body</h3></div>
+        <textarea id="rb-body" placeholder='{"key":"value"}' spellcheck="false"></textarea>
+        <div class="rb-body-meta">
+          <label><input type="checkbox" id="rb-json-validate"> Validate JSON</label>
+          <span id="rb-json-status"></span>
+        </div>
+      </div>
+
+      <div class="rb-tabs">
+        <button class="rb-tab active" data-tab="curl">cURL</button>
+        <button class="rb-tab" data-tab="fetch">fetch()</button>
+        <button class="rb-tab" data-tab="axios">axios</button>
+        <button class="rb-tab" data-tab="python">Python requests</button>
+        <button class="rb-tab" data-tab="node">Node fetch</button>
+      </div>
+      <div class="rb-output">
+        <button class="rb-copy" onclick="copyOutput()">Copy</button>
+        <pre id="rb-out"></pre>
+      </div>
+
+      <button class="rb-send" id="rb-send">Send request</button>
+      <div id="rb-response" class="rb-response"></div>
+      <div class="rb-cors-note"><strong>CORS note:</strong> The browser only allows in-page requests when the target API sets permissive <code>Access-Control-Allow-Origin</code> headers. Internal or auth-protected APIs will usually fail with a CORS error — copy the generated cURL or Python code and run it from a terminal instead.</div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is an HTTP request builder?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">An <strong>HTTP request builder</strong> is a visual tool for constructing HTTP requests — pick a method, type a URL, add headers and query params, paste a body — and see the equivalent code in multiple languages. It's the lightweight cousin of Postman or Insomnia: handy when you just need a quick curl snippet, want to show a colleague exactly what request you sent, or need to turn a working browser DevTools request into production code without hand-editing escape sequences.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What code formats does this tool generate?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Five outputs are generated live on every keystroke: <strong>cURL</strong> with proper single-quote escaping and <code>\</code> line continuations for readability, browser <strong>fetch()</strong>, <strong>axios</strong>, <strong>Python requests</strong> (using <code>json=</code> when Content-Type is JSON, <code>data=</code> otherwise), and <strong>Node fetch</strong>. Each tab has its own copy button, so moving code into a script, notebook, or CI job takes a single click.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does sending the request fail with a CORS error?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Browsers enforce the <strong>Same-Origin Policy</strong>: cross-origin <code>fetch()</code> calls only succeed when the target server responds with a permissive <code>Access-Control-Allow-Origin</code> header (and handles the CORS pre-flight for non-simple requests). Most internal or authenticated APIs don't, so the browser blocks the response — not because the server is down, but because the browser refuses to expose it. CORS only restricts browser JavaScript. Copy the generated <strong>cURL</strong>, <strong>Python</strong>, or <strong>Node</strong> snippet and run it from a terminal to bypass CORS entirely.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this tool store or log my requests?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">No. The entire builder runs in your browser — code generation is local JavaScript, and when you click <strong>Send request</strong> the call goes directly from your browser to the target URL. Nothing is proxied through this site. That said, use caution: anything you paste into the tool stays in your browser tab's memory until you close it, so avoid pasting long-lived production API keys or customer-specific bearer tokens into any online builder (including this one).</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I send a JSON body?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Switch the method to POST, PUT, or PATCH, click the <strong>Content-Type: application/json</strong> quick-add button, and paste your JSON into the body textarea. Enable <strong>Validate JSON</strong> to confirm the syntax before sending — the label will turn green when the body parses cleanly. The generated cURL output will quote the body safely with single quotes and escape any internal single quotes using the <code>'\''</code> pattern. Python output automatically switches to <code>json=</code> so <code>requests</code> serializes the payload and sets <code>Content-Type</code> for you.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why do GET and HEAD requests not show a body field?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Per RFC 9110, <strong>GET</strong>, <strong>HEAD</strong>, <strong>DELETE</strong> (usually), and <strong>OPTIONS</strong> requests should not carry a message body — their semantics are defined by the URL and headers alone. Some servers technically accept a body on GET, but browsers, proxies, and caches may strip it, so it's unreliable. The tool hides the body field for GET/HEAD to match common practice; if you need to send a payload with DELETE for a specific API (Elasticsearch uses this pattern), paste it while on POST or PUT first, then switch the method — the body persists.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How are query parameters encoded?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Query params are assembled using <code>URLSearchParams</code> semantics (the same rules the built-in <code>URL</code> object applies), so spaces become <code>+</code>, reserved characters are percent-encoded, and duplicate keys produce repeated parameters (<code>?tag=a&amp;tag=b</code>) — the standard way most APIs expect array-valued params. If your URL already contains a query string, the new params are appended with <code>&amp;</code> instead of <code>?</code>.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="http-status.html"><div class="related-icon">200</div><div class="related-card-info"><div class="related-card-name">HTTP Status Codes</div><div class="related-card-desc">Reference for every HTTP code</div></div></a>
+      <a class="related-card" href="jwt-decoder.html"><div class="related-icon">JWT</div><div class="related-card-info"><div class="related-card-name">JWT Decoder</div><div class="related-card-desc">Decode bearer tokens</div></div></a>
+      <a class="related-card" href="url-encoder.html"><div class="related-icon">%20</div><div class="related-card-info"><div class="related-card-name">URL Encoder</div><div class="related-card-desc">Encode and decode URIs</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const METHODS_WITH_BODY=new Set(['POST','PUT','PATCH']);
+let currentTab='curl';
+
+function addHeader(name='',value=''){
+  const wrap=document.getElementById('rb-headers');
+  const row=document.createElement('div');
+  row.className='rb-kv';
+  row.innerHTML='<input type="text" placeholder="Header name" class="rb-h-name"><input type="text" placeholder="Value" class="rb-h-val"><button title="Remove">x</button>';
+  row.querySelector('.rb-h-name').value=name;
+  row.querySelector('.rb-h-val').value=value;
+  row.querySelector('button').onclick=()=>{row.remove();update();};
+  row.querySelectorAll('input').forEach(i=>i.addEventListener('input',update));
+  wrap.appendChild(row);
+  update();
+}
+
+function addParam(name='',value=''){
+  const wrap=document.getElementById('rb-params');
+  const row=document.createElement('div');
+  row.className='rb-kv';
+  row.innerHTML='<input type="text" placeholder="Param name" class="rb-p-name"><input type="text" placeholder="Value" class="rb-p-val"><button title="Remove">x</button>';
+  row.querySelector('.rb-p-name').value=name;
+  row.querySelector('.rb-p-val').value=value;
+  row.querySelector('button').onclick=()=>{row.remove();update();};
+  row.querySelectorAll('input').forEach(i=>i.addEventListener('input',update));
+  wrap.appendChild(row);
+  update();
+}
+
+function quickHeader(name,value){
+  const rows=document.querySelectorAll('#rb-headers .rb-kv');
+  for(const r of rows){
+    if(r.querySelector('.rb-h-name').value.toLowerCase()===name.toLowerCase()){
+      r.querySelector('.rb-h-val').value=value;
+      update();
+      return;
+    }
+  }
+  addHeader(name,value);
+}
+
+function gatherState(){
+  const method=document.getElementById('rb-method').value;
+  const rawUrl=document.getElementById('rb-url').value.trim();
+  const body=document.getElementById('rb-body').value;
+  const headers=[];
+  document.querySelectorAll('#rb-headers .rb-kv').forEach(r=>{
+    const n=r.querySelector('.rb-h-name').value.trim();
+    const v=r.querySelector('.rb-h-val').value;
+    if(n)headers.push([n,v]);
+  });
+  const params=[];
+  document.querySelectorAll('#rb-params .rb-kv').forEach(r=>{
+    const n=r.querySelector('.rb-p-name').value.trim();
+    const v=r.querySelector('.rb-p-val').value;
+    if(n)params.push([n,v]);
+  });
+  let url=rawUrl;
+  if(params.length){
+    const usp=new URLSearchParams();
+    params.forEach(([k,v])=>usp.append(k,v));
+    url+=(url.includes('?')?'&':'?')+usp.toString();
+  }
+  const hasBody=METHODS_WITH_BODY.has(method)&&body.length>0;
+  return{method,url,rawUrl,headers,params,body,hasBody};
+}
+
+function shellSingleQuote(s){return "'"+String(s).replace(/'/g,"'\\''")+"'";}
+function jsString(s){return JSON.stringify(String(s));}
+function pyString(s){
+  return "'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n').replace(/\r/g,'\\r')+"'";
+}
+
+function genCurl(s){
+  const parts=['curl -X '+s.method+' '+shellSingleQuote(s.url)];
+  s.headers.forEach(([n,v])=>parts.push('  -H '+shellSingleQuote(n+': '+v)));
+  if(s.hasBody)parts.push('  --data '+shellSingleQuote(s.body));
+  return parts.join(' \\\n');
+}
+
+function genFetch(s){
+  const opts={method:s.method};
+  if(s.headers.length)opts.headers=Object.fromEntries(s.headers);
+  if(s.hasBody)opts.body=s.body;
+  return'fetch('+jsString(s.url)+', '+JSON.stringify(opts,null,2)+')\n  .then(r => r.text())\n  .then(console.log)\n  .catch(console.error);';
+}
+
+function genAxios(s){
+  const cfg={method:s.method.toLowerCase(),url:s.url};
+  if(s.headers.length)cfg.headers=Object.fromEntries(s.headers);
+  if(s.hasBody){
+    const ct=(s.headers.find(([n])=>n.toLowerCase()==='content-type')||[])[1]||'';
+    if(/json/i.test(ct)){
+      try{cfg.data=JSON.parse(s.body);}catch{cfg.data=s.body;}
+    }else{cfg.data=s.body;}
+  }
+  return'axios('+JSON.stringify(cfg,null,2)+')\n  .then(r => console.log(r.data))\n  .catch(console.error);';
+}
+
+function genPython(s){
+  const lines=['import requests',''];
+  if(s.headers.length){
+    lines.push('headers = {');
+    s.headers.forEach(([n,v])=>lines.push('    '+pyString(n)+': '+pyString(v)+','));
+    lines.push('}');
+  }
+  const ct=(s.headers.find(([n])=>n.toLowerCase()==='content-type')||[])[1]||'';
+  const args=['    '+pyString(s.url)];
+  if(s.headers.length)args.push('    headers=headers');
+  if(s.hasBody){
+    if(/json/i.test(ct)){
+      try{JSON.parse(s.body);args.push('    json='+pyToJson(s.body));}
+      catch{args.push('    data='+pyString(s.body));}
+    }else{args.push('    data='+pyString(s.body));}
+  }
+  lines.push('');
+  lines.push('resp = requests.'+s.method.toLowerCase()+'(');
+  lines.push(args.join(',\n'));
+  lines.push(')');
+  lines.push('print(resp.status_code)');
+  lines.push('print(resp.text)');
+  return lines.join('\n');
+}
+
+function pyToJson(body){
+  try{
+    const parsed=JSON.parse(body);
+    return JSON.stringify(parsed,null,4).replace(/^/gm,'    ').trimStart().replace(/: true/g,': True').replace(/: false/g,': False').replace(/: null/g,': None');
+  }catch{return pyString(body);}
+}
+
+function genNode(s){
+  const opts={method:s.method};
+  if(s.headers.length)opts.headers=Object.fromEntries(s.headers);
+  if(s.hasBody)opts.body=s.body;
+  return"// Requires Node 18+\nconst resp = await fetch("+jsString(s.url)+", "+JSON.stringify(opts,null,2)+");\nconsole.log(resp.status);\nconsole.log(await resp.text());";
+}
+
+function update(){
+  const s=gatherState();
+  const bodySection=document.getElementById('rb-body-section');
+  bodySection.style.display=METHODS_WITH_BODY.has(s.method)?'':'none';
+  let out='';
+  if(currentTab==='curl')out=genCurl(s);
+  else if(currentTab==='fetch')out=genFetch(s);
+  else if(currentTab==='axios')out=genAxios(s);
+  else if(currentTab==='python')out=genPython(s);
+  else if(currentTab==='node')out=genNode(s);
+  document.getElementById('rb-out').textContent=out;
+  validateJson();
+}
+
+function validateJson(){
+  const cb=document.getElementById('rb-json-validate');
+  const status=document.getElementById('rb-json-status');
+  if(!cb.checked){status.textContent='';return;}
+  const body=document.getElementById('rb-body').value;
+  if(!body.trim()){status.textContent='';return;}
+  try{JSON.parse(body);status.textContent='Valid JSON';status.className='valid';}
+  catch(e){status.textContent='Invalid: '+e.message;status.className='invalid';}
+}
+
+function copyOutput(){
+  navigator.clipboard.writeText(document.getElementById('rb-out').textContent);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+document.querySelectorAll('.rb-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.rb-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTab=btn.dataset.tab;
+    update();
+  });
+});
+
+document.getElementById('rb-method').addEventListener('change',update);
+document.getElementById('rb-url').addEventListener('input',update);
+document.getElementById('rb-body').addEventListener('input',update);
+document.getElementById('rb-json-validate').addEventListener('change',validateJson);
+
+document.getElementById('rb-send').addEventListener('click',async()=>{
+  const s=gatherState();
+  const btn=document.getElementById('rb-send');
+  const box=document.getElementById('rb-response');
+  btn.disabled=true;btn.textContent='Sending...';
+  box.className='rb-response show';
+  box.innerHTML='<div class="rb-resp-status">Sending request...</div>';
+  const started=performance.now();
+  try{
+    const opts={method:s.method,headers:Object.fromEntries(s.headers)};
+    if(s.hasBody)opts.body=s.body;
+    const resp=await fetch(s.url,opts);
+    const elapsed=Math.round(performance.now()-started);
+    const hdrLines=[];
+    resp.headers.forEach((v,k)=>hdrLines.push(k+': '+v));
+    const text=await resp.text();
+    let pretty=text;
+    try{pretty=JSON.stringify(JSON.parse(text),null,2);}catch{}
+    const cls=resp.ok?'ok':'err';
+    box.innerHTML='<div class="rb-resp-status '+cls+'">'+resp.status+' '+escapeHtml(resp.statusText)+' — '+elapsed+' ms</div><div class="rb-resp-headers">'+escapeHtml(hdrLines.join('\n'))+'</div><div class="rb-resp-body">'+escapeHtml(pretty)+'</div>';
+  }catch(e){
+    box.innerHTML='<div class="rb-resp-status err">Request failed: '+escapeHtml(e.message||String(e))+'</div><div class="rb-resp-headers">Likely a CORS restriction. Try the generated cURL or Python snippet from a terminal.</div>';
+  }finally{
+    btn.disabled=false;btn.textContent='Send request';
+  }
+});
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+
+addHeader('Accept','application/json');
+update();
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

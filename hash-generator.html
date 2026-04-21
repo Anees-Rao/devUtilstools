@@ -135,16 +135,41 @@
   <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
-        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">8 tools</div></div></a>
-        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">7 tools</div></div></a>
-        <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">2 tools</div></div></a>
-        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">6 tools</div></div></a>
-        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">3 tools</div></div></a>
-        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">2 tools</div></div></a>
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
         <div class="nav-dropdown-divider"></div>
-        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">28 tools</div></div></a>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
       </div>
     </div>
     <a href="about.html">About</a>
@@ -349,8 +374,53 @@
 </footer>
 
 <script>
-// MD5 implementation (public domain)
-var MD5=function(){function h(a,b){var c,d,e,f,g;e=a&2147483648;f=b&2147483648;c=a&1073741824;d=b&1073741824;g=(a&1073741823)+(b&1073741823);return c&d?g^2147483648^e^f:c|d?g&1073741824?g^3221225472^e^f:g^1073741824^e^f:g^e^f}function k(a,b,c,d,e,f,g){a=h(a,h(h(b&c|~b&d,e),g));return h(a<<f|a>>>32-f,b)}function l(a,b,c,d,e,f,g){a=h(a,h(h(b&d|c&~d,e),g));return h(a<<f|a>>>32-f,b)}function m(a,b,c,d,e,f,g){a=h(a,h(h(b^c^d,e),g));return h(a<<f|a>>>32-f,b)}function n(a,b,c,d,e,f,g){a=h(a,h(h(c^(b|~d),e),g));return h(a<<f|a>>>32-f,b)}function p(a){var b="",c="",d;for(d=0;3>=d;d++)c=a>>>8*d&255,c="0"+c.toString(16),b+=c.substr(c.length-2,2);return b}var f=[],q,r,s,t,a,b,c,d;a=function(a){for(var b=a.length,c=b+8,d=(c-c%64)/64+1,e=16*d,g=Array(e-1),h=0,k=0;k<b;)c=(k-k%4)/4,h=k%4*8,g[c]=g[c]|a.charCodeAt(k)<<h,k++;g[(k-k%4)/4]=g[(k-k%4)/4]|128<<k%4*8;g[e-2]=b<<3;g[e-1]=b>>>29;return g}; return function(e){var g=new TextEncoder().encode(e),u=new Uint8Array(g);var str='';for(var i=0;i<u.length;i++)str+=String.fromCharCode(u[i]);f=a(str);d=1732584193;q=4023233417;r=2562383102;s=271733878;for(e=0;e<f.length;e+=16)a=d,b=q,c=r,t=s,d=k(d,q,r,s,f[e],7,3614090360),s=k(s,d,q,r,f[e+1],12,3905402710),r=k(r,s,d,q,f[e+2],17,606105819),q=k(q,r,s,d,f[e+3],22,3250441966),d=k(d,q,r,s,f[e+4],7,4118548399),s=k(s,d,q,r,f[e+5],12,1200080426),r=k(r,s,d,q,f[e+6],17,2821735955),q=k(q,r,s,d,f[e+7],22,4249261313),d=k(d,q,r,s,f[e+8],7,1770035416),s=k(s,d,q,r,f[e+9],12,2336552879),r=k(r,s,d,q,f[e+10],17,4294925233),q=k(q,r,s,d,f[e+11],22,2304563134),d=k(d,q,r,s,f[e+12],7,1804603682),s=k(s,d,q,r,f[e+13],12,4254626195),r=k(r,s,d,q,f[e+14],17,2792965006),q=k(q,r,s,d,f[e+15],22,1236535329),d=l(d,q,r,s,f[e+1],5,4129170786),s=l(s,d,q,r,f[e+6],9,3225465664),r=l(r,s,d,q,f[e+11],14,643717713),q=l(q,r,s,d,f[e],20,3921069994),d=l(d,q,r,s,f[e+5],5,3593408605),s=l(s,d,q,r,f[e+10],9,38016083),r=l(r,s,d,q,f[e+15],14,3634488961),q=l(q,r,s,d,f[e+4],20,3889429448),d=l(d,q,r,s,f[e+9],5,568446438),s=l(s,d,q,r,f[e+14],9,3275163606),r=l(r,s,d,q,f[e+3],14,4107603335),q=l(q,r,s,d,f[e+8],20,1163531501),d=l(d,q,r,s,f[e+13],5,2850285829),s=l(s,d,q,r,f[e+2],9,4243563512),r=l(r,s,d,q,f[e+7],14,1735328473),q=l(q,r,s,d,f[e+12],20,2368359562),d=m(d,q,r,s,f[e+5],4,4294588738),s=m(s,d,q,r,f[e+8],11,2272392833),r=m(r,s,d,q,f[e+11],16,1839030562),q=m(q,r,s,d,f[e+14],23,4259657740),d=m(d,q,r,s,f[e+1],4,2763975236),s=m(s,d,q,r,f[e+4],11,1272893353),r=m(r,s,d,q,f[e+7],16,4139469664),q=m(q,r,s,d,f[e+10],23,3200236656),d=m(d,q,r,s,f[e+13],4,681279174),s=m(s,d,q,r,f[e+0],11,3936430074),r=m(r,s,d,q,f[e+3],16,3572445317),q=m(q,r,s,d,f[e+6],23,76029189),d=m(d,q,r,s,f[e+9],4,3654602809),s=m(s,d,q,r,f[e+12],11,3873151461),r=m(r,s,d,q,f[e+15],16,530742520),q=m(q,r,s,d,f[e+2],23,3299628645),d=n(d,q,r,s,f[e],6,4096336452),s=n(s,d,q,r,f[e+7],10,1126891415),r=n(r,s,d,q,f[e+14],15,2878612391),q=n(q,r,s,d,f[e+5],21,4237533241),d=n(d,q,r,s,f[e+12],6,1700485571),s=n(s,d,q,r,f[e+3],10,2399980690),r=n(r,s,d,q,f[e+10],15,4293915773),q=n(q,r,s,d,f[e+1],21,2240044497),d=n(d,q,r,s,f[e+8],6,1873313359),s=n(s,d,q,r,f[e+15],10,4264355552),r=n(r,s,d,q,f[e+6],15,2734768916),q=n(q,r,s,d,f[e+13],21,1309151649),d=n(d,q,r,s,f[e+4],6,4149444226),s=n(s,d,q,r,f[e+11],10,3174756917),r=n(r,s,d,q,f[e+2],15,718787259),q=n(q,r,s,d,f[e+9],21,3951481745),d=h(d,a),q=h(q,b),r=h(r,c),s=h(s,t);return(p(d)+p(q)+p(r)+p(s)).toLowerCase()}}();
+// MD5 (RFC 1321). Accepts a string (encoded as UTF-8) or a Uint8Array of raw bytes.
+const MD5 = (() => {
+  const S = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
+             5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
+             4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
+             6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
+  const K = new Uint32Array(64);
+  for (let i = 0; i < 64; i++) K[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 0x100000000);
+  const rol = (x, n) => ((x << n) | (x >>> (32 - n))) >>> 0;
+  return function(input) {
+    const bytes = (typeof input === 'string') ? new TextEncoder().encode(input) : input;
+    const byteLen = bytes.length;
+    const padLen = 64 - ((byteLen + 9) % 64);
+    const buf = new Uint8Array(byteLen + 1 + padLen + 8);
+    buf.set(bytes);
+    buf[byteLen] = 0x80;
+    const dv = new DataView(buf.buffer);
+    const bitLen = byteLen * 8;
+    dv.setUint32(buf.length - 8, bitLen >>> 0, true);
+    dv.setUint32(buf.length - 4, Math.floor(byteLen / 0x20000000), true);
+    let a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+    for (let off = 0; off < buf.length; off += 64) {
+      const M = new Uint32Array(16);
+      for (let j = 0; j < 16; j++) M[j] = dv.getUint32(off + j * 4, true);
+      let A = a0, B = b0, C = c0, D = d0;
+      for (let i = 0; i < 64; i++) {
+        let F, g;
+        if (i < 16)      { F = (B & C) | (~B & D);   g = i; }
+        else if (i < 32) { F = (D & B) | (~D & C);   g = (5 * i + 1) % 16; }
+        else if (i < 48) { F = B ^ C ^ D;            g = (3 * i + 5) % 16; }
+        else             { F = C ^ (B | ~D);         g = (7 * i) % 16; }
+        const temp = D;
+        D = C; C = B;
+        B = (B + rol((A + F + K[i] + M[g]) >>> 0, S[i])) >>> 0;
+        A = temp;
+      }
+      a0 = (a0 + A) >>> 0; b0 = (b0 + B) >>> 0;
+      c0 = (c0 + C) >>> 0; d0 = (d0 + D) >>> 0;
+    }
+    const out = new Uint8Array(16);
+    new DataView(out.buffer).setUint32(0, a0, true);
+    new DataView(out.buffer).setUint32(4, b0, true);
+    new DataView(out.buffer).setUint32(8, c0, true);
+    new DataView(out.buffer).setUint32(12, d0, true);
+    return Array.from(out).map(b => b.toString(16).padStart(2, '0')).join('');
+  };
+})();
 
 // SHA hashes using Web Crypto API
 async function sha(algo, text) {
@@ -429,21 +499,20 @@ async function hashFile(file) {
 
   const buffer = await file.arrayBuffer();
 
-  // MD5 for file - convert buffer to string
-  const u8 = new Uint8Array(buffer);
-  let str = '';
-  for (let i = 0; i < u8.length; i++) str += String.fromCharCode(u8[i]);
-  // Use a simpler approach for file MD5
+  const fileMd5 = MD5(new Uint8Array(buffer));
   const fileSha1 = await shaFile('SHA-1', buffer);
   const fileSha256 = await shaFile('SHA-256', buffer);
   const fileSha512 = await shaFile('SHA-512', buffer);
 
   document.getElementById('file-status').textContent = '\u2713 ' + file.name + ' \u2014 ' + (file.size / 1024).toFixed(1) + ' KB';
 
+  const upper = document.getElementById('uppercase-check').checked;
+  const cast = h => upper ? h.toUpperCase() : h;
   const algos = [
-    { name: 'SHA-1', hash: fileSha1 },
-    { name: 'SHA-256', hash: fileSha256 },
-    { name: 'SHA-512', hash: fileSha512 },
+    { name: 'MD5',     hash: cast(fileMd5)    },
+    { name: 'SHA-1',   hash: cast(fileSha1)   },
+    { name: 'SHA-256', hash: cast(fileSha256) },
+    { name: 'SHA-512', hash: cast(fileSha512) },
   ];
 
   let html = '';

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Box Shadow Generator — Free Visual Shadow Tool | DevUtils</title>
+  <meta name="description" content="Generate CSS box-shadow code with live sliders for offset, blur, spread, color and inset. Multi-layer shadows, presets, copy-ready output. Free forever.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/css-box-shadow.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="CSS Box Shadow Generator — Free Visual Shadow Tool">
+  <meta property="og:description" content="Visual CSS box-shadow generator with live preview, multi-layer support, and presets. Copy production-ready CSS instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/css-box-shadow.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"CSS Box Shadow Generator","url":"https://devutilstools.pages.dev/css-box-shadow.html","description":"Generate multi-layer CSS box-shadow code with visual sliders, color pickers, and ready-made presets.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does each value in a CSS box-shadow mean?","acceptedAnswer":{"@type":"Answer","text":"The box-shadow property takes up to six values: horizontal offset (h-offset), vertical offset (v-offset), blur radius, spread radius, color, and an optional inset keyword. Positive h-offset moves the shadow right; positive v-offset moves it down. Blur softens the edge; spread grows or shrinks the whole shadow. The inset keyword makes the shadow fall inside the element instead of outside."}},{"@type":"Question","name":"Can I stack multiple box-shadows on one element?","acceptedAnswer":{"@type":"Answer","text":"Yes. Separate each shadow with a comma inside a single box-shadow declaration. The first shadow renders on top of the next, so layer your sharp, close shadows first and softer, wider shadows after. Stacking multiple shadows is how designers achieve Material Design elevations, neumorphic surfaces, and realistic ambient lighting."}},{"@type":"Question","name":"What is the difference between inset and outer shadows?","acceptedAnswer":{"@type":"Answer","text":"An outer shadow (the default) paints outside the element's border, giving a sense of elevation. An inset shadow paints inside the element, creating a recessed or pressed-in look. Inset shadows are commonly used for input fields, pressed buttons, and inner glows. You can mix inset and outer shadows on the same element by comma-separating them."}},{"@type":"Question","name":"Do box-shadows affect layout or performance?","acceptedAnswer":{"@type":"Answer","text":"Shadows do not affect layout — they are painted outside the box model and do not push neighboring elements. However, large blur radii or many stacked shadows can hurt paint performance, especially on mobile. For animated shadows, prefer the will-change: box-shadow hint or animate a pseudo-element's opacity instead of the shadow itself to stay on the GPU."}},{"@type":"Question","name":"How do I make a soft, realistic shadow?","acceptedAnswer":{"@type":"Answer","text":"Realistic shadows use low opacity (rgba alpha between 0.08 and 0.2), a small vertical offset, and a generous blur. Try stacking two or three layers: a tight near shadow for contact, a medium blur for depth, and a wide soft blur for ambient light. Avoid pure black; a slightly tinted dark color (e.g. rgba(17, 24, 39, 0.15)) reads as more natural."}}]}
+  </script>
+  <style>
+    .shadow-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:800px){.shadow-layout{grid-template-columns:1fr}}
+    .shadow-controls{display:flex;flex-direction:column;gap:14px}
+    .shadow-slider-row{display:grid;grid-template-columns:110px 1fr 60px;gap:10px;align-items:center}
+    .shadow-slider-row label{font-size:12px;font-family:var(--mono);color:var(--text2)}
+    .shadow-slider-row input[type=range]{width:100%;accent-color:var(--accent)}
+    .shadow-slider-row .val{font-family:var(--mono);font-size:12px;color:var(--text);text-align:right}
+    .shadow-color-row{display:flex;gap:10px;align-items:center}
+    .shadow-color-row input[type=color]{width:44px;height:36px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);cursor:pointer;padding:2px}
+    .shadow-color-row input[type=text]{flex:1;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px}
+    .shadow-inset-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);font-family:var(--mono);cursor:pointer}
+    .shadow-preview-wrap{display:flex;align-items:center;justify-content:center;min-height:260px;background:repeating-conic-gradient(var(--bg2) 0% 25%,var(--bg) 0% 50%) 0 0/20px 20px;border-radius:var(--radius);padding:30px}
+    .shadow-preview-box{width:160px;height:160px;background:#fff;border-radius:12px}
+    .shadow-presets{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+    .shadow-presets button{padding:5px 12px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer;transition:all .2s}
+    .shadow-presets button:hover{border-color:var(--accent);color:var(--accent)}
+    .shadow-layers{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+    .shadow-layer-tab{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;font-family:var(--mono);color:var(--text2);cursor:pointer}
+    .shadow-layer-tab.active{border-color:var(--accent);color:var(--accent)}
+    .shadow-layer-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+    .shadow-layer-row button{padding:5px 12px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:20px;color:var(--text2);cursor:pointer}
+    .shadow-layer-row button:hover{border-color:var(--accent);color:var(--accent)}
+    .shadow-layer-row button.del{color:#f87171}
+    .shadow-code{width:100%;min-height:90px;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;box-sizing:border-box}
+    .shadow-code-actions{display:flex;gap:8px;margin-top:10px}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">CSS</span>
+    <h1>CSS Box Shadow Generator</h1>
+    <p>This CSS box shadow generator builds production-ready shadows with visual sliders for offset, blur, spread, color and the inset keyword. Stack unlimited shadow layers to create Material-style elevations, neumorphic surfaces, neon glows, or soft ambient lighting. Every change updates the live preview and rewrites the CSS in real time, so you can copy the finished declaration straight into your stylesheet. Pick a preset to start fast, or dial in custom values on both axes. All calculation runs in your browser — no sign-up, no tracking, works offline once the page is cached.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="shadow-presets">
+        <button onclick="applyPreset('material')">Material</button>
+        <button onclick="applyPreset('soft')">Soft</button>
+        <button onclick="applyPreset('hard')">Hard</button>
+        <button onclick="applyPreset('neon')">Neon</button>
+        <button onclick="applyPreset('paper')">Paper</button>
+      </div>
+      <div class="shadow-layer-row">
+        <div class="shadow-layers" id="shadow-layers" style="flex-direction:row;flex-wrap:wrap"></div>
+        <button onclick="addLayer()">+ Add layer</button>
+        <button class="del" onclick="removeLayer()">Remove</button>
+      </div>
+      <div class="shadow-layout">
+        <div class="shadow-controls">
+          <div class="shadow-slider-row"><label>H-offset</label><input type="range" id="sh-x" min="-50" max="50" value="0"><div class="val" id="sh-x-v">0px</div></div>
+          <div class="shadow-slider-row"><label>V-offset</label><input type="range" id="sh-y" min="-50" max="50" value="8"><div class="val" id="sh-y-v">8px</div></div>
+          <div class="shadow-slider-row"><label>Blur</label><input type="range" id="sh-blur" min="0" max="100" value="24"><div class="val" id="sh-blur-v">24px</div></div>
+          <div class="shadow-slider-row"><label>Spread</label><input type="range" id="sh-spread" min="-50" max="50" value="0"><div class="val" id="sh-spread-v">0px</div></div>
+          <div class="shadow-color-row">
+            <input type="color" id="sh-color" value="#111827">
+            <input type="text" id="sh-color-hex" value="#111827">
+            <label class="shadow-inset-toggle"><input type="checkbox" id="sh-inset"> Inset</label>
+            <label class="shadow-inset-toggle" style="min-width:100px"><span style="min-width:40px">Alpha</span><input type="range" id="sh-alpha" min="0" max="100" value="20" style="flex:1"></label>
+          </div>
+        </div>
+        <div>
+          <div class="shadow-preview-wrap">
+            <div class="shadow-preview-box" id="shadow-preview"></div>
+          </div>
+          <textarea class="shadow-code" id="shadow-code" readonly></textarea>
+          <div class="shadow-code-actions">
+            <button class="btn btn-primary" onclick="copyCss()">Copy CSS</button>
+            <button class="btn btn-ghost" onclick="resetAll()">Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does each value in a CSS box-shadow mean?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The <strong>box-shadow</strong> property takes up to six values: horizontal offset, vertical offset, blur radius, spread radius, color, and an optional <code>inset</code> keyword. Positive <em>h-offset</em> moves the shadow to the right; positive <em>v-offset</em> moves it down. <strong>Blur</strong> softens the edge — a blur of 0 creates a hard-edged shadow, while larger values create a diffuse gradient. <strong>Spread</strong> grows or shrinks the whole shadow uniformly before blurring. The <strong>inset</strong> keyword paints the shadow inside the element instead of outside.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I stack multiple box-shadows on one element?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes — separate each shadow with a comma inside a single <code>box-shadow</code> declaration. The first shadow renders on top of the next, so layer your sharp, close shadows first and softer, wider shadows after. Stacking is how designers achieve Material Design elevations (typically three layers: ambient, key, and contact), neumorphic surfaces (one light and one dark shadow from opposite directions), and realistic ambient lighting. This generator supports as many layers as you need — use the <strong>+ Add layer</strong> button to create a new one.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between inset and outer shadows?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">An <strong>outer shadow</strong> (the default) paints outside the element's border, giving a sense of elevation above the page. An <strong>inset shadow</strong> paints inside the element, creating a recessed or pressed-in look. Inset shadows are commonly used for input fields, pressed button states, inner glows on cards, and simulating depth inside a container. You can mix inset and outer shadows on the same element by comma-separating them — for example, combining a soft outer shadow with a subtle inset highlight at the top edge creates a convincing "lifted" effect.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Do box-shadows affect layout or performance?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Shadows do not affect layout — they are painted outside the box model and do not push neighboring elements. However, large blur radii or many stacked shadows can hurt paint performance, especially on mobile devices with weaker GPUs. For animated shadows, prefer the <code>will-change: box-shadow</code> hint, or animate a pseudo-element's opacity instead of the shadow property itself to keep the animation on the compositor thread. Avoid animating the blur radius on every frame.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I make a soft, realistic shadow?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Realistic shadows use low opacity (rgba alpha between 0.08 and 0.2), a small vertical offset, and a generous blur. Try stacking two or three layers: a tight near shadow for contact with the surface, a medium blur for body depth, and a wide soft blur for ambient light. Avoid pure black — a slightly tinted dark color (for example <code>rgba(17, 24, 39, 0.15)</code>) reads as more natural because real-world shadows pick up ambient color tint. The <strong>Paper</strong> and <strong>Soft</strong> presets above demonstrate this layered approach.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does box-shadow follow border-radius?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. A box-shadow automatically traces the element's <code>border-radius</code>, so a rounded card gets a rounded shadow without any extra work. This is different from <code>filter: drop-shadow()</code>, which follows the actual painted shape including transparent PNG edges. Use <em>box-shadow</em> for rectangular and rounded-rectangular elements; use <em>drop-shadow</em> for irregular shapes, SVG icons, or elements with transparent cut-outs.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="css-gradient.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">CSS Gradient Generator</div><div class="related-card-desc">Visual linear and radial gradients</div></div></a>
+      <a class="related-card" href="color-picker.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Color Picker</div><div class="related-card-desc">HEX, RGB, HSL values</div></div></a>
+      <a class="related-card" href="hex-to-rgb.html"><div class="related-icon">🎨</div><div class="related-card-info"><div class="related-card-name">Hex to RGB</div><div class="related-card-desc">Convert hex colors to RGB</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+let layers=[
+  {x:0,y:8,blur:24,spread:0,color:'#111827',alpha:20,inset:false}
+];
+let active=0;
+
+function hexToRgba(hex,alpha){
+  const h=hex.replace('#','');
+  const r=parseInt(h.substring(0,2),16);
+  const g=parseInt(h.substring(2,4),16);
+  const b=parseInt(h.substring(4,6),16);
+  return `rgba(${r}, ${g}, ${b}, ${(alpha/100).toFixed(2)})`;
+}
+
+function buildShadow(){
+  return layers.map(l=>{
+    const c=hexToRgba(l.color,l.alpha);
+    return `${l.inset?'inset ':''}${l.x}px ${l.y}px ${l.blur}px ${l.spread}px ${c}`;
+  }).join(', ');
+}
+
+function render(){
+  const s=buildShadow();
+  document.getElementById('shadow-preview').style.boxShadow=s;
+  document.getElementById('shadow-code').value='box-shadow: '+s+';';
+  renderTabs();
+  syncInputs();
+}
+
+function renderTabs(){
+  const wrap=document.getElementById('shadow-layers');
+  wrap.innerHTML='';
+  layers.forEach((l,i)=>{
+    const t=document.createElement('div');
+    t.className='shadow-layer-tab'+(i===active?' active':'');
+    t.textContent='Layer '+(i+1);
+    t.onclick=()=>{active=i;render();};
+    wrap.appendChild(t);
+  });
+}
+
+function syncInputs(){
+  const l=layers[active];
+  document.getElementById('sh-x').value=l.x;
+  document.getElementById('sh-x-v').textContent=l.x+'px';
+  document.getElementById('sh-y').value=l.y;
+  document.getElementById('sh-y-v').textContent=l.y+'px';
+  document.getElementById('sh-blur').value=l.blur;
+  document.getElementById('sh-blur-v').textContent=l.blur+'px';
+  document.getElementById('sh-spread').value=l.spread;
+  document.getElementById('sh-spread-v').textContent=l.spread+'px';
+  document.getElementById('sh-color').value=l.color;
+  document.getElementById('sh-color-hex').value=l.color;
+  document.getElementById('sh-inset').checked=l.inset;
+  document.getElementById('sh-alpha').value=l.alpha;
+}
+
+function bind(id,prop,suffix){
+  document.getElementById(id).addEventListener('input',e=>{
+    const v=prop==='inset'?e.target.checked:(prop==='color'?e.target.value:parseInt(e.target.value,10));
+    layers[active][prop]=v;
+    if(prop==='color')document.getElementById('sh-color-hex').value=v;
+    render();
+  });
+}
+bind('sh-x','x');bind('sh-y','y');bind('sh-blur','blur');bind('sh-spread','spread');bind('sh-color','color');bind('sh-inset','inset');bind('sh-alpha','alpha');
+
+document.getElementById('sh-color-hex').addEventListener('input',e=>{
+  const v=e.target.value.trim();
+  if(/^#[0-9a-f]{6}$/i.test(v)){
+    layers[active].color=v;
+    document.getElementById('sh-color').value=v;
+    render();
+  }
+});
+
+function addLayer(){
+  layers.push({x:0,y:4,blur:12,spread:0,color:'#000000',alpha:15,inset:false});
+  active=layers.length-1;
+  render();
+}
+function removeLayer(){
+  if(layers.length<=1)return;
+  layers.splice(active,1);
+  active=Math.max(0,active-1);
+  render();
+}
+
+const presets={
+  material:[
+    {x:0,y:2,blur:4,spread:-1,color:'#000000',alpha:20,inset:false},
+    {x:0,y:4,blur:5,spread:0,color:'#000000',alpha:14,inset:false},
+    {x:0,y:1,blur:10,spread:0,color:'#000000',alpha:12,inset:false}
+  ],
+  soft:[
+    {x:0,y:10,blur:30,spread:-5,color:'#111827',alpha:12,inset:false}
+  ],
+  hard:[
+    {x:6,y:6,blur:0,spread:0,color:'#000000',alpha:100,inset:false}
+  ],
+  neon:[
+    {x:0,y:0,blur:10,spread:0,color:'#00d084',alpha:80,inset:false},
+    {x:0,y:0,blur:30,spread:0,color:'#00d084',alpha:60,inset:false}
+  ],
+  paper:[
+    {x:0,y:1,blur:2,spread:0,color:'#000000',alpha:10,inset:false},
+    {x:0,y:8,blur:24,spread:-4,color:'#000000',alpha:10,inset:false}
+  ]
+};
+
+function applyPreset(name){
+  layers=JSON.parse(JSON.stringify(presets[name]));
+  active=0;
+  render();
+}
+
+function copyCss(){
+  const code=document.getElementById('shadow-code').value;
+  navigator.clipboard.writeText(code);
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+function resetAll(){
+  layers=[{x:0,y:8,blur:24,spread:0,color:'#111827',alpha:20,inset:false}];
+  active=0;
+  render();
+}
+
+render();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

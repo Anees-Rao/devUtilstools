@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNS Lookup Tool — Free Online DNS Query Tool | DevUtils</title>
+  <meta name="description" content="Query DNS records online instantly. Look up A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. Free, private, no signup required for developers.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/dns-lookup.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="DNS Lookup Tool — Free Online DNS Query Tool">
+  <meta property="og:description" content="Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA DNS records via Cloudflare DoH. Free and private.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/dns-lookup.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"DNS Lookup Tool","url":"https://devutilstools.pages.dev/dns-lookup.html","description":"Client-side DNS lookup tool using Cloudflare DNS-over-HTTPS. Supports A, AAAA, CNAME, MX, TXT, NS, SOA, CAA record types.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a DNS lookup?","acceptedAnswer":{"@type":"Answer","text":"A DNS lookup is the process of querying the Domain Name System to translate a human-readable domain name (like example.com) into machine-readable information such as IP addresses (A, AAAA records), mail servers (MX), text metadata (TXT), or other record types. DNS lookups happen transparently every time you load a website, send an email, or connect to a service."}},{"@type":"Question","name":"How does this DNS lookup tool work?","acceptedAnswer":{"@type":"Answer","text":"This tool runs entirely in your browser using Cloudflare's DNS-over-HTTPS (DoH) endpoint at cloudflare-dns.com/dns-query. Your query is sent directly from your browser to Cloudflare's 1.1.1.1 public resolver over encrypted HTTPS. No data passes through our servers. Results are parsed from JSON responses and rendered as a table you can copy."}},{"@type":"Question","name":"What DNS record types can I query?","acceptedAnswer":{"@type":"Answer","text":"This tool supports the eight most common record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail exchanger), TXT (text data including SPF, DKIM, DMARC), NS (authoritative name servers), SOA (start of authority), and CAA (certificate authority authorization). These cover virtually all day-to-day DNS troubleshooting and auditing scenarios."}},{"@type":"Question","name":"Why are my DNS changes not showing up?","acceptedAnswer":{"@type":"Answer","text":"DNS records are cached at multiple layers: your operating system, your ISP's resolver, and public resolvers like Cloudflare. Each has a TTL (Time To Live) that determines how long records are cached. After updating a record at your registrar, propagation typically takes minutes to hours, occasionally up to 48 hours for records with long TTLs. This tool shows Cloudflare's current cached view."}},{"@type":"Question","name":"What is DNS-over-HTTPS (DoH)?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH, RFC 8484) is a protocol that performs DNS resolution over an encrypted HTTPS connection instead of traditional plaintext UDP port 53. DoH prevents eavesdropping and tampering by ISPs or network observers. Major providers including Cloudflare (1.1.1.1), Google (8.8.8.8), and Quad9 operate DoH endpoints. This tool uses Cloudflare's."}}]}
+  </script>
+  <style>
+    .dns-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+    .dns-controls input[type="text"]{flex:1;min-width:220px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px}
+    .dns-controls input[type="text"]:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .dns-controls select{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px;min-width:110px}
+    .dns-controls button{padding:12px 22px;background:var(--accent);color:#000;border:0;border-radius:var(--radius);font-family:var(--mono);font-weight:600;font-size:13px;cursor:pointer;transition:opacity .2s}
+    .dns-controls button:hover{opacity:.85}
+    .dns-controls button:disabled{opacity:.5;cursor:not-allowed}
+    .dns-meta{display:flex;gap:14px;font-size:11px;font-family:var(--mono);color:var(--text3);margin-bottom:12px;flex-wrap:wrap}
+    .dns-meta span{padding:3px 10px;background:var(--bg4);border-radius:12px}
+    .dns-meta .ok{color:var(--accent)}
+    .dns-meta .err{color:#ff6b6b}
+    .dns-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+    .dns-table th{text-align:left;padding:10px 14px;background:var(--bg4);color:var(--accent);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;border-bottom:1px solid var(--border)}
+    .dns-table td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text);word-break:break-all;vertical-align:top}
+    .dns-table tr:last-child td{border-bottom:0}
+    .dns-table tr:hover td{background:var(--bg2)}
+    .dns-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+    .dns-actions button{padding:8px 14px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-family:var(--mono);font-size:12px;cursor:pointer;transition:all .2s}
+    .dns-actions button:hover{border-color:var(--accent);color:var(--accent)}
+    .dns-empty{padding:28px;text-align:center;color:var(--text3);font-family:var(--mono);font-size:13px;background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius)}
+    .dns-error{padding:14px;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.3);border-radius:var(--radius);color:#ff8888;font-family:var(--mono);font-size:13px;margin-bottom:12px}
+    .dns-privacy{margin-top:14px;font-size:11px;color:var(--text3);font-family:var(--mono);line-height:1.6}
+    .dns-privacy strong{color:var(--text2)}
+    .dns-type-chip{display:inline-block;padding:2px 8px;background:var(--bg4);color:var(--accent);border-radius:10px;font-size:11px}
+    @media(max-width:600px){.dns-controls input[type="text"]{min-width:100%}.dns-table{font-size:12px}.dns-table th,.dns-table td{padding:8px 10px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Network</span>
+    <h1>DNS Lookup Tool</h1>
+    <p>This DNS lookup tool queries authoritative records for any domain directly from your browser using Cloudflare's DNS-over-HTTPS endpoint. Inspect A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records without installing dig or nslookup. Every query runs client-side, so your lookups never touch our servers — they travel encrypted to Cloudflare's 1.1.1.1 public resolver and back. Useful for debugging propagation issues, verifying SPF/DKIM/DMARC records, checking mail routing, auditing CAA policies, and confirming nameserver delegation during domain migrations or DNS provider switches.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="dns-controls">
+        <input type="text" id="dns-domain" placeholder="example.com" autocomplete="off" spellcheck="false">
+        <select id="dns-type">
+          <option value="A" selected>A</option>
+          <option value="AAAA">AAAA</option>
+          <option value="CNAME">CNAME</option>
+          <option value="MX">MX</option>
+          <option value="TXT">TXT</option>
+          <option value="NS">NS</option>
+          <option value="SOA">SOA</option>
+          <option value="CAA">CAA</option>
+        </select>
+        <button id="dns-go">Lookup</button>
+      </div>
+      <div id="dns-meta" class="dns-meta" style="display:none"></div>
+      <div id="dns-error"></div>
+      <div id="dns-output">
+        <div class="dns-empty">Enter a domain and press Lookup to query DNS records.</div>
+      </div>
+      <div class="dns-actions" id="dns-actions" style="display:none">
+        <button onclick="copyAllRecords()">Copy all records</button>
+        <button onclick="copyAsJson()">Copy as JSON</button>
+      </div>
+      <div class="dns-privacy">
+        <strong>Privacy note:</strong> Queries are sent from your browser directly to Cloudflare's public DNS-over-HTTPS resolver (<code>1.1.1.1</code> / <code>cloudflare-dns.com</code>). Nothing is logged by this site. See <a href="https://developers.cloudflare.com/1.1.1.1/privacy/" style="color:var(--accent)" rel="noopener" target="_blank">Cloudflare's resolver privacy policy</a> for their logging practices.
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a DNS lookup?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A DNS lookup queries the Domain Name System to translate a human-readable hostname (like <code>example.com</code>) into machine-readable metadata — most commonly IP addresses for an <strong>A</strong> (IPv4) or <strong>AAAA</strong> (IPv6) record, but also mail servers (<strong>MX</strong>), text metadata (<strong>TXT</strong> — used for SPF, DKIM, DMARC, domain verification), authoritative name servers (<strong>NS</strong>), or certificate authority policy (<strong>CAA</strong>). Every time you load a web page, send an email, or open an app, a chain of DNS lookups happens behind the scenes before a single byte of application data is exchanged.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How does this DNS lookup tool work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The tool is 100% client-side JavaScript. When you click <strong>Lookup</strong>, your browser issues a <code>fetch()</code> request to <code>https://cloudflare-dns.com/dns-query?name=DOMAIN&amp;type=TYPE</code> with the <code>Accept: application/dns-json</code> header. Cloudflare responds with a standard DoH JSON payload, which we parse to build the results table. Because the request goes straight from your browser to Cloudflare over HTTPS, neither this site nor any intermediate network can see the domain you looked up.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What DNS record types can I query?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Eight core types are supported: <strong>A</strong> (IPv4 address), <strong>AAAA</strong> (IPv6 address), <strong>CNAME</strong> (canonical alias — points one name at another), <strong>MX</strong> (mail exchanger with priority), <strong>TXT</strong> (free-form text, often used for SPF, DKIM, DMARC, site verification, and domain ownership proofs), <strong>NS</strong> (authoritative name servers for the zone), <strong>SOA</strong> (start of authority, containing serial and timing data), and <strong>CAA</strong> (which CAs are allowed to issue TLS certificates). These cover essentially every day-to-day DNS troubleshooting need.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why are my DNS changes not showing up?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">DNS is aggressively cached at every layer — your OS stub resolver, your ISP's recursive resolver, and every public resolver in between. Each cached answer has a <strong>TTL</strong> (time-to-live) measured in seconds. After editing a record at your registrar, propagation typically takes anywhere from a few minutes to several hours, occasionally up to 48 hours for records with long TTLs (86400 = 24 h is common). Lower the TTL a day or two <em>before</em> a planned migration so changes go live faster. This tool always queries Cloudflare's live cache, which usually updates quickly after authoritative changes.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is DNS-over-HTTPS (DoH)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>DNS-over-HTTPS</strong> (DoH, defined in RFC 8484) encrypts DNS queries over a standard HTTPS connection instead of the traditional plaintext UDP port 53. This prevents ISPs, coffee-shop Wi-Fi, or on-path attackers from seeing or tampering with which domains you resolve. Cloudflare (<code>1.1.1.1</code>), Google (<code>8.8.8.8</code>), and Quad9 (<code>9.9.9.9</code>) all operate DoH endpoints. Browsers like Firefox and Chrome can be configured to use DoH for all lookups. This tool uses Cloudflare's because it returns a clean JSON response format that parses nicely in-browser.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I read MX, TXT, and SOA record answers?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>MX</strong> records look like <code>10 mail.example.com.</code> — the number is the preference (lower = higher priority). <strong>TXT</strong> records are arbitrary strings shown in quotes; SPF records start with <code>v=spf1</code>, DMARC with <code>v=DMARC1</code>, and DKIM with <code>v=DKIM1</code>. <strong>SOA</strong> records contain seven fields: primary NS, admin email (with <code>.</code> in place of <code>@</code>), serial number, refresh, retry, expire, and minimum TTL. The serial number typically increments on every zone edit — useful for confirming a DNS change has been pushed.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does an NXDOMAIN response mean?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>NXDOMAIN</strong> ("non-existent domain") is DNS response code 3, signaling that the queried name definitely does not exist in the zone. It's distinct from an empty answer (code 0 with no records) — NXDOMAIN means the name itself has no entries of any type. Common causes: the domain is unregistered, you have a typo, or the authoritative nameservers genuinely don't list it. Also check for the <strong>CD</strong> (checking disabled) or <strong>AD</strong> (authenticated data) flags if you're debugging DNSSEC.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="ip-lookup.html"><div class="related-icon">IP</div><div class="related-card-info"><div class="related-card-name">IP Lookup</div><div class="related-card-desc">Geolocate and inspect IPs</div></div></a>
+      <a class="related-card" href="http-status.html"><div class="related-icon">200</div><div class="related-card-info"><div class="related-card-name">HTTP Status Codes</div><div class="related-card-desc">Reference for every HTTP code</div></div></a>
+      <a class="related-card" href="url-encoder.html"><div class="related-icon">%20</div><div class="related-card-info"><div class="related-card-name">URL Encoder</div><div class="related-card-desc">Encode and decode URIs</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const TYPE_NAMES={1:'A',2:'NS',5:'CNAME',6:'SOA',12:'PTR',15:'MX',16:'TXT',28:'AAAA',33:'SRV',257:'CAA'};
+let lastResult=null;
+
+function typeName(n){return TYPE_NAMES[n]||('TYPE'+n);}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg||'Copied!';
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1500);
+}
+
+async function runLookup(){
+  const dEl=document.getElementById('dns-domain');
+  const tEl=document.getElementById('dns-type');
+  const go=document.getElementById('dns-go');
+  const out=document.getElementById('dns-output');
+  const errBox=document.getElementById('dns-error');
+  const metaBox=document.getElementById('dns-meta');
+  const actions=document.getElementById('dns-actions');
+  errBox.innerHTML='';
+  let domain=dEl.value.trim().replace(/^https?:\/\//i,'').replace(/\/.*/,'');
+  if(!domain){
+    errBox.innerHTML='<div class="dns-error">Please enter a domain name.</div>';
+    return;
+  }
+  const type=tEl.value;
+  go.disabled=true;go.textContent='Looking up...';
+  out.innerHTML='<div class="dns-empty">Querying Cloudflare DoH...</div>';
+  actions.style.display='none';
+  metaBox.style.display='none';
+  const started=performance.now();
+  try{
+    const url='https://cloudflare-dns.com/dns-query?name='+encodeURIComponent(domain)+'&type='+encodeURIComponent(type);
+    const resp=await fetch(url,{headers:{'accept':'application/dns-json'}});
+    if(!resp.ok){
+      if(resp.status===429){
+        throw new Error('Rate limited by Cloudflare (HTTP 429). Wait a moment and try again.');
+      }
+      throw new Error('HTTP '+resp.status+' from Cloudflare DoH.');
+    }
+    const data=await resp.json();
+    const elapsed=Math.round(performance.now()-started);
+    const status=data.Status;
+    const answers=data.Answer||[];
+    lastResult={domain,type,status,answers,elapsed};
+
+    let statusLabel='OK';let statusClass='ok';
+    if(status===2){statusLabel='SERVFAIL (2)';statusClass='err';}
+    else if(status===3){statusLabel='NXDOMAIN (3)';statusClass='err';}
+    else if(status===5){statusLabel='REFUSED (5)';statusClass='err';}
+    else if(status!==0){statusLabel='Status '+status;statusClass='err';}
+
+    metaBox.innerHTML=
+      '<span>Domain: <strong>'+escapeHtml(domain)+'</strong></span>'+
+      '<span>Type: <strong>'+escapeHtml(type)+'</strong></span>'+
+      '<span class="'+statusClass+'">'+statusLabel+'</span>'+
+      '<span>'+elapsed+' ms</span>'+
+      '<span>Records: '+answers.length+'</span>';
+    metaBox.style.display='flex';
+
+    if(status===3){
+      out.innerHTML='<div class="dns-empty">Domain does not exist (NXDOMAIN).</div>';
+      actions.style.display='none';
+      return;
+    }
+    if(status===2){
+      out.innerHTML='<div class="dns-empty">Upstream SERVFAIL — nameservers rejected the query. Try again or check the domain.</div>';
+      actions.style.display='none';
+      return;
+    }
+    if(!answers.length){
+      out.innerHTML='<div class="dns-empty">No '+escapeHtml(type)+' records found for <strong>'+escapeHtml(domain)+'</strong>.</div>';
+      actions.style.display='none';
+      return;
+    }
+    let html='<table class="dns-table"><thead><tr><th>Name</th><th>TTL</th><th>Type</th><th>Data</th></tr></thead><tbody>';
+    answers.forEach(a=>{
+      html+='<tr><td>'+escapeHtml(a.name||'')+'</td><td>'+a.TTL+'</td><td><span class="dns-type-chip">'+escapeHtml(typeName(a.type))+'</span></td><td>'+escapeHtml(a.data||'')+'</td></tr>';
+    });
+    html+='</tbody></table>';
+    out.innerHTML=html;
+    actions.style.display='flex';
+  }catch(e){
+    let msg=e.message||String(e);
+    if(e.name==='TypeError'){msg='Network error — could not reach Cloudflare DoH. Check your internet connection.';}
+    errBox.innerHTML='<div class="dns-error">'+escapeHtml(msg)+'</div>';
+    out.innerHTML='<div class="dns-empty">Lookup failed.</div>';
+    actions.style.display='none';
+    metaBox.style.display='none';
+  }finally{
+    go.disabled=false;go.textContent='Lookup';
+  }
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+
+function copyAllRecords(){
+  if(!lastResult||!lastResult.answers.length)return;
+  const lines=lastResult.answers.map(a=>[a.name,a.TTL,'IN',typeName(a.type),a.data].join('\t'));
+  navigator.clipboard.writeText(lines.join('\n'));
+  showToast('Records copied');
+}
+
+function copyAsJson(){
+  if(!lastResult)return;
+  navigator.clipboard.writeText(JSON.stringify(lastResult,null,2));
+  showToast('JSON copied');
+}
+
+document.getElementById('dns-go').addEventListener('click',runLookup);
+document.getElementById('dns-domain').addEventListener('keydown',e=>{if(e.key==='Enter')runLookup();});
+document.getElementById('dns-type').addEventListener('change',()=>{if(document.getElementById('dns-domain').value.trim())runLookup();});
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

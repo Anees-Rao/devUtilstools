@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relative Time Calculator — Free Timestamp Converter | DevUtils</title>
+  <meta name="description" content="Convert timestamps to human-friendly relative time like "3 days ago" or "in 2 hours". Accepts Unix, ISO 8601, and common date strings. Free, fast, bulk mode included.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/relative-time.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Relative Time Calculator — Free Timestamp Converter">
+  <meta property="og:description" content="Convert timestamps to human-friendly relative phrases. Unix, ISO 8601, bulk mode, live clock.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/relative-time.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Relative Time Calculator","url":"https://devutilstools.pages.dev/relative-time.html","description":"Convert timestamps to human-readable relative time with Unix, ISO 8601 support, breakdown, and bulk mode.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a relative time calculator?","acceptedAnswer":{"@type":"Answer","text":"A relative time calculator converts absolute timestamps (Unix epoch seconds, milliseconds, ISO 8601 strings, or natural date strings) into human-readable phrases relative to now, like '3 days ago', 'in 2 hours', or 'just now'. It's the same formatting style used in GitHub, Slack, and most social feeds, and is useful for debugging logs, building UI components, and verifying backend timestamps."}},{"@type":"Question","name":"What timestamp formats does this tool accept?","acceptedAnswer":{"@type":"Answer","text":"Auto-detection handles Unix seconds (10 digits), Unix milliseconds (13 digits), Unix microseconds (16 digits), ISO 8601 (2024-01-15T12:00:00Z), RFC 2822 (Mon, 15 Jan 2024 12:00:00 GMT), and many natural date strings parseable by JavaScript's Date. Negative numbers represent pre-1970 timestamps."}},{"@type":"Question","name":"How are units chosen for the relative phrase?","acceptedAnswer":{"@type":"Answer","text":"The tool picks the largest meaningful unit: under 45 seconds shows 'just now', then seconds up to 60, minutes up to 60, hours up to 24, days up to 7, weeks up to 4, months up to 12, then years. Singular/plural is handled correctly ('1 day ago' not '1 days ago'), and future timestamps use 'in X' rather than 'X ago'."}},{"@type":"Question","name":"Does the tool account for my local timezone?","acceptedAnswer":{"@type":"Answer","text":"Yes. The tool displays both the parsed local time (using your browser's IANA timezone) and the equivalent UTC. The relative phrase itself is timezone-agnostic — it's computed as the elapsed duration between the parsed instant and the current instant, which is the same number of seconds no matter where you are."}},{"@type":"Question","name":"How does bulk mode work?","acceptedAnswer":{"@type":"Answer","text":"Paste a list of timestamps (one per line, any mix of formats) into the bulk textarea and each line is parsed independently, producing a parallel column of relative phrases. This is useful for translating log files, CSV exports, or database dumps into human-readable form. Invalid lines are flagged inline."}}]}
+  </script>
+  <style>
+    .rt-input-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+    .rt-input-row input{flex:1;min-width:240px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px}
+    .rt-input-row input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .rt-input-row button{padding:12px 18px;background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);font-family:var(--mono);font-size:13px;cursor:pointer;transition:all .2s}
+    .rt-input-row button:hover{border-color:var(--accent);color:var(--accent)}
+    .rt-detected{font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:16px}
+    .rt-detected .fmt{color:var(--accent)}
+    .rt-hero{padding:24px;background:linear-gradient(180deg,var(--bg4),var(--bg));border:1px solid var(--border);border-radius:var(--radius);text-align:center;margin-bottom:16px}
+    .rt-hero-phrase{font-size:28px;font-weight:700;color:var(--accent);font-family:var(--mono);margin:0}
+    .rt-hero-sub{font-size:12px;color:var(--text3);font-family:var(--mono);margin-top:8px}
+    .rt-hero.err .rt-hero-phrase{color:#ff6b6b}
+    .rt-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+    .rt-cell{display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg);font-family:var(--mono);font-size:13px}
+    .rt-cell .lbl{color:var(--text3);font-size:11px}
+    .rt-cell .val{color:var(--text);font-weight:500;cursor:pointer}
+    .rt-cell .val:hover{color:var(--accent)}
+    .rt-breakdown{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-bottom:16px;font-family:var(--mono);font-size:12px}
+    .rt-breakdown h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin:0 0 8px 0}
+    .rt-bd-row{display:grid;grid-template-columns:80px 1fr;gap:10px;padding:4px 0;color:var(--text2)}
+    .rt-bd-row .k{color:var(--text3)}
+    .rt-bulk{margin-top:18px}
+    .rt-bulk h3{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-family:var(--mono);margin:0 0 10px 0;font-weight:600}
+    .rt-bulk-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .rt-bulk textarea,.rt-bulk-out{width:100%;min-height:180px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:12px;box-sizing:border-box}
+    .rt-bulk textarea{resize:vertical}
+    .rt-bulk textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .rt-bulk-out{white-space:pre;overflow:auto;color:var(--text2);line-height:1.55}
+    .rt-bulk-out .err{color:#ff8888}
+    @media(max-width:600px){.rt-grid,.rt-bulk-grid{grid-template-columns:1fr}.rt-hero-phrase{font-size:22px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Time</span>
+    <h1>Relative Time Calculator</h1>
+    <p>This relative time calculator turns any timestamp into a human-readable phrase like "3 days ago" or "in 2 hours", the same style used in GitHub issues, Slack messages, and most modern UIs. Paste a Unix epoch (seconds, milliseconds, or microseconds), an ISO 8601 string, an RFC 2822 date, or virtually any date format your browser can parse — the tool auto-detects the format, shows the picked unit, breaks the delta down across seconds/minutes/hours/days/weeks/months/years, and displays both local and UTC times. A bulk mode converts whole lists at once, and the live clock keeps sub-minute phrases accurate.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="rt-input-row">
+        <input type="text" id="rt-input" placeholder="Unix timestamp, ISO 8601, or any date string" spellcheck="false" autocomplete="off">
+        <button onclick="insertNow()">Now</button>
+        <button onclick="copyPhrase()">Copy phrase</button>
+      </div>
+      <div id="rt-detected" class="rt-detected"></div>
+      <div id="rt-hero" class="rt-hero">
+        <div class="rt-hero-phrase" id="rt-phrase">just now</div>
+        <div class="rt-hero-sub" id="rt-sub">Type a timestamp to get started</div>
+      </div>
+      <div class="rt-grid" id="rt-grid" style="display:none"></div>
+      <div class="rt-breakdown" id="rt-breakdown" style="display:none">
+        <h4>Delta breakdown</h4>
+        <div id="rt-bd-body"></div>
+      </div>
+
+      <div class="rt-bulk">
+        <h3>Bulk mode — one timestamp per line</h3>
+        <div class="rt-bulk-grid">
+          <textarea id="rt-bulk-in" placeholder="1700000000&#10;2024-01-15T12:00:00Z&#10;Mon, 15 Jan 2024 12:00:00 GMT" spellcheck="false"></textarea>
+          <div id="rt-bulk-out" class="rt-bulk-out"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a relative time calculator?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A <strong>relative time calculator</strong> converts an absolute timestamp — Unix epoch, ISO 8601, RFC 2822, or a natural date string — into a human-readable phrase relative to <em>right now</em>: "3 days ago", "in 2 hours", "last week", "just now". It's the same formatting vocabulary you see in GitHub issues, Slack, Twitter, and most modern UIs. Developers use it to sanity-check log timestamps, design notification copy, debug TTL/expiry fields, or translate large lists of backend timestamps into something humans can skim.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What timestamp formats does this tool accept?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Auto-detection handles the common formats: <strong>Unix seconds</strong> (10-digit integer), <strong>Unix milliseconds</strong> (13-digit — JavaScript's native epoch), <strong>Unix microseconds</strong> (16-digit, sometimes emitted by Python and Postgres), <strong>ISO 8601</strong> (<code>2024-01-15T12:00:00Z</code> and offset variants), <strong>RFC 2822</strong> (<code>Mon, 15 Jan 2024 12:00:00 GMT</code>), and any natural string JavaScript's <code>Date</code> constructor accepts. Negative integers represent pre-1970 epochs. The detected format is shown just above the result.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How are units chosen for the relative phrase?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The tool picks the largest meaningful unit given the magnitude: under 45 seconds renders as <strong>"just now"</strong>; up to 60 seconds as <strong>seconds</strong>; up to 60 minutes as <strong>minutes</strong>; up to 24 hours as <strong>hours</strong>; up to 6 days as <strong>days</strong>; up to 4 weeks as <strong>weeks</strong>; up to 12 months as <strong>months</strong>; then <strong>years</strong>. Singular/plural is handled correctly ("1 day ago", not "1 days ago"). Future timestamps are prefixed with "in " instead of suffixed with " ago". These thresholds match the Intl.RelativeTimeFormat style used by major libraries.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does the tool account for my local timezone?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes, in two ways. First, the <strong>absolute time</strong> display shows the parsed instant rendered in your browser's IANA timezone, alongside the equivalent UTC — so you can quickly see that a Unix timestamp stored in a database maps to, say, 14:30 local and 19:30 UTC. Second, the <strong>relative phrase</strong> is timezone-independent — it's the elapsed duration between two instants in real time, which is the same number of seconds no matter where you or the server are located.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How does bulk mode work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Paste a list of timestamps — one per line, any mix of formats — into the left textarea and the right column fills with the equivalent relative phrases. Useful for translating log exports, CSV columns, or database dumps into something you can skim in a PR review. Invalid lines show an <code>invalid</code> marker rather than aborting the whole batch, so you can copy-paste messy data without pre-cleaning it.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why does the phrase update every second?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">"Now" is a moving target — a timestamp that's 42 seconds ago becomes 43 seconds ago one second later. The tool recomputes the relative phrase every second via a <code>setInterval</code> so sub-minute phrases stay accurate in real time. Once the delta exceeds a minute, the visible phrase only changes when the unit threshold is crossed (e.g., from "59 minutes" to "1 hour"), but the internal calculation keeps ticking.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What's the difference between Unix seconds and milliseconds?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Both count the time since the Unix epoch (1970-01-01 00:00:00 UTC) — the difference is the scale. <strong>Seconds</strong> (10 digits as of now, e.g., <code>1710000000</code>) are standard in Unix, Go, and most databases. <strong>Milliseconds</strong> (13 digits, e.g., <code>1710000000000</code>) are native to JavaScript (<code>Date.now()</code>) and Java. <strong>Microseconds</strong> (16 digits) occasionally appear in Postgres and Python <code>time.time_ns()</code>. This tool detects which one you pasted based on the digit count and parses accordingly.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="unix-timestamp-converter.html"><div class="related-icon">⏱</div><div class="related-card-info"><div class="related-card-name">UNIX Timestamp Converter</div><div class="related-card-desc">Convert between epoch and date</div></div></a>
+      <a class="related-card" href="timestamp-diff.html"><div class="related-icon">Δt</div><div class="related-card-info"><div class="related-card-name">Timestamp Diff</div><div class="related-card-desc">Compute duration between dates</div></div></a>
+      <a class="related-card" href="jwt-decoder.html"><div class="related-icon">JWT</div><div class="related-card-info"><div class="related-card-name">JWT Decoder</div><div class="related-card-desc">Inspect iat / exp claims</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+function parseTimestamp(raw){
+  const s=String(raw).trim();
+  if(!s)return{ok:false,reason:'empty'};
+  if(/^-?\d+(\.\d+)?$/.test(s)){
+    const n=Number(s);
+    const abs=Math.abs(n);
+    let ms,fmt;
+    if(abs>=1e15){ms=n/1000;fmt='Unix microseconds';}
+    else if(abs>=1e12){ms=n;fmt='Unix milliseconds';}
+    else if(abs>=1e9||abs===0){ms=n*1000;fmt='Unix seconds';}
+    else{ms=n*1000;fmt='Unix seconds';}
+    const d=new Date(ms);
+    if(isNaN(d.getTime()))return{ok:false,reason:'out of range'};
+    return{ok:true,date:d,fmt:fmt};
+  }
+  const d=new Date(s);
+  if(isNaN(d.getTime()))return{ok:false,reason:'unrecognized format'};
+  let fmt='Date string';
+  if(/^\d{4}-\d{2}-\d{2}T/.test(s))fmt='ISO 8601';
+  else if(/^[A-Z][a-z]{2},/.test(s))fmt='RFC 2822';
+  return{ok:true,date:d,fmt:fmt};
+}
+
+function pluralize(n,unit){return Math.abs(n)===1?unit:unit+'s';}
+
+function relativePhrase(date,now){
+  const diff=date.getTime()-now.getTime();
+  const abs=Math.abs(diff);
+  const sec=Math.round(abs/1000);
+  const future=diff>0;
+  if(sec<45)return 'just now';
+  let n,unit;
+  if(sec<60){n=sec;unit='second';}
+  else if(sec<3600){n=Math.round(sec/60);unit='minute';}
+  else if(sec<86400){n=Math.round(sec/3600);unit='hour';}
+  else if(sec<86400*7){n=Math.round(sec/86400);unit='day';}
+  else if(sec<86400*30){n=Math.round(sec/(86400*7));unit='week';}
+  else if(sec<86400*365){n=Math.round(sec/(86400*30));unit='month';}
+  else{n=Math.round(sec/(86400*365));unit='year';}
+  const phrase=n+' '+pluralize(n,unit);
+  return future?('in '+phrase):(phrase+' ago');
+}
+
+function breakdown(date,now){
+  const diff=date.getTime()-now.getTime();
+  const abs=Math.abs(diff);
+  const s=abs/1000;
+  return{
+    milliseconds:Math.round(abs),
+    seconds:s,
+    minutes:s/60,
+    hours:s/3600,
+    days:s/86400,
+    weeks:s/(86400*7),
+    months:s/(86400*30.4375),
+    years:s/(86400*365.25),
+    sign:diff>=0?'future':'past'
+  };
+}
+
+function fmtNum(n){
+  if(Math.abs(n)>=100)return n.toLocaleString('en-US',{maximumFractionDigits:2});
+  if(Math.abs(n)>=10)return n.toLocaleString('en-US',{maximumFractionDigits:3});
+  return n.toLocaleString('en-US',{maximumFractionDigits:4});
+}
+
+let currentDate=null;
+
+function renderOne(){
+  const raw=document.getElementById('rt-input').value;
+  const detected=document.getElementById('rt-detected');
+  const hero=document.getElementById('rt-hero');
+  const phrase=document.getElementById('rt-phrase');
+  const sub=document.getElementById('rt-sub');
+  const grid=document.getElementById('rt-grid');
+  const bd=document.getElementById('rt-breakdown');
+  const bdBody=document.getElementById('rt-bd-body');
+  if(!raw.trim()){
+    detected.innerHTML='';
+    hero.classList.remove('err');
+    phrase.textContent='just now';
+    sub.textContent='Type a timestamp to get started';
+    grid.style.display='none';
+    bd.style.display='none';
+    currentDate=null;
+    return;
+  }
+  const p=parseTimestamp(raw);
+  if(!p.ok){
+    detected.innerHTML='<span class="fmt">Could not parse:</span> '+p.reason;
+    hero.classList.add('err');
+    phrase.textContent='invalid';
+    sub.textContent='Check the format and try again';
+    grid.style.display='none';
+    bd.style.display='none';
+    currentDate=null;
+    return;
+  }
+  currentDate=p.date;
+  hero.classList.remove('err');
+  const now=new Date();
+  detected.innerHTML='Detected format: <span class="fmt">'+p.fmt+'</span>';
+  phrase.textContent=relativePhrase(p.date,now);
+  sub.textContent=p.date.toString();
+  grid.style.display='';
+  grid.innerHTML=
+    '<div class="rt-cell"><span class="lbl">Local time</span><span class="val" onclick="copyText(\''+escapeJs(p.date.toLocaleString())+'\')" title="Click to copy">'+escapeHtml(p.date.toLocaleString())+'</span></div>'+
+    '<div class="rt-cell"><span class="lbl">UTC</span><span class="val" onclick="copyText(\''+escapeJs(p.date.toUTCString())+'\')" title="Click to copy">'+escapeHtml(p.date.toUTCString())+'</span></div>'+
+    '<div class="rt-cell"><span class="lbl">ISO 8601</span><span class="val" onclick="copyText(\''+escapeJs(p.date.toISOString())+'\')" title="Click to copy">'+escapeHtml(p.date.toISOString())+'</span></div>'+
+    '<div class="rt-cell"><span class="lbl">Unix seconds</span><span class="val" onclick="copyText(\''+Math.floor(p.date.getTime()/1000)+'\')" title="Click to copy">'+Math.floor(p.date.getTime()/1000)+'</span></div>';
+  const b=breakdown(p.date,now);
+  bd.style.display='';
+  bdBody.innerHTML=
+    '<div class="rt-bd-row"><span class="k">Seconds</span><span>'+fmtNum(b.seconds)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Minutes</span><span>'+fmtNum(b.minutes)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Hours</span><span>'+fmtNum(b.hours)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Days</span><span>'+fmtNum(b.days)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Weeks</span><span>'+fmtNum(b.weeks)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Months</span><span>'+fmtNum(b.months)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Years</span><span>'+fmtNum(b.years)+'</span></div>'+
+    '<div class="rt-bd-row"><span class="k">Direction</span><span>'+b.sign+'</span></div>';
+}
+
+function renderBulk(){
+  const raw=document.getElementById('rt-bulk-in').value;
+  const out=document.getElementById('rt-bulk-out');
+  if(!raw.trim()){out.innerHTML='';return;}
+  const now=new Date();
+  const lines=raw.split(/\r?\n/);
+  const result=lines.map(line=>{
+    if(!line.trim())return'';
+    const p=parseTimestamp(line);
+    if(!p.ok)return'<span class="err">'+escapeHtml(line)+' — invalid</span>';
+    return escapeHtml(line)+'  →  '+escapeHtml(relativePhrase(p.date,now));
+  });
+  out.innerHTML=result.join('\n');
+}
+
+function insertNow(){
+  document.getElementById('rt-input').value=Math.floor(Date.now()/1000);
+  renderOne();
+}
+
+function copyPhrase(){
+  const v=document.getElementById('rt-phrase').textContent;
+  if(!v||v==='invalid')return;
+  navigator.clipboard.writeText(v);
+  showToast();
+}
+
+function copyText(v){
+  navigator.clipboard.writeText(v);
+  showToast();
+}
+
+function showToast(){
+  const t=document.getElementById('toast');t.style.opacity='1';setTimeout(()=>t.style.opacity='0',1500);
+}
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+function escapeJs(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+document.getElementById('rt-input').addEventListener('input',renderOne);
+document.getElementById('rt-bulk-in').addEventListener('input',renderBulk);
+
+setInterval(()=>{
+  if(currentDate){
+    const now=new Date();
+    document.getElementById('rt-phrase').textContent=relativePhrase(currentDate,now);
+  }
+  renderBulk();
+},1000);
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

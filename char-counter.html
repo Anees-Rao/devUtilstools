@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Count Online — Free Text Length Counter | DevUtils</title>
+  <meta name="description" content="Count characters online instantly — words, lines, sentences, bytes. Tweet, SMS and email limits, reading and speaking time. Free, private, works offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/char-counter.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Character Count Online — Free Text Length Counter">
+  <meta property="og:description" content="Live character, word, line, sentence and byte counts with Twitter/SMS limits and reading time.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/char-counter.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Character Count Online","url":"https://devutilstools.pages.dev/char-counter.html","description":"Count characters, words, lines, paragraphs, sentences and UTF-8 bytes of any text with social-platform limit indicators.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does a tweet count characters or bytes?","acceptedAnswer":{"@type":"Answer","text":"Twitter/X counts characters after Unicode NFC normalization, with one important twist — each glyph from the Basic Multilingual Plane counts as 1 unit, but characters from certain Chinese, Japanese, Korean and emoji ranges count as 2 units. The effective limit is 280 units for standard accounts. URLs are always shortened to a fixed 23-character t.co length regardless of the original URL size."}},{"@type":"Question","name":"What counts as one SMS message?","acceptedAnswer":{"@type":"Answer","text":"A single SMS fits 160 characters using GSM-7 encoding (7 bits per character). If any character requires extended GSM-7 (like the Euro sign), it consumes two slots. Using UCS-2 encoding (for emoji or non-Latin scripts) drops the limit to 70 characters per segment. Longer messages are concatenated with a 6-byte UDH header, reducing each segment to 153 GSM-7 chars or 67 UCS-2 chars."}},{"@type":"Question","name":"How are words counted?","acceptedAnswer":{"@type":"Answer","text":"Words are sequences of non-whitespace characters separated by whitespace (spaces, tabs, newlines). Multiple spaces count as a single separator. Numbers, hyphenated compounds, and contractions count as single words. This matches most word processors. Note that in CJK text (Chinese, Japanese, Korean) there are no whitespace word boundaries, so the word count equates to chunks of text, not linguistic words."}},{"@type":"Question","name":"Why do UTF-8 bytes differ from characters?","acceptedAnswer":{"@type":"Answer","text":"UTF-8 encodes each code point as 1 to 4 bytes. ASCII characters (A–Z, 0–9, basic punctuation) use 1 byte. Most accented Latin, Greek, and Cyrillic glyphs use 2 bytes. Most CJK ideographs use 3 bytes, and supplementary characters like emoji or uncommon CJK extensions use 4 bytes. Database varchar columns, HTTP headers, and JSON payload sizes are measured in bytes, not characters, so the byte count is what affects storage and network cost."}},{"@type":"Question","name":"How accurate are the reading and speaking time estimates?","acceptedAnswer":{"@type":"Answer","text":"Reading time uses 200 words per minute, the midpoint of the commonly cited 175–250 wpm silent-reading range for adults on screens. Speaking time uses 130 wpm, the typical pace for podcasts, audiobook narration and conference talks. Actual numbers vary — dense technical content trends slower, conversational copy trends faster, and non-native readers typically sit at 100–150 wpm. Use the estimate as a starting point, then calibrate with your own test reads."}}]}
+  </script>
+  <style>
+    .cc-input{width:100%;min-height:220px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.5;resize:vertical;box-sizing:border-box}
+    .cc-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .cc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-top:16px}
+    @media(max-width:700px){.cc-stats{grid-template-columns:repeat(2,1fr)}}
+    .cc-stat{padding:12px 14px;background:var(--bg);display:flex;flex-direction:column;gap:4px}
+    .cc-stat .lbl{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+    .cc-stat .val{font-size:20px;font-family:var(--mono);color:var(--text);font-weight:600}
+    .cc-limits{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+    @media(max-width:700px){.cc-limits{grid-template-columns:1fr}}
+    .cc-limit{padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)}
+    .cc-limit-top{display:flex;justify-content:space-between;font-size:11px;font-family:var(--mono);color:var(--text2);margin-bottom:6px}
+    .cc-bar{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden}
+    .cc-bar-fill{height:100%;background:var(--accent);transition:width .2s,background .2s}
+    .cc-bar-fill.warn{background:#fbbf24}
+    .cc-bar-fill.err{background:#f87171}
+    .cc-times{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    @media(max-width:700px){.cc-times{grid-template-columns:1fr}}
+    .cc-time{padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);display:flex;justify-content:space-between;align-items:center}
+    .cc-time .lbl{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+    .cc-time .val{font-size:14px;font-family:var(--mono);color:var(--text);font-weight:600}
+    .cc-freq{margin-top:16px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius)}
+    .cc-freq h3{font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin:0 0 10px}
+    .cc-freq-row{display:flex;justify-content:space-between;padding:4px 0;font-family:var(--mono);font-size:13px;color:var(--text2)}
+    .cc-freq-row .w{color:var(--text)}
+    .cc-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Text</span>
+    <h1>Character / String Length Counter</h1>
+    <p>Character count online, instantly — paste any text and watch live totals for characters (with and without spaces), words, lines, paragraphs, sentences, and raw UTF-8 bytes. Built-in progress bars show how close you are to the Twitter/X limit of 280, the SMS GSM-7 limit of 160, and the 78-character email subject sweet spot. Reading-time (200 wpm) and speaking-time (130 wpm) estimates help size blog posts, scripts, and podcast outlines. The top five most-frequent words, average word length, and longest word help spot filler and repetition. All processing happens in your browser — no upload.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <textarea class="cc-input" id="cc-text" placeholder="Type or paste text here to count characters, words, lines, and more..."></textarea>
+      <div class="cc-actions">
+        <button class="btn btn-ghost" onclick="clearText()">Clear</button>
+        <button class="btn btn-ghost" onclick="copyText()">Copy Text</button>
+        <button class="btn btn-primary" onclick="copyStats()">Copy Stats</button>
+      </div>
+      <div class="cc-stats" id="cc-stats"></div>
+      <div class="cc-limits" id="cc-limits"></div>
+      <div class="cc-times" id="cc-times"></div>
+      <div class="cc-freq">
+        <h3>Top 5 Most Frequent Words</h3>
+        <div id="cc-freq-list"><div class="cc-freq-row"><span class="w">—</span><span>0</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does a tweet count characters or bytes?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Twitter/X counts characters after Unicode <strong>NFC normalization</strong>, with one important twist — each glyph from the Basic Multilingual Plane counts as 1 unit, but characters from certain Chinese, Japanese, Korean and emoji ranges count as <strong>2 units</strong>. The effective limit is <strong>280 units</strong> for standard accounts (Blue subscribers get a higher cap). URLs are always shortened to a fixed <strong>23-character t.co</strong> length regardless of the original URL size, so a 500-character link still burns only 23 units.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What counts as one SMS message?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A single SMS fits <strong>160 characters</strong> using the GSM-7 encoding (7 bits per character). If any character requires the extended GSM-7 table (like the Euro sign, square brackets, or the tilde), it consumes <strong>two slots</strong>. Using UCS-2 encoding (needed for emoji or non-Latin scripts like Arabic, Hebrew, Thai, or CJK) drops the limit to <strong>70 characters per segment</strong>. Longer messages are concatenated with a 6-byte UDH header, reducing each segment to 153 GSM-7 chars or 67 UCS-2 chars.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How are words counted?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Words are sequences of non-whitespace characters separated by whitespace — spaces, tabs, and newlines. Multiple consecutive spaces collapse to a single separator. Numbers, hyphenated compounds ("state-of-the-art"), and contractions ("don't") each count as a single word, matching Microsoft Word and Google Docs behavior. Note that in <strong>CJK</strong> text (Chinese, Japanese, Korean) there are no whitespace word boundaries, so the count approximates chunks of contiguous text rather than linguistic words. For those languages, rely on the character count instead.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why do UTF-8 bytes differ from characters?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">UTF-8 encodes each code point as <strong>1 to 4 bytes</strong>. ASCII characters (A–Z, 0–9, basic punctuation) use 1 byte. Most accented Latin, Greek, and Cyrillic glyphs use 2 bytes. Most CJK ideographs use 3 bytes, and supplementary-plane characters like emoji, uncommon CJK extensions, and mathematical symbols use 4 bytes. Database <code>varchar</code> columns, HTTP headers, JWT tokens, and JSON payload sizes are measured in <em>bytes</em>, not characters — so the byte count is what actually affects storage, bandwidth, and API request limits.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How accurate are the reading and speaking time estimates?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Reading time uses <strong>200 words per minute</strong>, the midpoint of the commonly cited 175–250 wpm silent-reading range for adults on screens. Speaking time uses <strong>130 wpm</strong>, the typical pace for podcasts, audiobook narration, and conference talks — TED talks average around 150 wpm. Real numbers vary: dense technical content trends slower, conversational copy trends faster, and non-native readers typically sit at 100–150 wpm. Use the estimate as a starting point, then calibrate with your own test reads aloud.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my text sent anywhere?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">No. All counting runs in your browser with vanilla JavaScript — no network request, no upload, no log. You can disconnect from the internet after the page loads and everything still works. Your text never leaves the device. This matters for proprietary content, client drafts, unreleased announcements, and anything covered by an NDA. If you need extra assurance, open your browser's network inspector while typing — you will see zero outgoing requests from this tool.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a good email subject-line length?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Most email clients truncate the subject line around <strong>78 characters</strong> on desktop and as few as <strong>30–40 characters</strong> on mobile preview panes. Studies from Mailchimp, Campaign Monitor, and HubSpot consistently find that subjects between <strong>40 and 60 characters</strong> get the highest open rates. Put your hook in the first 30 characters so it survives mobile truncation. Avoid ALL CAPS, excessive punctuation, and spam-trigger words like "free," "guaranteed," and "act now," which can drop delivery into the promotions tab.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="text-diff.html"><div class="related-icon">📝</div><div class="related-card-info"><div class="related-card-name">Text Diff</div><div class="related-card-desc">Compare two text blocks</div></div></a>
+      <a class="related-card" href="case-converter.html"><div class="related-icon">Aa</div><div class="related-card-info"><div class="related-card-name">Case Converter</div><div class="related-card-desc">Upper, lower, camel, snake</div></div></a>
+      <a class="related-card" href="slug-generator.html"><div class="related-icon">🔗</div><div class="related-card-info"><div class="related-card-name">Slug Generator</div><div class="related-card-desc">URL-friendly slug builder</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const ta=document.getElementById('cc-text');
+
+function fmtTime(sec){
+  if(sec<60)return Math.max(0,Math.round(sec))+'s';
+  const m=Math.floor(sec/60);
+  const s=Math.round(sec%60);
+  if(m<60)return m+'m '+s+'s';
+  const h=Math.floor(m/60);
+  return h+'h '+(m%60)+'m';
+}
+
+function analyze(){
+  const text=ta.value;
+  const chars=text.length;
+  const noSpaces=text.replace(/\s/g,'').length;
+  const words=text.trim()?text.trim().split(/\s+/).filter(Boolean):[];
+  const wCount=words.length;
+  const lines=text===''?0:text.split(/\r\n|\r|\n/).length;
+  const paragraphs=text.trim()?text.split(/\n\s*\n+/).filter(p=>p.trim()).length:0;
+  const sentences=text.trim()?(text.match(/[^.!?]+[.!?]+/g)||[text]).filter(s=>s.trim()).length:0;
+  const bytes=new TextEncoder().encode(text).length;
+
+  document.getElementById('cc-stats').innerHTML=[
+    ['Characters',chars.toLocaleString()],
+    ['No Spaces',noSpaces.toLocaleString()],
+    ['Words',wCount.toLocaleString()],
+    ['Lines',lines.toLocaleString()],
+    ['Paragraphs',paragraphs.toLocaleString()],
+    ['Sentences',sentences.toLocaleString()],
+    ['UTF-8 Bytes',bytes.toLocaleString()],
+    ['Avg Word Len',wCount?(words.reduce((a,w)=>a+w.length,0)/wCount).toFixed(1):'0']
+  ].map(([l,v])=>`<div class="cc-stat"><div class="lbl">${l}</div><div class="val">${v}</div></div>`).join('');
+
+  const limits=[
+    ['Tweet (X)',280,chars],
+    ['SMS GSM-7',160,chars],
+    ['Email Subject',78,chars]
+  ];
+  document.getElementById('cc-limits').innerHTML=limits.map(([n,max,cur])=>{
+    const pct=Math.min(100,(cur/max)*100);
+    const cls=cur>max?'err':(cur>max*0.9?'warn':'');
+    return `<div class="cc-limit"><div class="cc-limit-top"><span>${n}</span><span>${cur} / ${max}</span></div><div class="cc-bar"><div class="cc-bar-fill ${cls}" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+
+  const readSec=(wCount/200)*60;
+  const speakSec=(wCount/130)*60;
+  document.getElementById('cc-times').innerHTML=
+    `<div class="cc-time"><span class="lbl">Reading time (200 wpm)</span><span class="val">${fmtTime(readSec)}</span></div>`+
+    `<div class="cc-time"><span class="lbl">Speaking time (130 wpm)</span><span class="val">${fmtTime(speakSec)}</span></div>`;
+
+  // Frequency
+  const freq={};
+  words.forEach(w=>{
+    const k=w.toLowerCase().replace(/[^a-z0-9\u00c0-\uffff'-]/gi,'');
+    if(k.length<2)return;
+    freq[k]=(freq[k]||0)+1;
+  });
+  const top=Object.entries(freq).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const longest=words.reduce((a,w)=>w.length>a.length?w:a,'');
+  let html=top.length?top.map(([w,c])=>`<div class="cc-freq-row"><span class="w">${escapeHtml(w)}</span><span>${c}</span></div>`).join(''):'<div class="cc-freq-row"><span class="w">—</span><span>0</span></div>';
+  if(longest)html+=`<div class="cc-freq-row" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px"><span class="w">Longest word</span><span>${escapeHtml(longest)} (${longest.length})</span></div>`;
+  document.getElementById('cc-freq-list').innerHTML=html;
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg||'Copied!';
+  t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1500);
+}
+
+function clearText(){ta.value='';analyze();ta.focus();}
+function copyText(){navigator.clipboard.writeText(ta.value);showToast('Text copied');}
+function copyStats(){
+  const text=ta.value;
+  const words=text.trim()?text.trim().split(/\s+/).filter(Boolean):[];
+  const stats=[
+    'Characters: '+text.length,
+    'Characters (no spaces): '+text.replace(/\s/g,'').length,
+    'Words: '+words.length,
+    'Lines: '+(text===''?0:text.split(/\r\n|\r|\n/).length),
+    'UTF-8 Bytes: '+new TextEncoder().encode(text).length
+  ].join('\n');
+  navigator.clipboard.writeText(stats);
+  showToast('Stats copied');
+}
+
+ta.addEventListener('input',analyze);
+analyze();
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

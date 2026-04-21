@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Online Network &amp; Time Tools &mdash; IP Lookup, Subnet Calculator, Timestamp Diff | DevUtils</title>
-  <meta name="description" content="Free online network and time tools for developers. IP address lookup and subnet calculator with CIDR notation support, plus timestamp difference calculator for time duration and date comparison. Validate IPv4/IPv6 addresses, calculate subnet ranges, classify private and public IPs, and compute exact time differences between dates — all client-side, no signup.">
+  <title>4 Free Online Network &amp; Time Tools &mdash; IP Lookup, Subnet, DNS Lookup, Relative Time | DevUtils</title>
+  <meta name="description" content="4 free online network and time tools for developers. IP address lookup and subnet calculator with CIDR notation, timestamp difference calculator, DNS lookup (A, AAAA, MX, TXT, CNAME, NS) via DoH, and relative time calculator for human-readable durations like &quot;3 days ago&quot;. All client-side, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://devutilstools.pages.dev/network-tools.html">
   <link rel="stylesheet" href="style.css">
@@ -194,15 +194,15 @@
     <div class="nav-dropdown" id="tools-dropdown">
       <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
       <div class="nav-dropdown-menu">
-        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">10 tools</div></div></a>
-        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">12 tools</div></div></a>
+        <a href="encoding-tools.html"><div class="dd-icon">b64</div><div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">11 tools</div></div></a>
+        <a href="generation-tools.html"><div class="dd-icon">{ }</div><div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">15 tools</div></div></a>
         <a href="security-tools.html"><div class="dd-icon">#</div><div class="dd-info"><div class="dd-name">Security & Hashing</div><div class="dd-count">3 tools</div></div></a>
-        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">6 tools</div></div></a>
-        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">5 tools</div></div></a>
-        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">2 tools</div></div></a>
+        <a href="text-tools.html"><div class="dd-icon">.*</div><div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">9 tools</div></div></a>
+        <a href="devops-tools.html"><div class="dd-icon">JS</div><div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">8 tools</div></div></a>
+        <a href="network-tools.html"><div class="dd-icon">IP</div><div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">4 tools</div></div></a>
         <a href="seo-tools.html"><div class="dd-icon">SEO</div><div class="dd-info"><div class="dd-name">SEO & Meta Tools</div><div class="dd-count">3 tools</div></div></a>
         <div class="nav-dropdown-divider"></div>
-        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">38 tools</div></div></a>
+        <a href="all-tools.html"><div class="dd-icon">All</div><div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">50 tools</div></div></a>
       </div>
     </div>
     <a href="about.html">About</a>
@@ -218,7 +218,7 @@
     <p class="tool-description">Analyze IP addresses, calculate subnets, and compare timestamps with these free browser-based network and time utilities. Look up and validate IPv4 and IPv6 addresses, compute subnet masks and CIDR ranges, classify private versus public IP addresses for network diagnostics, and calculate the exact difference between two timestamps or dates in years, months, days, hours, minutes, and seconds. Whether you&rsquo;re troubleshooting network configurations, planning IP address allocation, or measuring time durations between events &mdash; all tools run entirely client-side with no server calls and no signup required.</p>
   </div>
 
-  <p class="category-label">2 Network &amp; Time Tools</p>
+  <p class="category-label">4 Network &amp; Time Tools</p>
   <div class="tools-grid">
     <a class="tool-tile featured" href="ip-lookup.html">
       <div class="tile-icon">IP</div>
@@ -234,6 +234,22 @@
         <div class="tile-name">Timestamp Diff Calculator</div>
         <div class="tile-desc">Calculate exact difference between two timestamps or dates in multiple units.</div>
       </div>
+    </a>
+    <a class="tool-tile" href="dns-lookup.html" data-name="dns lookup tool a aaaa mx txt ns cname soa caa cloudflare doh">
+      <div class="tile-icon">DNS</div>
+      <div class="tile-body">
+        <div class="tile-name">DNS Lookup Tool</div>
+        <div class="tile-desc">Query A, AAAA, CNAME, MX, TXT, NS records via DoH.</div>
+      </div>
+      <span class="tile-badge">New</span>
+    </a>
+    <a class="tool-tile" href="relative-time.html" data-name="relative time calculator timestamp ago from now human readable duration">
+      <div class="tile-icon">&#x23F2;</div>
+      <div class="tile-body">
+        <div class="tile-name">Relative Time Calculator</div>
+        <div class="tile-desc">Convert timestamps to "3 days ago", "in 2 hours".</div>
+      </div>
+      <span class="tile-badge">New</span>
     </a>
   </div>
 
@@ -276,35 +292,35 @@
       <div class="rc-icon">b64</div>
       <div>
         <div class="rc-name">Encoding &amp; Conversion</div>
-        <div class="rc-count">8 tools</div>
+        <div class="rc-count">11 tools</div>
       </div>
     </a>
     <a class="related-card" href="generation-tools.html">
       <div class="rc-icon">{ }</div>
       <div>
         <div class="rc-name">Generation &amp; Formatting</div>
-        <div class="rc-count">7 tools</div>
+        <div class="rc-count">15 tools</div>
       </div>
     </a>
     <a class="related-card" href="security-tools.html">
       <div class="rc-icon">#</div>
       <div>
         <div class="rc-name">Security &amp; Hashing</div>
-        <div class="rc-count">2 tools</div>
+        <div class="rc-count">3 tools</div>
       </div>
     </a>
     <a class="related-card" href="text-tools.html">
       <div class="rc-icon">.*</div>
       <div>
         <div class="rc-name">Code &amp; Text Tools</div>
-        <div class="rc-count">6 tools</div>
+        <div class="rc-count">9 tools</div>
       </div>
     </a>
     <a class="related-card" href="devops-tools.html">
       <div class="rc-icon">JS</div>
       <div>
         <div class="rc-name">Optimization &amp; DevOps</div>
-        <div class="rc-count">3 tools</div>
+        <div class="rc-count">8 tools</div>
       </div>
     </a>
   </div>

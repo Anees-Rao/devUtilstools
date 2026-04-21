@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text to Markdown Converter — Word & Rich Text Free | DevUtils</title>
+  <meta name="description" content="Convert Word, Google Docs or rich text to Markdown instantly. Paste formatted content, get clean MD with headings, lists, links, tables. Free, no sign-up.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://devutilstools.pages.dev/word-to-markdown.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <meta property="og:title" content="Text to Markdown Converter — Word & Rich Text Free">
+  <meta property="og:description" content="Paste Word or Google Docs content and get clean Markdown with headings, lists, links and tables. Free, client-side.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://devutilstools.pages.dev/word-to-markdown.html">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Word to Markdown Converter","url":"https://devutilstools.pages.dev/word-to-markdown.html","description":"Convert Word, Google Docs, and rich text content to clean Markdown in your browser.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a Word document to Markdown?","acceptedAnswer":{"@type":"Answer","text":"Open the document in Microsoft Word, Google Docs, or any rich text editor, select the content with Ctrl+A (Cmd+A on Mac), copy with Ctrl+C, then paste into the rich-text panel on this page. The browser receives the formatting along with the text. Click Convert and the tool walks the HTML DOM to produce clean Markdown with headings, bold/italic, links, lists, and tables preserved."}},{"@type":"Question","name":"Does this tool upload my document to a server?","acceptedAnswer":{"@type":"Answer","text":"No. The conversion happens entirely in your browser using vanilla JavaScript. Your content never leaves your device, which makes the tool safe for internal docs, NDAs, and pre-publication drafts. You can verify this by opening DevTools Network tab — you will see zero requests during conversion."}},{"@type":"Question","name":"What Markdown flavor does the output use?","acceptedAnswer":{"@type":"Answer","text":"The output is CommonMark-compatible with GitHub Flavored Markdown extensions (tables, strikethrough, fenced code blocks). That means it renders correctly on GitHub, GitLab, Obsidian, Notion imports, most static site generators (Hugo, Jekyll, Eleventy, Astro), and every major documentation platform."}},{"@type":"Question","name":"Why do headings sometimes come out wrong?","acceptedAnswer":{"@type":"Answer","text":"Word and Google Docs often style visual headings with font-size changes instead of real heading semantics. If a writer manually made text large and bold rather than applying Heading 1 through Heading 6 styles, the browser sees only bold, not a heading. Apply proper heading styles in the source document for best results, or fix the output after conversion."}},{"@type":"Question","name":"Can I convert tables and images too?","acceptedAnswer":{"@type":"Answer","text":"Yes. HTML tables are converted to GitHub-flavored Markdown pipe tables with header rows and alignment. Images become Markdown image references with their alt text and src URL preserved. If the image was embedded as a base64 data URI (common when copying from Google Docs), the data URI is kept intact so the Markdown continues to work standalone."}}]}
+  </script>
+  <style>
+    .wm-mode{display:flex;gap:6px;margin-bottom:10px}
+    .wm-mode button{padding:6px 14px;font-size:12px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text2);cursor:pointer;transition:all .2s}
+    .wm-mode button.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+    .wm-mode button:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+    .wm-input-area{min-height:260px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--sans,system-ui);font-size:14px;line-height:1.55;overflow:auto;outline:none}
+    .wm-input-area:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .wm-input-area[contenteditable=true]:empty::before{content:attr(data-placeholder);color:var(--text3);pointer-events:none}
+    .wm-input-html{width:100%;min-height:260px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box;display:none}
+    .wm-input-html:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px rgba(0,208,132,.08)}
+    .wm-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .wm-actions button{padding:10px 18px;font-size:13px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);cursor:pointer;transition:all .2s}
+    .wm-actions button:hover{border-color:var(--accent);color:var(--accent)}
+    .wm-actions button.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+    .wm-actions button.primary:hover{opacity:.9;color:#000}
+    .wm-out-head{display:flex;justify-content:space-between;align-items:center;margin:16px 0 6px}
+    .wm-copy{padding:4px 10px;font-size:11px;font-family:var(--mono);background:var(--bg4);border:1px solid var(--border);border-radius:4px;color:var(--text2);cursor:pointer}
+    .wm-copy:hover{border-color:var(--accent);color:var(--accent)}
+    .wm-out{width:100%;min-height:240px;padding:14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical;box-sizing:border-box}
+    .wm-label{display:block;font-size:11px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .wm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-top:16px}
+    .wm-stat{padding:12px 14px;background:var(--bg);text-align:center}
+    .wm-stat-label{font-size:10px;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .wm-stat-val{font-family:var(--mono);font-size:15px;color:var(--text);font-weight:500}
+    @media(max-width:600px){.wm-stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
+  <div class="nav-links">
+    <div class="nav-dropdown" id="tools-dropdown">
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="nav-dropdown-menu">
+        <a href="encoding-tools.html">
+          <div class="dd-icon">b64</div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
+        </a>
+        <a href="generation-tools.html">
+          <div class="dd-icon">{ }</div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
+        </a>
+        <a href="security-tools.html">
+          <div class="dd-icon">#</div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
+        </a>
+        <a href="text-tools.html">
+          <div class="dd-icon">.*</div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
+        </a>
+        <a href="devops-tools.html">
+          <div class="dd-icon">JS</div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
+        </a>
+        <a href="network-tools.html">
+          <div class="dd-icon">IP</div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
+        </a>
+        <a href="seo-tools.html">
+          <div class="dd-icon">SEO</div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
+        </a>
+        <div class="nav-dropdown-divider"></div>
+        <a class="dd-all" href="all-tools.html">
+          <div class="dd-icon">All</div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
+        </a>
+      </div>
+    </div>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+</nav>
+<div class="wrapper">
+  <section class="tool-header">
+    <span class="tool-badge">Markdown</span>
+    <h1>Word to Markdown Converter</h1>
+    <p>Need a fast text to markdown converter? Paste formatted content directly from Microsoft Word, Google Docs, Notion, or any rich-text source and this tool produces clean Markdown with headings (H1–H6), bold, italic, strikethrough, links, images, bullet and numbered lists, blockquotes, inline and fenced code, horizontal rules, and GitHub-flavored tables. If you already have HTML source, switch to the HTML tab and paste the raw markup instead. Everything runs locally in your browser — your draft never touches a server, which matters for NDAs, internal docs, and early-stage writing. Live character, line, and heading counts help you verify the output at a glance.</p>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+  </section>
+  <div class="tool-card">
+    <div class="card-dots"><span></span><span></span><span></span></div>
+    <div class="tool-body">
+      <div class="wm-mode">
+        <button id="wm-tab-rich" class="active" onclick="switchMode('rich')">Paste Rich Text</button>
+        <button id="wm-tab-html" onclick="switchMode('html')">Paste HTML</button>
+      </div>
+      <label class="wm-label" id="wm-label">Paste formatted content (Ctrl+V)</label>
+      <div id="wm-rich" class="wm-input-area" contenteditable="true" data-placeholder="Paste content from Word, Google Docs, Notion, or any rich-text editor here..."></div>
+      <textarea id="wm-html" class="wm-input-html" placeholder="<h1>Paste raw HTML here</h1>..." spellcheck="false"></textarea>
+      <div class="wm-actions">
+        <button class="primary" onclick="doConvert()">Convert to Markdown</button>
+        <button onclick="loadSample()">Sample</button>
+        <button onclick="clearAll()">Clear</button>
+      </div>
+      <div class="wm-out-head">
+        <label class="wm-label" style="margin:0">Markdown Output</label>
+        <button class="wm-copy" onclick="copyOut()">Copy</button>
+      </div>
+      <textarea id="wm-out" class="wm-out" readonly spellcheck="false" placeholder="Converted Markdown appears here..."></textarea>
+      <div class="wm-stats">
+        <div class="wm-stat"><div class="wm-stat-label">Characters</div><div class="wm-stat-val" id="wm-chars">0</div></div>
+        <div class="wm-stat"><div class="wm-stat-label">Lines</div><div class="wm-stat-val" id="wm-lines">0</div></div>
+        <div class="wm-stat"><div class="wm-stat-label">Headings</div><div class="wm-stat-val" id="wm-heads">0</div></div>
+      </div>
+    </div>
+  </div>
+  <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I convert a Word document to Markdown?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Open the document in Microsoft Word, Google Docs, or any rich-text editor, select all content with <code>Ctrl+A</code> (<code>Cmd+A</code> on Mac), copy with <code>Ctrl+C</code>, then paste into the rich-text panel above. The browser receives the formatting along with the text. Click <strong>Convert to Markdown</strong> and the tool walks the HTML DOM to produce clean Markdown with headings, bold/italic, links, lists, and tables preserved. No file upload needed.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Does this tool upload my document to a server?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">No. The conversion happens entirely in your browser using vanilla JavaScript. Your content never leaves your device, which makes the tool safe for internal docs, NDAs, client briefs, and pre-publication drafts. You can verify this yourself by opening DevTools, switching to the Network tab, and running a conversion — you'll see zero outbound requests. Works offline too once the page is loaded.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What Markdown flavor does the output use?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The output is CommonMark-compatible with GitHub Flavored Markdown extensions (tables, strikethrough, fenced code blocks). That means it renders correctly on GitHub, GitLab, Bitbucket, Obsidian, Notion imports, most static site generators (Hugo, Jekyll, Eleventy, Astro, Next.js MDX), and virtually every major documentation platform including Docusaurus, MkDocs, and VuePress.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Why do some headings come out wrong?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Word and Google Docs often style visual headings with font-size changes instead of real heading semantics. If a writer manually made text large and bold rather than applying the <strong>Heading 1</strong> through <strong>Heading 6</strong> paragraph styles, the browser sees only bold text, not a heading. Apply proper heading styles in the source document for best results, or fix the output after conversion by adding <code>#</code> prefixes manually.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I convert tables and images too?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. HTML tables are converted to GitHub-flavored Markdown pipe tables with header rows. Images become Markdown image references with their alt text and src URL preserved. If the image was embedded as a base64 data URI (common when copying from Google Docs), the data URI is kept intact so the Markdown continues to work standalone. Note that images copied from some sources may have blob: URLs that only exist in the original browser session.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What about footnotes, math, and custom formatting?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Core CommonMark and GitHub Flavored Markdown features are supported. Footnotes, LaTeX math (<code>$...$</code>), and Mermaid diagrams are not emitted automatically because they have no direct HTML equivalent — you'll need to add those manually after conversion. For most documentation, blog posts, and long-form writing, the supported subset covers 95% of what you actually need.</div></div>
+  </section>
+
+  <section class="related-section">
+    <h2>Related Tools</h2>
+    <div class="related-grid">
+      <a class="related-card" href="markdown-preview.html"><div class="related-icon">MD</div><div class="related-card-info"><div class="related-card-name">Markdown Preview</div><div class="related-card-desc">Live MD renderer</div></div></a>
+      <a class="related-card" href="html-entity.html"><div class="related-icon">&amp;</div><div class="related-card-info"><div class="related-card-name">HTML Entity</div><div class="related-card-desc">Encode/decode entities</div></div></a>
+      <a class="related-card" href="url-encoder.html"><div class="related-icon">%20</div><div class="related-card-info"><div class="related-card-name">URL Encoder</div><div class="related-card-desc">Encode URLs & params</div></div></a>
+    </div>
+  </section>
+</div>
+<footer>
+  <div>&copy; 2025 DevUtils. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="about.html">About</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></div>
+</footer>
+<script>
+const SAMPLE_HTML=`<h1>Project Brief</h1>
+<p>This is a <strong>sample document</strong> showing the conversion from <em>rich text</em> to Markdown. Visit <a href="https://example.com">example.com</a> for more.</p>
+<h2>Goals</h2>
+<ul>
+  <li>Ship a working prototype</li>
+  <li>Collect user feedback</li>
+  <li>Iterate <s>quickly</s> carefully</li>
+</ul>
+<h2>Timeline</h2>
+<ol>
+  <li>Week 1: research</li>
+  <li>Week 2: build</li>
+  <li>Week 3: launch</li>
+</ol>
+<blockquote>Good design is as little design as possible. — Dieter Rams</blockquote>
+<h3>Team table</h3>
+<table>
+  <thead><tr><th>Name</th><th>Role</th></tr></thead>
+  <tbody>
+    <tr><td>Alice</td><td>PM</td></tr>
+    <tr><td>Bob</td><td>Engineer</td></tr>
+  </tbody>
+</table>
+<p>Inline <code>example()</code> code. Block below:</p>
+<pre><code>function greet() {
+  return "hello";
+}</code></pre>
+<hr>
+<p>Final note.</p>`;
+
+function switchMode(m){
+  document.getElementById('wm-tab-rich').classList.toggle('active',m==='rich');
+  document.getElementById('wm-tab-html').classList.toggle('active',m==='html');
+  document.getElementById('wm-rich').style.display=m==='rich'?'block':'none';
+  document.getElementById('wm-html').style.display=m==='html'?'block':'none';
+  document.getElementById('wm-label').textContent=m==='rich'?'Paste formatted content (Ctrl+V)':'Paste raw HTML source';
+}
+
+// HTML -> Markdown converter (DOM walker)
+function htmlToMarkdown(rootEl){
+  const lines=[];
+  let listStack=[]; // {type:'ul'|'ol',index:number}
+
+  function esc(s){return s.replace(/([\\`*_{}\[\]()#+\-.!>])/g,'\\$1')}
+  function textOf(node){
+    let out='';
+    node.childNodes.forEach(c=>{
+      if(c.nodeType===3)out+=c.textContent;
+      else if(c.nodeType===1)out+=inline(c);
+    });
+    return out;
+  }
+  function inline(el){
+    const tag=el.tagName.toLowerCase();
+    const inner=textOf(el);
+    switch(tag){
+      case 'strong':case 'b':return inner.trim()?'**'+inner+'**':inner;
+      case 'em':case 'i':return inner.trim()?'*'+inner+'*':inner;
+      case 's':case 'strike':case 'del':return inner.trim()?'~~'+inner+'~~':inner;
+      case 'code':return '`'+el.textContent+'`';
+      case 'a':{
+        const href=el.getAttribute('href')||'';
+        return '['+inner+']('+href+')';
+      }
+      case 'img':{
+        const alt=el.getAttribute('alt')||'';
+        const src=el.getAttribute('src')||'';
+        return '!['+alt+']('+src+')';
+      }
+      case 'br':return '  \n';
+      case 'span':case 'font':case 'u':return inner;
+      default:return inner;
+    }
+  }
+  function block(el){
+    const tag=el.tagName.toLowerCase();
+    if(/^h[1-6]$/.test(tag)){
+      const level=+tag[1];
+      lines.push('#'.repeat(level)+' '+textOf(el).trim());
+      lines.push('');
+      return;
+    }
+    if(tag==='p'){
+      const t=textOf(el).trim();
+      if(t){lines.push(t);lines.push('')}
+      return;
+    }
+    if(tag==='hr'){lines.push('---');lines.push('');return}
+    if(tag==='blockquote'){
+      const sub=[];
+      el.childNodes.forEach(c=>{
+        if(c.nodeType===1){
+          const saved=lines.length;
+          block(c);
+          while(lines.length>saved)sub.push(lines.pop());
+        } else if(c.nodeType===3){
+          const t=c.textContent.trim();
+          if(t)sub.push(t);
+        }
+      });
+      sub.reverse().forEach(s=>{
+        s.split('\n').forEach(ln=>lines.push('> '+ln));
+      });
+      lines.push('');
+      return;
+    }
+    if(tag==='pre'){
+      const code=el.querySelector('code');
+      const txt=(code?code.textContent:el.textContent).replace(/\n$/,'');
+      lines.push('```');
+      txt.split('\n').forEach(l=>lines.push(l));
+      lines.push('```');
+      lines.push('');
+      return;
+    }
+    if(tag==='ul'||tag==='ol'){
+      listStack.push({type:tag,index:1});
+      el.childNodes.forEach(c=>{
+        if(c.nodeType===1 && c.tagName.toLowerCase()==='li')liItem(c);
+      });
+      listStack.pop();
+      if(listStack.length===0)lines.push('');
+      return;
+    }
+    if(tag==='table'){
+      tableBlock(el);
+      return;
+    }
+    // div or unknown wrapper — recurse
+    if(tag==='div'||tag==='section'||tag==='article'||tag==='main'||tag==='header'||tag==='footer'){
+      el.childNodes.forEach(c=>{
+        if(c.nodeType===1)block(c);
+        else if(c.nodeType===3){
+          const t=c.textContent.trim();
+          if(t){lines.push(t);lines.push('')}
+        }
+      });
+      return;
+    }
+    // inline at block level
+    const t=inline(el).trim();
+    if(t){lines.push(t);lines.push('')}
+  }
+  function liItem(li){
+    const cur=listStack[listStack.length-1];
+    const indent='  '.repeat(listStack.length-1);
+    const bullet=cur.type==='ol'?(cur.index+'. '):'- ';
+    cur.index++;
+    // Split children into inline vs nested list
+    let textParts='';
+    const nested=[];
+    li.childNodes.forEach(c=>{
+      if(c.nodeType===1 && (c.tagName.toLowerCase()==='ul'||c.tagName.toLowerCase()==='ol')){
+        nested.push(c);
+      } else if(c.nodeType===1 && c.tagName.toLowerCase()==='p'){
+        textParts+=textOf(c);
+      } else if(c.nodeType===1){
+        textParts+=inline(c);
+      } else if(c.nodeType===3){
+        textParts+=c.textContent;
+      }
+    });
+    lines.push(indent+bullet+textParts.trim().replace(/\s+/g,' '));
+    nested.forEach(n=>{
+      listStack.push({type:n.tagName.toLowerCase(),index:1});
+      n.childNodes.forEach(c=>{
+        if(c.nodeType===1 && c.tagName.toLowerCase()==='li')liItem(c);
+      });
+      listStack.pop();
+    });
+  }
+  function tableBlock(tbl){
+    const rows=[];
+    tbl.querySelectorAll('tr').forEach(tr=>{
+      const cells=[];
+      tr.querySelectorAll('th,td').forEach(c=>cells.push(textOf(c).trim().replace(/\|/g,'\\|').replace(/\n/g,' ')));
+      if(cells.length)rows.push(cells);
+    });
+    if(!rows.length)return;
+    const headerRow=tbl.querySelector('thead tr')?
+      Array.from(tbl.querySelector('thead tr').querySelectorAll('th,td')).map(c=>textOf(c).trim().replace(/\|/g,'\\|')):
+      rows[0];
+    const bodyRows=tbl.querySelector('thead')?rows.slice(tbl.querySelectorAll('thead tr').length):rows.slice(1);
+    const colCount=headerRow.length;
+    lines.push('| '+headerRow.join(' | ')+' |');
+    lines.push('| '+Array(colCount).fill('---').join(' | ')+' |');
+    bodyRows.forEach(r=>{
+      while(r.length<colCount)r.push('');
+      lines.push('| '+r.join(' | ')+' |');
+    });
+    lines.push('');
+  }
+
+  // Walk top-level children
+  rootEl.childNodes.forEach(c=>{
+    if(c.nodeType===1)block(c);
+    else if(c.nodeType===3){
+      const t=c.textContent.trim();
+      if(t){lines.push(t);lines.push('')}
+    }
+  });
+  // Collapse consecutive blank lines
+  const out=[];
+  let blank=false;
+  lines.forEach(l=>{
+    if(l===''){if(!blank)out.push('');blank=true}
+    else{out.push(l);blank=false}
+  });
+  return out.join('\n').trim()+'\n';
+}
+
+function doConvert(){
+  const richVisible=document.getElementById('wm-rich').style.display!=='none';
+  const container=document.createElement('div');
+  if(richVisible){
+    container.innerHTML=document.getElementById('wm-rich').innerHTML;
+  } else {
+    const raw=document.getElementById('wm-html').value;
+    if(!raw.trim()){toast('Paste some HTML first');return}
+    container.innerHTML=raw;
+  }
+  if(!container.textContent.trim()){toast('Nothing to convert');return}
+  const md=htmlToMarkdown(container);
+  document.getElementById('wm-out').value=md;
+  updateStats(md);
+}
+function updateStats(md){
+  document.getElementById('wm-chars').textContent=md.length.toLocaleString();
+  document.getElementById('wm-lines').textContent=md.split('\n').length.toLocaleString();
+  const headings=(md.match(/^#{1,6}\s/gm)||[]).length;
+  document.getElementById('wm-heads').textContent=headings;
+}
+function loadSample(){
+  switchMode('html');
+  document.getElementById('wm-html').value=SAMPLE_HTML;
+  doConvert();
+}
+function clearAll(){
+  document.getElementById('wm-rich').innerHTML='';
+  document.getElementById('wm-html').value='';
+  document.getElementById('wm-out').value='';
+  document.getElementById('wm-chars').textContent='0';
+  document.getElementById('wm-lines').textContent='0';
+  document.getElementById('wm-heads').textContent='0';
+}
+function copyOut(){
+  const v=document.getElementById('wm-out').value;
+  if(!v){toast('Nothing to copy');return}
+  navigator.clipboard.writeText(v);
+  toast('Copied!');
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',1500);
+}
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+</script>
+</body>
+</html>

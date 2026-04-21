@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DevUtils — Free Online Developer Tools | 38+ Tools for Base64, JSON, SQL, JWT, XML & More</title>
-  <meta name="description" content="Free, fast, privacy-first developer tools. Format SQL, encode Base64, convert YAML to JSON, format XML, test regex, decode JWT, generate gradients, calculate chmod, create meta tags and more — all in your browser, no signup.">
+  <title>DevUtils — 50+ Free Online Developer Tools | JSON, SQL, JWT, Base64, Regex & More</title>
+  <meta name="description" content="50+ free, fast, privacy-first developer tools. Format SQL/JSON/XML, encode Base64, test regex, decode JWT, check WCAG contrast, count AI tokens, lookup DNS, minify HTML/CSS/JS — no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://devutilstools.pages.dev/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -274,40 +274,40 @@
   <a class="nav-logo" href="index.html">DevUtils<span>.com</span></a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools</a>
+      <a href="#" onclick="event.preventDefault();this.parentElement.classList.toggle('open')">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools.html">
           <div class="dd-icon">b64</div>
-          <div class="dd-info"><div class="dd-name">Encoding & Conversion</div><div class="dd-count">10 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
         </a>
         <a href="generation-tools.html">
           <div class="dd-icon">{ }</div>
-          <div class="dd-info"><div class="dd-name">Generation & Formatting</div><div class="dd-count">10 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">15 tools · JSON, SQL, gradients</div></div>
         </a>
         <a href="security-tools.html">
           <div class="dd-icon">#</div>
-          <div class="dd-info"><div class="dd-name">Security & Hashing</div><div class="dd-count">3 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
         </a>
         <a href="text-tools.html">
           <div class="dd-icon">.*</div>
-          <div class="dd-info"><div class="dd-name">Code & Text Tools</div><div class="dd-count">6 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
         </a>
         <a href="devops-tools.html">
           <div class="dd-icon">JS</div>
-          <div class="dd-info"><div class="dd-name">Optimization & DevOps</div><div class="dd-count">4 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">8 tools · Minifiers, cURL, git</div></div>
         </a>
         <a href="network-tools.html">
           <div class="dd-icon">IP</div>
-          <div class="dd-info"><div class="dd-name">Network & Time</div><div class="dd-count">2 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
         </a>
         <a href="seo-tools.html">
           <div class="dd-icon">SEO</div>
-          <div class="dd-info"><div class="dd-name">SEO & Meta Tools</div><div class="dd-count">3 tools</div></div>
+          <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
         </a>
         <div class="nav-dropdown-divider"></div>
-        <a href="all-tools.html">
+        <a class="dd-all" href="all-tools.html">
           <div class="dd-icon">All</div>
-          <div class="dd-info"><div class="dd-name">All Tools</div><div class="dd-count">38 tools</div></div>
+          <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
         </a>
       </div>
     </div>
@@ -323,14 +323,14 @@
     <h1>Developer tools that<br><span>actually work fast</span></h1>
     <p class="hero-sub">Micro-tools for everyday dev tasks. Everything runs in your browser — nothing is sent to a server.</p>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">38</div><div class="stat-label">Tools live</div></div>
+      <div class="stat"><div class="stat-num">50</div><div class="stat-label">Tools live</div></div>
       <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Forever free</div></div>
       <div class="stat"><div class="stat-num">0ms</div><div class="stat-label">Server calls</div></div>
     </div>
   </section>
 
   <div class="search-bar">
-    <input type="text" id="tool-search" placeholder="Search 38 tools — sql, json, yaml, jwt, xml, chmod, gradient, meta..." autocomplete="off">
+    <input type="text" id="tool-search" placeholder="Search 50 tools — sql, json, yaml, jwt, xml, chmod, gradient, meta..." autocomplete="off">
     <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <div class="search-results" id="search-results"></div>
   </div>
@@ -385,15 +385,15 @@
       <div class="cat-icon">b64</div>
       <div class="cat-name">Encoding & Conversion</div>
       <div class="cat-desc">Base64, URL encoding, hex conversion, image encoding, JSON to CSV, YAML to JSON, byte conversion and number base tools.</div>
-      <span class="cat-count">10 tools</span>
-      <div class="cat-tools-preview"><span>Base64</span><span>YAML→JSON</span><span>Bytes</span><span>Hex→RGB</span><span>+6</span></div>
+      <span class="cat-count">11 tools</span>
+      <div class="cat-tools-preview"><span>Base64</span><span>YAML→JSON</span><span>Bytes</span><span>PX→REM</span><span>+7</span></div>
     </a>
     <a class="cat-card" href="generation-tools.html">
       <div class="cat-icon">{ }</div>
       <div class="cat-name">Generation & Formatting</div>
-      <div class="cat-desc">JSON, SQL, XML formatting, UUID, QR codes, CSS gradients, color palettes, meta tags, OG preview and more.</div>
-      <span class="cat-count">10 tools</span>
-      <div class="cat-tools-preview"><span>SQL</span><span>XML</span><span>Gradient</span><span>Meta Tags</span><span>+6</span></div>
+      <div class="cat-desc">JSON/SQL/XML formatting, UUID, QR, CSS gradients & box shadows, WCAG contrast, color palettes, meta tags and more.</div>
+      <span class="cat-count">15 tools</span>
+      <div class="cat-tools-preview"><span>SQL</span><span>XML</span><span>Gradient</span><span>Shadow</span><span>WCAG</span><span>+10</span></div>
     </a>
     <a class="cat-card" href="security-tools.html">
       <div class="cat-icon">#</div>
@@ -406,22 +406,22 @@
       <div class="cat-icon">.*</div>
       <div class="cat-name">Code & Text Tools</div>
       <div class="cat-desc">Regex testing, text comparison, markdown editing, case conversion, string escaping, and regex explanation.</div>
-      <span class="cat-count">6 tools</span>
-      <div class="cat-tools-preview"><span>Regex</span><span>Diff</span><span>Markdown</span><span>Case</span><span>+2</span></div>
+      <span class="cat-count">9 tools</span>
+      <div class="cat-tools-preview"><span>Regex</span><span>Diff</span><span>Markdown</span><span>Case</span><span>Char Count</span><span>AI Tokens</span><span>+3</span></div>
     </a>
     <a class="cat-card" href="devops-tools.html">
       <div class="cat-icon">JS</div>
       <div class="cat-name">Optimization & DevOps</div>
-      <div class="cat-desc">CSS/JS minification, code beautification, cron parsing, and chmod permission calculation.</div>
-      <span class="cat-count">4 tools</span>
-      <div class="cat-tools-preview"><span>CSS Minify</span><span>JS Minify</span><span>Cron</span><span>Chmod</span></div>
+      <div class="cat-desc">HTML/CSS/JS minification, cron parsing, chmod, HTTP request builder, git commands reference.</div>
+      <span class="cat-count">8 tools</span>
+      <div class="cat-tools-preview"><span>HTML Minify</span><span>CSS Minify</span><span>JS Minify</span><span>Cron</span><span>Chmod</span><span>cURL Gen</span><span>Git</span></div>
     </a>
     <a class="cat-card" href="network-tools.html">
       <div class="cat-icon">IP</div>
       <div class="cat-name">Network & Time</div>
-      <div class="cat-desc">IP address validation, subnet calculation, timestamp conversion, and time difference calculation.</div>
-      <span class="cat-count">2 tools</span>
-      <div class="cat-tools-preview"><span>IP Lookup</span><span>Timestamp Diff</span></div>
+      <div class="cat-desc">IP lookup, subnet calculator, DNS lookup (DoH), timestamp converter, relative time calculator.</div>
+      <span class="cat-count">4 tools</span>
+      <div class="cat-tools-preview"><span>IP Lookup</span><span>DNS</span><span>Timestamp Diff</span><span>Relative Time</span></div>
     </a>
   </div>
 
@@ -488,7 +488,19 @@ const allTools=[
   {name:"Byte Converter",href:"byte-converter.html",icon:"B",keys:"byte converter kb mb gb tb data size unit binary decimal",cat:"Encoding"},
   {name:"CSS Gradient Generator",href:"css-gradient.html",icon:"🌈",keys:"css gradient generator linear radial conic color stops background",cat:"Generation"},
   {name:"Open Graph Preview",href:"og-preview.html",icon:"OG",keys:"open graph preview og tag tester social media facebook twitter linkedin",cat:"Generation"},
-  {name:"XML Formatter & Validator",href:"xml-formatter.html",icon:"</>",keys:"xml formatter validator beautify pretty print minify soap rss",cat:"Generation"}
+  {name:"XML Formatter & Validator",href:"xml-formatter.html",icon:"</>",keys:"xml formatter validator beautify pretty print minify soap rss",cat:"Generation"},
+  {name:"CSS Box Shadow Generator",href:"css-box-shadow.html",icon:"▣",keys:"css box shadow generator visual sliders material soft neon inset",cat:"Generation"},
+  {name:"WCAG Contrast Checker",href:"wcag-contrast.html",icon:"Aa",keys:"wcag contrast checker accessibility aa aaa ratio color blind a11y",cat:"Generation"},
+  {name:"Color Name from Hex",href:"color-name.html",icon:"🎨",keys:"color name from hex nearest css named color tomato dodgerblue 147",cat:"Generation"},
+  {name:"Character Count / String Length",href:"char-counter.html",icon:"Σ",keys:"character count online string length counter word line paragraph bytes tweet sms",cat:"Text"},
+  {name:"Word / Rich Text to Markdown",href:"word-to-markdown.html",icon:"MD",keys:"word to markdown converter text rich google docs paste html gfm",cat:"Text"},
+  {name:"AI Token Counter (GPT / Claude)",href:"ai-token-counter.html",icon:"AI",keys:"ai token counter gpt claude cost estimator openai anthropic pricing",cat:"Text"},
+  {name:"HTML Minifier & Beautifier",href:"html-minifier.html",icon:"<>",keys:"html minifier online beautifier compress optimize whitespace comments",cat:"DevOps"},
+  {name:"Git Commands Cheatsheet",href:"git-cheatsheet.html",icon:"⎇",keys:"git commands cheatsheet reference branch merge rebase stash tag clone",cat:"DevOps"},
+  {name:"HTTP Request Builder (curl)",href:"http-request-builder.html",icon:"cURL",keys:"http request builder curl fetch axios python requests node generator",cat:"DevOps"},
+  {name:"Pixel to REM Converter",href:"px-to-rem.html",icon:"rem",keys:"px to rem converter pixel em css responsive font size base",cat:"Encoding"},
+  {name:"DNS Lookup Tool",href:"dns-lookup.html",icon:"DNS",keys:"dns lookup tool a aaaa mx txt ns cname soa caa cloudflare doh",cat:"Network"},
+  {name:"Relative Time Calculator",href:"relative-time.html",icon:"⏲",keys:"relative time calculator timestamp ago from now human readable",cat:"Network"}
 ];
 
 const searchInput=document.getElementById('tool-search');
