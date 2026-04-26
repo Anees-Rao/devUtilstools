@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects
+# Forces canonical host (non-www) — fixes the duplicate-content split flagged by the SEO audit.
+# Format: <source>  <destination>  <status>
+
+https://www.freedevtool.org/*    https://freedevtool.org/:splat    301!
+http://freedevtool.org/*         https://freedevtool.org/:splat    301!
+http://www.freedevtool.org/*     https://freedevtool.org/:splat    301!
