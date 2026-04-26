@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SQL Formatter & Beautifier Online — Format SQL Queries Free | FreeDevTool</title>
-  <meta name="description" content="Format, beautify and minify SQL queries online. Support for MySQL, PostgreSQL, SQL Server, Oracle syntax. Indent, uppercase keywords, validate SQL statements. Free, no signup, runs in browser.">
+  <meta name="description" content="Format, beautify and minify SQL queries. Support for MySQL, PostgreSQL, SQL Server, Oracle syntax. Indent, uppercase keywords, validate SQL statements. Free, no signup, runs in browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/sql-formatter.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="SQL Formatter & Beautifier Online — Format SQL Queries Free">
@@ -36,6 +46,32 @@
     .chk-label input{accent-color:var(--accent)}
     @media(max-width:700px){.sql-grid{grid-template-columns:1fr}}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "SQL Formatter & Beautifier",
+        "item": "https://freedevtool.org/sql-formatter.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <nav>
@@ -89,6 +125,29 @@
   </div>
 
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the SQL formatter</h2>
+    <p>Format SQL queries for readability — proper indentation, keyword casing, line breaks at clause boundaries. Supports MySQL, PostgreSQL, SQL Server, and Oracle dialect quirks. Runs locally; queries (including ones with sensitive data) never reach a server.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Paste your query. Multi-statement scripts work too — separate with <code>;</code>.</li>
+      <li><strong>2.</strong> Pick the SQL dialect from the dropdown. Affects keyword recognition (<code>LIMIT</code> vs <code>TOP</code>), function names, and quoting style.</li>
+      <li><strong>3.</strong> Choose case style: UPPERCASE (default — keywords stand out in code review), lowercase (a more modern style), or preserve as-typed.</li>
+      <li><strong>4.</strong> Tune indentation (2/4 spaces or tabs) to match your team's style guide.</li>
+      <li><strong>5.</strong> Click "Format" — output appears below. Click "Minify" for the inverse, useful when embedding SQL into a string literal in code.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Formatting auto-generated SQL from ORMs.</strong> The output is rarely human-edited — formatting it just adds noise to PR diffs. Format only the queries you actually maintain.</li>
+      <li><strong>Mixing <code>JOIN</code> styles.</strong> Pick implicit (<code>FROM a, b WHERE</code>) or explicit (<code>FROM a JOIN b ON</code>) and stick to it. Mixing is a code-smell flagged by senior devs in review.</li>
+      <li><strong>Trusting <code>SELECT *</code>.</strong> Breaks when columns are added, slows queries by fetching unused data, and obscures what you actually depend on. Always enumerate columns in production code.</li>
+      <li><strong>Forgetting <code>WHERE</code> on <code>UPDATE</code>/<code>DELETE</code>.</strong> Without it, every row is touched. The classic outage. Many tools (DBeaver, MySQL Workbench) warn — don't dismiss.</li>
+      <li><strong>Using string interpolation instead of parameters.</strong> <code>WHERE id = ${userId}</code> is SQL injection waiting to happen. Always use parameterized queries (<code>?</code> or <code>  <section class="faq-section"></code>).</li>
+      <li><strong>Casing inconsistencies.</strong> Postgres folds unquoted identifiers to lowercase; MySQL is case-insensitive on Windows but case-sensitive on Linux. Quote identifiers if you care about case.</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>11 Free Online Encoding &amp; Conversion Tools &mdash; Base64, URL, Hex, px to rem | FreeDevTool</title>
-  <meta name="description" content="11 free online encoding and data conversion tools for developers. Base64 encode/decode, URL encoding, hex to RGB, HTML entities, image to Base64, JSON to CSV, number base conversion, and pixel to rem converter. Client-side, no signup.">
+  <meta name="description" content="11 free encoding tools — Base64 encode/decode, URL encoding, hex to RGB, HTML entities, image to Base64, JSON to CSV, number base, px to rem. Client-side.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/encoding-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Encoding &amp; Conversion Tools | FreeDevTool">
   <meta property="og:description" content="Base64, URL encoding, hex to RGB, HTML entities, image to Base64, JSON to CSV, and number base conversion. All client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/encoding-tools">
+  <meta property="og:url" content="https://freedevtool.org/encoding-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Encoding & Conversion",
+        "item": "https://freedevtool.org/encoding-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -300,6 +330,35 @@
       <span class="tile-badge">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which encoding tool should you use?</h2>
+    <p>Each encoding format solves a specific compatibility problem — sending binary through ASCII-only channels, putting special characters in URLs, embedding images without external requests. Picking the wrong format can corrupt data, leak characters, or bloat payloads by 33% unnecessarily. Use this quick guide to match the task to the right tool.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Send binary data through ASCII-only channels</strong> (email attachments, JSON payloads, JWT tokens) — use <a href="base64-encoder.html">Base64 Encoder</a>.</li>
+      <li><strong>Put text in a URL or query parameter safely</strong> (search params, API endpoints, redirects) — use <a href="url-encoder.html">URL Encoder</a>. URL encoding ≠ Base64.</li>
+      <li><strong>Embed an image directly in HTML/CSS</strong> (avoiding extra HTTP requests for tiny icons) — use <a href="base64-image.html">Image to Base64</a>. Best for sub-10KB assets only.</li>
+      <li><strong>Display HTML special characters as text</strong> (preventing XSS, showing &lt;code&gt; in posts) — use <a href="html-entity.html">HTML Entity Encoder</a>.</li>
+      <li><strong>Convert hex colors to RGB/HSL for JS or CSS variables</strong> — use <a href="hex-to-rgb.html">Hex to RGB Converter</a>.</li>
+      <li><strong>Export JSON API responses to a spreadsheet</strong> — use <a href="json-to-csv.html">JSON to CSV Converter</a>.</li>
+      <li><strong>Convert YAML configs to JSON</strong> (or vice versa, e.g. Docker Compose ↔ k8s manifests) — use <a href="yaml-to-json.html">YAML to JSON Converter</a>.</li>
+      <li><strong>Switch between binary, decimal, hex, octal</strong> (bitmask debugging, color math) — use <a href="number-base.html">Number Base Converter</a>.</li>
+      <li><strong>Convert pixel values to rem for responsive design</strong> — use <a href="px-to-rem.html">Pixel to REM Converter</a>.</li>
+      <li><strong>Compare data sizes across binary (KiB) vs decimal (KB) units</strong> — use <a href="byte-converter.html">Byte Converter</a>.</li>
+      <li><strong>Convert UNIX timestamps to readable dates</strong> — use <a href="unix-timestamp-converter.html">UNIX Timestamp Converter</a>.</li>
+    </ul>
+
+    <h3>Common encoding mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Encoding twice.</strong> Base64-encoding a value that's already Base64 produces gibberish on decode. Check your data layer before re-applying.</li>
+      <li><strong>Confusing URL encoding with Base64.</strong> Spaces become <code>%20</code> in URLs, not <code>IA==</code>. Use the right tool — they're not interchangeable.</li>
+      <li><strong>Embedding huge images as Base64.</strong> Data URIs add 33% overhead. For anything over 10KB, a regular <code>&lt;img src&gt;</code> request is faster.</li>
+      <li><strong>Trusting Base64 as encryption.</strong> Base64 is encoding, not encryption — anyone can decode it. Use proper crypto for secrets.</li>
+      <li><strong>Mixing up KB (1000) vs KiB (1024).</strong> Storage vendors use KB; OSes show KiB. A "500 GB" drive is ~465 GiB to your filesystem.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

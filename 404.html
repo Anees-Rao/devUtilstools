@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — FreeDevTool</title>
+  <meta name="description" content="The page you were looking for doesn't exist. Search 50 free developer tools or jump to popular ones — JSON formatter, regex tester, JWT decoder.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:title" content="Page Not Found — FreeDevTool">
+  <meta property="og:description" content="That page doesn't exist. Search 50 free developer tools or jump to a popular one.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+
+  <style>
+    .err-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+      animation: fadeInUp .6s var(--ease-out);
+    }
+    .err-code {
+      font-family: var(--mono);
+      font-size: clamp(96px, 18vw, 156px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -6px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 30px rgba(0,208,132,.15));
+    }
+    .err-title {
+      font-size: clamp(22px, 3.5vw, 30px);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .err-sub {
+      color: var(--text2);
+      font-size: 15px;
+      max-width: 460px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .err-search {
+      position: relative;
+      margin-bottom: 36px;
+      max-width: 520px;
+      margin-left: auto; margin-right: auto;
+    }
+    .err-search input {
+      width: 100%; padding: 14px 44px 14px 18px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); color: var(--text);
+      font-size: 14px; font-family: var(--sans); outline: none;
+      transition: border-color .25s var(--ease-out), box-shadow .25s var(--ease-out), background .25s;
+    }
+    .err-search input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(0,208,132,.08);
+      background: var(--bg);
+    }
+    .err-search input::placeholder { color: var(--text3); }
+    .err-search .search-icon {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--text3); pointer-events: none;
+    }
+    .err-results {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 6px;
+      max-height: 320px; overflow-y: auto;
+      box-shadow: 0 12px 40px rgba(0,0,0,.4);
+      z-index: 50; display: none; text-align: left;
+    }
+    .err-results.visible { display: block; }
+    .err-results a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: var(--radius);
+      color: var(--text); text-decoration: none; font-size: 13px;
+      transition: background .15s, transform .1s;
+    }
+    .err-results a:hover { background: var(--accent-dim); transform: translateX(2px); }
+    .err-results .sr-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: var(--bg4); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .err-results .sr-name { font-weight: 500; }
+    .err-results .sr-desc { font-size: 11px; color: var(--text3); margin-top: 2px; }
+    .err-results .sr-empty { padding: 14px; color: var(--text3); font-size: 13px; text-align: center; }
+
+    .err-popular {
+      margin-top: 24px;
+      text-align: left;
+    }
+    .err-popular h2 {
+      font-size: 12px; font-weight: 600;
+      color: var(--text3); text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 14px; padding-left: 2px;
+    }
+    .err-popular h2::before {
+      content: ''; display: inline-block;
+      width: 3px; height: 11px; background: var(--accent);
+      border-radius: 2px; margin-right: 8px; vertical-align: middle;
+    }
+    .err-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .err-tile {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 12px 14px;
+      text-decoration: none; color: var(--text);
+      transition: border-color .25s, transform .25s, background .25s;
+    }
+    .err-tile:hover {
+      border-color: rgba(0,208,132,.45);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(0,208,132,.05) 100%);
+    }
+    .err-tile .tile-icon {
+      width: 32px; height: 32px; border-radius: 6px;
+      background: var(--bg4); color: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 12px; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .err-tile .tile-name { font-size: 13px; font-weight: 500; }
+
+    .err-actions {
+      display: flex; gap: 12px; justify-content: center;
+      margin-top: 32px; flex-wrap: wrap;
+    }
+    .err-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 13px; font-family: var(--sans);
+      text-decoration: none;
+      transition: color .2s, border-color .2s, background .2s, transform .15s;
+    }
+    .err-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent2);
+      background: var(--accent-dim);
+      transform: translateY(-1px);
+    }
+    .err-btn.primary {
+      background: var(--accent-dim);
+      border-color: rgba(0,208,132,.3);
+      color: var(--accent);
+    }
+    .err-btn.primary:hover {
+      background: rgba(0,208,132,.15);
+      border-color: var(--accent2);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
+  <div class="nav-links">
+    <a href="/all-tools.html">All Tools</a>
+    <a href="/about.html">About</a>
+    <a href="/privacy.html">Privacy</a>
+  </div>
+</nav>
+
+<div class="err-wrap">
+  <div class="err-code">404</div>
+  <h1 class="err-title">Page not found</h1>
+  <p class="err-sub">The URL you tried doesn't match any page on FreeDevTool. It may have moved, or the link could be a typo. Search below or pick a popular tool.</p>
+
+  <div class="err-search">
+    <input type="text" id="err-search-input" placeholder="Search 50 tools — json, base64, regex, jwt, hash, uuid…" autocomplete="off">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <div class="err-results" id="err-search-results"></div>
+  </div>
+
+  <div class="err-popular">
+    <h2>Popular Tools</h2>
+    <div class="err-grid">
+      <a class="err-tile" href="/json-formatter.html"><div class="tile-icon">{ }</div><div class="tile-name">JSON Formatter</div></a>
+      <a class="err-tile" href="/base64-encoder.html"><div class="tile-icon">b64</div><div class="tile-name">Base64 Encoder</div></a>
+      <a class="err-tile" href="/regex-tester.html"><div class="tile-icon">.*</div><div class="tile-name">Regex Tester</div></a>
+      <a class="err-tile" href="/jwt-decoder.html"><div class="tile-icon">jwt</div><div class="tile-name">JWT Decoder</div></a>
+      <a class="err-tile" href="/uuid-generator.html"><div class="tile-icon">uid</div><div class="tile-name">UUID Generator</div></a>
+      <a class="err-tile" href="/hash-generator.html"><div class="tile-icon">#</div><div class="tile-name">Hash Generator</div></a>
+      <a class="err-tile" href="/url-encoder.html"><div class="tile-icon">%</div><div class="tile-name">URL Encoder</div></a>
+      <a class="err-tile" href="/qr-generator.html"><div class="tile-icon">QR</div><div class="tile-name">QR Generator</div></a>
+    </div>
+  </div>
+
+  <div class="err-actions">
+    <a class="err-btn primary" href="/">← Back to Home</a>
+    <a class="err-btn" href="/all-tools.html">Browse all 50 tools</a>
+  </div>
+</div>
+
+<footer>
+  <div>&copy; 2026 FreeDevTool</div>
+  <div class="footer-links">
+    <a href="/about.html">About</a>
+    <a href="/privacy.html">Privacy Policy</a>
+    <a href="/terms.html">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+const allTools=[
+  {name:"JSON Formatter & Validator",href:"/json-formatter.html",icon:"{ }",keys:"json formatter validator pretty print"},
+  {name:"Base64 Encoder / Decoder",href:"/base64-encoder.html",icon:"b64",keys:"base64 encoder decoder"},
+  {name:"UNIX Timestamp Converter",href:"/unix-timestamp-converter.html",icon:"⏱",keys:"unix timestamp epoch time date"},
+  {name:"URL Encoder / Decoder",href:"/url-encoder.html",icon:"%",keys:"url encoder decoder percent encoding"},
+  {name:"Hex to RGB Converter",href:"/hex-to-rgb.html",icon:"🎨",keys:"hex to rgb hsl color css"},
+  {name:"HTML Entity Encoder",href:"/html-entity.html",icon:"&",keys:"html entity encoder decoder xss"},
+  {name:"Image to Base64 Encoder",href:"/base64-image.html",icon:"🖼",keys:"image to base64 data uri png jpg svg"},
+  {name:"JSON to CSV Converter",href:"/json-to-csv.html",icon:"CSV",keys:"json to csv excel google sheets"},
+  {name:"Number Base Converter",href:"/number-base.html",icon:"01",keys:"number base binary decimal hex octal"},
+  {name:"UUID Generator",href:"/uuid-generator.html",icon:"uid",keys:"uuid v4 guid unique id"},
+  {name:"Lorem Ipsum Generator",href:"/lorem-ipsum.html",icon:"Aa",keys:"lorem ipsum placeholder dummy text"},
+  {name:"Password Generator",href:"/password-generator.html",icon:"🔑",keys:"password strong random secure"},
+  {name:"QR Code Generator",href:"/qr-generator.html",icon:"QR",keys:"qr code url wifi"},
+  {name:"Color Palette Generator",href:"/color-picker.html",icon:"🎨",keys:"color picker palette harmony"},
+  {name:"URL Slug Generator",href:"/slug-generator.html",icon:"🔗",keys:"slug seo permalink kebab case"},
+  {name:"JWT Decoder & Inspector",href:"/jwt-decoder.html",icon:"jwt",keys:"jwt decoder token oauth bearer"},
+  {name:"Hash Generator — MD5 / SHA",href:"/hash-generator.html",icon:"#",keys:"hash md5 sha256 sha512 checksum"},
+  {name:"Regex Tester & Debugger",href:"/regex-tester.html",icon:".*",keys:"regex regular expression debugger"},
+  {name:"Text Diff Checker",href:"/text-diff.html",icon:"±",keys:"text diff compare side by side"},
+  {name:"Markdown Editor & Preview",href:"/markdown-preview.html",icon:"MD",keys:"markdown editor preview github gfm"},
+  {name:"Regex Explainer",href:"/regex-explainer.html",icon:"?=",keys:"regex explainer plain english"},
+  {name:"String Case Converter",href:"/case-converter.html",icon:"Aa",keys:"case camelcase snake_case kebab pascal"},
+  {name:"String Escape & Unescape",href:"/string-escape.html",icon:"\\",keys:"string escape json html url javascript"},
+  {name:"CSS Minifier & Beautifier",href:"/css-minifier.html",icon:"CSS",keys:"css minifier compress optimize"},
+  {name:"JavaScript Minifier",href:"/js-minifier.html",icon:"JS",keys:"javascript minifier compress uglify"},
+  {name:"Cron Expression Generator",href:"/cron-parser.html",icon:"⏰",keys:"cron expression crontab scheduler"},
+  {name:"IP Address Lookup",href:"/ip-lookup.html",icon:"IP",keys:"ip subnet cidr ipv4 ipv6 network"},
+  {name:"Timestamp Diff Calculator",href:"/timestamp-diff.html",icon:"⏱",keys:"timestamp diff time difference duration"},
+  {name:"SQL Formatter & Beautifier",href:"/sql-formatter.html",icon:"SQL",keys:"sql formatter mysql postgresql"},
+  {name:"YAML to JSON Converter",href:"/yaml-to-json.html",icon:"yml",keys:"yaml to json yml docker kubernetes"},
+  {name:"JWT Generator",href:"/jwt-generator.html",icon:"jwt",keys:"jwt generator hmac sha256"},
+  {name:"HTTP Status Codes Reference",href:"/http-status.html",icon:"HTTP",keys:"http status codes 404 500 200 api"},
+  {name:"Meta Tag Generator",href:"/meta-tag-generator.html",icon:"SEO",keys:"meta tag seo open graph twitter"},
+  {name:"Chmod Calculator",href:"/chmod-calculator.html",icon:"rwx",keys:"chmod unix linux permissions octal"},
+  {name:"Byte Converter",href:"/byte-converter.html",icon:"B",keys:"byte kb mb gb tb data size"},
+  {name:"CSS Gradient Generator",href:"/css-gradient.html",icon:"🌈",keys:"css gradient linear radial conic"},
+  {name:"Open Graph Preview",href:"/og-preview.html",icon:"OG",keys:"open graph preview og facebook twitter"},
+  {name:"XML Formatter & Validator",href:"/xml-formatter.html",icon:"</>",keys:"xml formatter validator beautify"},
+  {name:"CSS Box Shadow Generator",href:"/css-box-shadow.html",icon:"▣",keys:"css box shadow neon inset"},
+  {name:"WCAG Contrast Checker",href:"/wcag-contrast.html",icon:"Aa",keys:"wcag contrast accessibility aa aaa"},
+  {name:"Color Name from Hex",href:"/color-name.html",icon:"🎨",keys:"color name hex css named"},
+  {name:"Character Count / Length",href:"/char-counter.html",icon:"Σ",keys:"character count word length tweet sms"},
+  {name:"Word / Rich Text to Markdown",href:"/word-to-markdown.html",icon:"MD",keys:"word to markdown rich text gfm"},
+  {name:"AI Token Counter",href:"/ai-token-counter.html",icon:"AI",keys:"ai token gpt claude openai anthropic"},
+  {name:"HTML Minifier & Beautifier",href:"/html-minifier.html",icon:"<>",keys:"html minifier beautifier compress"},
+  {name:"Git Commands Cheatsheet",href:"/git-cheatsheet.html",icon:"⎇",keys:"git commands branch merge rebase"},
+  {name:"HTTP Request Builder (curl)",href:"/http-request-builder.html",icon:"cURL",keys:"http curl fetch axios python requests"},
+  {name:"Pixel to REM Converter",href:"/px-to-rem.html",icon:"rem",keys:"px to rem pixel em css responsive"},
+  {name:"DNS Lookup Tool",href:"/dns-lookup.html",icon:"DNS",keys:"dns a aaaa mx txt ns cname doh"},
+  {name:"Relative Time Calculator",href:"/relative-time.html",icon:"⏲",keys:"relative time ago from now"}
+];
+const inp=document.getElementById('err-search-input');
+const res=document.getElementById('err-search-results');
+inp.addEventListener('input',()=>{
+  const q=inp.value.toLowerCase().trim();
+  if(!q){res.classList.remove('visible');return}
+  const m=allTools.filter(t=>(t.name+' '+t.keys).toLowerCase().includes(q)).slice(0,8);
+  if(!m.length){res.innerHTML='<div class="sr-empty">No tools found for "'+q+'"</div>'}
+  else{res.innerHTML=m.map(t=>'<a href="'+t.href+'"><div class="sr-icon">'+t.icon+'</div><div><div class="sr-name">'+t.name+'</div></div></a>').join('')}
+  res.classList.add('visible');
+});
+inp.addEventListener('blur',()=>setTimeout(()=>res.classList.remove('visible'),200));
+inp.addEventListener('focus',()=>{if(inp.value.trim())inp.dispatchEvent(new Event('input'))});
+</script>
+</body>
+</html>

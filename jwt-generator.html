@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JWT Generator Online — Create JSON Web Tokens Free | FreeDevTool</title>
-  <meta name="description" content="Generate JSON Web Tokens (JWT) online with custom headers, payload claims and HMAC-SHA256 signing. Set expiration, issuer, subject and custom claims. Free, client-side, no signup.">
+  <meta name="description" content="Generate JSON Web Tokens (JWT) with custom headers, payload claims and HMAC-SHA256 signing. Set expiration, issuer, subject and custom claims. Free, client-side, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/jwt-generator.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="JWT Generator Online — Create JSON Web Tokens Free">
@@ -40,6 +50,32 @@
     .jwt-error{margin-top:8px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:var(--radius);color:#ff6b6b;font-size:12px;font-family:var(--mono);display:none}
     @media(max-width:700px){.jwt-row{grid-template-columns:1fr}}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "JWT Generator",
+        "item": "https://freedevtool.org/jwt-generator.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <nav>
@@ -152,6 +188,29 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the JWT generator</h2>
+    <p>Generate JWTs for local testing, debugging auth flows, or generating signed payloads in scripts. Set custom claims, pick HMAC-SHA256 signing, and copy the token. <strong>This generator is for development only</strong> — don't use the output as production secrets, and never paste real production keys here.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Pick the algorithm. <code>HS256</code> (HMAC) is symmetric — same secret to sign and verify. <code>RS256</code>/<code>ES256</code> are asymmetric — sign with private key, verify with public.</li>
+      <li><strong>2.</strong> Set the header. <code>typ: JWT</code>, <code>alg</code> as picked. Add <code>kid</code> if your verifier rotates keys.</li>
+      <li><strong>3.</strong> Build the payload. Standard claims: <code>iss</code> (issuer), <code>sub</code> (user ID), <code>aud</code> (audience), <code>exp</code> (expiration — Unix seconds), <code>iat</code> (issued at), <code>nbf</code> (not before). Custom claims go alongside.</li>
+      <li><strong>4.</strong> Enter the signing secret (HS256) or paste the private key (RS256/ES256). Use a 256-bit random secret for HMAC; never reuse short or predictable values.</li>
+      <li><strong>5.</strong> Copy the resulting JWT (three Base64URL-encoded parts: <code>header.payload.signature</code>). Verify with the matching key in your auth server's JWT library.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Using <code>alg: none</code> in production.</strong> Accepting unsigned tokens lets anyone forge any identity. Always whitelist allowed algorithms server-side.</li>
+      <li><strong>HS256 with a weak secret.</strong> Anything under 32 random bytes is brute-forceable. Use 256-bit random keys, or switch to RS256/ES256.</li>
+      <li><strong>Forgetting <code>exp</code>.</strong> Tokens without expiration live forever — a leaked token is permanent compromise. Set short <code>exp</code> (5–60 min) and rotate refresh tokens.</li>
+      <li><strong>Storing secrets inside the JWT payload.</strong> Bodies are Base64-encoded, not encrypted. Use <code>JWE</code> (encrypted JWT) for sensitive claims, or store server-side and reference by ID.</li>
+      <li><strong>Not validating <code>iss</code> and <code>aud</code> on the server.</strong> A token signed for service A can be replayed against service B if the secret is shared and audience isn't checked.</li>
+      <li><strong>Pasting production private keys into online tools.</strong> Even tools that swear they're client-only — verify the network tab. For real keys, use server-side libraries (jsonwebtoken, PyJWT, Auth0).</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

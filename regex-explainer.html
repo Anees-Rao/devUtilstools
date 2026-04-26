@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regex Explainer Online — Regex to Plain English Translator | FreeDevTool</title>
-  <meta name="description" content="Translate regular expressions to plain English with color-coded breakdowns. Understand capture groups, quantifiers, character classes, lookaheads, and anchors. Free regex visualizer — no signup required.">
+  <meta name="description" content="Translate regular expressions to plain English with color-coded breakdowns. Understand capture groups, quantifiers, lookaheads, anchors. Free, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/regex-explainer.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -100,6 +110,32 @@
       font-family:var(--mono); opacity:.7;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Regex Explainer Online",
+        "item": "https://freedevtool.org/regex-explainer.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -209,6 +245,29 @@
 
     </div>
   </div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the regex explainer</h2>
+    <p>Inherit a 200-character regex from a previous developer? Paste it here and the explainer translates it to plain English with color-coded breakdowns of every group, quantifier, character class, lookaround, and anchor. Useful for code review, learning, and figuring out why your pattern doesn't match what you thought.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Paste the regex pattern (without surrounding slashes). Auto-detects flags from inline modifiers (<code>(?i)</code>) and you can toggle them via the flag buttons.</li>
+      <li><strong>2.</strong> The pattern renders with color-coded segments: groups in blue, quantifiers in orange, character classes in teal, anchors in red. Hover any segment for a tooltip.</li>
+      <li><strong>3.</strong> Read the plain-English breakdown below. Each line maps a regex segment to a sentence ("matches a digit, one or more times", "captures a group of letters", etc).</li>
+      <li><strong>4.</strong> Toggle the visual railroad diagram for branching patterns — alternations and groups become tracks, much easier to follow than text.</li>
+      <li><strong>5.</strong> Copy individual sub-patterns out for reuse, or share the explainer URL with the encoded regex for code-review comments.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Greedy <code>.*</code> matching too much.</strong> By default <code>.*</code> grabs as much as possible. Use <code>.*?</code> (lazy) for shortest match — e.g. inside HTML tags.</li>
+      <li><strong>Forgetting to escape the dot.</strong> <code>.</code> matches any character. Use <code>\.</code> for a literal period.</li>
+      <li><strong>Anchors without the <code>m</code> flag.</strong> <code>^</code>/<code>$</code> match start/end of string, not line, unless you set multiline mode.</li>
+      <li><strong>Catastrophic backtracking.</strong> Patterns like <code>(a+)+</code> on long input can hang for seconds. Use atomic groups, possessive quantifiers, or rewrite to be linear.</li>
+      <li><strong>Dialect mismatch.</strong> JS regex differs from PCRE, Python <code>re</code>, Ruby <code>Regexp</code>. Lookbehinds, named groups, and Unicode escapes vary. Test in the dialect you'll deploy.</li>
+      <li><strong>Validating emails with regex.</strong> The full RFC 5322 grammar is &gt; 6000 chars. Use a simple check (<code>.+@.+\..+</code>) and verify deliverability separately.</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

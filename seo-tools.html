@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SEO &amp; Meta Tag Tools &mdash; Free Open Graph, Meta Generator &amp; Slug Tools | FreeDevTool</title>
-  <meta name="description" content="Free online SEO tools for developers. Generate meta tags, preview Open Graph social cards, create URL slugs. Browser-based, no signup, privacy-first.">
+  <meta name="description" content="Free SEO tools. Generate meta tags, preview Open Graph social cards, create URL slugs. Browser-based, no signup, privacy-first.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/seo-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "SEO & Meta Tools",
+        "item": "https://freedevtool.org/seo-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -243,6 +273,29 @@
       </div>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which SEO tool should you use?</h2>
+    <p>SEO basics start with three things rendering correctly: page-level meta tags (title, description, canonical), social-share previews (Open Graph + Twitter Card), and clean URLs. Get those right and Google has the signals it needs to rank you. These three tools cover all three checkpoints — generate, preview, validate, ship.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Generate complete SEO meta tags</strong> — title, description, canonical, OG, Twitter Card, robots — for any page — use <a href="meta-tag-generator.html">Meta Tag Generator</a>. Live SERP &amp; social previews included.</li>
+      <li><strong>Preview how your URL renders on Twitter, Facebook, LinkedIn, Slack, WhatsApp</strong> before launching — use <a href="og-preview.html">Open Graph Preview</a>. Catches missing <code>og:image</code>/<code>og:image:width</code> issues that break cards.</li>
+      <li><strong>Convert page titles into SEO-friendly URL slugs</strong> (kebab-case, transliterated, lowercase) — use <a href="slug-generator.html">URL Slug Generator</a>.</li>
+    </ul>
+
+    <h3>Common SEO mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Title tag &gt; 60 chars.</strong> Google truncates around 580px width on mobile (~55–60 chars). Front-load your primary keyword; brand name goes at the end.</li>
+      <li><strong>Description &gt; 160 chars.</strong> Mobile cuts ~155 chars; desktop ~160. Anything longer truncates with <code>…</code> mid-sentence. Worth tightening.</li>
+      <li><strong>Identical title/description across multiple pages.</strong> Google merges duplicate-content signals and may pick the wrong canonical. Each URL needs unique meta.</li>
+      <li><strong>Missing or wrong canonical tag.</strong> A page that says <code>canonical = otherpage</code> tells Google not to index this one. Common bug after URL refactors.</li>
+      <li><strong>Forgetting <code>og:image:width</code> and <code>og:image:height</code>.</strong> Twitter and LinkedIn fall back to a small thumbnail or no preview at all. Always include both.</li>
+      <li><strong>Slugs with stop words and special characters.</strong> <code>/the-best-way-to-do-stuff!</code> is worse than <code>/best-way-do-stuff</code>. Strip stop words and punctuation; keep slugs &lt; 5 words when possible.</li>
+      <li><strong>Pointing canonicals at the bare URL but linking with <code>.html</code>.</strong> Pick one form per site; serve a 301 from the other. Consistency &gt; cleverness.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

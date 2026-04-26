@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MD5 &amp; SHA Hash Generator Online — Free Hash Calculator | FreeDevTool</title>
-  <meta name="description" content="Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text instantly. Compare hashes, verify file integrity. Free online hash generator — no signup, works offline.">
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256 and SHA-512 hashes from text instantly. Compare hashes, verify file integrity. Free hash generator — no signup, works offline.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/hash-generator.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -128,6 +138,32 @@
       color: var(--text3); text-align: right; margin-top: 4px;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Hash Generator — MD5, SHA-1, SHA-256, SHA-512",
+        "item": "https://freedevtool.org/hash-generator.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -270,6 +306,29 @@
   </div>
 
   <!-- FAQ -->
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the hash generator</h2>
+    <p>Compute MD5, SHA-1, SHA-256, and SHA-512 hashes of text or files for checksums, ETags, content-addressing, and integrity verification. All hashing happens in your browser via the Web Crypto API — files never upload, text never leaves the page.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Paste text into the input area, or drop a file onto the upload zone. Files are read locally — nothing transmits.</li>
+      <li><strong>2.</strong> All four hash algorithms compute simultaneously. Pick the one your destination expects (Git uses SHA-1, modern systems use SHA-256, MD5 only for legacy compatibility).</li>
+      <li><strong>3.</strong> Compare output to a published checksum — paste the expected hash into the verify field; the tool flags match/mismatch.</li>
+      <li><strong>4.</strong> Toggle output case (lowercase vs uppercase hex) to match what your verification target expects — some package managers are case-sensitive.</li>
+      <li><strong>5.</strong> Copy the hash with one click for use in <code>shasum -a 256</code>-style verification, integrity attributes, or cache keys.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Using MD5 for security checks.</strong> MD5 is broken — collisions producible in seconds. Fine for cache keys and ETags; never for signatures, certificates, or password storage.</li>
+      <li><strong>Using a fast hash (SHA-256) for password storage.</strong> Attackers crack billions of SHA-256 hashes per second on GPUs. Use <code>bcrypt</code>, <code>argon2id</code>, or <code>scrypt</code> with a tunable cost factor.</li>
+      <li><strong>Comparing hashes with <code>==</code> in security-sensitive code.</strong> Use constant-time comparison (<code>crypto.timingSafeEqual</code> in Node, <code>hmac.compare_digest</code> in Python) to prevent timing attacks.</li>
+      <li><strong>Confusing hex, Base64, and raw bytes.</strong> The same hash bytes look different in each encoding. <code>e3b0c442…</code> hex ≠ <code>47DEQpj8H…</code> Base64. Match what your tool expects.</li>
+      <li><strong>Hashing without a salt for content addressing where collisions matter.</strong> If two users can both submit the same input, they'll have the same hash — fine for caching, problematic for content moderation.</li>
+      <li><strong>Trusting a single SHA-1 hash for new code.</strong> SHA-1 is deprecated since 2017. Use SHA-256 or SHA-3 for any new system; only use SHA-1 to verify legacy artifacts (e.g. old Git history).</li>
+    </ul>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
 

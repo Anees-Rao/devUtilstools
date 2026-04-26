@@ -10,6 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -49,6 +59,32 @@
     .qr-size-row { display:flex; align-items:center; gap:10px; margin-top:10px; }
     .qr-size-row label { margin:0; text-transform:none; letter-spacing:normal; font-size:12px; }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "QR Code Generator — Free, No Watermark",
+        "item": "https://freedevtool.org/qr-generator.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -184,6 +220,29 @@
 
     </div>
   </div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the QR code generator</h2>
+    <p>Generate QR codes for URLs, plain text, WiFi credentials, contact cards (vCard), email links, and phone numbers. Output is rendered as both PNG (for printing) and SVG (for the web — scales infinitely, no pixelation). Generation is local; what you encode never leaves your browser.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Pick a content type from the tabs: URL, Text, WiFi, Email, Phone, or vCard. Each has dedicated fields with sensible defaults.</li>
+      <li><strong>2.</strong> Type or paste your content. The QR updates live as you type — no submit button.</li>
+      <li><strong>3.</strong> Adjust size (default 256px) and error-correction level. Higher correction (H = 30%) lets the code stay readable when printed and partially obscured — useful for stickers.</li>
+      <li><strong>4.</strong> Optionally drop a logo onto the center. The error-correction level should be H if you do this, otherwise scanners may fail.</li>
+      <li><strong>5.</strong> Download as PNG (for print, presentations) or SVG (for web — sharper at any size, smaller file). Copy SVG markup directly for inline embedding.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Encoding too much data.</strong> QR can hold ~3 KB max; scannability drops fast above 1 KB. For long URLs, shorten first (<code>tinyurl</code>, custom redirect).</li>
+      <li><strong>Picking PNG when SVG works.</strong> SVG QR codes are pixel-perfect at any zoom and 1/10th the file size. Use PNG only when the rendering platform forces raster.</li>
+      <li><strong>Adding a logo without raising error correction.</strong> Default error correction is L (~7%). A logo covers more — set to H (30%) before adding the overlay.</li>
+      <li><strong>Insufficient quiet zone (white margin).</strong> QR specs require 4 modules of whitespace around the code. Without it, scanners often fail. Don't crop tight in design tools.</li>
+      <li><strong>Using QR for short messages.</strong> A QR code is 200+ pixels minimum; a 5-char code or short URL is faster to type. Use QR when typing is impractical (across devices, on print, in posters).</li>
+      <li><strong>Not testing on actual phones.</strong> Print preview and dev-tool scanners are forgiving; real phone cameras under fluorescent lighting fail with low contrast or dirty smudges. Test before mass-printing.</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

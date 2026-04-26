@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YAML to JSON Converter Online — Convert YAML to JSON Free | FreeDevTool</title>
-  <meta name="description" content="Convert YAML to JSON and JSON to YAML online instantly. Validate YAML syntax, handle nested objects, arrays, anchors and aliases. Free browser-based converter, no signup required.">
+  <meta name="description" content="Convert YAML to JSON and JSON to YAML instantly. Validate YAML syntax, handle nested objects, arrays, anchors and aliases. Free browser-based converter, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/yaml-to-json.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="YAML to JSON Converter Online — Convert YAML to JSON Free">
@@ -33,6 +43,32 @@
     .conv-error{margin-top:8px;padding:10px 14px;background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);border-radius:var(--radius);color:#ff6b6b;font-size:12px;font-family:var(--mono);display:none}
     @media(max-width:700px){.conv-grid{grid-template-columns:1fr}}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "YAML to JSON Converter",
+        "item": "https://freedevtool.org/yaml-to-json.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <nav>
@@ -117,6 +153,29 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the YAML ⇄ JSON converter</h2>
+    <p>Convert between YAML and JSON in either direction. YAML's used heavily for config (Docker Compose, GitHub Actions, k8s, Helm); JSON dominates APIs and data exchange. The converter handles nested objects, arrays, anchors, aliases, and multi-document YAML streams. Local-only; configs never upload.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Pick direction: YAML → JSON or JSON → YAML. Auto-detect picks based on the input shape (presence of indentation, <code>{</code>, etc.).</li>
+      <li><strong>2.</strong> Paste your content. Multi-document YAML (<code>---</code> separators) converts to a JSON array of documents.</li>
+      <li><strong>3.</strong> Output appears live with syntax highlighting. Errors (mis-indented YAML, trailing-comma JSON) show with line numbers.</li>
+      <li><strong>4.</strong> Toggle "preserve YAML anchors" to keep <code>&amp;name</code> / <code>*name</code> references in JSON-friendly form (since JSON has no anchors, the converter expands them inline).</li>
+      <li><strong>5.</strong> Choose output indentation (2 or 4 spaces) and copy or download. Validate against a schema separately if your target system requires it.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>YAML's "Norway problem".</strong> <code>country: NO</code> is parsed as boolean <code>false</code> in YAML 1.1 (the <code>NO</code>/<code>YES</code>/<code>ON</code> alias). Always quote string values that could be confused — <code>country: "NO"</code>.</li>
+      <li><strong>Tabs in YAML.</strong> YAML forbids tab indentation. Looks fine in your editor but parsers reject it. Configure your editor for spaces.</li>
+      <li><strong>Mixed indentation widths.</strong> 2-space and 4-space indentation in the same file silently changes structure. Pick one; lint with yamllint.</li>
+      <li><strong>YAML floats with leading zeros.</strong> <code>version: 010</code> is parsed as octal in YAML 1.1, decimal in 1.2. Quote it: <code>version: "010"</code>.</li>
+      <li><strong>Trusting JSON → YAML round-trips.</strong> Order is preserved (with maps in modern parsers), but key types are lost — <code>1: "x"</code> in YAML becomes <code>"1": "x"</code> in JSON.</li>
+      <li><strong>Embedding secrets in YAML configs without sealing.</strong> If the config gets committed, the secret leaks. Use a secret manager (Sealed Secrets, sops, AWS Secrets Manager) and reference at runtime.</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

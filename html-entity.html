@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HTML Entity Encoder / Decoder Online — Special Characters Tool | FreeDevTool</title>
-  <meta name="description" content="Encode special characters to HTML entities or decode HTML entities back to text. Prevent XSS attacks with proper HTML encoding. Free online tool, no signup required.">
+  <meta name="description" content="Encode special characters to HTML entities or decode HTML entities back to text. Prevent XSS attacks with proper HTML encoding. Free tool, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/html-entity.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -46,6 +56,32 @@
     .entity-table td:nth-child(2) { color:var(--accent); }
     .entity-table td:nth-child(3) { color:var(--text2); }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "HTML Entity Encoder / Decoder",
+        "item": "https://freedevtool.org/html-entity.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -172,6 +208,29 @@
 
     </div>
   </div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the HTML entity encoder</h2>
+    <p>Convert special characters to HTML entities (<code>&amp;lt;</code>, <code>&amp;amp;</code>, <code>&amp;quot;</code>) so they render as text inside HTML instead of being parsed as markup. Essential for displaying user-submitted content safely (XSS prevention), embedding code samples in blog posts, and quoting HTML inside JavaScript strings.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Pick "Encode" (text → entities) or "Decode" (entities → text). Auto-detect chooses based on whether the input has <code>&amp;</code> sequences.</li>
+      <li><strong>2.</strong> Paste your content. The encoder handles all five mandatory chars (<code>&lt; &gt; &amp; &quot; '</code>) plus optional Unicode entities for non-ASCII.</li>
+      <li><strong>3.</strong> Toggle "Encode all non-ASCII" to convert characters like <code>é</code> to <code>&amp;#233;</code> — useful for older systems that mangle UTF-8.</li>
+      <li><strong>4.</strong> Pick named entities (<code>&amp;copy;</code>) or numeric (<code>&amp;#169;</code>). Named are more readable; numeric work even if your DOCTYPE doesn't declare HTML5.</li>
+      <li><strong>5.</strong> Copy the output. Safe to paste into any HTML attribute, text node, or JavaScript string literal.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Forgetting to encode user input.</strong> Inserting raw user text into HTML is the #1 source of XSS vulnerabilities. Always encode on output, even if you sanitized on input.</li>
+      <li><strong>Encoding only <code>&lt;</code> and <code>&gt;</code>.</strong> You also need <code>&amp;</code>, <code>&quot;</code>, and <code>'</code> for full XSS safety, especially inside attribute values.</li>
+      <li><strong>Confusing HTML entities with URL encoding.</strong> <code>&amp;amp;</code> is HTML; <code>%26</code> is URL. Mixing them inside <code>href</code> attributes causes broken links.</li>
+      <li><strong>Double-encoding.</strong> If the framework already encoded, encoding again displays literal <code>&amp;amp;lt;</code> on the page. Encode at exactly one boundary — typically the template engine.</li>
+      <li><strong>Trusting that <code>innerHTML</code> = entity-encoded content.</strong> When you read <code>el.innerHTML</code>, the browser may normalize entities. Use <code>textContent</code> when you want raw text without HTML parsing.</li>
+      <li><strong>Using HTML entities inside <code>&lt;script&gt;</code> or <code>&lt;style&gt;</code>.</strong> Those blocks are parsed as raw text, not HTML. Use JS string escapes (<code>\u0026</code>) and CSS escapes inside them.</li>
+    </ul>
+  </section>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>

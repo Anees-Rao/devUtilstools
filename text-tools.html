@@ -3,11 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>9 Free Online Code &amp; Text Tools &mdash; Regex, Diff, Markdown, Character Counter, AI Tokens | FreeDevTool</title>
-  <meta name="description" content="9 free online code and text tools for developers. Regex tester, text diff checker, markdown editor, string case converter, regex explainer, string escape, character / string length counter, Word to Markdown converter, and AI token counter for GPT and Claude. Client-side, no signup.">
+  <title>9 Free Code &amp; Text Tools — Regex, Diff, Markdown, AI Tokens | FreeDevTool</title>
+  <meta name="description" content="9 free code &amp; text tools — regex tester, text diff, markdown preview, case converter, AI token counter for GPT &amp; Claude, escape/unescape. No signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/text-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Code &amp; Text Tools | FreeDevTool">
   <meta property="og:description" content="Regex tester, text diff checker, markdown editor, string case converter, regex explainer, and string escape/unescape. All client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/text-tools">
+  <meta property="og:url" content="https://freedevtool.org/text-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Code & Text Tools",
+        "item": "https://freedevtool.org/text-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -288,6 +318,34 @@
       <span class="tile-badge">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which code &amp; text tool should you use?</h2>
+    <p>Code and text tools cover the day-to-day grind: testing a regex you'll never remember, comparing two configs, escaping strings for JSON or HTML, counting tokens before sending a prompt to GPT or Claude. The right choice depends on the format you're wrestling with and whether you need deep analysis (regex explainer) or a quick transform (case converter).</p>
+
+    <ul class="use-case-list">
+      <li><strong>Test and debug a regex pattern</strong> with live highlighting and capture groups (JS flavor) — use <a href="regex-tester.html">Regex Tester &amp; Debugger</a>.</li>
+      <li><strong>Translate a regex to plain English</strong> when inheriting unfamiliar patterns — use <a href="regex-explainer.html">Regex Explainer</a>.</li>
+      <li><strong>Compare two text blobs side by side</strong> (configs, log diffs, JSON responses) — use <a href="text-diff.html">Text Diff Checker</a>.</li>
+      <li><strong>Write/preview Markdown</strong> with GitHub-flavored tables and code blocks — use <a href="markdown-preview.html">Markdown Editor &amp; Preview</a>.</li>
+      <li><strong>Convert pasted Word/Google Docs content to clean Markdown</strong> — use <a href="word-to-markdown.html">Word to Markdown Converter</a>.</li>
+      <li><strong>Convert variable names</strong> between camelCase, snake_case, kebab-case, PascalCase — use <a href="case-converter.html">String Case Converter</a>.</li>
+      <li><strong>Escape strings for JSON, HTML, JavaScript, URL, CSV, or SQL</strong> — use <a href="string-escape.html">String Escape &amp; Unescape</a>.</li>
+      <li><strong>Count characters, words, lines, bytes</strong> for tweet limits, SMS, OG titles — use <a href="char-counter.html">Character Counter</a>.</li>
+      <li><strong>Estimate AI API costs</strong> before sending a prompt to GPT/Claude — use <a href="ai-token-counter.html">AI Token Counter</a>. Catches expensive prompts early.</li>
+    </ul>
+
+    <h3>Common code &amp; text mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Greedy regex that matches too much.</strong> <code>.*</code> grabs everything to the end of line. Use <code>.*?</code> (lazy) or a more specific character class.</li>
+      <li><strong>Forgetting to escape the dot in regex.</strong> <code>.</code> matches any character — use <code>\.</code> when you mean a literal period (e.g. matching <code>example\.com</code>).</li>
+      <li><strong>Diffing two files that have different line endings.</strong> CRLF vs LF causes every line to show as changed. Normalize line endings first.</li>
+      <li><strong>Mixing escape contexts.</strong> JSON-escaping <code>"</code> as <code>\"</code> then re-encoding for HTML produces double-escaped junk. Encode once, in the final destination format.</li>
+      <li><strong>Trusting the 4-chars-per-token heuristic for non-English.</strong> CJK, code, and emojis can be 1 char per token or worse. Always count tokens in the actual tokenizer for cost-sensitive prompts.</li>
+      <li><strong>Counting characters for Twitter/X without weighting URLs.</strong> URLs count as 23 chars regardless of length. Use a counter that knows the rules.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

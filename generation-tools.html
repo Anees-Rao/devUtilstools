@@ -3,11 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>15 Free Online Generation &amp; Formatting Tools &mdash; JSON, UUID, QR, Box Shadow, WCAG | FreeDevTool</title>
-  <meta name="description" content="15 free online generation and formatting tools for developers. JSON formatter, UUID generator, QR code maker, password generator, color palette creator, URL slug generator, lorem ipsum, CSS box shadow generator, WCAG contrast checker, and color name from hex. All client-side, no signup.">
+  <title>16 Free Generation &amp; Formatting Tools — JSON, UUID, QR, Gradients | FreeDevTool</title>
+  <meta name="description" content="16 free generation tools — JSON formatter, UUID generator, QR maker, password generator, lorem ipsum, gradient builder, WCAG contrast. No signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/generation-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Generation &amp; Formatting Tools | FreeDevTool">
   <meta property="og:description" content="JSON formatter, UUID generator, QR code maker, password generator, color palette creator, slug generator, and lorem ipsum. All client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/generation-tools">
+  <meta property="og:url" content="https://freedevtool.org/generation-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Generation & Formatting",
+        "item": "https://freedevtool.org/generation-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -332,6 +362,41 @@
       <span class="tile-badge">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which generation tool should you use?</h2>
+    <p>Generation tools cover everything from formatting JSON to producing UUIDs, QR codes, secure passwords, and CSS gradients. The right tool depends on whether you're debugging an API response, seeding test data, building a UI, or generating an asset for production. Use this guide to map the task to the right output.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Pretty-print or validate a JSON response from an API</strong> — use <a href="json-formatter.html">JSON Formatter &amp; Validator</a>.</li>
+      <li><strong>Format a SQL query for review or pull-request</strong> (MySQL, Postgres, SQL Server) — use <a href="sql-formatter.html">SQL Formatter</a>.</li>
+      <li><strong>Generate test UUIDs for database seeds or feature flags</strong> — use <a href="uuid-generator.html">UUID Generator</a>.</li>
+      <li><strong>Generate a strong password</strong> for a service account or user setup — use <a href="password-generator.html">Password Generator</a>. Always 16+ chars.</li>
+      <li><strong>Make a QR code</strong> for a URL, WiFi credentials, or contact card — use <a href="qr-generator.html">QR Code Generator</a>.</li>
+      <li><strong>Build a CSS gradient visually</strong> with linear, radial, or conic stops — use <a href="css-gradient.html">CSS Gradient Generator</a>.</li>
+      <li><strong>Generate a CSS box-shadow</strong> with multi-layer presets (material, neon, soft) — use <a href="css-box-shadow.html">CSS Box Shadow Generator</a>.</li>
+      <li><strong>Pick or generate a color palette</strong> with WCAG contrast checks — use <a href="color-picker.html">Color Palette Generator</a>.</li>
+      <li><strong>Check accessibility contrast (WCAG AA/AAA)</strong> for a text/background pair — use <a href="wcag-contrast.html">WCAG Contrast Checker</a>.</li>
+      <li><strong>Find the nearest CSS named color</strong> for a hex code — use <a href="color-name.html">Color Name from Hex</a>.</li>
+      <li><strong>Format/validate XML</strong> (SOAP, RSS, Atom feeds) — use <a href="xml-formatter.html">XML Formatter</a>.</li>
+      <li><strong>Create SEO-friendly URL slugs</strong> from titles or strings — use <a href="slug-generator.html">URL Slug Generator</a>.</li>
+      <li><strong>Generate Open Graph &amp; meta tags for SEO</strong> — use <a href="meta-tag-generator.html">Meta Tag Generator</a>.</li>
+      <li><strong>Preview how a link looks on Twitter, LinkedIn, Facebook</strong> — use <a href="og-preview.html">Open Graph Preview</a>.</li>
+      <li><strong>Generate placeholder text</strong> for mockups (lorem ipsum, words, paragraphs) — use <a href="lorem-ipsum.html">Lorem Ipsum Generator</a>.</li>
+      <li><strong>Look up an HTTP status code</strong> meaning, when to return it, common confusions — use <a href="http-status.html">HTTP Status Codes Reference</a>.</li>
+    </ul>
+
+    <h3>Common generation mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Using UUIDv4 for sortable IDs.</strong> v4 is random — terrible for B-tree index locality. For new tables, use <code>UUIDv7</code> (time-ordered) or a ULID.</li>
+      <li><strong>Generating "strong" passwords with predictable patterns.</strong> A 16-char password from <code>[a-z]+digit</code> is far weaker than full alphanumeric+symbols. Always include all four classes.</li>
+      <li><strong>Embedding QR codes as PNGs everywhere.</strong> SVG QR codes scale to any size and are tiny. PNG only when the rendering platform forces it.</li>
+      <li><strong>Returning <code>200 OK</code> with an error in the body.</strong> Use the right HTTP status — <code>4xx</code> for client errors, <code>5xx</code> for server errors. Monitoring tools rely on it.</li>
+      <li><strong>Skipping WCAG contrast checks.</strong> Many "good-looking" color combos fail AA (4.5:1 for body text). Verify before shipping — accessibility is now a legal requirement in many jurisdictions.</li>
+      <li><strong>Hand-crafting OG meta tags.</strong> Easy to miss <code>og:image:width</code>/<code>height</code>, leading to broken Twitter cards. Use a generator and preview before deploying.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

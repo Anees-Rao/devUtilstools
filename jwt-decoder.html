@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JWT Decoder Online — Decode &amp; Inspect JWT Tokens Free | FreeDevTool</title>
-  <meta name="description" content="Decode and inspect JWT tokens instantly. View header, payload, claims and expiration. Free online JWT decoder — no signup, works offline, nothing sent to a server.">
+  <meta name="description" content="Decode and inspect JWT tokens instantly. View header, payload, claims and expiration. Free JWT decoder — no signup, works offline, nothing sent to a server.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/jwt-decoder.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -132,6 +142,32 @@
     .exp-valid { background: rgba(0,208,132,.12); color: var(--accent); }
     .exp-expired { background: rgba(255,90,90,.12); color: var(--red); }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "JWT Decoder & Token Inspector",
+        "item": "https://freedevtool.org/jwt-decoder.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -255,6 +291,29 @@
 
     </div>
   </div>
+
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the JWT decoder</h2>
+    <p>JWTs are everywhere — OAuth bearer tokens, Auth0/Cognito sessions, signed API requests. The decoder splits a token into its three Base64-URL parts (header, payload, signature) and shows the claims human-readably. Decoding happens entirely in your browser; tokens never leave the page.</p>
+    <ul class="use-case-list">
+      <li><strong>1. Paste the JWT</strong> into the input field. Format is <code>header.payload.signature</code>, three Base64URL strings separated by dots.</li>
+      <li><strong>2. Read the decoded header</strong> to see the algorithm (<code>HS256</code>, <code>RS256</code>, <code>ES256</code>) and key ID (<code>kid</code>) if present.</li>
+      <li><strong>3. Inspect the payload claims:</strong> <code>iss</code> (issuer), <code>sub</code> (subject), <code>exp</code> (expiration), <code>iat</code> (issued at), <code>aud</code> (audience), plus any custom claims your auth provider added.</li>
+      <li><strong>4. Check the expiration timestamp.</strong> The decoder converts <code>exp</code>/<code>iat</code>/<code>nbf</code> from Unix seconds to readable local time and flags expired tokens.</li>
+      <li><strong>5. Copy individual claims</strong> with one click for use in tests, support tickets, or curl commands.</li>
+    </ul>
+
+    <h3>Common JWT mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Trusting the payload without verifying the signature.</strong> The decoder just decodes — it does <em>not</em> verify. Anyone can forge a JWT body. On the server, always verify the signature with the issuer's public key (or HMAC secret).</li>
+      <li><strong>Storing secrets in JWT payloads.</strong> Bodies are Base64-encoded, not encrypted. Anyone reading the token sees the contents. Use <code>JWE</code> (encrypted JWT) for sensitive claims, or store them server-side.</li>
+      <li><strong>Forgetting to set <code>exp</code>.</strong> Tokens without expiration live forever — a leaked token is permanent compromise. Set short <code>exp</code> (5–60 minutes) and rotate refresh tokens.</li>
+      <li><strong>Using <code>alg: none</code> in production.</strong> A 2015 vulnerability — accepting unsigned tokens lets anyone forge any identity. Always whitelist allowed algorithms.</li>
+      <li><strong>HS256 with a weak secret.</strong> Anything under 32 random bytes is brute-forceable. Use 256-bit random keys, or switch to RS256/ES256 for asymmetric signing.</li>
+      <li><strong>Not validating <code>iss</code> and <code>aud</code>.</strong> A token signed for service A can be replayed against service B if both share the secret and don't check the audience.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <section class="faq-section">

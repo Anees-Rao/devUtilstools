@@ -3,11 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4 Free Online Network &amp; Time Tools &mdash; IP Lookup, Subnet, DNS Lookup, Relative Time | FreeDevTool</title>
-  <meta name="description" content="4 free online network and time tools for developers. IP address lookup and subnet calculator with CIDR notation, timestamp difference calculator, DNS lookup (A, AAAA, MX, TXT, CNAME, NS) via DoH, and relative time calculator for human-readable durations like &quot;3 days ago&quot;. All client-side, no signup.">
+  <title>4 Free Network &amp; Time Tools — IP Lookup, DNS, Subnet | FreeDevTool</title>
+  <meta name="description" content="4 free network &amp; time tools — IP lookup with subnet/CIDR, DNS lookup via DoH, timestamp diff, relative time calculator. No signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/network-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Network &amp; Time Tools | FreeDevTool">
   <meta property="og:description" content="IP address lookup and subnet calculator, timestamp difference calculator. Analyze IPs, calculate CIDR subnets, and compute time durations — all client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/network-tools">
+  <meta property="og:url" content="https://freedevtool.org/network-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Network & Time",
+        "item": "https://freedevtool.org/network-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -252,6 +282,29 @@
       <span class="tile-badge">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which network &amp; time tool should you use?</h2>
+    <p>Network tools answer the everyday questions that come up when wiring up infrastructure: is this IP private or public, what's in this subnet, what records does this domain have, how long ago was that timestamp. All four run client-side; DNS lookups go straight to Cloudflare's DoH endpoint without any server intermediary.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Check if an IP is public/private/reserved, calculate subnet, find host range</strong> from CIDR notation — use <a href="ip-lookup.html">IP Address Lookup</a>.</li>
+      <li><strong>Look up DNS records (A, AAAA, MX, TXT, NS, CNAME, SOA, CAA)</strong> for any domain via DNS-over-HTTPS — use <a href="dns-lookup.html">DNS Lookup Tool</a>.</li>
+      <li><strong>Calculate the difference between two timestamps or dates</strong> in days, hours, minutes — use <a href="timestamp-diff.html">Timestamp Diff Calculator</a>.</li>
+      <li><strong>Convert a timestamp into "3 days ago" / "in 2 hours"</strong> human-readable form — use <a href="relative-time.html">Relative Time Calculator</a>.</li>
+    </ul>
+
+    <h3>Common network &amp; time mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Confusing <code>/24</code> with 24 hosts.</strong> A <code>/24</code> subnet has 256 addresses (254 usable). Higher number = smaller subnet. The slash counts <em>network bits</em>, not hosts.</li>
+      <li><strong>Treating <code>10.0.0.0/8</code>, <code>172.16/12</code>, <code>192.168/16</code> as routable.</strong> Those are RFC 1918 private ranges — never reachable from the public internet. Common cause of "works locally, broken in prod" deploys.</li>
+      <li><strong>Looking up DNS through your local resolver during deploys.</strong> Your local cache may be stale. Use a DoH endpoint or <code>dig +trace</code> to bypass caches.</li>
+      <li><strong>Comparing timestamps in different timezones as if they were equal.</strong> Always normalize to UTC for storage; render to local time only for display. Saved many a billing-cycle bug.</li>
+      <li><strong>Using <code>Date.now()</code> in milliseconds with code expecting seconds (or vice versa).</strong> JS uses ms, most Unix tools and PostgreSQL use seconds. Off by 1000× is a fun outage.</li>
+      <li><strong>Trusting "leap seconds don't matter."</strong> They do — for sub-second-precision systems (HFT, GPS, time-series DBs). Use TAI or monotonic clocks where it counts.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

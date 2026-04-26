@@ -3,11 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>8 Free Online Optimization &amp; DevOps Tools &mdash; CSS/JS/HTML Minifier, cURL Builder, Git Cheatsheet | FreeDevTool</title>
-  <meta name="description" content="8 free online optimization and DevOps tools for developers. CSS minifier, JavaScript minifier, HTML minifier and beautifier, cron expression generator, chmod calculator, HTTP status code reference, HTTP request / cURL builder, and searchable Git commands cheatsheet. All client-side, no signup.">
+  <title>7 Free DevOps Tools — Minifiers, cURL Builder, Git Cheatsheet | FreeDevTool</title>
+  <meta name="description" content="7 free DevOps tools — CSS/JS/HTML minifiers, cron generator, chmod calculator, HTTP status codes, cURL builder, git cheatsheet. No signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/devops-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Optimization &amp; DevOps Tools | FreeDevTool">
   <meta property="og:description" content="CSS minifier, JavaScript minifier, and cron expression generator. Optimize code for faster page loads and schedule cron jobs — all client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/devops-tools">
+  <meta property="og:url" content="https://freedevtool.org/devops-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Optimization & DevOps",
+        "item": "https://freedevtool.org/devops-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -282,6 +312,31 @@
       <span class="tile-badge">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which DevOps tool should you use?</h2>
+    <p>These tools cover the build-and-ops side of web development: shrinking assets for faster page loads, scheduling jobs with cron, fixing Linux file permissions, debugging API requests, and looking up commands you used last month but already forgot. None require installation — paste in, get output, move on.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Minify CSS/JS/HTML for production</strong> to cut bundle size and improve LCP — use <a href="css-minifier.html">CSS Minifier</a>, <a href="js-minifier.html">JavaScript Minifier</a>, <a href="html-minifier.html">HTML Minifier</a>.</li>
+      <li><strong>Generate or parse a cron expression</strong> for scheduled jobs (CI runs, backups, cleanups) — use <a href="cron-parser.html">Cron Expression Generator</a>. Shows next run times in plain English.</li>
+      <li><strong>Calculate Unix file permissions</strong> from rwx symbols to octal (<code>755</code>, <code>644</code>) — use <a href="chmod-calculator.html">Chmod Calculator</a>.</li>
+      <li><strong>Look up an HTTP status code</strong> meaning and use cases when debugging an API — use <a href="http-status.html">HTTP Status Codes Reference</a>.</li>
+      <li><strong>Build an HTTP request and export as cURL/fetch/axios/Python</strong> — use <a href="http-request-builder.html">HTTP Request Builder</a>. Great for sharing reproducible API calls.</li>
+      <li><strong>Find a git command you forgot</strong> (rebase, stash, cherry-pick, reflog) — use <a href="git-cheatsheet.html">Git Commands Cheatsheet</a>.</li>
+    </ul>
+
+    <h3>Common DevOps mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Minifying without source maps.</strong> Production stack traces become unreadable. Always upload source maps to your error tracker (Sentry, Bugsnag) — never to public CDNs.</li>
+      <li><strong>Cron jobs running in UTC vs server local time.</strong> Many cron daemons run UTC. <code>0 9 * * *</code> isn't 9am locally unless your server is UTC. Specify timezone or set it explicitly in the job.</li>
+      <li><strong><code>chmod 777</code> as a "fix it" reflex.</strong> 777 makes files world-writable — a security disaster. Use <code>755</code> for executables, <code>644</code> for regular files. Find the actual permission issue.</li>
+      <li><strong>Returning <code>200 OK</code> with an error in the body.</strong> Monitoring, retries, caching all rely on status codes. Use <code>4xx</code>/<code>5xx</code> properly.</li>
+      <li><strong><code>git push --force</code> on a shared branch.</strong> Overwrites everyone else's commits. Use <code>--force-with-lease</code> at minimum, or rebase locally and merge.</li>
+      <li><strong>Including secrets in cURL commands you paste in tickets/Slack.</strong> Bearer tokens get logged everywhere. Redact before sharing.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>

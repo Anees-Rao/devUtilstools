@@ -4,12 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Color Palette Generator &amp; Picker Online — CSS Color Codes Free | FreeDevTool</title>
-  <meta name="description" content="Generate beautiful color palettes and pick colors with hex, RGB, HSL codes. WCAG contrast checker, complementary colors, and CSS-ready output. Free online color tool for designers and developers.">
+  <meta name="description" content="Generate beautiful color palettes and pick colors with hex, RGB, HSL codes. WCAG contrast checker, complementary colors, and CSS-ready output. Free color tool for designers and developers.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/color-picker.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Color Palette Generator & Picker — Free Online CSS Color Tool">
@@ -39,6 +49,32 @@
     .picker-row input[type="color"]{width:60px;height:60px;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg3);cursor:pointer;padding:2px}
     .char-count{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:right;margin-top:4px}
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "All Tools",
+        "item": "https://freedevtool.org/all-tools.html"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Color Palette Generator & Picker",
+        "item": "https://freedevtool.org/color-picker.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <nav>
@@ -125,6 +161,29 @@
       </div>
     </div>
   </div>
+  <!-- How to use + mistakes -->
+  <section class="use-cases">
+    <h2>How to use the color palette generator</h2>
+    <p>Build color palettes for UI mockups, brand systems, and design tokens. Pick a base color and the generator produces complementary, analogous, triadic, and tetradic harmonies — all with WCAG contrast ratios checked against white and black backgrounds. Everything renders in your browser; no API calls.</p>
+    <ul class="use-case-list">
+      <li><strong>1.</strong> Click the color swatch or paste a hex code (<code>#00d084</code>) to set your base color. The generator accepts hex, rgb(), hsl().</li>
+      <li><strong>2.</strong> Pick a harmony rule: complementary (opposite hue), analogous (adjacent), triadic (3-way split), tetradic (4-way), or monochromatic (same hue, varied lightness).</li>
+      <li><strong>3.</strong> Adjust the slider for chroma/saturation. The harmonies preview live; each variant shows its hex, RGB, and HSL.</li>
+      <li><strong>4.</strong> Read the WCAG ratio under each color. AA needs ≥ 4.5:1 for body text, AAA needs ≥ 7:1. Anything below 3:1 fails for large text too.</li>
+      <li><strong>5.</strong> Export as a CSS custom-properties block, Tailwind config snippet, or JSON for design-token tooling.</li>
+    </ul>
+
+    <h3>Common mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Skipping contrast checks.</strong> Many "good-looking" combos fail AA. Verify every text-on-bg pair before shipping — accessibility is now legally required in many jurisdictions (ADA, EAA, AODA).</li>
+      <li><strong>Using HSL "lightness" as if it were perceived brightness.</strong> HSL <code>lightness=50%</code> looks brighter for yellow than blue. For perceptual matching, use OKLCH or LCH.</li>
+      <li><strong>Defining a 50-shade palette when 5–7 do the job.</strong> Most design systems need: bg, surface, primary, accent, text, muted, danger. More than 9 colors fragments your design.</li>
+      <li><strong>Choosing red/green for status indicators.</strong> ~8% of men have red-green color blindness. Pair color with an icon or label so the meaning survives without color.</li>
+      <li><strong>Picking colors in sRGB on a P3 display.</strong> P3 reds/greens look fine on your Mac and washed-out everywhere else. Test in sRGB or define both color spaces.</li>
+      <li><strong>Forgetting dark-mode contrast.</strong> A color that hits AA on white may fail on <code>#0d0f11</code>. Run contrast checks for both modes; don't just invert.</li>
+    </ul>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">How do I create a color palette for my website?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Start with your brand's <strong>primary color</strong>, then use color harmony rules to generate a cohesive palette. <strong>Complementary</strong> colors (opposite on the color wheel) create high contrast. <strong>Analogous</strong> colors (adjacent) feel harmonious. <strong>Triadic</strong> (evenly spaced by 120°) offers balanced vibrancy. Limit your palette to 4–6 colors: one primary, one secondary, one accent, plus neutral tones for text and backgrounds.</div></div>

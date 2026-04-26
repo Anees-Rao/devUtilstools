@@ -4,10 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Online Security &amp; Hashing Tools &mdash; JWT Decoder, Hash Generator | FreeDevTool</title>
-  <meta name="description" content="Free online security and hashing tools for developers. JWT token decoder and inspector, MD5 SHA-1 SHA-256 SHA-512 hash generator, file checksum verification, token inspector and authentication debugging. Client-side, no signup.">
+  <meta name="description" content="Free security and hashing tools — JWT decoder, MD5/SHA-1/SHA-256/SHA-512 hash generator, JWT generator, file checksum verification. Client-side, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/security-tools.html">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
+  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -15,7 +25,7 @@
   <meta property="og:title" content="Free Online Security &amp; Hashing Tools | FreeDevTool">
   <meta property="og:description" content="JWT token decoder and inspector, MD5 SHA-1 SHA-256 SHA-512 hash generator, file checksum verification. All client-side, no signup.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/security-tools">
+  <meta property="og:url" content="https://freedevtool.org/security-tools.html">
 
   <script type="application/ld+json">
   {
@@ -185,6 +195,26 @@
       .tool-header { padding: 40px 0 28px; }
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://freedevtool.org/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Security & Hashing",
+        "item": "https://freedevtool.org/security-tools.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -244,6 +274,28 @@
       <span class="tile-badge new">New</span>
     </a>
   </div>
+
+  <!-- When to use which tool -->
+  <section class="use-cases">
+    <h2>Which security tool should you use?</h2>
+    <p>Security tools here cover the everyday auth-and-integrity tasks: inspecting JWTs from your auth provider, generating hashes for file integrity or password storage research, and minting tokens for local testing. None of these are substitutes for a real auth library or KMS — they're for debugging, learning, and one-off checks. Everything runs locally; tokens and inputs never leave your browser.</p>
+
+    <ul class="use-case-list">
+      <li><strong>Decode a JWT to inspect claims, expiration, issuer</strong> (debug auth flows, OAuth bearer tokens) — use <a href="jwt-decoder.html">JWT Decoder &amp; Inspector</a>.</li>
+      <li><strong>Generate a JWT for local testing</strong> with custom claims and HMAC-SHA256 signing — use <a href="jwt-generator.html">JWT Generator</a>. Never use this for production secrets.</li>
+      <li><strong>Compute MD5/SHA-1/SHA-256/SHA-512 of text or a file</strong> for checksum verification, ETags, cache keys — use <a href="hash-generator.html">Hash Generator</a>.</li>
+      <li><strong>Generate a strong random password</strong> for a service account — use <a href="password-generator.html">Password Generator</a> (in our Generation hub).</li>
+    </ul>
+
+    <h3>Common security mistakes to avoid</h3>
+    <ul class="mistakes-list">
+      <li><strong>Storing passwords as MD5 or SHA-256.</strong> Both are too fast — attackers crack billions/sec. Use <code>bcrypt</code>, <code>argon2id</code>, or <code>scrypt</code> on the server. Hash generators here are for integrity, not password storage.</li>
+      <li><strong>Trusting JWT payload data without verifying the signature.</strong> Anyone can forge a JWT body. Always verify the signature on the server with the issuer's public key (or HMAC secret).</li>
+      <li><strong>Embedding secrets in JWT payloads.</strong> JWT bodies are Base64-encoded, not encrypted. Anyone with the token reads the contents.</li>
+      <li><strong>Using HS256 with a short secret.</strong> A weak HMAC key (under 32 bytes random) is brute-forceable. Use 256-bit random keys, or switch to RS256/ES256 for asymmetric signing.</li>
+      <li><strong>Forgetting to set <code>exp</code> on JWTs.</strong> Tokens without expiration live forever — a leaked token is a permanent compromise. Always set <code>exp</code>; rotate refresh tokens regularly.</li>
+    </ul>
+  </section>
 
   <!-- FAQ -->
   <p class="category-label">Frequently Asked Questions</p>
