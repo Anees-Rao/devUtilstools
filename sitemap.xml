@@ -1,374 +1,374 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://devutilstools.pages.dev/</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/all-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/all-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/encoding-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/encoding-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/generation-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/generation-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/security-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/security-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/text-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/text-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/devops-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/devops-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/network-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/network-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/seo-tools.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/seo-tools.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/base64-encoder.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/base64-encoder.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/unix-timestamp-converter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/unix-timestamp-converter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/url-encoder.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/url-encoder.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/hex-to-rgb.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/hex-to-rgb.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/html-entity.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/html-entity.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/base64-image.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/base64-image.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/json-to-csv.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/json-to-csv.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/number-base.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/number-base.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/yaml-to-json.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/yaml-to-json.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/byte-converter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/byte-converter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/uuid-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/uuid-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/json-formatter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/json-formatter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/lorem-ipsum.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/lorem-ipsum.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/password-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/password-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/qr-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/qr-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/color-picker.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/color-picker.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/slug-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/slug-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/sql-formatter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/sql-formatter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/xml-formatter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/xml-formatter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/css-gradient.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/css-gradient.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/meta-tag-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/meta-tag-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/og-preview.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/og-preview.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/jwt-decoder.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/jwt-decoder.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/hash-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/hash-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/jwt-generator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/jwt-generator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/regex-tester.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/regex-tester.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/text-diff.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/text-diff.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/markdown-preview.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/markdown-preview.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/regex-explainer.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/regex-explainer.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/case-converter.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/case-converter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/string-escape.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/string-escape.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/css-minifier.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/css-minifier.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/js-minifier.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/js-minifier.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/cron-parser.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/cron-parser.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/chmod-calculator.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/chmod-calculator.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/http-status.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/http-status.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/ip-lookup.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/ip-lookup.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/timestamp-diff.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/timestamp-diff.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/css-box-shadow.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/css-box-shadow.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/wcag-contrast.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/wcag-contrast.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/char-counter.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/char-counter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/html-minifier.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/html-minifier.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/color-name.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/color-name.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/dns-lookup.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/dns-lookup.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/word-to-markdown.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/word-to-markdown.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/px-to-rem.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/px-to-rem.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/http-request-builder.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/http-request-builder.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/relative-time.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/relative-time.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/git-cheatsheet.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/git-cheatsheet.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/ai-token-counter.html</loc>
-    <lastmod>2026-04-21</lastmod>
+    <loc>https://freedevtool.org/ai-token-counter.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/about.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/about.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/privacy.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/privacy.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://devutilstools.pages.dev/terms.html</loc>
-    <lastmod>2026-03-22</lastmod>
+    <loc>https://freedevtool.org/terms.html</loc>
+    <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
