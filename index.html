@@ -91,6 +91,7 @@
     .search-bar {
       position: relative; margin-bottom: 40px;
       animation: fadeInUp .6s var(--ease-out) .4s both;
+      z-index: 999;
     }
     .search-bar input {
       width: 100%; padding: 14px 44px 14px 18px;
@@ -118,7 +119,7 @@
       border-radius: var(--radius-lg); padding: 6px;
       max-height: 320px; overflow-y: auto;
       box-shadow: 0 12px 40px rgba(0,0,0,.4);
-      z-index: 150; display: none;
+      z-index: 9999; display: none;
     }
     .search-results.visible { display: block; }
     .search-results a {
@@ -522,6 +523,7 @@ const allTools=[
 
 const searchInput=document.getElementById('tool-search');
 const searchResults=document.getElementById('search-results');
+const searchContainer=document.querySelector('.search-bar');
 
 searchInput.addEventListener('input',()=>{
   const q=searchInput.value.toLowerCase().trim();
@@ -535,11 +537,22 @@ searchInput.addEventListener('input',()=>{
   searchResults.classList.add('visible');
 });
 
-searchInput.addEventListener('blur',()=>{setTimeout(()=>searchResults.classList.remove('visible'),200)});
+searchInput.addEventListener('keydown',e=>{
+  if(e.key==="Escape") searchResults.classList.remove('visible');
+});
+
+searchContainer.addEventListener('focusout',e=>{
+  const related=e.relatedTarget;
+  if(!related || !searchContainer.contains(related)){
+    searchResults.classList.remove('visible');
+  }
+});
+
 searchInput.addEventListener('focus',()=>{if(searchInput.value.trim())searchInput.dispatchEvent(new Event('input'))});
 
 // Close dropdown when clicking outside
 document.addEventListener('click',e=>{
+  if(!searchContainer.contains(e.target)) searchResults.classList.remove('visible');
   const dd=document.getElementById('tools-dropdown');
   if(dd && !dd.contains(e.target))dd.classList.remove('open');
 });
