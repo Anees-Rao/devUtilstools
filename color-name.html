@@ -6,7 +6,7 @@
   <title>Color Name from Hex — Nearest Named Color Finder | FreeDevTool</title>
   <meta name="description" content="Find the color name from hex code instantly. Identifies the nearest CSS named color with RGB, HSL values, top 5 matches, and a full 147-color browser.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freedevtool.org/color-name.html">
+  <link rel="canonical" href="https://freedevtool.org/color-name">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -25,9 +25,9 @@
   <meta property="og:title" content="Color Name from Hex — Nearest Named Color Finder">
   <meta property="og:description" content="Find the closest CSS named color from any hex code. RGB, HSL, top 5 matches, and a browsable grid of all 147 colors.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/color-name.html">
+  <meta property="og:url" content="https://freedevtool.org/color-name">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Color Name Finder","url":"https://freedevtool.org/color-name.html","description":"Find the nearest CSS named color from any hex code. Shows RGB, HSL, top 5 matches.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Color Name Finder","url":"https://freedevtool.org/color-name","description":"Find the nearest CSS named color from any hex code. Shows RGB, HSL, top 5 matches.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I find the color name from a hex code?","acceptedAnswer":{"@type":"Answer","text":"Paste your hex code into the input box or use the color picker. The tool instantly compares your color against all 147 standard CSS named colors using Euclidean distance in RGB space, and returns the closest match. You also see the next four closest names for context."}},{"@type":"Question","name":"How many CSS named colors are there?","acceptedAnswer":{"@type":"Answer","text":"There are 147 standard CSS named colors recognized by modern browsers. This includes the 17 original HTML 4.01 colors, plus 130 additional X11 colors added in CSS3. Notable examples include Tomato, DodgerBlue, RebeccaPurple, MediumSeaGreen, and PapayaWhip."}},{"@type":"Question","name":"What algorithm is used to find the nearest color?","acceptedAnswer":{"@type":"Answer","text":"This tool uses Euclidean distance in RGB color space: sqrt((r1-r2)^2 + (g1-g2)^2 + (b1-b2)^2). It's simple and fast. More perceptually accurate alternatives like CIEDE2000 or Delta-E in LAB space produce slightly better results for human vision, but for practical naming the RGB distance is usually indistinguishable."}},{"@type":"Question","name":"Can I use named colors in modern CSS?","acceptedAnswer":{"@type":"Answer","text":"Yes, all 147 CSS named colors work in every modern browser and are part of the CSS Color Module Level 4 specification. They're perfectly valid in background-color, color, border, and anywhere a color value is accepted. Names are case-insensitive."}},{"@type":"Question","name":"Why do two very different hex codes sometimes map to the same name?","acceptedAnswer":{"@type":"Answer","text":"The 147 named colors are sparsely distributed across the 16.7 million possible RGB values. Any hex that falls in the region closest to DarkSlateGray, for instance, maps to DarkSlateGray even if it's visually distinct. That's why we show the top 5 closest matches with their distance metric, so you can see how good the match actually is."}}]}
@@ -86,13 +86,13 @@
         "@type": "ListItem",
         "position": 2,
         "name": "All Tools",
-        "item": "https://freedevtool.org/all-tools.html"
+        "item": "https://freedevtool.org/all-tools"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Color Name from Hex",
-        "item": "https://freedevtool.org/color-name.html"
+        "item": "https://freedevtool.org/color-name"
       }
     ]
   }

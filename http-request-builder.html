@@ -6,7 +6,7 @@
   <title>HTTP Request Builder — Free Online cURL Generator | FreeDevTool</title>
   <meta name="description" content="Build HTTP requests visually and generate cURL, fetch, axios, Python requests, and Node fetch code. Test endpoints live with headers and body. Free.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freedevtool.org/http-request-builder.html">
+  <link rel="canonical" href="https://freedevtool.org/http-request-builder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -25,9 +25,9 @@
   <meta property="og:title" content="HTTP Request Builder — Free Online cURL Generator">
   <meta property="og:description" content="Build HTTP requests, generate cURL/fetch/axios/Python code, and send requests live in your browser.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/http-request-builder.html">
+  <meta property="og:url" content="https://freedevtool.org/http-request-builder">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"HTTP Request Builder","url":"https://freedevtool.org/http-request-builder.html","description":"Visual HTTP request builder that generates cURL, fetch, axios, Python requests, and Node fetch code with live request sending.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"HTTP Request Builder","url":"https://freedevtool.org/http-request-builder","description":"Visual HTTP request builder that generates cURL, fetch, axios, Python requests, and Node fetch code with live request sending.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an HTTP request builder?","acceptedAnswer":{"@type":"Answer","text":"An HTTP request builder is a tool for composing HTTP requests through a visual UI — choosing a method, URL, headers, query parameters, and body — and generating the corresponding code in different languages and libraries. It speeds up prototyping API calls, reproducing issues, sharing requests with teammates, and embedding calls in scripts or production code."}},{"@type":"Question","name":"What code formats does this tool generate?","acceptedAnswer":{"@type":"Answer","text":"Five output formats are produced live as you edit the request: cURL (with proper single-quote escaping and backslash line continuations), browser fetch() in JavaScript, axios, Python requests (with json= or data= depending on content), and Node.js fetch. Each output tab has its own copy button."}},{"@type":"Question","name":"Why does sending the request fail with a CORS error?","acceptedAnswer":{"@type":"Answer","text":"The browser enforces the Same-Origin Policy, so requests to third-party APIs only succeed when the server explicitly returns the Access-Control-Allow-Origin header. APIs that don't set permissive CORS headers (most private or internal APIs) will fail from a browser. Use the generated cURL or Python code from a terminal to bypass CORS — it only restricts browser JS, not server-side or CLI clients."}},{"@type":"Question","name":"Does this tool store or log my requests?","acceptedAnswer":{"@type":"Answer","text":"No. The entire tool runs client-side in your browser; code generation happens in JavaScript locally. When you use the 'Send request' feature, the request goes directly from your browser to the target URL — it never touches this site's servers. Still, avoid pasting long-lived production API keys into any online builder."}},{"@type":"Question","name":"How do I send a JSON body?","acceptedAnswer":{"@type":"Answer","text":"Select POST, PUT, or PATCH, click 'Content-Type: application/json' in the header quick-add row, and paste your JSON into the body textarea. Toggle 'Validate JSON' to confirm syntax before sending. The generated Python code will automatically use json= (so requests serializes and sets the header), and the cURL output quotes the body safely with single quotes."}}]}
@@ -92,13 +92,13 @@
         "@type": "ListItem",
         "position": 2,
         "name": "All Tools",
-        "item": "https://freedevtool.org/all-tools.html"
+        "item": "https://freedevtool.org/all-tools"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "HTTP Request Builder",
-        "item": "https://freedevtool.org/http-request-builder.html"
+        "item": "https://freedevtool.org/http-request-builder"
       }
     ]
   }

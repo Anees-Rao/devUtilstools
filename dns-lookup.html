@@ -6,7 +6,7 @@
   <title>DNS Lookup Tool — Free Online DNS Query Tool | FreeDevTool</title>
   <meta name="description" content="Query DNS records instantly. Look up A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. Free, private, no signup.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freedevtool.org/dns-lookup.html">
+  <link rel="canonical" href="https://freedevtool.org/dns-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -25,9 +25,9 @@
   <meta property="og:title" content="DNS Lookup Tool — Free Online DNS Query Tool">
   <meta property="og:description" content="Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA DNS records via Cloudflare DoH. Free and private.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/dns-lookup.html">
+  <meta property="og:url" content="https://freedevtool.org/dns-lookup">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"DNS Lookup Tool","url":"https://freedevtool.org/dns-lookup.html","description":"Client-side DNS lookup tool using Cloudflare DNS-over-HTTPS. Supports A, AAAA, CNAME, MX, TXT, NS, SOA, CAA record types.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"DNS Lookup Tool","url":"https://freedevtool.org/dns-lookup","description":"Client-side DNS lookup tool using Cloudflare DNS-over-HTTPS. Supports A, AAAA, CNAME, MX, TXT, NS, SOA, CAA record types.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a DNS lookup?","acceptedAnswer":{"@type":"Answer","text":"A DNS lookup is the process of querying the Domain Name System to translate a human-readable domain name (like example.com) into machine-readable information such as IP addresses (A, AAAA records), mail servers (MX), text metadata (TXT), or other record types. DNS lookups happen transparently every time you load a website, send an email, or connect to a service."}},{"@type":"Question","name":"How does this DNS lookup tool work?","acceptedAnswer":{"@type":"Answer","text":"This tool runs entirely in your browser using Cloudflare's DNS-over-HTTPS (DoH) endpoint at cloudflare-dns.com/dns-query. Your query is sent directly from your browser to Cloudflare's 1.1.1.1 public resolver over encrypted HTTPS. No data passes through our servers. Results are parsed from JSON responses and rendered as a table you can copy."}},{"@type":"Question","name":"What DNS record types can I query?","acceptedAnswer":{"@type":"Answer","text":"This tool supports the eight most common record types: A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail exchanger), TXT (text data including SPF, DKIM, DMARC), NS (authoritative name servers), SOA (start of authority), and CAA (certificate authority authorization). These cover virtually all day-to-day DNS troubleshooting and auditing scenarios."}},{"@type":"Question","name":"Why are my DNS changes not showing up?","acceptedAnswer":{"@type":"Answer","text":"DNS records are cached at multiple layers: your operating system, your ISP's resolver, and public resolvers like Cloudflare. Each has a TTL (Time To Live) that determines how long records are cached. After updating a record at your registrar, propagation typically takes minutes to hours, occasionally up to 48 hours for records with long TTLs. This tool shows Cloudflare's current cached view."}},{"@type":"Question","name":"What is DNS-over-HTTPS (DoH)?","acceptedAnswer":{"@type":"Answer","text":"DNS-over-HTTPS (DoH, RFC 8484) is a protocol that performs DNS resolution over an encrypted HTTPS connection instead of traditional plaintext UDP port 53. DoH prevents eavesdropping and tampering by ISPs or network observers. Major providers including Cloudflare (1.1.1.1), Google (8.8.8.8), and Quad9 operate DoH endpoints. This tool uses Cloudflare's."}}]}
@@ -74,13 +74,13 @@
         "@type": "ListItem",
         "position": 2,
         "name": "All Tools",
-        "item": "https://freedevtool.org/all-tools.html"
+        "item": "https://freedevtool.org/all-tools"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "DNS Lookup Tool",
-        "item": "https://freedevtool.org/dns-lookup.html"
+        "item": "https://freedevtool.org/dns-lookup"
       }
     ]
   }

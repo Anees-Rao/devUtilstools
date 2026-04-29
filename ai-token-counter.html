@@ -6,7 +6,7 @@
   <title>AI Token Counter — GPT & Claude Cost Estimator | FreeDevTool</title>
   <meta name="description" content="Estimate AI token counts and costs for GPT-4o, GPT-4 Turbo, GPT-3.5, and Claude Opus/Sonnet/Haiku. Live token, character, and word counts with cost breakdown.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freedevtool.org/ai-token-counter.html">
+  <link rel="canonical" href="https://freedevtool.org/ai-token-counter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -25,9 +25,9 @@
   <meta property="og:title" content="AI Token Counter — GPT & Claude Cost Estimator">
   <meta property="og:description" content="Estimate tokens and API costs for GPT and Claude models with live character, word, and token counts.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/ai-token-counter.html">
+  <meta property="og:url" content="https://freedevtool.org/ai-token-counter">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"AI Token Counter","url":"https://freedevtool.org/ai-token-counter.html","description":"Estimate token counts and API costs for popular LLM providers.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"AI Token Counter","url":"https://freedevtool.org/ai-token-counter","description":"Estimate token counts and API costs for popular LLM providers.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is the 4-characters-per-token estimate?","acceptedAnswer":{"@type":"Answer","text":"The 4 chars/token heuristic is an approximation OpenAI publishes as a rule of thumb for English prose. Actual counts depend on the exact tokenizer — GPT-4o uses o200k_base, Claude uses a proprietary tokenizer. Expect accuracy within 10-15% for typical English text; code, non-English languages, and text with many symbols will differ more."}},{"@type":"Question","name":"How do I get exact token counts?","acceptedAnswer":{"@type":"Answer","text":"Use OpenAI's tiktoken Python library for GPT models, or Anthropic's count_tokens API endpoint for Claude. Both accept your text and return the exact token count the model would see. For Node.js, gpt-tokenizer and @anthropic-ai/tokenizer provide client-side equivalents."}},{"@type":"Question","name":"Why does the same text count differently across models?","acceptedAnswer":{"@type":"Answer","text":"Each model family uses a different tokenizer. GPT-3.5 uses cl100k_base, GPT-4o uses o200k_base (about 20% fewer tokens on average for many languages), and Claude uses its own BPE tokenizer. The same sentence can produce different token counts across providers, which affects both cost and your context window usage."}},{"@type":"Question","name":"What are input tokens vs output tokens?","acceptedAnswer":{"@type":"Answer","text":"Input tokens are everything you send to the model: the system prompt, user message, and any prior conversation history. Output tokens are what the model generates in response. Output tokens are almost always priced 3-5x higher than input, because generation is more computationally expensive than processing."}},{"@type":"Question","name":"How do I reduce my AI API costs?","acceptedAnswer":{"@type":"Answer","text":"Four main strategies: (1) use smaller models for simple tasks, (2) enable prompt caching to reuse repeated system prompts at up to 90% discount, (3) keep conversation history trimmed, and (4) use the Batch API for non-urgent workloads (50% discount on OpenAI, similar on Anthropic). Careful prompt engineering to reduce unnecessary context is the single biggest lever."}}]}
@@ -77,13 +77,13 @@
         "@type": "ListItem",
         "position": 2,
         "name": "All Tools",
-        "item": "https://freedevtool.org/all-tools.html"
+        "item": "https://freedevtool.org/all-tools"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "AI Token Counter",
-        "item": "https://freedevtool.org/ai-token-counter.html"
+        "item": "https://freedevtool.org/ai-token-counter"
       }
     ]
   }

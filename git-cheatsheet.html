@@ -6,7 +6,7 @@
   <title>Git Commands Cheatsheet — 60+ Commands Reference | FreeDevTool</title>
   <meta name="description" content="Browse a searchable git commands cheatsheet with 60+ commands, real examples, and a 10-step learning path. Covers branching, rebasing, stashing, and more.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://freedevtool.org/git-cheatsheet.html">
+  <link rel="canonical" href="https://freedevtool.org/git-cheatsheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="style.css">
@@ -25,9 +25,9 @@
   <meta property="og:title" content="Git Commands Cheatsheet — 60+ Commands Reference">
   <meta property="og:description" content="Searchable git cheatsheet with examples, categories, and a 10-step learning path for newcomers.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://freedevtool.org/git-cheatsheet.html">
+  <meta property="og:url" content="https://freedevtool.org/git-cheatsheet">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Git Commands Cheatsheet","url":"https://freedevtool.org/git-cheatsheet.html","description":"Searchable reference of 60+ git commands with examples and a learning path.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Git Commands Cheatsheet","url":"https://freedevtool.org/git-cheatsheet","description":"Searchable reference of 60+ git commands with examples and a learning path.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between git reset and git revert?","acceptedAnswer":{"@type":"Answer","text":"git reset rewrites history by moving the branch pointer backward; git revert creates a new commit that undoes the changes of a previous commit without altering history. Use revert on shared branches — reset is only safe on private branches nobody else has pulled."}},{"@type":"Question","name":"When should I use git rebase instead of merge?","acceptedAnswer":{"@type":"Answer","text":"Use rebase when you want a linear history on your feature branch before merging. Use merge when you want to preserve the exact history of branches, including the merge point. The golden rule: never rebase commits that exist outside your local repo and that other people may have based work on."}},{"@type":"Question","name":"How do I undo the last commit in git?","acceptedAnswer":{"@type":"Answer","text":"If you haven't pushed yet: git reset --soft HEAD~1 keeps your changes staged, git reset --mixed HEAD~1 keeps them unstaged, git reset --hard HEAD~1 discards them entirely. If you've already pushed: use git revert HEAD to create an inverse commit that's safe on shared branches."}},{"@type":"Question","name":"What does git stash do?","acceptedAnswer":{"@type":"Answer","text":"git stash saves your uncommitted changes (tracked files) onto a stack and reverts your working directory to HEAD. Useful when you need to quickly switch branches without committing half-finished work. Restore with git stash pop (removes from stack) or git stash apply (keeps it)."}},{"@type":"Question","name":"How do I resolve a merge conflict?","acceptedAnswer":{"@type":"Answer","text":"When git reports a conflict, open the conflicted files — you'll see markers <<<<<<< HEAD, =======, and >>>>>>> branch-name surrounding the conflicting regions. Edit the file to the desired final state (removing the markers), then git add the file and git commit to complete the merge. You can also run git merge --abort to cancel the merge entirely."}}]}
@@ -71,13 +71,13 @@
         "@type": "ListItem",
         "position": 2,
         "name": "All Tools",
-        "item": "https://freedevtool.org/all-tools.html"
+        "item": "https://freedevtool.org/all-tools"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Git Commands Cheatsheet",
-        "item": "https://freedevtool.org/git-cheatsheet.html"
+        "item": "https://freedevtool.org/git-cheatsheet"
       }
     ]
   }

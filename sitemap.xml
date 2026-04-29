@@ -7,367 +7,367 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/all-tools.html</loc>
+    <loc>https://freedevtool.org/all-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/encoding-tools.html</loc>
+    <loc>https://freedevtool.org/encoding-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/generation-tools.html</loc>
+    <loc>https://freedevtool.org/generation-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/security-tools.html</loc>
+    <loc>https://freedevtool.org/security-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/text-tools.html</loc>
+    <loc>https://freedevtool.org/text-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/devops-tools.html</loc>
+    <loc>https://freedevtool.org/devops-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/network-tools.html</loc>
+    <loc>https://freedevtool.org/network-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/seo-tools.html</loc>
+    <loc>https://freedevtool.org/seo-tools</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/base64-encoder.html</loc>
+    <loc>https://freedevtool.org/base64-encoder</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/unix-timestamp-converter.html</loc>
+    <loc>https://freedevtool.org/unix-timestamp-converter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/url-encoder.html</loc>
+    <loc>https://freedevtool.org/url-encoder</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/hex-to-rgb.html</loc>
+    <loc>https://freedevtool.org/hex-to-rgb</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/html-entity.html</loc>
+    <loc>https://freedevtool.org/html-entity</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/base64-image.html</loc>
+    <loc>https://freedevtool.org/base64-image</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/json-to-csv.html</loc>
+    <loc>https://freedevtool.org/json-to-csv</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/number-base.html</loc>
+    <loc>https://freedevtool.org/number-base</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/yaml-to-json.html</loc>
+    <loc>https://freedevtool.org/yaml-to-json</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/byte-converter.html</loc>
+    <loc>https://freedevtool.org/byte-converter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/uuid-generator.html</loc>
+    <loc>https://freedevtool.org/uuid-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/json-formatter.html</loc>
+    <loc>https://freedevtool.org/json-formatter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/lorem-ipsum.html</loc>
+    <loc>https://freedevtool.org/lorem-ipsum</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/password-generator.html</loc>
+    <loc>https://freedevtool.org/password-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/qr-generator.html</loc>
+    <loc>https://freedevtool.org/qr-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/color-picker.html</loc>
+    <loc>https://freedevtool.org/color-picker</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/slug-generator.html</loc>
+    <loc>https://freedevtool.org/slug-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/sql-formatter.html</loc>
+    <loc>https://freedevtool.org/sql-formatter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/xml-formatter.html</loc>
+    <loc>https://freedevtool.org/xml-formatter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/css-gradient.html</loc>
+    <loc>https://freedevtool.org/css-gradient</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/meta-tag-generator.html</loc>
+    <loc>https://freedevtool.org/meta-tag-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/og-preview.html</loc>
+    <loc>https://freedevtool.org/og-preview</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/jwt-decoder.html</loc>
+    <loc>https://freedevtool.org/jwt-decoder</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/hash-generator.html</loc>
+    <loc>https://freedevtool.org/hash-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/jwt-generator.html</loc>
+    <loc>https://freedevtool.org/jwt-generator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/regex-tester.html</loc>
+    <loc>https://freedevtool.org/regex-tester</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/text-diff.html</loc>
+    <loc>https://freedevtool.org/text-diff</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/markdown-preview.html</loc>
+    <loc>https://freedevtool.org/markdown-preview</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/regex-explainer.html</loc>
+    <loc>https://freedevtool.org/regex-explainer</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/case-converter.html</loc>
+    <loc>https://freedevtool.org/case-converter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/string-escape.html</loc>
+    <loc>https://freedevtool.org/string-escape</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/css-minifier.html</loc>
+    <loc>https://freedevtool.org/css-minifier</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/js-minifier.html</loc>
+    <loc>https://freedevtool.org/js-minifier</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/cron-parser.html</loc>
+    <loc>https://freedevtool.org/cron-parser</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/chmod-calculator.html</loc>
+    <loc>https://freedevtool.org/chmod-calculator</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/http-status.html</loc>
+    <loc>https://freedevtool.org/http-status</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/ip-lookup.html</loc>
+    <loc>https://freedevtool.org/ip-lookup</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/timestamp-diff.html</loc>
+    <loc>https://freedevtool.org/timestamp-diff</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/css-box-shadow.html</loc>
+    <loc>https://freedevtool.org/css-box-shadow</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/wcag-contrast.html</loc>
+    <loc>https://freedevtool.org/wcag-contrast</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/char-counter.html</loc>
+    <loc>https://freedevtool.org/char-counter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/html-minifier.html</loc>
+    <loc>https://freedevtool.org/html-minifier</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/color-name.html</loc>
+    <loc>https://freedevtool.org/color-name</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/dns-lookup.html</loc>
+    <loc>https://freedevtool.org/dns-lookup</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/word-to-markdown.html</loc>
+    <loc>https://freedevtool.org/word-to-markdown</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/px-to-rem.html</loc>
+    <loc>https://freedevtool.org/px-to-rem</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/http-request-builder.html</loc>
+    <loc>https://freedevtool.org/http-request-builder</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/relative-time.html</loc>
+    <loc>https://freedevtool.org/relative-time</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/git-cheatsheet.html</loc>
+    <loc>https://freedevtool.org/git-cheatsheet</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/ai-token-counter.html</loc>
+    <loc>https://freedevtool.org/ai-token-counter</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/about.html</loc>
+    <loc>https://freedevtool.org/about</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/privacy.html</loc>
+    <loc>https://freedevtool.org/privacy</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://freedevtool.org/terms.html</loc>
+    <loc>https://freedevtool.org/terms</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

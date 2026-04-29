@@ -1,69 +1,11 @@
 # Cloudflare Pages redirects
-# Forces canonical host (non-www) — fixes the duplicate-content split flagged by the SEO audit.
+# Forces canonical host (non-www) and HTTPS.
+#
+# Do not add /page -> /page.html redirects here. Cloudflare Pages already
+# redirects .html URLs to extensionless URLs, so reversing that creates an
+# ERR_TOO_MANY_REDIRECTS loop.
 # Format: <source>  <destination>  <status>
 
 https://www.freedevtool.org/*    https://freedevtool.org/:splat    301!
 http://freedevtool.org/*         https://freedevtool.org/:splat    301!
 http://www.freedevtool.org/*     https://freedevtool.org/:splat    301!
-
-/unix-timestamp-converter    /unix-timestamp-converter.html    301
-/css-minifier                /css-minifier.html                301
-/url-encoder                 /url-encoder.html                 301
-/json-formatter              /json-formatter.html              301
-/base64-encoder              /base64-encoder.html              301
-/regex-tester                /regex-tester.html                301
-/jwt-decoder                 /jwt-decoder.html                301
-/hash-generator              /hash-generator.html              301
-/password-generator          /password-generator.html          301
-/uuid-generator              /uuid-generator.html              301
-/color-picker                /color-picker.html                301
-/css-gradient                /css-gradient.html                301
-/hex-to-rgb                  /hex-to-rgb.html                  301
-/html-entity                 /html-entity.html                 301
-/base64-image                /base64-image.html                301
-/json-to-csv                 /json-to-csv.html              301
-/yaml-to-json                /yaml-to-json.html                301
-/lorem-ipsum                 /lorem-ipsum.html                 301
-/qr-generator                /qr-generator.html                301
-/slug-generator              /slug-generator.html             301
-/sql-formatter               /sql-formatter.html              301
-/xml-formatter               /xml-formatter.html              301
-/meta-tag-generator          /meta-tag-generator.html         301
-/og-preview                  /og-preview.html                 301
-/jwt-generator               /jwt-generator.html              301
-/text-diff                   /text-diff.html                  301
-/markdown-preview            /markdown-preview.html           301
-/regex-explainer             /regex-explainer.html            301
-/case-converter              /case-converter.html             301
-/string-escape               /string-escape.html              301
-/js-minifier                 /js-minifier.html                301
-/cron-parser                 /cron-parser.html                301
-/chmod-calculator            /chmod-calculator.html           301
-/http-status                 /http-status.html                301
-/ip-lookup                   /ip-lookup.html                  301
-/timestamp-diff              /timestamp-diff.html             301
-/css-box-shadow              /css-box-shadow.html             301
-/wcag-contrast               /wcag-contrast.html              301
-/char-counter                /char-counter.html               301
-/html-minifier               /html-minifier.html              301
-/color-name                  /color-name.html                 301
-/dns-lookup                  /dns-lookup.html                 301
-/word-to-markdown            /word-to-markdown.html           301
-/px-to-rem                   /px-to-rem.html                  301
-/http-request-builder        /http-request-builder.html      301
-/relative-time               /relative-time.html             301
-/git-cheatsheet              /git-cheatsheet.html            301
-/ai-token-counter            /ai-token-counter.html          301
-/number-base                 /number-base.html               301
-/byte-converter              /byte-converter.html            301
-/all-tools                   /all-tools.html                 301
-/encoding-tools              /encoding-tools.html            301
-/generation-tools            /generation-tools.html          301
-/security-tools              /security-tools.html            301
-/text-tools                  /text-tools.html                301
-/devops-tools                /devops-tools.html              301
-/network-tools               /network-tools.html             301
-/seo-tools                   /seo-tools.html                 301
-/about                       /about.html                     301
-/privacy                     /privacy.html                   301
-/terms                       /terms.html                     301
