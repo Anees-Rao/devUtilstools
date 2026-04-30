@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64 Encoder & Decoder Online — Free | FreeDevTool</title>
-  <meta name="description" content="Encode and decode Base64 strings online for free. Supports text and file encoding. Fast, private, no data stored.">
+  <title>Base64 Encoder & Decoder Online — Free Text & File Tool | FreeDevTool</title>
+  <meta name="description" content="Free Base64 encoder &amp; decoder. Standard &amp; URL-safe modes, text + file support, RFC 4648 compliant. Runs in your browser, no signup, no uploads.">
+  <meta name="keywords" content="base64 encoder, base64 decoder, base64 online, encode base64, decode base64, RFC 4648, URL-safe base64, data URI generator, base64 to image">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/base64-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Base64 Encoder &amp; Decoder Online — Free | FreeDevTool">
+  <meta name="twitter:description" content="Encode/decode text &amp; files to Base64. Standard &amp; URL-safe variants, runs in browser, no uploads, no signup.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -196,13 +197,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Encoding Tool</div>
-    <h1>Base64 Encoder / Decoder</h1>
+    <h1>Base64 Encoder &amp; Decoder Online</h1>
     <p class="tool-description">
-      Encode any text or file to Base64, or decode a Base64 string back to plain text instantly. This free online Base64 encoder supports both standard and URL-safe Base64 encoding formats (RFC 4648). Paste your text, drag and drop a file, or switch to decode mode to convert Base64 back to readable content. All processing happens entirely in your browser using native JavaScript APIs — nothing is ever uploaded to a server. Works offline, no signup required.
+      Encode any text or file to Base64, or decode a Base64 string back to plain text instantly. This free Base64 encoder supports both standard and URL-safe variants per <a href="https://datatracker.ietf.org/doc/html/rfc4648" rel="noopener" style="color:var(--accent)">RFC 4648</a>. Paste text, drag-and-drop a file (image, PDF, anything binary), or switch to decode mode. All processing happens in your browser using the native <code>btoa</code>/<code>atob</code> and <code>FileReader</code> APIs — files are never uploaded to a server. Works offline, no signup required.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -284,6 +284,285 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is Base64 encoding?</h2>
+      <p><strong>Base64</strong> is a binary-to-text encoding scheme that represents binary data using a 64-character alphabet of printable ASCII letters. The standard is defined in <a href="https://datatracker.ietf.org/doc/html/rfc4648" rel="noopener">RFC 4648</a>, which formalizes both the "standard" alphabet (used in MIME, PEM certificates, and most APIs) and a <strong>URL-safe</strong> variant. Base64 was created in 1987 to solve a specific problem: how to send 8-bit binary data — images, executables, certificates — through 7-bit ASCII channels like email and early text-based protocols that would corrupt anything outside the printable range.</p>
+      <p>The 64-character alphabet is the union of three groups: uppercase letters <code>A–Z</code> (26), lowercase letters <code>a–z</code> (26), digits <code>0–9</code> (10), plus two extras — <code>+</code> and <code>/</code> for standard Base64, or <code>-</code> and <code>_</code> for URL-safe Base64. Plus an optional <code>=</code> padding character (technically the 65th symbol, but never represents data). Every Base64 character encodes exactly 6 bits of input, so 3 bytes of binary input (24 bits) fit perfectly into 4 Base64 characters. This 3-to-4 ratio explains the famous <strong>33% size overhead</strong> — 1 KB of binary becomes 1.33 KB of Base64.</p>
+      <p>Despite being a simple encoding (not encryption), Base64 is everywhere: JSON Web Tokens (JWTs) use Base64URL for header, payload, and signature; HTTP Basic Auth wraps <code>username:password</code> in Base64; PEM-encoded certificates and SSH keys are Base64; email attachments use Base64 inside MIME; data URIs (<code>data:image/png;base64,...</code>) inline images in HTML and CSS. Knowing exactly when Base64 helps versus when it hurts (it's not encryption, it's not compression, it inflates payloads) is a core developer skill.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How Base64 encoding works under the hood</h2>
+      <p>The algorithm is a simple bit-regrouping. Imagine encoding the 3-byte ASCII string <code>"Sun"</code>:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Step</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Input characters</td><td><code>S u n</code></td></tr>
+          <tr><td>ASCII / byte values</td><td><code>83 117 110</code></td></tr>
+          <tr><td>Binary (3 × 8 bits = 24 bits)</td><td><code>01010011 01110101 01101110</code></td></tr>
+          <tr><td>Re-grouped into 6-bit chunks</td><td><code>010100 110111 010101 101110</code></td></tr>
+          <tr><td>Decimal values of each 6-bit chunk</td><td><code>20 55 21 46</code></td></tr>
+          <tr><td>Map to Base64 alphabet</td><td><code>U 3 V u</code></td></tr>
+          <tr><td>Final Base64 output</td><td><code>U3Vu</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Padding rules — why you see <code>=</code> at the end</h3>
+      <p>Base64 always emits multiples of 4 characters. If your input length isn't divisible by 3, the encoder pads the missing bytes with zero bits and signals the padding with <code>=</code> characters at the end:</p>
+      <ul>
+        <li><strong>1 byte input</strong> → 2 Base64 chars + <code>==</code> (e.g. <code>"M"</code> → <code>"TQ=="</code>)</li>
+        <li><strong>2 byte input</strong> → 3 Base64 chars + <code>=</code> (e.g. <code>"Ma"</code> → <code>"TWE="</code>)</li>
+        <li><strong>3 byte input</strong> → 4 Base64 chars, no padding (e.g. <code>"Man"</code> → <code>"TWFu"</code>)</li>
+      </ul>
+      <p>Some implementations omit padding (RFC 4648 §3.2 allows it). When decoding, modern libraries handle both padded and unpadded inputs; older implementations may require <code>=</code>. If you see a "Invalid base64" error, try adding <code>=</code> to round the length up to a multiple of 4.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Standard vs URL-safe Base64 — the two variants</h2>
+      <p>Standard Base64 uses <code>+</code> and <code>/</code> for the last two alphabet positions. Both are reserved characters in URLs, query strings, and filenames. So a Base64 string like <code>aGVsbG8/d29ybGQ+</code> embedded into a URL would be misinterpreted: <code>?</code> becomes a query delimiter, <code>+</code> becomes a space in form-encoded contexts. RFC 4648 §5 defines a URL-safe variant that swaps these with URL-friendly substitutes:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Position</th><th>Standard (RFC 4648 §4)</th><th>URL-safe (RFC 4648 §5)</th></tr></thead>
+        <tbody>
+          <tr><td>62 (0x3E)</td><td><code>+</code></td><td><code>-</code></td></tr>
+          <tr><td>63 (0x3F)</td><td><code>/</code></td><td><code>_</code></td></tr>
+          <tr><td>Padding</td><td><code>=</code> (required by some, optional by others)</td><td><code>=</code> usually omitted</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>When to use which:</strong></p>
+      <ul>
+        <li><strong>Standard Base64</strong> — email attachments (MIME), PEM certificates, HTTP Basic Auth, traditional APIs, anywhere the output isn't going into a URL or filename.</li>
+        <li><strong>URL-safe Base64</strong> — JWTs (mandatory per RFC 7515), URL parameters, OAuth flows, filenames, cookies, form fields.</li>
+      </ul>
+
+      <div class="article-aside">
+        <strong>Conversion tip:</strong> if you have a standard Base64 string and need it URL-safe, just substitute <code>+ → -</code>, <code>/ → _</code>, and strip trailing <code>=</code>. The reverse works to decode URL-safe Base64 with a standard decoder. This tool's "URL-safe" toggle does the substitution automatically.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>When to use Base64 — and when not to</h2>
+
+      <h3>Good fits for Base64</h3>
+      <ul>
+        <li><strong>JWT (JSON Web Tokens)</strong> — header and payload are JSON objects, Base64URL-encoded so they survive transport in HTTP headers, cookies, and URL query parameters.</li>
+        <li><strong>HTTP Basic Auth</strong> — the <code>Authorization: Basic ...</code> header carries <code>username:password</code> Base64-encoded. Not encryption, just encoding for HTTP-safe transport. Use HTTPS to actually protect the credentials.</li>
+        <li><strong>PEM certificates &amp; keys</strong> — <code>-----BEGIN CERTIFICATE-----</code> wraps Base64-encoded DER bytes. The text format makes them paste-friendly across systems.</li>
+        <li><strong>MIME email attachments</strong> — SMTP was designed for 7-bit text; Base64 lets binary attachments survive intact.</li>
+        <li><strong>Tiny inline images (data URIs)</strong> — for icons under 4 KB, a <code>data:image/svg+xml;base64,...</code> URL eliminates an HTTP request. Use sparingly: the 33% overhead and lack of caching make this counterproductive at larger sizes.</li>
+        <li><strong>Embedding binary in JSON or XML</strong> — when you can't use multipart upload and absolutely must put binary in a structured text field.</li>
+        <li><strong>QR code data</strong> — when encoding binary payloads (digital business cards, encrypted handshakes).</li>
+      </ul>
+
+      <h3>Bad fits for Base64</h3>
+      <ul>
+        <li><strong>Encryption substitute.</strong> Base64 is reversible by anyone in 1 millisecond. Encoding API keys or passwords in Base64 is security theater.</li>
+        <li><strong>Compression.</strong> Base64 <em>increases</em> size by 33%. If size matters, gzip the binary first, then Base64 the gzipped output.</li>
+        <li><strong>Large file uploads.</strong> Inflating a 10 MB image to 13.3 MB Base64 string just to put it in JSON wastes bandwidth and parser memory. Use multipart/form-data uploads instead.</li>
+        <li><strong>Long-term storage of large blobs.</strong> Database columns of Base64 BLOBs cost ~33% more storage and slow scans. Store raw bytes (BLOB / BYTEA) and encode at the API edge if needed.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Base64 in 8 programming languages</h2>
+
+      <h3>JavaScript / Browser</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// ASCII / Latin-1 only — for full Unicode see below
+btoa("hello world");           // → "aGVsbG8gd29ybGQ="
+atob("aGVsbG8gd29ybGQ=");      // → "hello world"
+
+// Unicode-safe encode (modern browsers)
+const utf8 = new TextEncoder().encode("café 中文");
+const b64  = btoa(String.fromCharCode(...utf8));
+
+// URL-safe Base64
+const urlSafe = b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+// File → Base64 (FileReader, async)
+const reader = new FileReader();
+reader.onload = () =&gt; console.log(reader.result.split(',')[1]);
+reader.readAsDataURL(file);  // produces "data:...;base64,XXXXXX"
+</code></pre>
+      </div>
+
+      <h3>Node.js</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>// Buffer — Unicode-safe by default
+const b64 = Buffer.from("hello world").toString('base64');     // "aGVsbG8gd29ybGQ="
+const dec = Buffer.from(b64, 'base64').toString();             // "hello world"
+
+// URL-safe variant (Node 16+)
+const urlSafe = Buffer.from(data).toString('base64url');
+
+// Encode a file
+import { readFile } from 'node:fs/promises';
+const b64File = (await readFile('image.png')).toString('base64');
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import base64
+
+# Standard
+encoded = base64.b64encode(b"hello world").decode()     # 'aGVsbG8gd29ybGQ='
+decoded = base64.b64decode("aGVsbG8gd29ybGQ=").decode() # 'hello world'
+
+# URL-safe (no padding by convention; add back for decode if needed)
+url_safe = base64.urlsafe_b64encode(b"hello").rstrip(b'=').decode()
+# 'aGVsbG8'  (5-byte input = 1 padding char stripped)
+
+# Encode a file
+with open('image.png', 'rb') as f:
+    b64_file = base64.b64encode(f.read()).decode()
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Standard Base64
+$encoded = base64_encode("hello world");      // "aGVsbG8gd29ybGQ="
+$decoded = base64_decode("aGVsbG8gd29ybGQ="); // "hello world"
+
+// URL-safe (manual swap — PHP has no built-in)
+function base64UrlEncode(string $data): string {
+    return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+function base64UrlDecode(string $data): string {
+    return base64_decode(strtr($data, '-_', '+/'));
+}
+
+// Encode a file
+$b64File = base64_encode(file_get_contents('image.png'));
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import java.util.Base64;
+
+// Standard
+String encoded = Base64.getEncoder().encodeToString("hello world".getBytes());
+byte[] decoded = Base64.getDecoder().decode(encoded);
+
+// URL-safe (no padding)
+String urlSafe = Base64.getUrlEncoder().withoutPadding().encodeToString(data);
+byte[] back = Base64.getUrlDecoder().decode(urlSafe);
+
+// File → Base64
+byte[] bytes = Files.readAllBytes(Paths.get("image.png"));
+String b64 = Base64.getEncoder().encodeToString(bytes);
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "encoding/base64"
+
+// Standard
+encoded := base64.StdEncoding.EncodeToString([]byte("hello world"))
+decoded, _ := base64.StdEncoding.DecodeString(encoded)
+
+// URL-safe (no padding)
+urlSafe := base64.RawURLEncoding.EncodeToString([]byte("hello"))
+decoded, _ = base64.RawURLEncoding.DecodeString(urlSafe)
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use base64::{engine::general_purpose, Engine as _};
+
+// Standard
+let encoded = general_purpose::STANDARD.encode(b"hello world");
+let decoded = general_purpose::STANDARD.decode(encoded)?;
+
+// URL-safe, no padding
+let url_safe = general_purpose::URL_SAFE_NO_PAD.encode(b"hello");
+</code></pre>
+      </div>
+
+      <h3>Bash</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Standard encode / decode
+echo -n "hello world" | base64                  # "aGVsbG8gd29ybGQ="
+echo -n "aGVsbG8gd29ybGQ=" | base64 -d          # "hello world"
+
+# Encode a file (single line, no wrapping)
+base64 -w 0 image.png &gt; image.b64
+
+# Decode back to a file
+base64 -d image.b64 &gt; image.png
+
+# URL-safe variant via tr
+echo -n "data" | base64 | tr '+/' '-_' | tr -d '='
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Data URIs — embedding files inline</h2>
+      <p>A <strong>data URI</strong> packs a small file directly into a URL using Base64. Browsers, mail clients, and most image renderers treat it like a normal URL but read the bytes inline instead of fetching them. The format:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">data-uri-format</div>
+<pre><code>data:[&lt;mediatype&gt;][;base64],&lt;data&gt;
+
+// Example: 1×1 transparent PNG
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgAAIAAAUAAeImBZsAAAAASUVORK5CYII=
+
+// SVG (often smaller without Base64)
+data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'&gt;...&lt;/svg&gt;
+</code></pre>
+      </div>
+
+      <h3>When data URIs make sense</h3>
+      <ul>
+        <li>Single-pixel tracking GIFs and 1×1 placeholders (under 100 bytes).</li>
+        <li>Small icons in CSS where avoiding an HTTP request matters more than caching (under 4 KB rule of thumb).</li>
+        <li>Email signatures with embedded logos that must work offline.</li>
+        <li>Generated previews (e.g. <code>FileReader.readAsDataURL</code> for image upload preview).</li>
+      </ul>
+
+      <h3>When NOT to use them</h3>
+      <ul>
+        <li>Anything larger than 4 KB — the 33% Base64 overhead plus the inability to cache the asset hurts more than it helps. Use a regular HTTP request.</li>
+        <li>Production images that appear on multiple pages — caching wins.</li>
+        <li>Anything that needs to be lazy-loaded or preloaded — data URIs can't be.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Base64 best practices</h2>
+      <ul>
+        <li><strong>Don't confuse Base64 with encryption.</strong> Base64 is reversible without a key. If you need confidentiality, use AES-GCM or libsodium and Base64 the ciphertext if you need to embed it as text.</li>
+        <li><strong>Pick URL-safe Base64 by default for new APIs.</strong> It works in URLs, JSON, JWTs, cookies, and filenames without escaping. Standard Base64 needs additional URL encoding.</li>
+        <li><strong>Always decode in the same encoding as you encoded.</strong> Mixing standard with URL-safe is the #1 cause of "Invalid base64" errors. Most modern libraries auto-detect, but don't rely on it.</li>
+        <li><strong>For UTF-8 strings in JavaScript browsers</strong>, never use raw <code>btoa(string)</code> on Unicode — it throws on characters above 0xFF. Use <code>btoa(unescape(encodeURIComponent(s)))</code> or the modern <code>TextEncoder</code> approach.</li>
+        <li><strong>For files larger than ~5 MB in browsers</strong>, use <code>FileReader</code> with chunked processing. <code>readAsDataURL</code> on huge files freezes the UI thread.</li>
+        <li><strong>Validate decoded payloads before trusting them.</strong> Base64 will happily decode garbage into more garbage. After decoding a JWT, verify the signature; after decoding an image, check magic bytes.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- How to use + mistakes -->
   <section class="use-cases">
@@ -406,9 +685,10 @@
 <footer>
   <div>© 2026 FreeDevTool — Base64 Encoder / Decoder</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

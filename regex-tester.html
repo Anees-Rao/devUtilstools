@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Regex Tester Online — Test Regular Expressions Free | FreeDevTool</title>
-  <meta name="description" content="Test and debug regular expressions online. Real-time matching, group highlighting and regex explanation. 100% free.">
+  <title>Regex Tester Online — Test &amp; Debug Regular Expressions Free | FreeDevTool</title>
+  <meta name="description" content="Free regex tester &amp; debugger. Real-time matching, capture groups, all JS flags (g/i/m/s/u). PCRE-compatible patterns. Runs in browser, no signup.">
+  <meta name="keywords" content="regex tester, regular expression tester, regex debugger, regex online, regex101 alternative, regex match highlighter, JavaScript regex">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/regex-tester">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Regex Tester Online — Test &amp; Debug Regular Expressions | FreeDevTool">
+  <meta name="twitter:description" content="Test and debug regex patterns with live highlighting, capture groups & flag toggles. Free, runs in browser, no signup.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -173,13 +174,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Developer Tool</div>
-    <h1>Regex Tester &amp; Debugger</h1>
+    <h1>Regex Tester Online — Test Regular Expressions</h1>
     <p class="tool-description">
-      Test and debug regular expressions in real time with instant match highlighting, capture group extraction, and detailed match information. This free online regex tester uses JavaScript's native RegExp engine and supports all flags including global (<code>g</code>), case-insensitive (<code>i</code>), multiline (<code>m</code>), dotAll (<code>s</code>), and unicode (<code>u</code>). Paste your pattern and test string to see matches highlighted instantly. All processing happens client-side — nothing is sent to a server.
+      Test and debug regular expressions in real time with instant match highlighting, capture group extraction, and detailed match information. This free regex tester uses JavaScript's native RegExp engine (ECMAScript 2018+) and supports all flags: global (<code>g</code>), case-insensitive (<code>i</code>), multiline (<code>m</code>), dotAll (<code>s</code>), unicode (<code>u</code>), and sticky (<code>y</code>). Paste your pattern and test string to see matches highlighted instantly with capture group details. All processing happens client-side — nothing is sent to a server.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -235,6 +235,422 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a regular expression?</h2>
+      <p>A <strong>regular expression</strong> (regex, regexp, or RE) is a sequence of characters that defines a <em>search pattern</em>. Originally formalized by mathematician Stephen Kleene in the 1950s as a way to describe regular languages, regular expressions became a programmer's tool in the 1970s when Ken Thompson built them into the <code>ed</code> editor and later <code>grep</code>. Today every modern programming language ships a regex engine — JavaScript's <code>RegExp</code>, Python's <code>re</code>, PCRE in PHP, Java's <code>java.util.regex</code>, Go's <code>regexp</code>, and Rust's <code>regex</code> crate.</p>
+      <p>Regex shines for tasks that look easy in English but are awkward in plain code: "find every email address in this log", "extract the version number from a release tag", "validate that a phone number has 10 digits", "split a CSV row that may contain quoted commas." A pattern of 10–30 characters can replace 50 lines of imperative parsing logic. The trade-off is readability — regex is famously write-only. The pattern <code>^(?:[a-z0-9!#$%&amp;'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+\/=?^_`{|}~-]+)*|"...")@</code> is a real fragment from email validation.</p>
+      <p>Modern engines support far more than the 1950s formalism. <strong>Lookahead, lookbehind, named groups, backreferences, unicode property escapes, possessive quantifiers</strong> — each addition makes patterns more powerful but also riskier. The most-cited regex bug in production, <strong>catastrophic backtracking</strong>, can hang an entire process for seconds on a 100-character input.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How regex matching works under the hood</h2>
+      <p>Regex engines come in two architectures, and the choice affects what your pattern can do and how fast it runs:</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Engine type</th><th>Used by</th><th>Pros</th><th>Cons</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Backtracking (NFA)</strong></td>
+            <td>JavaScript, Perl, Python <code>re</code>, PCRE, Java, Ruby, .NET</td>
+            <td>Supports lookaround, backreferences, recursion. Most "modern features."</td>
+            <td>Worst-case exponential time. Catastrophic backtracking on adversarial input.</td>
+          </tr>
+          <tr>
+            <td><strong>Linear-time (DFA / hybrid)</strong></td>
+            <td>Go's <code>regexp</code>, Rust's <code>regex</code>, RE2, awk, grep, lex</td>
+            <td>Linear O(n) time. Predictable performance. Cannot hang.</td>
+            <td>No backreferences, no lookaround (Go &amp; Rust). Fewer features.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The matching process for a backtracking engine, conceptually:</p>
+      <ul>
+        <li><strong>Compile</strong> the pattern into a state machine (NFA). Most languages cache compiled regex; recompiling in a hot loop is wasteful.</li>
+        <li><strong>Walk the input</strong> character by character, advancing through states. When a quantifier like <code>*</code> is met, the engine greedily consumes as many characters as possible.</li>
+        <li><strong>On mismatch</strong>, the engine <em>backtracks</em> — gives up matched characters one at a time and tries alternative paths. This is where pathological patterns hang: a pattern like <code>(a+)+b</code> on input <code>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</code> creates 2^n backtracking paths.</li>
+        <li><strong>Report match position</strong> and capture groups, or fail.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Regex flavor comparison — JavaScript vs PCRE vs Python</h2>
+      <p>"Regex" is not one language. Each ecosystem has subtle differences. Patterns that work in PHP may fail or behave differently in JavaScript. Knowing the deltas saves hours of debugging.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Feature</th><th>JavaScript</th><th>Python (re)</th><th>PCRE (PHP, Perl)</th><th>Go / Rust (RE2)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Lookahead <code>(?=...)</code></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Lookbehind <code>(?&lt;=...)</code></td>
+            <td><span class="yes">Yes (ES2018+)</span></td>
+            <td><span class="yes">Yes (fixed-width only)</span></td>
+            <td><span class="yes">Yes (variable-width)</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Named groups <code>(?&lt;name&gt;...)</code></td>
+            <td><span class="yes">Yes (ES2018+)</span></td>
+            <td><span class="yes">Yes (<code>(?P&lt;name&gt;...)</code>)</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes (Rust)</span></td>
+          </tr>
+          <tr>
+            <td>Backreferences <code>\1</code></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="no">No</span></td>
+          </tr>
+          <tr>
+            <td>Unicode property <code>\p{L}</code></td>
+            <td><span class="yes">Yes (with <code>u</code> flag)</span></td>
+            <td><span class="yes">Yes (Python 3)</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="yes">Yes</span></td>
+          </tr>
+          <tr>
+            <td>Possessive quantifier <code>*+</code></td>
+            <td><span class="no">No</span></td>
+            <td><span class="no">No (use atomic groups)</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td><span class="no">No (not needed)</span></td>
+          </tr>
+          <tr>
+            <td>Catastrophic backtracking risk</td>
+            <td><span class="yes">High</span></td>
+            <td><span class="yes">High</span></td>
+            <td><span class="yes">High</span></td>
+            <td><span class="no">None — guaranteed linear time</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>This tester uses the <strong>JavaScript flavor</strong> via the browser's native <code>RegExp</code> object. Patterns tested here will work identically in Node.js and most modern browser-based code. For PCRE-specific features, test in PHP's <code>preg_match</code>; for safety in untrusted input, switch to RE2 / Go.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Pattern anatomy — a regex cheat sheet</h2>
+
+      <h3>Anchors and boundaries</h3>
+      <table class="ref-table">
+        <thead><tr><th>Token</th><th>Meaning</th><th>Example match</th></tr></thead>
+        <tbody>
+          <tr><td><code>^</code></td><td>Start of string (or line, with <code>m</code> flag)</td><td><code>^foo</code> matches "foo" only at start</td></tr>
+          <tr><td><code>$</code></td><td>End of string (or line, with <code>m</code> flag)</td><td><code>bar$</code> matches "bar" only at end</td></tr>
+          <tr><td><code>\b</code></td><td>Word boundary</td><td><code>\bcat\b</code> matches "cat" but not "category"</td></tr>
+          <tr><td><code>\B</code></td><td>Non-word boundary</td><td><code>\Bcat</code> matches "cat" inside "concatenate"</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Character classes</h3>
+      <table class="ref-table">
+        <thead><tr><th>Token</th><th>Meaning</th><th>Equivalent</th></tr></thead>
+        <tbody>
+          <tr><td><code>.</code></td><td>Any character (except newline, unless <code>s</code> flag)</td><td><code>[^\n]</code></td></tr>
+          <tr><td><code>\d</code></td><td>Digit</td><td><code>[0-9]</code></td></tr>
+          <tr><td><code>\D</code></td><td>Non-digit</td><td><code>[^0-9]</code></td></tr>
+          <tr><td><code>\w</code></td><td>Word character</td><td><code>[A-Za-z0-9_]</code></td></tr>
+          <tr><td><code>\W</code></td><td>Non-word character</td><td><code>[^A-Za-z0-9_]</code></td></tr>
+          <tr><td><code>\s</code></td><td>Whitespace</td><td><code>[ \t\n\r\f\v]</code></td></tr>
+          <tr><td><code>[abc]</code></td><td>Custom class — a, b, or c</td><td>—</td></tr>
+          <tr><td><code>[^abc]</code></td><td>Negated class — anything but a, b, c</td><td>—</td></tr>
+          <tr><td><code>[a-z]</code></td><td>Range</td><td>—</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Quantifiers</h3>
+      <table class="ref-table">
+        <thead><tr><th>Token</th><th>Meaning</th><th>Greedy / lazy</th></tr></thead>
+        <tbody>
+          <tr><td><code>*</code></td><td>0 or more</td><td>Greedy. Use <code>*?</code> for lazy.</td></tr>
+          <tr><td><code>+</code></td><td>1 or more</td><td>Greedy. Use <code>+?</code> for lazy.</td></tr>
+          <tr><td><code>?</code></td><td>0 or 1 (optional)</td><td>Greedy. Use <code>??</code> for lazy.</td></tr>
+          <tr><td><code>{n}</code></td><td>Exactly n</td><td>—</td></tr>
+          <tr><td><code>{n,}</code></td><td>n or more</td><td>Greedy. Use <code>{n,}?</code> for lazy.</td></tr>
+          <tr><td><code>{n,m}</code></td><td>Between n and m</td><td>Greedy. Use <code>{n,m}?</code> for lazy.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Groups and lookaround</h3>
+      <table class="ref-table">
+        <thead><tr><th>Token</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>(...)</code></td><td>Capture group — captures match for backreferences</td></tr>
+          <tr><td><code>(?:...)</code></td><td>Non-capturing group — groups without storing</td></tr>
+          <tr><td><code>(?&lt;name&gt;...)</code></td><td>Named capture group (ES2018+)</td></tr>
+          <tr><td><code>(?=...)</code></td><td>Positive lookahead — match if followed by</td></tr>
+          <tr><td><code>(?!...)</code></td><td>Negative lookahead — match if NOT followed by</td></tr>
+          <tr><td><code>(?&lt;=...)</code></td><td>Positive lookbehind — match if preceded by</td></tr>
+          <tr><td><code>(?&lt;!...)</code></td><td>Negative lookbehind — match if NOT preceded by</td></tr>
+          <tr><td><code>\1</code>, <code>\2</code>...</td><td>Backreference to numbered capture group</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Flags</h3>
+      <table class="ref-table">
+        <thead><tr><th>Flag</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>g</code></td><td>Global — find all matches, not just first</td></tr>
+          <tr><td><code>i</code></td><td>Case-insensitive</td></tr>
+          <tr><td><code>m</code></td><td>Multiline — <code>^</code> and <code>$</code> match line starts/ends</td></tr>
+          <tr><td><code>s</code></td><td>DotAll — <code>.</code> matches newlines</td></tr>
+          <tr><td><code>u</code></td><td>Unicode — full Unicode + <code>\p{...}</code> property escapes</td></tr>
+          <tr><td><code>y</code></td><td>Sticky — match starting at <code>lastIndex</code> only</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Common regex patterns — copy-paste ready</h2>
+      <p>Battle-tested patterns for the most-asked validation tasks. Adjust the strictness for your use case — these are pragmatic, not RFC-perfect.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Use case</th><th>Pattern</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Email (pragmatic)</td>
+            <td><code>^[\w.+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$</code></td>
+            <td>Catches 99% of real emails. Don't use full RFC 5322 — verify deliverability instead.</td>
+          </tr>
+          <tr>
+            <td>URL (http/https)</td>
+            <td><code>^https?:\/\/[^\s/$.?#].[^\s]*$</code></td>
+            <td>Loose validation; for strict, use <code>new URL()</code>.</td>
+          </tr>
+          <tr>
+            <td>IPv4</td>
+            <td><code>^(?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d?\d)$</code></td>
+            <td>Validates each octet 0–255.</td>
+          </tr>
+          <tr>
+            <td>UUID v4</td>
+            <td><code>^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$</code></td>
+            <td>Add <code>i</code> flag for uppercase support.</td>
+          </tr>
+          <tr>
+            <td>Hex color</td>
+            <td><code>^#?([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$</code></td>
+            <td>3-digit, 6-digit, or 8-digit (with alpha). Use <code>i</code> flag.</td>
+          </tr>
+          <tr>
+            <td>ISO 8601 date (basic)</td>
+            <td><code>^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?)?$</code></td>
+            <td>Accepts <code>YYYY-MM-DD</code> or full timestamp.</td>
+          </tr>
+          <tr>
+            <td>Strong password (length + 4 classes)</td>
+            <td><code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$</code></td>
+            <td>Lookahead enforces each character class.</td>
+          </tr>
+          <tr>
+            <td>Phone (E.164)</td>
+            <td><code>^\+[1-9]\d{1,14}$</code></td>
+            <td>International standard. No spaces or dashes.</td>
+          </tr>
+          <tr>
+            <td>Slug (URL-safe)</td>
+            <td><code>^[a-z0-9]+(?:-[a-z0-9]+)*$</code></td>
+            <td>Lowercase, hyphens between alphanumeric runs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Regex in 8 programming languages</h2>
+
+      <h3>JavaScript / TypeScript</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Test, match, replace
+const re = /(\w+)@(\w+\.\w+)/g;
+"send to a@b.com".match(re);          // ['a@b.com']
+"a@b.com".replace(re, '[email]');     // '[email]'
+
+// Named groups (ES2018+)
+const m = "2026-04-30".match(/^(?&lt;y&gt;\d{4})-(?&lt;m&gt;\d{2})-(?&lt;d&gt;\d{2})$/);
+m.groups.y;  // '2026'
+
+// Iterate all matches with positions
+for (const m of "abc 123 xyz 456".matchAll(/\d+/g)) {
+  console.log(m[0], m.index);
+}
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import re
+
+# search/match/findall/finditer
+m = re.search(r'(\w+)@(\w+\.\w+)', 'send to a@b.com')
+m.group(0)       # 'a@b.com'
+m.group(1)       # 'a'
+
+# Named groups: (?P&lt;name&gt;...)
+m = re.match(r'(?P&lt;year&gt;\d{4})-(?P&lt;month&gt;\d{2})', '2026-04')
+m.group('year')  # '2026'
+
+# Compile once, reuse many times
+pattern = re.compile(r'\d+')
+[m.group() for m in pattern.finditer('abc 123 xyz 456')]
+</code></pre>
+      </div>
+
+      <h3>PHP (PCRE)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Match (returns 1, 0, or false)
+if (preg_match('/^(\d{4})-(\d{2})$/', '2026-04', $m)) {
+    echo $m[1];  // '2026'
+}
+
+// Find all
+preg_match_all('/\d+/', 'abc 123 xyz 456', $matches);
+
+// Replace
+$clean = preg_replace('/\s+/', ' ', $messy);
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import java.util.regex.*;
+
+Pattern p = Pattern.compile("(\\w+)@(\\w+\\.\\w+)");
+Matcher m = p.matcher("send to a@b.com");
+if (m.find()) {
+    System.out.println(m.group(0));  // a@b.com
+    System.out.println(m.group(1));  // a
+}
+
+// Replace
+String clean = "  multiple   spaces  ".replaceAll("\\s+", " ");
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "regexp"
+
+// MustCompile panics on invalid pattern (good for static patterns)
+re := regexp.MustCompile(`(\w+)@(\w+\.\w+)`)
+match := re.FindStringSubmatch("send to a@b.com")
+// match[0] = "a@b.com", match[1] = "a"
+
+// All matches
+all := re.FindAllString("a@b.com c@d.org", -1)
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use regex::Regex;
+
+let re = Regex::new(r"(\w+)@(\w+\.\w+)").unwrap();
+if let Some(caps) = re.captures("send to a@b.com") {
+    println!("{}", &amp;caps[0]);  // a@b.com
+}
+
+// Iterate all
+for m in re.find_iter("a@b.com c@d.org") {
+    println!("{}", m.as_str());
+}
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code># =~ returns match position or nil
+"send to a@b.com" =~ /(\w+)@(\w+\.\w+)/
+puts $~[0]   # 'a@b.com'
+
+# scan for all matches
+"a 1 b 2 c 3".scan(/\d/)   # ['1','2','3']
+
+# Named captures via MatchData
+m = "2026-04".match(/(?&lt;year&gt;\d{4})-(?&lt;month&gt;\d{2})/)
+m[:year]   # '2026'
+</code></pre>
+      </div>
+
+      <h3>Bash (grep / sed)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Extended regex with grep -E
+echo "abc 123 xyz" | grep -oE '[0-9]+'
+
+# Capture and replace with sed
+echo "2026-04-30" | sed -E 's/^([0-9]{4})-([0-9]{2}).*/\1\/\2/'
+
+# Test from a script
+if [[ "$input" =~ ^[0-9]+$ ]]; then echo "all digits"; fi
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Catastrophic backtracking — and how to avoid it</h2>
+      <p>The single biggest production bug regex causes is <strong>catastrophic backtracking</strong>: a pattern that takes milliseconds on a 10-character input takes 30+ seconds on a 30-character input. The classic example: <code>^(a+)+$</code> against the string <code>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!"</code>. The engine tries 2^33 possible groupings before giving up.</p>
+
+      <h3>What causes it</h3>
+      <ul>
+        <li><strong>Nested quantifiers</strong>: <code>(a+)+</code>, <code>(a*)*</code>, <code>(.+)+</code></li>
+        <li><strong>Overlapping alternations</strong>: <code>(a|a)*</code>, <code>(a|aa|aaa)+</code></li>
+        <li><strong>Greedy quantifiers + backtracking-friendly suffixes</strong>: <code>".*"</code> in <code>".*"foo</code> when the input has no <code>foo</code></li>
+      </ul>
+
+      <h3>How to avoid it</h3>
+      <ul>
+        <li><strong>Use atomic groups or possessive quantifiers</strong> in PCRE: <code>(?&gt;a+)</code> or <code>a++</code> commit to the match and prevent backtracking.</li>
+        <li><strong>Be more specific</strong> than <code>.*</code>. If you mean "characters that aren't quotes", use <code>[^"]*</code> not <code>.*</code>.</li>
+        <li><strong>Anchor with <code>^</code> and <code>$</code></strong> when validating fixed-length input. Engine bails out faster on mismatch.</li>
+        <li><strong>Switch engines for untrusted input.</strong> Go's <code>regexp</code> and Rust's <code>regex</code> use RE2 — <strong>guaranteed linear time</strong>, no catastrophic backtracking possible. Lose lookaround &amp; backreferences in exchange for safety.</li>
+        <li><strong>Set timeouts.</strong> .NET 7+ supports <code>RegexOptions.NonBacktracking</code> and explicit timeouts. PCRE2 has <code>JIT_STACK</code> limits.</li>
+      </ul>
+
+      <div class="article-aside">
+        <strong>Test in this tool first.</strong> Paste your pattern and a long input. If matching takes more than 100ms, redesign the pattern. The browser will eventually time out, but production users won't be so patient.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Regex best practices</h2>
+      <ul>
+        <li><strong>Don't validate emails with regex alone.</strong> The full RFC 5322 grammar is &gt; 6,000 characters of regex. Use a simple sanity check (<code>.+@.+\..+</code>) and verify by sending a confirmation link.</li>
+        <li><strong>Comment complex patterns.</strong> JavaScript: prefix lines with <code>//</code> and concat. Python and PCRE: use the <code>x</code> flag for verbose mode with embedded comments.</li>
+        <li><strong>Compile once, reuse always.</strong> In hot loops, compile the regex outside the loop. Most languages cache automatically; Python's <code>re.compile</code> and Java's <code>Pattern.compile</code> are explicit.</li>
+        <li><strong>Use <code>?:</code> for grouping when you don't need capture.</strong> Faster matching, cleaner output. <code>(?:foo|bar)+</code> not <code>(foo|bar)+</code>.</li>
+        <li><strong>Never use regex to parse HTML or XML.</strong> Both are <em>context-free</em> languages. Use a real parser (DOMParser, lxml, BeautifulSoup, jsdom). Regex is fine for finding simple, well-defined patterns inside HTML, just not for parsing structure.</li>
+        <li><strong>Use named capture groups</strong> when extracting more than 2 values. Self-documenting and safer if the pattern changes.</li>
+        <li><strong>Test against edge cases</strong>: empty string, all whitespace, Unicode, very long input. Most regex bugs surface at the extremes.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- How to use + mistakes -->
   <section class="use-cases">
@@ -297,7 +713,7 @@
 
 <footer>
   <div>&copy; 2026 FreeDevTool — Regex Tester Online</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

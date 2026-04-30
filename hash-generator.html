@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hash Generator Online — MD5, SHA256, SHA512 Free | FreeDevTool</title>
-  <meta name="description" content="Generate MD5, SHA1, SHA256 and SHA512 hash online for free. Instant hashing, no data stored on server.">
+  <title>Hash Generator Online — MD5, SHA-1, SHA-256, SHA-512 Free | FreeDevTool</title>
+  <meta name="description" content="Free hash generator. Compute MD5, SHA-1, SHA-256, SHA-512 instantly via Web Crypto API. Verify file checksums, compare hashes. Runs in browser, no signup.">
+  <meta name="keywords" content="hash generator, md5 hash, sha256 hash, sha512 hash, sha-1 hash generator, file checksum, hash compare, online hash tool, web crypto API">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/hash-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Hash Generator — MD5, SHA-1, SHA-256, SHA-512 Free | FreeDevTool">
+  <meta name="twitter:description" content="Compute MD5, SHA-1, SHA-256, SHA-512 hashes for text or files. Web Crypto API, runs in browser, no uploads.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -226,13 +227,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Security Tool</div>
-    <h1>Hash Generator — MD5, SHA-1, SHA-256, SHA-512</h1>
+    <h1>Hash Generator Online — MD5, SHA-1, SHA-256, SHA-512</h1>
     <p class="tool-description">
-      Generate cryptographic hashes from any text using MD5, SHA-1, SHA-256, and SHA-512 algorithms instantly. This free online hash generator uses the Web Crypto API to compute hashes directly in your browser — no data is sent to any server. Compare hashes side by side, verify checksums, and learn which hashing algorithm to use for your use case. Works offline, no signup required.
+      Generate cryptographic hashes from text or files using MD5, SHA-1, SHA-256, and SHA-512 algorithms instantly. This free hash generator uses the browser-native <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" rel="noopener" style="color:var(--accent)">Web Crypto API</a> to compute hashes directly on your machine — no data is ever sent to a server. Compare hashes side by side, verify file checksums against published values, and pick the right algorithm for your use case (integrity vs collision resistance vs performance). Works offline, no signup required.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -314,6 +314,325 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a hash function?</h2>
+      <p>A <strong>cryptographic hash function</strong> takes an arbitrary input — a string, a file, a 4 GB ISO image — and produces a fixed-size output called a <strong>hash</strong>, <strong>digest</strong>, or <strong>fingerprint</strong>. The MD5 hash of <code>"hello"</code> is the same length as the MD5 hash of the entire Linux kernel source: 128 bits, written as 32 hex characters. Hash functions have three properties that make them ubiquitous in software:</p>
+      <ul>
+        <li><strong>Deterministic</strong> — the same input always produces the same output.</li>
+        <li><strong>Fast to compute, infeasible to reverse</strong> — a one-way function. Given a hash, you cannot recover the original input.</li>
+        <li><strong>Avalanche</strong> — flipping a single bit of input changes ~50% of the output bits. <code>"hello"</code> and <code>"hellp"</code> produce completely different hashes.</li>
+      </ul>
+      <p>Cryptographic hashes additionally aim for <strong>collision resistance</strong> — it should be computationally infeasible to find two different inputs that produce the same hash. When this property breaks (as it has for MD5 and SHA-1), the algorithm is considered broken for security purposes.</p>
+      <p>Hash functions show up everywhere in computing: file integrity checksums (verifying a downloaded ISO matches the publisher's value), Git commit IDs (SHA-1 / SHA-256), Bitcoin transaction IDs (double-SHA-256), digital signatures (sign the hash, not the document), Content-Addressable Storage (IPFS, deduplication), HMAC for API authentication, ETags for HTTP caching, and partition keys for distributed databases.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Hash algorithm comparison — MD5 vs SHA-1 vs SHA-256 vs SHA-512</h2>
+      <p>Picking the right algorithm matters. Use the wrong hash for password storage and you'll end up in a breach disclosure. Use SHA-512 for ETags and you waste cycles. Here's the matrix:</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Algorithm</th><th>Output size</th><th>Status (2026)</th><th>Speed</th><th>Use for</th><th>Don't use for</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>MD5</strong></td>
+            <td>128 bits (32 hex)</td>
+            <td><span class="no">Broken (collisions)</span></td>
+            <td>Very fast</td>
+            <td>Non-security: cache keys, ETags, deduplication, file naming</td>
+            <td>Signatures, certificates, integrity against attackers, password storage</td>
+          </tr>
+          <tr>
+            <td><strong>SHA-1</strong></td>
+            <td>160 bits (40 hex)</td>
+            <td><span class="no">Deprecated (SHAttered, 2017)</span></td>
+            <td>Fast</td>
+            <td>Legacy Git history, legacy systems</td>
+            <td>New code. Migrate to SHA-256.</td>
+          </tr>
+          <tr>
+            <td><strong>SHA-256</strong></td>
+            <td>256 bits (64 hex)</td>
+            <td><span class="yes">Secure</span></td>
+            <td>Fast (with hardware acceleration)</td>
+            <td>Default modern choice. Signatures, certificates, blockchain, integrity, content addressing.</td>
+            <td>Password storage (use bcrypt/argon2 instead — see below)</td>
+          </tr>
+          <tr>
+            <td><strong>SHA-512</strong></td>
+            <td>512 bits (128 hex)</td>
+            <td><span class="yes">Secure</span></td>
+            <td>Faster than SHA-256 on 64-bit CPUs</td>
+            <td>High-security signatures, when 256 bits feels insufficient, on 64-bit servers</td>
+            <td>Resource-constrained devices; situations where 256-bit is enough</td>
+          </tr>
+          <tr>
+            <td><strong>SHA-3</strong> / Keccak</td>
+            <td>224, 256, 384, 512 bits</td>
+            <td><span class="yes">Secure (different math from SHA-2)</span></td>
+            <td>Slower than SHA-256 in software</td>
+            <td>Defense-in-depth (different design than SHA-2)</td>
+            <td>When SHA-256 is sufficient and ecosystem support matters</td>
+          </tr>
+          <tr>
+            <td><strong>BLAKE3</strong></td>
+            <td>256 bits (extensible)</td>
+            <td><span class="yes">Secure</span></td>
+            <td>Fastest cryptographic hash (parallelizable)</td>
+            <td>Big files, high-throughput systems, modern apps</td>
+            <td>Compatibility with legacy systems (not in Web Crypto API)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Why MD5 and SHA-1 are "broken"</h3>
+      <p>"Broken" means researchers have demonstrated <strong>collision attacks</strong> — given an input, they can craft a different input that produces the same hash. For MD5, collisions are produced in seconds on a laptop (since 2008). For SHA-1, Google's 2017 SHAttered attack demonstrated practical collisions. Once collisions are practical, attackers can forge signatures, swap files in supply chains, and break integrity guarantees. <strong>For security-sensitive use cases, use SHA-256 or SHA-3 in 2026 and beyond.</strong></p>
+      <p>For non-security use (cache keys, change detection, deduplication where attackers can't influence input), MD5 and SHA-1 are still fine and faster. Git still uses SHA-1 by default for commit IDs, but is migrating to SHA-256.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Cryptographic vs non-cryptographic hashes</h2>
+      <p>Not every hash function aims for cryptographic security. Knowing which kind you need saves performance:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Type</th><th>Examples</th><th>Speed</th><th>Collision resistance</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Cryptographic</strong></td>
+            <td>SHA-256, SHA-512, SHA-3, BLAKE3</td>
+            <td>Slower (millions of ops/sec)</td>
+            <td>Designed to resist deliberate attacks</td>
+            <td>Signatures, certificates, content addressing, security checks</td>
+          </tr>
+          <tr>
+            <td><strong>Non-cryptographic</strong></td>
+            <td>xxHash, MurmurHash, CityHash, FNV, CRC32</td>
+            <td>10–100× faster (billions/sec)</td>
+            <td>Random collisions only — attackers can craft collisions</td>
+            <td>Hash tables, bloom filters, network checksums, deduplication where input is trusted</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Rule of thumb:</strong> if an attacker could control or influence the input, use a cryptographic hash. Otherwise, faster non-cryptographic hashes are usually a better fit.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>⚠️ Don't use these hashes for password storage</h2>
+      <p>This is the most-misunderstood point about hashing. <strong>SHA-256 and SHA-512 are far too fast for password storage.</strong> A modern GPU computes 7+ billion SHA-256 hashes per second. A leaked database of SHA-256-hashed passwords can be cracked in hours.</p>
+      <p>For password hashing, use a <strong>slow, memory-hard, salted</strong> algorithm:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Password hash</th><th>Year</th><th>Status</th><th>Recommendation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>argon2id</strong></td><td>2015 (PHC winner)</td><td><span class="yes">Best</span></td><td>Default for new applications. Use defaults; raise time/memory cost as hardware improves.</td></tr>
+          <tr><td><strong>scrypt</strong></td><td>2009</td><td><span class="yes">Strong</span></td><td>Solid alternative to argon2id. Used by major cryptocurrencies.</td></tr>
+          <tr><td><strong>bcrypt</strong></td><td>1999</td><td><span class="yes">OK</span></td><td>Battle-tested. 72-byte input limit. Slightly weaker than argon2/scrypt against GPU attacks.</td></tr>
+          <tr><td><strong>PBKDF2</strong></td><td>2000 (RFC 2898)</td><td>Adequate</td><td>Use only when FIPS-140 compliance forces it. Set ≥ 600,000 iterations for SHA-256.</td></tr>
+          <tr><td>SHA-256 / SHA-512 alone</td><td>—</td><td><span class="no">Don't</span></td><td>Too fast. Use bcrypt/argon2 instead.</td></tr>
+          <tr><td>MD5 / SHA-1 alone</td><td>—</td><td><span class="no">Never</span></td><td>Both broken AND too fast. Don't.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="article-aside">
+        <strong>The hash generator on this page is for integrity verification, file checksums, content addressing, and signature inputs — NOT for password storage.</strong> Use your language's <code>argon2id</code> or <code>bcrypt</code> library on the server side.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Hashing in 8 programming languages</h2>
+
+      <h3>JavaScript / Browser (Web Crypto API)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// SHA-256 of a string (Web Crypto is async)
+async function sha256(text) {
+  const bytes = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(hash))
+    .map(b =&gt; b.toString(16).padStart(2, '0')).join('');
+}
+await sha256("hello world");
+// → "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+
+// Available algorithms: SHA-1, SHA-256, SHA-384, SHA-512
+// Note: MD5 is NOT in Web Crypto — use a JS lib like crypto-js if needed
+</code></pre>
+      </div>
+
+      <h3>Node.js</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>import { createHash } from 'node:crypto';
+
+// String → hex hash
+const hash = createHash('sha256').update('hello world').digest('hex');
+// "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+
+// Available: 'md5', 'sha1', 'sha256', 'sha384', 'sha512', 'sha3-256', etc.
+
+// Streaming a large file (memory-efficient)
+import { createReadStream } from 'node:fs';
+const h = createHash('sha256');
+createReadStream('big-file.iso').pipe(h).on('finish', () =&gt;
+  console.log(h.digest('hex'))
+);
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import hashlib
+
+# String → hex digest
+hashlib.sha256(b"hello world").hexdigest()
+# 'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'
+
+# Available: md5, sha1, sha224, sha256, sha384, sha512, sha3_256, blake2b, blake2s
+
+# Hash a large file in chunks (don't load into memory)
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(65536), b''):
+            h.update(chunk)
+    return h.hexdigest()
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// String → hash
+hash('sha256', 'hello world');
+// "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+
+// File → hash (memory-efficient)
+hash_file('sha256', '/path/to/big-file.iso');
+
+// List supported algorithms
+print_r(hash_algos());
+
+// Password storage — use password_hash, NOT raw hashing
+$secure = password_hash($plain, PASSWORD_ARGON2ID);
+password_verify($plain, $secure);  // true / false
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
+
+byte[] bytes = "hello world".getBytes(StandardCharsets.UTF_8);
+byte[] digest = MessageDigest.getInstance("SHA-256").digest(bytes);
+
+StringBuilder hex = new StringBuilder();
+for (byte b : digest) hex.append(String.format("%02x", b));
+// hex.toString() = full SHA-256 hex
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import (
+    "crypto/sha256"
+    "encoding/hex"
+)
+
+hash := sha256.Sum256([]byte("hello world"))
+fmt.Println(hex.EncodeToString(hash[:]))
+// "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+
+// Streaming for large files
+h := sha256.New()
+io.Copy(h, file)
+fmt.Println(hex.EncodeToString(h.Sum(nil)))
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use sha2::{Sha256, Digest};
+
+let mut h = Sha256::new();
+h.update(b"hello world");
+let result = h.finalize();
+println!("{:x}", result);
+// b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+
+// BLAKE3 (faster) via blake3 crate
+let h = blake3::hash(b"hello world");
+</code></pre>
+      </div>
+
+      <h3>Bash / shell</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># File checksums
+md5sum    file.iso
+sha1sum   file.iso
+sha256sum file.iso
+sha512sum file.iso
+
+# String hash (note: trailing newline from echo!)
+echo -n "hello world" | sha256sum
+# b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9  -
+
+# Verify a checksum
+sha256sum -c sha256sums.txt   # checks all files listed
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common use cases — when to hash what</h2>
+
+      <h3>File integrity verification (checksums)</h3>
+      <p>Download a Linux ISO and want to verify it wasn't corrupted in transit? Compare your locally-computed SHA-256 to the published value. The chance of accidental corruption producing the same hash is 1 in 2^256 — astronomically small. Use this tool's "drag a file" mode against a known-good hash.</p>
+
+      <h3>Git commit IDs and content addressing</h3>
+      <p>Git uses SHA-1 (migrating to SHA-256) to identify every commit, tree, and blob. Two files with identical content have identical hashes — automatic deduplication. IPFS, Docker layers, and Cargo registries all rely on the same property.</p>
+
+      <h3>HTTP ETags and cache busting</h3>
+      <p>Web servers compute a hash of file contents and send it as an <code>ETag</code> header. Browsers store it; on the next request, they include <code>If-None-Match: &lt;etag&gt;</code>. If the server's current hash matches, it returns <code>304 Not Modified</code> — no body, instant cache hit. MD5 is fine here (no security threat from clients).</p>
+
+      <h3>Digital signatures</h3>
+      <p>You don't sign a 1 GB document — you sign its hash. RSA, ECDSA, Ed25519 all hash the message first, then sign the (much smaller) hash. The hash algorithm is part of the signature scheme: SHA-256 for RS256, SHA-384 for RS384, etc. JWTs do exactly this for HS256/RS256/ES256.</p>
+
+      <h3>HMAC — message authentication codes</h3>
+      <p>HMAC combines a secret key with a hash to produce a tag that proves both <strong>integrity</strong> (message wasn't tampered with) and <strong>authenticity</strong> (sender knows the key). Used in API request signing (AWS, Stripe webhooks), TLS, IPSec. <code>HMAC-SHA256</code> is the modern default.</p>
+
+      <h3>Password reset tokens, deduplication, partition keys</h3>
+      <p>Hashing user emails for partition keys (privacy-preserving sharding); hashing image bytes to deduplicate uploads; hashing reset tokens for storage so a database leak doesn't expose live tokens. SHA-256 is the safe default.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Hash function best practices</h2>
+      <ul>
+        <li><strong>Use SHA-256 unless you have a specific reason not to.</strong> It's the modern default, hardware-accelerated on every CPU since 2013 (Intel SHA Extensions), and supported in every Web Crypto API browser.</li>
+        <li><strong>Never use MD5 or SHA-1 for security-critical work.</strong> Both have practical collision attacks. Fine for cache keys, ETags, and non-adversarial integrity checks.</li>
+        <li><strong>Always salt password hashes.</strong> A salt is a per-user random value mixed into the password before hashing. <code>bcrypt</code> and <code>argon2id</code> handle salting automatically; raw <code>SHA-256(password)</code> is broken even with a salt because it's too fast.</li>
+        <li><strong>Use constant-time comparison</strong> for security-sensitive equality checks. <code>===</code> in JavaScript or <code>==</code> in Python compares byte-by-byte and exits early — leaking timing information about how many bytes matched. Use <code>crypto.timingSafeEqual</code> (Node) or <code>hmac.compare_digest</code> (Python) instead.</li>
+        <li><strong>Hash files in chunks.</strong> Loading a 10 GB file into memory before hashing exhausts RAM. Every language's hash library supports streaming via <code>update()</code> calls or pipe operations.</li>
+        <li><strong>Verify the encoding before hashing.</strong> <code>"héllo"</code> in Latin-1 produces a different hash than <code>"héllo"</code> in UTF-8. When publishing checksums, specify the encoding (or the file is binary and encoding doesn't apply).</li>
+        <li><strong>Strip trailing newlines.</strong> Shell commands like <code>echo "text"</code> add a newline, producing a different hash than the same text without it. Use <code>echo -n</code> or <code>printf</code>.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- FAQ -->
   <!-- How to use + mistakes -->
@@ -436,9 +755,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — Hash Generator</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Encoder & Decoder Online — Free | FreeDevTool</title>
-  <meta name="description" content="Encode and decode URLs online for free. Percent-encoding, query string encoding and decoding. Instant results.">
-  <meta name="robots" content="index, follow">
+  <title>URL Encoder & Decoder Online — Free Percent-Encoding Tool | FreeDevTool</title>
+  <meta name="description" content="Free URL encoder & decoder. Supports encodeURIComponent, encodeURI, percent-encoding (RFC 3986), UTF-8 and Unicode. No signup, runs in your browser.">
+  <meta name="keywords" content="url encoder, url decoder, percent encoding, encodeURIComponent, encodeURI, urlencode online, url decode online, query string encoder, RFC 3986, URL escape">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://freedevtool.org/url-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,11 +16,11 @@
   <meta property="og:image" content="https://freedevtool.org/og-image.svg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
+  <meta property="og:image:alt" content="URL Encoder & Decoder — FreeDevTool">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="URL Encoder & Decoder Online — Free | FreeDevTool">
+  <meta name="twitter:description" content="Encode/decode URLs with encodeURIComponent or encodeURI. Free, runs in browser, no signup.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -61,22 +62,47 @@
       {
         "@type": "Question",
         "name": "Why do URLs need to be encoded?",
-        "acceptedAnswer": { "@type": "Answer", "text": "URLs can only contain a limited set of ASCII characters. Special characters like spaces, &, =, ?, #, and non-ASCII characters (Unicode/UTF-8) must be percent-encoded to be safely transmitted in URLs. Without encoding, these characters would be misinterpreted as URL delimiters or cause parsing errors." }
+        "acceptedAnswer": { "@type": "Answer", "text": "URLs can only contain a limited set of ASCII characters per RFC 3986. Special characters like spaces, &, =, ?, #, and non-ASCII characters (Unicode/UTF-8) must be percent-encoded to be safely transmitted. Without encoding, these characters would be misinterpreted as URL delimiters or cause parsing errors in browsers and servers." }
       },
       {
         "@type": "Question",
         "name": "How do I encode spaces in a URL — plus sign or %20?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Both are valid but in different contexts. %20 is the standard percent-encoding for spaces (RFC 3986) and works everywhere in a URL. The plus sign (+) represents a space only in application/x-www-form-urlencoded format, which is used in HTML form submissions and query strings. For general URL encoding, prefer %20." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Both are valid but in different contexts. %20 is the standard percent-encoding for spaces (RFC 3986) and works everywhere in a URL — path, query, fragment. The plus sign (+) represents a space only in application/x-www-form-urlencoded format, used in HTML form submissions. For general URL encoding, prefer %20. Use + only when building form-encoded POST bodies." }
       },
       {
         "@type": "Question",
         "name": "What is double encoding and how do I avoid it?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Double encoding happens when an already-encoded string is encoded again, turning %20 into %2520. This usually occurs when you encode a full URL that already contains percent-encoded characters. To avoid it, only encode the raw values before inserting them into the URL, or decode first and then re-encode once." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Double encoding happens when an already-encoded string is encoded again — for example, %20 becomes %2520 because the % itself gets encoded. To avoid it: encode raw values before inserting them into a URL, never encode a full URL that already contains percent-encoded characters, or decode first then re-encode once. Look for %25 or %2520 sequences as a giveaway." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I URL encode non-ASCII and Unicode characters?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Non-ASCII characters are first converted to UTF-8 bytes, then each byte is percent-encoded. The character é (U+00E9) becomes %C3%A9 in UTF-8 encoding. CJK characters typically use 3 bytes (e.g. 中 → %E4%B8%AD), and emojis use 4 bytes. JavaScript's encodeURIComponent handles this automatically, as does Python's urllib.parse.quote." }
       },
       {
         "@type": "Question",
         "name": "Does URL encoding affect SEO?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Google can generally handle URL-encoded characters, but clean, human-readable URLs are preferred for SEO. Excessive percent-encoding makes URLs harder to read and share. Use hyphens instead of spaces, avoid special characters in URL paths, and keep encoding to query parameters where necessary." }
+        "acceptedAnswer": { "@type": "Answer", "text": "Google indexes URL-encoded characters fine, but clean, human-readable URLs are preferred for SEO and click-through rate. Excessive percent-encoding makes URLs hard to read and share. Best practices: use hyphens instead of spaces, lowercase URL paths, avoid non-ASCII in paths (use ASCII transliteration), and keep encoding restricted to query parameters." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum length of a URL?",
+        "acceptedAnswer": { "@type": "Answer", "text": "RFC 3986 sets no formal maximum, but practical limits exist. Browsers cap at around 2,000-32,000 characters (Chrome, Firefox accept long URLs but address-bar truncation begins ~2,000). Apache and Nginx default to 8 KB. Google indexes URLs reliably up to ~2,000 characters. Practical rule: keep URLs under 2,000 characters for cross-platform compatibility. For longer payloads, switch to POST body." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I encode the plus sign (+) in a URL?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Encode + as %2B. In form-encoded URLs, a literal + is interpreted as a space. So a phone number +1 555 1234 sent raw becomes ' 1 555 1234' on the server. Always pre-encode + to %2B when sending phone numbers, email plus-tags (user+tag@example.com), or any data where + has semantic meaning. JavaScript's encodeURIComponent and PHP's urlencode both encode + as %2B correctly." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between URL encoding and HTML entity encoding?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Different contexts and syntax. URL encoding uses percent-triplets (%26 for &) and applies to URLs in transit. HTML entity encoding uses named or numeric references (&amp; or &#38; for &) and applies inside HTML markup to prevent characters from being parsed as tags. They're often combined: an <a href> attribute may contain URL-encoded values inside HTML-escaped attribute syntax. Mixing them causes display bugs and XSS holes." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I safely encode an entire URL string?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Generally, do not encode the whole URL — encode at the level of individual components. Use a URL builder API: new URL() + URLSearchParams in JavaScript, urllib.parse.urlencode in Python, url.URL struct in Go. These libraries encode each component correctly without manual reserved-character handling. If you must encode a full URL string, use encodeURI() in JavaScript — it preserves URL structure while escaping illegal characters in the path." }
       }
     ]
   }
@@ -115,6 +141,125 @@
     .url-breakdown-row:last-child { border-bottom: none; }
     .url-breakdown-key { color: var(--accent); min-width: 80px; }
     .url-breakdown-val { color: var(--text2); word-break: break-all; }
+
+    /* Long-form article styling */
+    .article-section {
+      margin: 40px 0;
+      animation: fadeInUp .5s var(--ease-out) .15s both;
+    }
+    .article-section h2 {
+      font-size: 22px; font-weight: 600;
+      color: var(--text); margin-bottom: 14px;
+      letter-spacing: -0.015em;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-section h3 {
+      font-size: 16px; font-weight: 600;
+      color: var(--text); margin: 22px 0 10px;
+    }
+    .article-section p {
+      color: var(--text2); font-size: 14.5px;
+      line-height: 1.75; margin-bottom: 14px;
+      max-width: 760px;
+    }
+    .article-section ul {
+      margin: 0 0 16px 22px;
+      color: var(--text2); font-size: 14px; line-height: 1.7;
+    }
+    .article-section ul li { margin-bottom: 6px; }
+    .article-section a {
+      color: var(--accent); text-decoration: none;
+      transition: color .2s;
+    }
+    .article-section a:hover { color: var(--accent2); text-decoration: underline; }
+    .article-section strong { color: var(--text); font-weight: 600; }
+
+    /* Comparison + reference tables */
+    .ref-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 18px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-size: 13.5px;
+    }
+    .ref-table th {
+      background: var(--bg3);
+      color: var(--text);
+      font-weight: 600; text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12.5px; letter-spacing: .3px;
+    }
+    .ref-table td {
+      padding: 10px 14px;
+      color: var(--text2);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .ref-table tr:last-child td { border-bottom: none; }
+    .ref-table tr:hover td { background: var(--bg3); }
+    .ref-table code {
+      font-family: var(--mono); font-size: 12px;
+      color: var(--accent); background: var(--bg4);
+      padding: 1px 6px; border-radius: 3px;
+    }
+    .ref-table .yes { color: var(--accent); font-weight: 600; }
+    .ref-table .no { color: var(--red); font-weight: 600; }
+
+    /* Code blocks for multi-language examples */
+    .lang-block {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin: 10px 0 18px;
+      overflow: hidden;
+    }
+    .lang-block-header {
+      background: var(--bg4);
+      padding: 8px 14px;
+      font-family: var(--mono); font-size: 11px; font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase; letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+    }
+    .lang-block pre {
+      margin: 0; padding: 14px 16px;
+      overflow-x: auto;
+      font-family: var(--mono); font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--text);
+      background: transparent;
+    }
+    .lang-block pre code { color: var(--text); background: none; padding: 0; font-size: 12.5px; }
+
+    /* Aside / callout */
+    .article-aside {
+      background: var(--accent-dim);
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px;
+      margin: 18px 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--text2); font-size: 13.5px; line-height: 1.7;
+    }
+    .article-aside strong { color: var(--accent); }
+
+    /* Last-updated badge */
+    .last-updated {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text3); margin-top: 8px;
+      letter-spacing: .3px;
+    }
+    .last-updated::before {
+      content: ''; display: inline-block;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 6px rgba(0,208,132,.6);
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -204,13 +349,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Encoding Tool</div>
-    <h1>URL Encoder / Decoder</h1>
+    <h1>URL Encoder / Decoder Online</h1>
     <p class="tool-description">
-      Encode or decode URLs and query strings using standard percent-encoding (RFC 3986). This free online URL encoder supports both <code>encodeURIComponent</code> and <code>encodeURI</code> modes, handles UTF-8 and Unicode characters, and lets you bulk-encode URL parameters. Paste any URL or text to instantly see the encoded or decoded result. All processing happens in your browser — nothing is uploaded to a server.
+      Encode or decode URLs and query strings using standard percent-encoding (<a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener" style="color:var(--accent)">RFC 3986</a>). This free URL encoder supports <code>encodeURIComponent</code>, <code>encodeURI</code>, and form-style (<code>+</code> for spaces) modes, handles UTF-8 and Unicode characters, and shows a live URL breakdown when decoding. Paste any URL or text to instantly see the encoded or decoded result — everything runs in your browser, nothing is uploaded to a server.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -277,7 +421,385 @@
     </div>
   </div>
 
-  <!-- FAQ -->
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       Covers: definition, mechanics, encodeURI vs encodeURIComponent,
+       character reference, 8-language code examples, scenarios,
+       + vs %20, double encoding, SEO best practices.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is URL encoding?</h2>
+      <p><strong>URL encoding</strong> — also called <strong>percent-encoding</strong> — is the standard mechanism for representing characters in a Uniform Resource Locator (URL) that would otherwise be illegal, ambiguous, or unsafe. The rules are codified in <a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener">RFC 3986</a>, the specification that defines URI syntax for the modern web.</p>
+      <p>The reason encoding exists is historical: URLs were designed in 1994 around a tiny alphabet of safe ASCII characters. Anything outside that set — spaces, accented letters, emojis, Chinese characters, query-string separators when used as data — needs to be expressed using a small, universally-portable code: a percent sign (<code>%</code>) followed by two hexadecimal digits representing one byte of the original character. The character <code>A</code> (ASCII 65) becomes <code>%41</code>; a space becomes <code>%20</code>; the character <code>é</code> (which takes two bytes in UTF-8) becomes <code>%C3%A9</code>.</p>
+      <p>Without encoding, URLs would silently break in unpredictable places. A search query like <em>"hello world & friends"</em> embedded raw into <code>?q=hello world &amp; friends</code> would be interpreted by the server as three separate parameters: <code>q=hello world</code>, <code>friends</code>, and an empty value. Encoded, it becomes <code>?q=hello%20world%20%26%20friends</code> — unambiguous, parseable, and safe to transmit through every router, CDN, proxy, and log on the way to your server.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How URL encoding works under the hood</h2>
+      <p>The percent-encoding algorithm has three steps and applies to every character that needs encoding:</p>
+      <ul>
+        <li><strong>Step 1 — Convert to bytes.</strong> The character is converted to its byte representation in <strong>UTF-8</strong> (the standard since RFC 3986 was updated in 2005). ASCII characters are 1 byte; accented Latin letters are 2 bytes; most CJK characters and emojis are 3–4 bytes.</li>
+        <li><strong>Step 2 — Express each byte as two hex digits.</strong> A byte has 256 possible values (0x00 to 0xFF), each representable in two uppercase hexadecimal digits.</li>
+        <li><strong>Step 3 — Prefix each hex pair with a percent sign.</strong> The output is a sequence of <code>%XX</code> triplets — one triplet per byte of the original character.</li>
+      </ul>
+
+      <h3>A worked example: encoding "café"</h3>
+      <p>The string <code>café</code> contains four characters but five bytes in UTF-8 (because <code>é</code> is U+00E9, encoded as <code>0xC3 0xA9</code>):</p>
+      <ul>
+        <li><code>c</code> → 1 byte (0x63) → <strong>doesn't need encoding</strong> (unreserved ASCII letter)</li>
+        <li><code>a</code> → 1 byte (0x61) → doesn't need encoding</li>
+        <li><code>f</code> → 1 byte (0x66) → doesn't need encoding</li>
+        <li><code>é</code> → 2 bytes (0xC3, 0xA9) → encoded as <code>%C3%A9</code></li>
+      </ul>
+      <p>Final encoded form: <code>caf%C3%A9</code>. The reverse — decoding — reads the <code>%XX</code> sequences back into bytes, then interprets the byte stream as UTF-8 to reconstruct the original characters.</p>
+
+      <div class="article-aside">
+        <strong>Why uppercase hex?</strong> RFC 3986 §2.1 says lowercase hex (<code>%c3%a9</code>) is technically valid, but uppercase is the canonical form. Many CDNs and caches normalize URLs to uppercase before generating cache keys — using lowercase risks cache misses on edge networks like Cloudflare and Akamai.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>encodeURI vs encodeURIComponent — which one to use?</h2>
+      <p>This is the single most-searched question in the URL encoding space — and getting it wrong is the most common bug in URL handling. JavaScript provides two functions with confusingly similar names but very different behavior. The right choice depends on <strong>what part of the URL you're encoding</strong>.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Aspect</th><th><code>encodeURI()</code></th><th><code>encodeURIComponent()</code></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Use case</td>
+            <td>Encoding a <strong>complete URL</strong></td>
+            <td>Encoding a <strong>single value</strong> within a URL</td>
+          </tr>
+          <tr>
+            <td>Preserves reserved chars (<code>: / ? # &amp; = +</code>)</td>
+            <td><span class="yes">Yes</span> — leaves URL structure intact</td>
+            <td><span class="no">No</span> — encodes everything</td>
+          </tr>
+          <tr>
+            <td>Example input</td>
+            <td><code>https://x.com/search?q=hello world</code></td>
+            <td><code>hello world &amp; friends</code></td>
+          </tr>
+          <tr>
+            <td>Example output</td>
+            <td><code>https://x.com/search?q=hello%20world</code></td>
+            <td><code>hello%20world%20%26%20friends</code></td>
+          </tr>
+          <tr>
+            <td>When to pick this</td>
+            <td>You have a full URL and want to make it safe to transmit (rare in practice)</td>
+            <td>You're building a URL piece by piece — encoding query values, path segments, or form data (most cases)</td>
+          </tr>
+          <tr>
+            <td>Common bug</td>
+            <td>Forgetting that it doesn't encode <code>&amp;</code> or <code>=</code> — your data leaks into URL structure</td>
+            <td>Encoding the whole URL with this — breaks <code>://</code>, <code>?</code>, <code>&amp;</code> separators</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Rule of thumb:</strong> 95% of the time you want <code>encodeURIComponent</code>. It's the right tool for encoding individual values that you'll plug into a URL. <code>encodeURI</code> is for the rare case where you have a full, already-structured URL that just needs special-character escaping (e.g. spaces in path segments).</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Reserved vs unreserved characters reference</h2>
+      <p>RFC 3986 splits ASCII characters into three groups: <strong>unreserved</strong> (never encoded), <strong>reserved</strong> (have special meaning in URLs — encoded only when used as data), and <strong>everything else</strong> (always encoded, including spaces, control characters, and high-ASCII).</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Group</th><th>Characters</th><th>Encoded?</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Unreserved</strong></td>
+            <td><code>A–Z</code> <code>a–z</code> <code>0–9</code> <code>-</code> <code>_</code> <code>.</code> <code>~</code></td>
+            <td><span class="no">Never</span></td>
+          </tr>
+          <tr>
+            <td><strong>Reserved (gen-delims)</strong></td>
+            <td><code>:</code> <code>/</code> <code>?</code> <code>#</code> <code>[</code> <code>]</code> <code>@</code></td>
+            <td>Only when used as data, not as URL structure</td>
+          </tr>
+          <tr>
+            <td><strong>Reserved (sub-delims)</strong></td>
+            <td><code>!</code> <code>$</code> <code>&amp;</code> <code>'</code> <code>(</code> <code>)</code> <code>*</code> <code>+</code> <code>,</code> <code>;</code> <code>=</code></td>
+            <td>Only when used as data within a query value</td>
+          </tr>
+          <tr>
+            <td><strong>Everything else</strong></td>
+            <td>Space, <code>"</code> <code>&lt;</code> <code>&gt;</code> <code>\</code> <code>^</code> <code>{</code> <code>}</code> <code>|</code> <code>` </code>, all non-ASCII (UTF-8)</td>
+            <td><span class="yes">Always</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Common encoded values cheat sheet</h3>
+      <table class="ref-table">
+        <thead>
+          <tr><th>Character</th><th>Encoded</th><th>When you'll see it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>space</td><td><code>%20</code> or <code>+</code></td><td>The most common — see "+ vs %20" section below</td></tr>
+          <tr><td><code>!</code></td><td><code>%21</code></td><td>Sometimes encoded, sometimes left raw — depends on the encoder</td></tr>
+          <tr><td><code>"</code></td><td><code>%22</code></td><td>Always encoded</td></tr>
+          <tr><td><code>#</code></td><td><code>%23</code></td><td>Encoded when in a query value (otherwise it's the fragment delimiter)</td></tr>
+          <tr><td><code>&amp;</code></td><td><code>%26</code></td><td>Encoded inside query values to avoid splitting parameters</td></tr>
+          <tr><td><code>+</code></td><td><code>%2B</code></td><td>Critical — raw <code>+</code> means space in form-encoded URLs</td></tr>
+          <tr><td><code>/</code></td><td><code>%2F</code></td><td>Encoded only when used as data (not as path separator)</td></tr>
+          <tr><td><code>=</code></td><td><code>%3D</code></td><td>Encoded inside query values to avoid splitting key=value</td></tr>
+          <tr><td><code>?</code></td><td><code>%3F</code></td><td>Encoded inside query values (otherwise it's the query delimiter)</td></tr>
+          <tr><td><code>%</code></td><td><code>%25</code></td><td>Always encoded — to avoid being read as a percent-encoding prefix</td></tr>
+          <tr><td><code>é</code></td><td><code>%C3%A9</code></td><td>Two-byte UTF-8 character, two percent-triplets</td></tr>
+          <tr><td><code>中</code></td><td><code>%E4%B8%AD</code></td><td>Three-byte UTF-8 character (CJK)</td></tr>
+          <tr><td>😀 (U+1F600)</td><td><code>%F0%9F%98%80</code></td><td>Four-byte UTF-8 character (emoji)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>How to URL encode in 8 programming languages</h2>
+      <p>Every modern language has standard-library URL encoding. Here are the canonical functions for the eight most-used languages, with one-line examples you can paste straight into your project.</p>
+
+      <h3>JavaScript (browser + Node.js)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Encode a query value
+const value = "hello world &amp; friends";
+const encoded = encodeURIComponent(value);
+// → "hello%20world%20%26%20friends"
+
+// Decode
+const decoded = decodeURIComponent(encoded);
+// → "hello world &amp; friends"
+
+// Encode a full URL (rarely needed)
+const fullUrl = encodeURI("https://x.com/search?q=hello world");
+// → "https://x.com/search?q=hello%20world"
+</code></pre>
+      </div>
+
+      <h3>Python (3.x)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>from urllib.parse import quote, quote_plus, unquote, unquote_plus
+
+# Standard percent-encoding (spaces → %20)
+quote("hello world &amp; friends")
+# → 'hello%20world%20%26%20friends'
+
+# Form-style encoding (spaces → +)
+quote_plus("hello world &amp; friends")
+# → 'hello+world+%26+friends'
+
+# Decoding
+unquote("hello%20world")        # → 'hello world'
+unquote_plus("hello+world")     # → 'hello world'
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Form-style (spaces → +) — what HTML form submission uses
+$encoded = urlencode("hello world &amp; friends");
+// → "hello+world+%26+friends"
+
+// RFC 3986 percent-encoding (spaces → %20) — preferred for paths
+$encoded = rawurlencode("hello world &amp; friends");
+// → "hello%20world%20%26%20friends"
+
+// Decoding
+$decoded = urldecode("hello+world");      // → "hello world"
+$decoded = rawurldecode("hello%20world"); // → "hello world"
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import java.net.URLEncoder;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+// Note: Java's URLEncoder uses form-style encoding (spaces → +)
+String encoded = URLEncoder.encode("hello world &amp; friends", StandardCharsets.UTF_8);
+// → "hello+world+%26+friends"
+
+String decoded = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
+// → "hello world &amp; friends"
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'cgi'
+require 'uri'
+
+# Form-style encoding (spaces → +)
+CGI.escape("hello world &amp; friends")
+# → "hello+world+%26+friends"
+
+# RFC 3986 percent-encoding (spaces → %20) — modern preferred
+URI.encode_www_form_component("hello world &amp; friends")
+# → "hello+world+%26+friends"
+
+# Decoding
+CGI.unescape("hello+world")    # → "hello world"
+</code></pre>
+      </div>
+
+      <h3>C# / .NET</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">csharp</div>
+<pre><code>using System;
+using System.Web;
+
+// HttpUtility — form-style encoding
+string encoded = HttpUtility.UrlEncode("hello world &amp; friends");
+// → "hello+world+%26+friends"
+
+// Uri.EscapeDataString — RFC 3986 (preferred for modern code)
+string encoded2 = Uri.EscapeDataString("hello world &amp; friends");
+// → "hello%20world%20%26%20friends"
+
+// Decoding
+string decoded = Uri.UnescapeDataString("hello%20world");
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "net/url"
+
+// Form-style (spaces → +) — for query strings
+encoded := url.QueryEscape("hello world &amp; friends")
+// → "hello+world+%26+friends"
+
+// RFC 3986 path-style (spaces → %20)
+encoded := url.PathEscape("hello world &amp; friends")
+// → "hello%20world%20&amp;%20friends"
+
+// Decoding
+decoded, _ := url.QueryUnescape("hello+world")
+</code></pre>
+      </div>
+
+      <h3>Bash / cURL</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># cURL has built-in URL encoding for data
+curl -G --data-urlencode "q=hello world &amp; friends" https://api.example.com/search
+# Sends: GET /search?q=hello%20world%20%26%20friends
+
+# Pure bash one-liner (POSIX-compatible)
+encoded=$(printf '%s' "hello world" | jq -sRr @uri)
+# → "hello%20world"
+</code></pre>
+      </div>
+
+      <p>Note: <strong>JavaScript, Python's <code>quote</code>, PHP's <code>rawurlencode</code>, Ruby's <code>URI.encode_www_form_component</code>, C#'s <code>Uri.EscapeDataString</code>, and Go's <code>PathEscape</code></strong> all produce the same RFC 3986 output. <strong>Java's <code>URLEncoder</code>, PHP's <code>urlencode</code>, and JavaScript's form mode</strong> use the older form-encoded variant where spaces become <code>+</code> instead of <code>%20</code>. Mixing these is the #1 source of "this works on my machine" bugs.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Common URL encoding scenarios</h2>
+
+      <h3>Query string parameters</h3>
+      <p>The most common case. When building a URL like <code>https://api.example.com/search?q=...&amp;filter=...</code>, encode each value with <code>encodeURIComponent</code> (or your language's RFC 3986 equivalent) <em>before</em> concatenating into the query string. Never encode the whole URL after building it — you'll either miss reserved characters or corrupt the structure.</p>
+
+      <h3>Path segments</h3>
+      <p>If your URL paths contain user-generated slugs that may include special characters (e.g. file names with spaces, names with accents), encode each path segment individually. <code>/files/My Document.pdf</code> becomes <code>/files/My%20Document.pdf</code>. Don't encode the slashes (<code>/</code>) themselves — those are path separators, not data.</p>
+
+      <h3>Form submission (POST bodies)</h3>
+      <p>Standard HTML forms send data as <code>application/x-www-form-urlencoded</code>: keys and values are URL-encoded, spaces become <code>+</code> (not <code>%20</code>), and pairs are joined by <code>&amp;</code>. Most language libraries (e.g. <code>FormData</code> in JS, <code>requests.post(data=...)</code> in Python) handle this automatically — but if you build form bodies by hand, use the form-encoding variant of your language's URL encoder.</p>
+
+      <h3>Cookie values</h3>
+      <p>Cookies cannot contain raw spaces, semicolons, or commas. Browsers do not encode cookie values automatically — your application must encode before <code>document.cookie =</code> and decode after reading. Most cookie libraries handle this for you.</p>
+
+      <h3>HTTP headers and OAuth signatures</h3>
+      <p>Some HTTP headers (notably OAuth 1.0 <code>Authorization</code> headers and certain custom headers) require RFC 3986 percent-encoding. OAuth specifically forbids the <code>+</code>-for-space variant — using the wrong encoder breaks signature verification with cryptic 401 errors.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>+ vs %20 — the eternal confusion explained</h2>
+      <p>Both <code>+</code> and <code>%20</code> represent a space character — but they're not interchangeable, and using the wrong one in the wrong place causes bugs that are hard to track down. Here's the rule:</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Context</th><th>Use</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>URL <strong>path</strong> (e.g. <code>/files/my%20doc.pdf</code>)</td>
+            <td><code>%20</code></td>
+            <td>RFC 3986 standard. Raw <code>+</code> in a path is treated as a literal plus sign, not a space.</td>
+          </tr>
+          <tr>
+            <td>URL <strong>query string</strong> (e.g. <code>?q=hello%20world</code>)</td>
+            <td><code>%20</code> preferred, <code>+</code> tolerated</td>
+            <td>Modern web apps accept both. <code>%20</code> is unambiguous; <code>+</code> is the legacy form-encoded convention.</td>
+          </tr>
+          <tr>
+            <td>HTML <strong>form submission</strong> body (POST <code>application/x-www-form-urlencoded</code>)</td>
+            <td><code>+</code></td>
+            <td>Defined by the HTML spec. The form encoder produces <code>+</code> for spaces, percent-encoding for everything else.</td>
+          </tr>
+          <tr>
+            <td><strong>OAuth 1.0</strong> signatures</td>
+            <td><code>%20</code> only</td>
+            <td>OAuth 1.0 spec mandates RFC 3986. Using <code>+</code> breaks the signature.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>The trap:</strong> if you encode <code>"hello world"</code> using a form-style encoder, you get <code>hello+world</code>. If a downstream parser expects RFC 3986 (where <code>+</code> is a literal plus), it decodes your value as <code>hello+world</code> instead of <code>hello world</code>. Spaces become plus signs in your database. This actually happens in production constantly — usually when the front-end uses one library and the back-end uses another.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Double encoding — what it is and how to avoid it</h2>
+      <p>Double encoding happens when an already-encoded string is encoded again. The percent sign itself (<code>%</code>) gets encoded as <code>%25</code>, so <code>%20</code> turns into <code>%2520</code>. The result still <em>looks</em> like a URL but contains literal <code>%20</code> sequences instead of actual spaces.</p>
+
+      <p>The classic scenario: a URL is built with proper encoding by component A, then component B (which doesn't realize it's already encoded) encodes it again before passing it on. The downstream parser decodes once, gets back the half-encoded version, treats <code>%20</code> as literal text, and serves the wrong page (or a 404).</p>
+
+      <h3>How to detect double encoding</h3>
+      <ul>
+        <li>Look for <code>%25</code> sequences in URLs that should not contain literal percent signs.</li>
+        <li><code>%2520</code> is the giveaway — that's a double-encoded space.</li>
+        <li>If your URL has <code>%26amp%3B</code> instead of <code>%26</code>, an HTML escape was applied on top of URL encoding.</li>
+      </ul>
+
+      <h3>How to fix it</h3>
+      <ul>
+        <li><strong>Decode once, then re-encode</strong> — strip the doubled layer with a single decode pass, then encode the raw value once.</li>
+        <li><strong>Audit your encoding boundary.</strong> Encode at exactly one point — typically the moment you concatenate values into a URL. Document this in the code.</li>
+        <li><strong>Don't encode in templates AND in code.</strong> If your template engine auto-escapes URL parameters (as some MVC frameworks do), don't pre-encode the values you pass in.</li>
+      </ul>
+
+      <div class="article-aside">
+        <strong>Quick test:</strong> if you suspect double encoding, paste the URL into the decoder above and check the result. If the output still contains <code>%XX</code> sequences, you have one more encoding layer to peel off.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>URL encoding and SEO — best practices</h2>
+      <p>Google can index URLs with percent-encoded characters, but heavily encoded URLs hurt click-through rate and shareability. The cleanest URLs are the ones that don't need encoding at all.</p>
+      <ul>
+        <li><strong>Use hyphens, not spaces, in slugs.</strong> <code>/my-blog-post</code> is far better than <code>/my%20blog%20post</code> — easier to read, no truncation in social previews, no fragility around encoding/decoding.</li>
+        <li><strong>Lowercase everything.</strong> URLs are technically case-sensitive in the path. <code>/About</code> and <code>/about</code> can be different pages — Google treats them as duplicates, but you fragment your link equity. Pick lowercase site-wide.</li>
+        <li><strong>Avoid non-ASCII in URL paths.</strong> <code>/résumé</code> works but appears as <code>/r%C3%A9sum%C3%A9</code> in browser address bars and shared links. For international content, use ASCII transliteration (<code>/resume</code>) or punycode for domains.</li>
+        <li><strong>Keep encoding to query parameters.</strong> Path segments should be predictable, indexable, and short. Save the messy encoding for query strings, where users don't read the URL.</li>
+        <li><strong>Use our <a href="slug-generator">URL Slug Generator</a></strong> to convert page titles into clean, encoding-free slugs automatically.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the URL encoder</h2>
@@ -363,6 +885,46 @@
         Google can handle URL-encoded characters, but clean, human-readable URLs are preferred for SEO. Excessive percent-encoding makes URLs harder to read, share, and click on in search results. Best practices: use hyphens instead of spaces or underscores, avoid special characters in URL paths, use lowercase, and keep encoding to query parameters where it's actually necessary.
       </div>
     </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the maximum length of a URL?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        RFC 3986 sets <em>no formal maximum</em>, but practical limits exist. Browsers historically capped at 2,083 characters (IE, dropped in Edge). Modern Chrome and Firefox accept &gt; 32,000 but address-bar truncation begins around 2,000. Web servers default to 8 KB (Apache, Nginx). Google indexes URLs up to ~2,000 characters reliably. <strong>Practical rule: keep total URL length under 2,000 characters</strong> — including encoded query strings — for cross-platform compatibility and SEO. If you're hitting that limit, switch to a POST body instead.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I encode the plus sign (+) in a URL?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Encode <code>+</code> as <code>%2B</code>. This matters because in form-encoded URLs (the default for HTML form submissions), a literal <code>+</code> is interpreted as a <em>space</em>. So a phone number like <code>+1 555 1234</code> sent as <code>?phone=+1%20555%201234</code> arrives at the server as <code> 1 555 1234</code> (leading space, no plus). The fix: always pre-encode <code>+</code> to <code>%2B</code> when sending phone numbers, email tags (<code>user+tag@example.com</code>), or any data where the plus has semantic meaning. JavaScript's <code>encodeURIComponent</code> does this correctly; PHP's <code>urlencode</code> also encodes plus signs as <code>%2B</code> (despite using <code>+</code> for spaces).
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What is the difference between URL encoding and HTML entity encoding?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        They solve different problems. <strong>URL encoding</strong> uses percent-triplets (<code>%26</code> for <code>&amp;</code>) and applies to URLs in transit — query strings, paths, headers. <strong>HTML entity encoding</strong> uses named or numeric references (<code>&amp;amp;</code> or <code>&amp;#38;</code> for <code>&amp;</code>) and applies inside HTML markup to prevent characters from being parsed as tags or entities. They're often combined: an <code>&lt;a href="..."&gt;</code> attribute may contain URL-encoded values inside HTML-entity-escaped attribute syntax. Mixing them up causes display bugs (<code>&amp;amp;amp;</code> rendering as visible text) and security holes (XSS). Use the right encoding for the destination context.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I safely encode an entire URL string?
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-a">
+        Generally, <strong>don't</strong> — encode at the level of individual components, not the whole URL. The clean approach: build URLs with a URL builder API. In JavaScript, use <code>new URL()</code> + <code>URLSearchParams</code>. In Python, <code>urllib.parse.urlencode()</code> for query strings + <code>urljoin()</code> for paths. In Go, <code>url.URL</code> struct. These libraries encode each component correctly without you needing to think about reserved characters. If you absolutely must encode a complete URL string in one shot (e.g. proxying a user-pasted URL), use <code>encodeURI()</code> in JavaScript or your language's equivalent — it preserves URL structure while encoding spaces and other illegal characters in the path.
+      </div>
+    </div>
   </section>
 
   <!-- Related Tools -->
@@ -398,9 +960,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — URL Encoder / Decoder</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

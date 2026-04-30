@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JWT Decoder Online — Decode & Verify JWT Tokens Free | FreeDevTool</title>
-  <meta name="description" content="Decode JWT tokens online instantly. View header, payload and signature. Free tool, no data sent to server.">
+  <title>JWT Decoder Online — Decode & Inspect JSON Web Tokens Free | FreeDevTool</title>
+  <meta name="description" content="Free JWT decoder. Inspect header, payload, expiration &amp; standard claims. Supports HS256, RS256, ES256. Runs in browser, tokens never leave your device.">
+  <meta name="keywords" content="jwt decoder, jwt token decoder, decode jwt online, jwt inspector, json web token, RFC 7519, jwt.io alternative, bearer token decoder">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/jwt-decoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="JWT Decoder Online — Free | FreeDevTool">
+  <meta name="twitter:description" content="Decode JWT tokens, inspect header, payload &amp; expiration. Browser-based, no signup, tokens never sent to a server.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -230,13 +231,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Security Tool</div>
-    <h1>JWT Decoder &amp; Token Inspector</h1>
+    <h1>JWT Decoder Online — Inspect JSON Web Tokens</h1>
     <p class="tool-description">
-      Decode any JSON Web Token (JWT) instantly and inspect its header, payload and claims. This free online JWT decoder parses tokens compliant with RFC 7519, displays registered claims like <code>iss</code>, <code>sub</code>, <code>exp</code>, <code>iat</code>, and highlights token expiration status in real time. Paste an OAuth bearer token, an API access token, or any JWS to view its decoded contents. All processing runs entirely in your browser — your token never leaves your device.
+      Decode any JSON Web Token (JWT) instantly and inspect its header, payload, and claims. This free JWT decoder parses tokens per <a href="https://datatracker.ietf.org/doc/html/rfc7519" rel="noopener" style="color:var(--accent)">RFC 7519</a>, displays standard claims (<code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code>, <code>iat</code>, <code>nbf</code>, <code>jti</code>) with human-readable timestamps, and highlights expiration in real time. Paste an OAuth 2.0 bearer token, an API access token, or any JWS to view its contents. All processing runs in your browser — your token never reaches a server, and nothing is logged.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -301,6 +301,374 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a JWT?</h2>
+      <p>A <strong>JSON Web Token (JWT)</strong> is a compact, URL-safe way to represent <em>signed</em> claims between two parties. Defined in <a href="https://datatracker.ietf.org/doc/html/rfc7519" rel="noopener">RFC 7519</a>, JWT became the dominant token format for stateless authentication after OAuth 2.0 (RFC 6749) adopted it as the default bearer token in OpenID Connect. Today, every major identity provider — Auth0, AWS Cognito, Firebase Auth, Okta, Keycloak, Azure AD — issues JWTs. Most modern APIs verify them on every request.</p>
+      <p>The killer feature is <strong>statelessness</strong>: instead of storing session data on the server (with the database lookup that implies), the server signs a token containing the user's identity, expiration, and permissions. Every subsequent request includes the token; the server verifies the signature with a single cryptographic check — no database hit. Trade-off: you can't revoke a token before it expires (without bringing back state).</p>
+      <p>A JWT is <strong>signed, not encrypted</strong>. Anyone holding the token can read its contents. The signature only proves the issuer hasn't been tampered with — it doesn't hide the data. This is why <strong>you should never put secrets in a JWT payload.</strong> If you need encryption, use JWE (JSON Web Encryption, RFC 7516) — the lesser-known sibling of JWT.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JWT structure — three parts separated by dots</h2>
+      <p>Every JWT is exactly three Base64URL-encoded segments joined by periods:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">jwt-format</div>
+<pre><code>&lt;header&gt;.&lt;payload&gt;.&lt;signature&gt;
+
+// Real example (formatted for readability):
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.
+eyJzdWIiOiIxMjM0IiwibmFtZSI6IkFuZWVzIiwiaWF0IjoxNzE5NTAwMDAwLCJleHAiOjE3MTk1MDM2MDB9
+.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre>
+      </div>
+
+      <h3>1. Header</h3>
+      <p>A JSON object encoding the signing algorithm and token type. Decoded:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">json</div>
+<pre><code>{ "alg": "HS256", "typ": "JWT" }</code></pre>
+      </div>
+      <p>The <code>alg</code> field is critical — it tells the verifier which algorithm to use to validate the signature. Common values: <code>HS256</code> (HMAC-SHA256, symmetric), <code>RS256</code> (RSA + SHA-256, asymmetric), <code>ES256</code> (ECDSA P-256). The optional <code>kid</code> (key ID) field tells the verifier <em>which</em> key to use when keys are rotated.</p>
+
+      <h3>2. Payload</h3>
+      <p>A JSON object containing the <strong>claims</strong> — statements about the user and the token itself. Mix of standard (registered) claims and custom (private) claims:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">json</div>
+<pre><code>{
+  "sub":   "1234",            // subject — the user
+  "iss":   "https://auth.example.com",  // issuer
+  "aud":   "api.example.com", // audience — who can use this
+  "exp":   1719503600,        // expiration — Unix seconds
+  "iat":   1719500000,        // issued at
+  "nbf":   1719500000,        // not before
+  "jti":   "a3f7c1...",       // unique token ID (for revocation lists)
+  "role":  "admin",           // custom claim
+  "scope": "read write"       // custom claim
+}</code></pre>
+      </div>
+
+      <h3>3. Signature</h3>
+      <p>The signature is computed over the encoded header and payload using the algorithm specified in the header. For HS256:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">signature-formula</div>
+<pre><code>signature = HMAC-SHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  secret
+)</code></pre>
+      </div>
+      <p>The verifier recomputes this over the received header and payload using its copy of the secret (or public key for RS256/ES256). If the signatures match, the token is authentic. If not, reject it.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JWT signing algorithms — HS256 vs RS256 vs ES256</h2>
+      <p>Choosing the algorithm depends on whether you control both ends of the trust relationship.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Algorithm</th><th>Type</th><th>Key</th><th>When to use</th><th>Trade-offs</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>HS256</strong> (HMAC-SHA256)</td>
+            <td>Symmetric</td>
+            <td>Shared secret (same key signs and verifies)</td>
+            <td>Single-service apps where the signer and verifier are the same backend</td>
+            <td>Anyone who can verify can also forge tokens. Don't use across multiple services.</td>
+          </tr>
+          <tr>
+            <td><strong>RS256</strong> (RSA-PKCS1-v1.5 + SHA-256)</td>
+            <td>Asymmetric</td>
+            <td>RSA private key signs, public key verifies (2048+ bit)</td>
+            <td>Multi-service architectures, third-party integrations, OpenID Connect</td>
+            <td>Larger signatures (256 bytes), slower than HS256, but verifiers don't need the secret.</td>
+          </tr>
+          <tr>
+            <td><strong>ES256</strong> (ECDSA P-256 + SHA-256)</td>
+            <td>Asymmetric</td>
+            <td>Elliptic curve private key signs, public key verifies</td>
+            <td>Same as RS256 but smaller and faster — modern preferred choice</td>
+            <td>Slightly newer; less universal library support than RS256.</td>
+          </tr>
+          <tr>
+            <td><strong>EdDSA</strong> (Ed25519)</td>
+            <td>Asymmetric</td>
+            <td>Ed25519 keys — fast, modern</td>
+            <td>New systems where library support exists</td>
+            <td>Best modern choice, but check verifier support before adopting.</td>
+          </tr>
+          <tr>
+            <td><strong>none</strong></td>
+            <td>(no signature)</td>
+            <td>—</td>
+            <td><strong>Never in production.</strong> Source of multiple historical vulnerabilities.</td>
+            <td>Servers must explicitly reject <code>alg: none</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Rule of thumb:</strong> use <strong>RS256 or ES256 across services</strong> (so verifiers don't need your secret), <strong>HS256 only inside a single service</strong>, and <strong>never <code>none</code></strong>.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Standard JWT claims explained</h2>
+      <p>RFC 7519 §4.1 defines seven <strong>registered claims</strong>. Every JWT library understands these, so use them rather than custom equivalents.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Claim</th><th>Full name</th><th>Type</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>iss</code></td><td>Issuer</td><td>String / URL</td><td>Who issued this token. Verifiers should check this matches a trusted issuer.</td></tr>
+          <tr><td><code>sub</code></td><td>Subject</td><td>String</td><td>Whom the token is about. Usually a user ID.</td></tr>
+          <tr><td><code>aud</code></td><td>Audience</td><td>String or array</td><td>Who is allowed to use this token. Verifiers must check this matches their service.</td></tr>
+          <tr><td><code>exp</code></td><td>Expiration</td><td>NumericDate (Unix seconds)</td><td>After this time, the token is invalid. <strong>Mandatory in practice.</strong></td></tr>
+          <tr><td><code>nbf</code></td><td>Not Before</td><td>NumericDate</td><td>Token is not valid before this time. Useful for delayed activation.</td></tr>
+          <tr><td><code>iat</code></td><td>Issued At</td><td>NumericDate</td><td>When the token was issued. Useful for revocation by issue time.</td></tr>
+          <tr><td><code>jti</code></td><td>JWT ID</td><td>String</td><td>Unique identifier for the token. Enables revocation lists.</td></tr>
+        </tbody>
+      </table>
+
+      <p>Custom claims should be namespaced when used across organizations — RFC 7519 §4.3 recommends using a URI-prefixed name like <code>"https://example.com/role": "admin"</code> to avoid collisions with future registered claims.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JWT verification flow — the complete checklist</h2>
+      <p>Decoding a JWT is trivial. <strong>Verifying</strong> it correctly is what matters. A complete server-side check covers eight steps:</p>
+
+      <ul>
+        <li><strong>1. Parse the three parts.</strong> Split on dots; reject if not exactly three segments.</li>
+        <li><strong>2. Decode header.</strong> Base64URL-decode and parse JSON. Read <code>alg</code> and <code>kid</code>.</li>
+        <li><strong>3. Validate the algorithm.</strong> Whitelist allowed algorithms in your library. <strong>Never trust <code>alg</code> from the token alone</strong> — that's the alg-confusion attack. Configure your library to accept only <code>RS256</code> (or whichever you use).</li>
+        <li><strong>4. Look up the key.</strong> For HS256, your shared secret. For RS256/ES256, fetch the public key by <code>kid</code> from your JWKS endpoint (<code>/.well-known/jwks.json</code>).</li>
+        <li><strong>5. Verify the signature.</strong> Recompute it over <code>header.payload</code> and compare with constant-time equality.</li>
+        <li><strong>6. Check expiration.</strong> Reject if <code>exp</code> is missing OR <code>now() &gt; exp</code> (with a small leeway, e.g. ±60 seconds for clock skew).</li>
+        <li><strong>7. Check audience and issuer.</strong> Verify <code>iss</code> matches your trusted issuer. Verify <code>aud</code> contains your service's identifier.</li>
+        <li><strong>8. Check revocation if you maintain a list.</strong> Look up <code>jti</code> in your revocation cache; reject if present.</li>
+      </ul>
+
+      <div class="article-aside">
+        <strong>This decoder does steps 1–2 only.</strong> It exists to let you inspect a token. <strong>Always verify on the server</strong> with a battle-tested library: <code>jose</code> (JS/Node), <code>PyJWT</code> (Python), <code>jjwt</code> (Java), <code>golang-jwt/jwt</code> (Go), or your auth provider's SDK.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Verifying JWTs in 8 programming languages</h2>
+
+      <h3>Node.js (jose)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>import { jwtVerify, createRemoteJWKSet } from 'jose';
+
+// Auto-fetches keys from the issuer's JWKS endpoint
+const JWKS = createRemoteJWKSet(new URL('https://auth.example.com/.well-known/jwks.json'));
+
+const { payload } = await jwtVerify(token, JWKS, {
+  issuer:   'https://auth.example.com',
+  audience: 'api.example.com',
+  algorithms: ['RS256'],   // whitelist!
+});
+console.log(payload.sub);
+</code></pre>
+      </div>
+
+      <h3>Python (PyJWT)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import jwt
+
+# Symmetric (HS256)
+decoded = jwt.decode(token, secret, algorithms=["HS256"],
+                     audience="api.example.com",
+                     issuer="https://auth.example.com")
+
+# Asymmetric (RS256) with PyJWT &gt;= 2.0
+decoded = jwt.decode(
+    token, public_key, algorithms=["RS256"],
+    audience="api.example.com",
+)
+print(decoded["sub"])
+</code></pre>
+      </div>
+
+      <h3>PHP (firebase/php-jwt)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+// HS256
+$decoded = JWT::decode($token, new Key($secret, 'HS256'));
+
+// RS256
+$decoded = JWT::decode($token, new Key($publicKey, 'RS256'));
+echo $decoded-&gt;sub;
+</code></pre>
+      </div>
+
+      <h3>Java (JJWT)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+
+Jws&lt;Claims&gt; jws = Jwts.parser()
+    .verifyWith(publicKey)            // RSA public key
+    .requireIssuer("https://auth.example.com")
+    .requireAudience("api.example.com")
+    .build()
+    .parseSignedClaims(token);
+
+String userId = jws.getPayload().getSubject();
+</code></pre>
+      </div>
+
+      <h3>Go (golang-jwt/jwt)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "github.com/golang-jwt/jwt/v5"
+
+token, err := jwt.Parse(tokenStr, func(t *jwt.Token) (interface{}, error) {
+    if _, ok := t.Method.(*jwt.SigningMethodRSA); !ok {
+        return nil, fmt.Errorf("unexpected algorithm: %v", t.Header["alg"])
+    }
+    return publicKey, nil
+}, jwt.WithAudience("api.example.com"),
+   jwt.WithIssuer("https://auth.example.com"))
+</code></pre>
+      </div>
+
+      <h3>Rust (jsonwebtoken)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use jsonwebtoken::{decode, DecodingKey, Validation, Algorithm};
+
+let mut validation = Validation::new(Algorithm::RS256);
+validation.set_audience(&amp;["api.example.com"]);
+validation.set_issuer(&amp;["https://auth.example.com"]);
+
+let key = DecodingKey::from_rsa_pem(public_key_pem)?;
+let token = decode::&lt;Claims&gt;(token_str, &amp;key, &amp;validation)?;
+</code></pre>
+      </div>
+
+      <h3>Ruby (jwt gem)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'jwt'
+
+decoded = JWT.decode(token, public_key, true, {
+  algorithm: 'RS256',
+  iss: 'https://auth.example.com',
+  verify_iss: true,
+  aud: 'api.example.com',
+  verify_aud: true,
+})
+payload = decoded[0]
+</code></pre>
+      </div>
+
+      <h3>C# / .NET</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">csharp</div>
+<pre><code>using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+
+var handler = new JwtSecurityTokenHandler();
+var validation = new TokenValidationParameters {
+    ValidIssuer = "https://auth.example.com",
+    ValidAudience = "api.example.com",
+    IssuerSigningKey = new RsaSecurityKey(publicKey),
+    ValidAlgorithms = new[] { "RS256" },
+};
+handler.ValidateToken(token, validation, out var validatedToken);
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common JWT vulnerabilities — and how to avoid them</h2>
+
+      <h3>1. Algorithm confusion (<code>alg: none</code>)</h3>
+      <p>Some libraries accept <code>"alg": "none"</code> in the header, which means "no signature." An attacker forges a token with <code>alg: none</code> and an empty signature; if your library trusts the header, the token is "valid." <strong>Fix:</strong> always whitelist allowed algorithms server-side. Never accept <code>none</code>.</p>
+
+      <h3>2. RS256 → HS256 substitution</h3>
+      <p>If your verifier accepts both <code>HS256</code> and <code>RS256</code>, an attacker can take your <strong>public</strong> RSA key (which is not a secret), use it as the HMAC secret, and forge a token signed as <code>HS256</code>. Your library validates with the public key as if it were an HMAC secret. <strong>Fix:</strong> hard-code a single algorithm per endpoint, or only allow algorithms that match the key type.</p>
+
+      <h3>3. Unverified <code>kid</code> path traversal</h3>
+      <p>The <code>kid</code> header is attacker-controlled. If your code does <code>readFile(<span style="color:var(--text2)">"/keys/" + kid + ".pem"</span>)</code>, an attacker sets <code>kid</code> to <code>../../etc/passwd</code> and reads arbitrary files. <strong>Fix:</strong> look up keys in a whitelist or hashmap, never construct file paths from <code>kid</code>.</p>
+
+      <h3>4. Missing or wrong audience check</h3>
+      <p>Token issued for <em>service A</em> gets replayed against <em>service B</em>. If service B doesn't check <code>aud</code>, it accepts the token. <strong>Fix:</strong> always validate <code>aud</code> matches your service identifier.</p>
+
+      <h3>5. Long expiration windows</h3>
+      <p>Tokens with <code>exp</code> 30 days out are catastrophic if leaked. <strong>Fix:</strong> short access tokens (5–60 minutes) + refresh tokens stored server-side. Rotate refresh tokens on use.</p>
+
+      <h3>6. Storing secrets in payload</h3>
+      <p>Payloads are Base64URL, not encrypted. Anyone with the token reads them. <strong>Fix:</strong> only put non-sensitive identifiers in JWTs. Use JWE if you need encryption.</p>
+
+      <h3>7. Client-side signature verification</h3>
+      <p>"Verifying" a JWT in the browser is theater — the user controls the browser. <strong>Fix:</strong> always verify on the server. Browser-side, you can read the payload to display the user's name, but never base authorization decisions on it.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JWT vs sessions vs API keys — when to use what</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Mechanism</th><th>Stateful?</th><th>Best for</th><th>Trade-offs</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>JWT (Bearer)</strong></td>
+            <td>No (stateless)</td>
+            <td>Microservices, mobile/SPA → API, OpenID Connect, federated identity</td>
+            <td>Hard to revoke before expiration. Larger than session cookies.</td>
+          </tr>
+          <tr>
+            <td><strong>Session cookie + server store</strong></td>
+            <td>Yes</td>
+            <td>Traditional web apps, immediate revocation, server-rendered pages</td>
+            <td>DB lookup per request. Tightly tied to one origin.</td>
+          </tr>
+          <tr>
+            <td><strong>API key</strong></td>
+            <td>Yes (DB lookup)</td>
+            <td>Server-to-server APIs, long-lived integrations, public-facing APIs</td>
+            <td>Long-lived. Compromise = rotate key. No claims.</td>
+          </tr>
+          <tr>
+            <td><strong>OAuth 2.0 access token (JWT or opaque)</strong></td>
+            <td>Depends on issuer</td>
+            <td>Third-party integrations, "Login with X"</td>
+            <td>Spec compliance overhead. Requires identity provider.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>The wider industry has moved toward <strong>short-lived JWTs + refresh tokens</strong> for client-server auth, but plain old session cookies are still the simpler choice for monolithic apps where you don't need cross-service authentication.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JWT best practices</h2>
+      <ul>
+        <li><strong>Set short <code>exp</code>.</strong> 5–15 minutes for access tokens. Use refresh tokens for longer sessions.</li>
+        <li><strong>Whitelist algorithms.</strong> Configure your library to accept only one algorithm per verification path. Never trust the <code>alg</code> in the header.</li>
+        <li><strong>Verify <code>iss</code> and <code>aud</code> always.</strong> These are not optional.</li>
+        <li><strong>Use HTTPS-only cookies (<code>HttpOnly; Secure; SameSite=Strict</code>) to store JWTs in browsers</strong> if possible — far safer than <code>localStorage</code>, which is vulnerable to XSS.</li>
+        <li><strong>Rotate signing keys.</strong> Use <code>kid</code> to identify keys. Run a JWKS endpoint that publishes current public keys.</li>
+        <li><strong>Don't roll your own JWT library.</strong> Cryptography is full of subtle pitfalls. Use <code>jose</code>, <code>PyJWT</code>, <code>jjwt</code>, etc.</li>
+        <li><strong>Use this decoder for inspection only.</strong> Real verification belongs on a server with a real library and the proper key material.</li>
+        <li><strong>Don't store JWTs in URLs or query parameters.</strong> They get logged in server access logs, browser history, and analytics. Use <code>Authorization: Bearer</code> headers.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- How to use + mistakes -->
   <section class="use-cases">
@@ -423,9 +791,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — JWT Decoder Online</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 
