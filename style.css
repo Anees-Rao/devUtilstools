@@ -924,16 +924,36 @@ footer a:hover::after { width: 100%; }
   padding: 1px 6px; border-radius: 4px;
 }
 
-/* Comparison + reference tables */
+/* Comparison + reference tables — horizontally scrollable when wide */
 .ref-table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin: 14px 0 18px;
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
   font-size: 13.5px;
+  /* Subtle scrollbar shadow hint that more is scrollable */
+  background-image:
+    linear-gradient(to right, var(--bg2), var(--bg2)),
+    linear-gradient(to right, var(--bg2), var(--bg2)),
+    linear-gradient(to right, rgba(0,0,0,.4), transparent),
+    linear-gradient(to left, rgba(0,0,0,.4), transparent);
+  background-position: left center, right center, left center, right center;
+  background-repeat: no-repeat;
+  background-size: 16px 100%, 16px 100%, 8px 100%, 8px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+.ref-table > thead,
+.ref-table > tbody {
+  display: table;
+  width: 100%;
+  min-width: 580px; /* allows scroll on narrow viewports while preserving cell alignment */
+  table-layout: auto;
 }
 .ref-table th {
   background: var(--bg3);
@@ -942,12 +962,15 @@ footer a:hover::after { width: 100%; }
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   font-size: 12.5px; letter-spacing: .3px;
+  white-space: nowrap;
 }
 .ref-table td {
   padding: 10px 14px;
   color: var(--text2);
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .ref-table tr:last-child td { border-bottom: none; }
 .ref-table tr:hover td { background: var(--bg3); }
@@ -955,9 +978,10 @@ footer a:hover::after { width: 100%; }
   font-family: var(--mono); font-size: 12px;
   color: var(--accent); background: var(--bg4);
   padding: 1px 6px; border-radius: 3px;
+  white-space: nowrap;
 }
-.ref-table .yes { color: var(--accent); font-weight: 600; }
-.ref-table .no { color: var(--red); font-weight: 600; }
+.ref-table .yes { color: var(--accent); font-weight: 600; white-space: nowrap; }
+.ref-table .no { color: var(--red); font-weight: 600; white-space: nowrap; }
 
 /* Multi-language code blocks */
 .lang-block {
