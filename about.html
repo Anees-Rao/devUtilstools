@@ -48,55 +48,55 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="index.html" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
+  <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools.html" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
-        <a href="encoding-tools.html">
+        <a href="encoding-tools">
           <div class="dd-icon">b64</div>
           <div class="dd-info"><div class="dd-name">Encoding &amp; Conversion</div><div class="dd-count">11 tools · Base64, YAML, px→rem</div></div>
         </a>
-        <a href="generation-tools.html">
+        <a href="generation-tools">
           <div class="dd-icon">{ }</div>
           <div class="dd-info"><div class="dd-name">Generation &amp; Formatting</div><div class="dd-count">16 tools · JSON, SQL, gradients</div></div>
         </a>
-        <a href="security-tools.html">
+        <a href="security-tools">
           <div class="dd-icon">#</div>
           <div class="dd-info"><div class="dd-name">Security &amp; Hashing</div><div class="dd-count">3 tools · JWT, MD5, SHA</div></div>
         </a>
-        <a href="text-tools.html">
+        <a href="text-tools">
           <div class="dd-icon">.*</div>
           <div class="dd-info"><div class="dd-name">Code &amp; Text Tools</div><div class="dd-count">9 tools · Regex, diff, tokens</div></div>
         </a>
-        <a href="devops-tools.html">
+        <a href="devops-tools">
           <div class="dd-icon">JS</div>
           <div class="dd-info"><div class="dd-name">Optimization &amp; DevOps</div><div class="dd-count">7 tools · Minifiers, cURL, git</div></div>
         </a>
-        <a href="network-tools.html">
+        <a href="network-tools">
           <div class="dd-icon">IP</div>
           <div class="dd-info"><div class="dd-name">Network &amp; Time</div><div class="dd-count">4 tools · IP, DNS, timestamps</div></div>
         </a>
-        <a href="seo-tools.html">
+        <a href="seo-tools">
           <div class="dd-icon">SEO</div>
           <div class="dd-info"><div class="dd-name">SEO &amp; Meta Tools</div><div class="dd-count">3 tools · OG, meta, slug</div></div>
         </a>
         <div class="nav-dropdown-divider"></div>
-        <a class="dd-all" href="all-tools.html">
+        <a class="dd-all" href="all-tools">
           <div class="dd-icon">All</div>
           <div class="dd-info"><div class="dd-name">Browse all 50 tools</div><div class="dd-count">Searchable catalog &amp; categories</div></div>
         </a>
       </div>
     </div>
-    <a href="about.html">About</a>
-    <a href="privacy.html">Privacy</a>
+    <a href="about">About</a>
+    <a href="privacy">Privacy</a>
   </div>
 </nav>
 
 <div class="wrapper">
 
   <div class="tool-header">
-    <a class="tool-back" href="index.html" aria-label="Back to home">
+    <a class="tool-back" href="/" aria-label="Back to home">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
       Back
     </a>
@@ -118,10 +118,76 @@
     <p>FreeDevTool is a static site hosted on a global CDN. Pages load in under 1 second. There are no heavy JavaScript frameworks, no render-blocking requests, and no unnecessary dependencies. We use vanilla HTML, CSS, and JavaScript because your tools should load instantly — not after a 3-second spinner.</p>
 
     <h2 style="color:var(--text); font-size:17px; margin:28px 0 10px">Who builds this</h2>
-    <p>FreeDevTool is built and maintained by a small team of full-stack developers who use these tools every day. We build what we need, test it ourselves, and publish it for free. If a tool is not fast enough for us, it is not fast enough for you.</p>
+    <p>FreeDevTool is built and maintained by an independent developer who uses these tools every day. The site is hand-coded in vanilla HTML, CSS, and JavaScript — no frameworks, no build pipeline, no analytics-heavy template generators. Every tool is something the maintainer needed personally, then polished into something other developers can rely on too.</p>
+
+    <!--
+      ============================================================================
+      E-E-A-T AUTHOR BLOCK — replace placeholders below with your real info.
+      Required for Google's 2026 author-credibility signals (E-E-A-T).
+      Fill in: NAME, ROLE/LOCATION, BIO, GITHUB_URL, LINKEDIN_URL, X_URL.
+      Then update the Person JSON-LD at the bottom of this section to match.
+      ============================================================================
+    -->
+    <div style="margin:36px 0 8px; padding:24px; border:1px solid var(--border); border-radius:var(--radius-lg); background:var(--bg2)">
+      <div style="display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap">
+        <div style="flex-shrink:0; width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:24px; font-weight:700; color:var(--bg)">
+          <!-- TODO: Replace "AR" initials below with your own initials, or replace this whole div with an <img src="/avatar.jpg" alt="Your Name" width="64" height="64" style="border-radius:50%"> -->
+          AR
+        </div>
+        <div style="flex:1; min-width:240px">
+          <div style="font-size:15px; font-weight:600; color:var(--text); margin-bottom:2px">
+            <!-- TODO: replace with your real name -->
+            Anees Ur Rehman
+          </div>
+          <div style="font-size:12px; color:var(--text3); font-family:var(--mono); margin-bottom:10px">
+            <!-- TODO: replace with your role + location, e.g. "Full-stack developer · Karachi, PK" -->
+            Full-stack developer · Pakistan
+          </div>
+          <p style="font-size:13.5px; color:var(--text2); line-height:1.6; margin:0 0 12px">
+            <!-- TODO: replace with your real 2-line bio. Mention years of experience, tech stack, why you built this. -->
+            Independent developer building tools that respect your time and your data. FreeDevTool started because every existing JSON formatter was either ad-loaded, slow, or sent your data to a server. So I built one that doesn't.
+          </p>
+          <div style="display:flex; gap:14px; flex-wrap:wrap; font-size:12.5px">
+            <!-- TODO: replace with your real GitHub URL -->
+            <a href="https://github.com/your-github-username" rel="noopener" style="color:var(--accent); text-decoration:none">
+              <strong style="color:var(--text)">GitHub</strong> ↗
+            </a>
+            <!-- TODO: replace with your real LinkedIn URL, or remove this <a> tag if you don't use LinkedIn -->
+            <a href="https://www.linkedin.com/in/your-linkedin-handle" rel="noopener" style="color:var(--accent); text-decoration:none">
+              <strong style="color:var(--text)">LinkedIn</strong> ↗
+            </a>
+            <!-- TODO: replace with your real X/Twitter URL, or remove this <a> tag -->
+            <a href="https://x.com/your-x-handle" rel="noopener" style="color:var(--accent); text-decoration:none">
+              <strong style="color:var(--text)">X / Twitter</strong> ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Person JSON-LD — keep in sync with the visible block above. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Anees Ur Rehman",
+      "jobTitle": "Full-stack developer",
+      "url": "https://freedevtool.org/about",
+      "sameAs": [
+        "https://github.com/your-github-username",
+        "https://www.linkedin.com/in/your-linkedin-handle",
+        "https://x.com/your-x-handle"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "FreeDevTool",
+        "url": "https://freedevtool.org"
+      }
+    }
+    </script>
 
     <h2 style="color:var(--text); font-size:17px; margin:28px 0 10px">Open to feedback</h2>
-    <p>Have a tool request, found a bug, or want to suggest an improvement? We are constantly adding new tools based on what developers actually need. Bookmark <a href="all-tools.html" style="color:var(--accent); text-decoration:none">our toolbox</a> and check back regularly — we ship something new every few weeks.</p>
+    <p>Have a tool request, found a bug, or want to suggest an improvement? We are constantly adding new tools based on what developers actually need. Bookmark <a href="all-tools" style="color:var(--accent); text-decoration:none">our toolbox</a> and check back regularly — we ship something new every few weeks.</p>
 
     <h2 style="color:var(--text); font-size:17px; margin:28px 0 10px">No tracking. No ads. No catch.</h2>
     <p>FreeDevTool will always be free. There are no premium tiers, no upsells, no upgrade prompts. We use lightweight, privacy-respecting analytics only to understand which tools developers find useful — never to identify or track individuals.</p>
@@ -133,9 +199,9 @@
 <footer>
   <div>&copy; 2026 FreeDevTool</div>
   <div class="footer-links">
-    <a href="index.html">All Tools</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms of Use</a>
+    <a href="/">All Tools</a>
+    <a href="privacy">Privacy Policy</a>
+    <a href="terms">Terms of Use</a>
   </div>
 </footer>
 
