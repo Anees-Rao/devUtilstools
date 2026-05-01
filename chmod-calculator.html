@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chmod Calculator Online — Unix File Permissions Calculator Free | FreeDevTool</title>
-  <meta name="description" content="Calculate Unix and Linux file permissions with this chmod calculator. Convert between symbolic (rwxr-xr--) and octal (754) notation. Generate chmod commands instantly. No signup required.">
+  <title>Chmod Calculator Online — Linux Permissions, Octal &amp; Symbolic | FreeDevTool</title>
+  <meta name="description" content="Free chmod calculator. Convert between octal (755) &amp; symbolic (rwxr-xr-x) Unix permissions. Visual checkboxes, special bits (setuid, setgid, sticky). Browser-based.">
+  <meta name="keywords" content="chmod calculator, unix permissions, linux file permissions, chmod 755, octal permissions, symbolic permissions, chmod online, file mode calculator">
+
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/chmod-calculator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +20,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Chmod Calculator — Linux Permissions Free | FreeDevTool">
+  <meta name="twitter:description" content="Visual chmod calculator. Octal ↔ symbolic conversion. Special bits (setuid/setgid/sticky). Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Chmod Calculator Online — Unix File Permissions Calculator">
@@ -139,9 +145,9 @@
     </a>
 
     <span class="tool-badge">DevOps</span>
-    <h1>Chmod Calculator</h1>
-    <p>Calculate Unix and Linux file permissions visually. Toggle checkboxes or type an octal number to instantly see symbolic notation, the chmod command, and a human-readable description of each permission set.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>Chmod Calculator — Linux File Permissions Online</h1>
+    <p>Calculate Unix and Linux file permissions visually. Toggle checkboxes or type an octal number (e.g. <code>755</code>, <code>644</code>) to instantly see symbolic notation (<code>rwxr-xr-x</code>), the matching <code>chmod</code> command, and a human-readable description. Includes <strong>special bits</strong>: setuid (<code>4xxx</code>), setgid (<code>2xxx</code>), and sticky bit (<code>1xxx</code>). Works for files and directories. All calculations run in your browser.</p>
+    <span class="last-updated">Last updated: April 2026</span>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -190,6 +196,269 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is chmod and how do Unix permissions work?</h2>
+      <p><strong>chmod</strong> ("change mode") is a POSIX command for setting file and directory permissions on Unix-like systems — Linux, macOS, BSD, WSL, even modern containers. The permission model dates to 1971's Unix V1 and has barely changed since: every file has an <strong>owner</strong> (user), a <strong>group</strong>, and rules for <strong>everyone else</strong>, with three permission bits each (<strong>read</strong>, <strong>write</strong>, <strong>execute</strong>). That's nine bits — three classes × three rights — neatly encoded in three octal digits.</p>
+      <p>This 9-bit model has survived 50+ years for a reason: it's just expressive enough to handle most real-world cases (config files, executables, web roots, log files) while being simple enough to reason about at a glance. Modern systems extended it with ACLs (access control lists), capabilities, AppArmor/SELinux, and namespaces — but plain chmod is still where 95% of permission decisions are made daily.</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">anatomy</div>
+<pre><code># ls -l output for a file
+-rwxr-xr--  1 anees devs   2048 Apr 30 12:34 deploy.sh
+│└┬┘└┬┘└┬┘
+│ │  │  └─── Others (everyone else):  r--  = read only
+│ │  └────── Group (devs):            r-x  = read + execute
+│ └───────── Owner (anees):           rwx  = read + write + execute
+└─────────── File type: - (regular file), d (directory), l (symlink)
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>The three classes — Owner, Group, Others</h2>
+      <p>Every file has exactly three permission classes:</p>
+      <ul>
+        <li><strong>Owner (user, <code>u</code>)</strong> — the user who owns the file. Set by <code>chown</code>. By default, the user who created the file.</li>
+        <li><strong>Group (<code>g</code>)</strong> — the file's group. Members of this group get the group permissions. Set by <code>chgrp</code>.</li>
+        <li><strong>Others (<code>o</code>)</strong> — everyone on the system who isn't the owner and isn't in the group.</li>
+      </ul>
+      <p>The shorthand <code>a</code> ("all") refers to all three classes simultaneously — <code>chmod a+r file</code> grants read to everyone.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>The three permissions — Read, Write, Execute</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Bit</th><th>Symbol</th><th>Octal value</th><th>On a file</th><th>On a directory</th></tr></thead>
+        <tbody>
+          <tr><td>Read</td><td><code>r</code></td><td>4</td><td>View file contents</td><td>List directory contents (<code>ls</code>)</td></tr>
+          <tr><td>Write</td><td><code>w</code></td><td>2</td><td>Modify or delete the file</td><td>Create / delete / rename entries inside</td></tr>
+          <tr><td>Execute</td><td><code>x</code></td><td>1</td><td>Run as a program</td><td>Enter the directory (<code>cd</code>); access entries by name</td></tr>
+        </tbody>
+      </table>
+
+      <p>Each class gets a 3-bit value combining its permissions: <code>rwx</code> = 4+2+1 = 7. <code>r-x</code> = 4+0+1 = 5. <code>rw-</code> = 4+2+0 = 6. The three octal digits combine all three classes: <code>755</code> = owner-rwx, group-rx, other-rx.</p>
+
+      <div class="article-aside">
+        <strong>Easy mnemonic:</strong> 4 = read, 2 = write, 1 = execute. Add them up. <code>chmod 7XX</code> = full owner access; <code>chmod X75</code> = group can run/read; <code>chmod XX0</code> = no access for "others". Memorize 4+2+1 once and you can read any chmod number forever.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common chmod values — copy-paste cheatsheet</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Octal</th><th>Symbolic</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td><code>644</code></td><td><code>rw-r--r--</code></td><td>Standard file — owner can edit, others can read. Default for most documents, configs, web assets.</td></tr>
+          <tr><td><code>755</code></td><td><code>rwxr-xr-x</code></td><td>Standard directory or executable — owner has full control, others can read &amp; traverse. Default for <code>/var/www</code>, scripts, binaries.</td></tr>
+          <tr><td><code>600</code></td><td><code>rw-------</code></td><td>Private file — only the owner can read or write. SSH private keys, auth tokens, secrets.</td></tr>
+          <tr><td><code>700</code></td><td><code>rwx------</code></td><td>Private directory — only owner can enter and modify. <code>~/.ssh</code>, home directories on multi-user systems.</td></tr>
+          <tr><td><code>666</code></td><td><code>rw-rw-rw-</code></td><td>World-writable file — anyone can edit. Almost always wrong; auditors flag this.</td></tr>
+          <tr><td><code>777</code></td><td><code>rwxrwxrwx</code></td><td>World-writable + executable — security disaster. NEVER use except for tmpfs or fully isolated containers.</td></tr>
+          <tr><td><code>444</code></td><td><code>r--r--r--</code></td><td>Read-only for everyone — no writes even by the owner. Use for immutable configs.</td></tr>
+          <tr><td><code>755 + setuid (4755)</code></td><td><code>rwsr-xr-x</code></td><td>Executable runs as the owner regardless of who launches it. Used by <code>sudo</code>, <code>passwd</code>. Rarely written by hand.</td></tr>
+          <tr><td><code>2775</code></td><td><code>rwxrwsr-x</code></td><td>Setgid directory — files created inside inherit the directory's group. Useful for shared team directories.</td></tr>
+          <tr><td><code>1777</code></td><td><code>rwxrwxrwt</code></td><td>Sticky bit — anyone can write, but only the owner can delete their own files. <code>/tmp</code> uses this.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Octal vs symbolic notation — when to use each</h2>
+
+      <h3>Octal (numeric)</h3>
+      <p>Three digits, fastest to type, sets all three classes at once. <strong>Best for setting fresh permissions from scratch.</strong></p>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>chmod 755 deploy.sh           # rwxr-xr-x
+chmod 600 ~/.ssh/id_rsa       # rw------- (SSH key)
+chmod 644 *.html              # rw-r--r-- (HTML files)
+chmod -R 755 /var/www         # recursive — entire directory tree
+</code></pre>
+      </div>
+
+      <h3>Symbolic (letter notation)</h3>
+      <p>Letter codes for class (<code>u</code>/<code>g</code>/<code>o</code>/<code>a</code>) + operator (<code>+</code>/<code>-</code>/<code>=</code>) + permission (<code>r</code>/<code>w</code>/<code>x</code>). <strong>Best for tweaking existing permissions without touching others.</strong></p>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>chmod +x script.sh            # add execute for everyone (a+x is implied)
+chmod u+x script.sh           # add execute for owner only
+chmod g-w shared.txt          # remove write for group
+chmod o=r config.yml          # set others to read-only (clears w/x)
+chmod a-w *.json              # remove write for all classes
+chmod u+rwx,g+rx,o-rwx file   # combine multiple in one command
+chmod -R u+w project/         # recursive: add owner-write everywhere
+</code></pre>
+      </div>
+
+      <p><strong>Rule of thumb:</strong> use octal for setting initial permissions, use symbolic for adjustments. The two are interchangeable — every chmod tool (including this calculator) shows both.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Special permission bits — setuid, setgid, sticky</h2>
+      <p>Beyond the 9 standard bits, three special bits add advanced behaviors. They're encoded as a leading 4th octal digit (4000 = setuid, 2000 = setgid, 1000 = sticky), or set symbolically with <code>u+s</code>, <code>g+s</code>, <code>+t</code>.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Bit</th><th>Octal</th><th>Symbolic</th><th>Effect on file</th><th>Effect on directory</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>setuid</strong></td>
+            <td><code>4xxx</code></td>
+            <td><code>u+s</code> (shows as <code>s</code> in user execute slot)</td>
+            <td>Executable runs with owner's privileges (e.g. root)</td>
+            <td>Ignored on most Linuxes</td>
+          </tr>
+          <tr>
+            <td><strong>setgid</strong></td>
+            <td><code>2xxx</code></td>
+            <td><code>g+s</code> (shows as <code>s</code> in group execute slot)</td>
+            <td>Executable runs with group's privileges</td>
+            <td>New files inside inherit the directory's group (great for team folders)</td>
+          </tr>
+          <tr>
+            <td><strong>sticky</strong></td>
+            <td><code>1xxx</code></td>
+            <td><code>+t</code> (shows as <code>t</code> in others execute slot)</td>
+            <td>Historically: keep program in swap. Now: ignored.</td>
+            <td>Only the file owner can delete their own files (used by <code>/tmp</code>)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Setuid in the wild</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>$ ls -l /usr/bin/sudo
+-rwsr-xr-x 1 root root 232416 ... /usr/bin/sudo
+   ↑
+   's' instead of 'x' = setuid set. sudo runs as root no matter who calls it.
+</code></pre>
+      </div>
+
+      <p><strong>Setuid binaries are an attack surface.</strong> A bug in a setuid program = local privilege escalation. Modern hardened systems use Linux Capabilities (per-process privilege flags) or SELinux/AppArmor instead. Don't add setuid to your own binaries unless you absolutely need it.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>chmod in scripts — common patterns</h2>
+
+      <h3>Make a script executable</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>chmod +x deploy.sh           # most common — adds x for all classes
+chmod u+x deploy.sh           # safer — only owner gets execute
+./deploy.sh                   # now you can run it
+</code></pre>
+      </div>
+
+      <h3>Lock down SSH keys (mandatory for SSH to work)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>chmod 700 ~/.ssh              # directory: only owner can enter
+chmod 600 ~/.ssh/id_rsa       # private key: only owner reads/writes
+chmod 644 ~/.ssh/id_rsa.pub   # public key: anyone can read
+chmod 600 ~/.ssh/authorized_keys   # logins file: owner-only
+chmod 600 ~/.ssh/known_hosts       # known hosts: owner-only
+</code></pre>
+      </div>
+
+      <h3>Web server file permissions</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Standard pattern for Apache / nginx
+chown -R www-data:www-data /var/www/site
+find /var/www/site -type d -exec chmod 755 {} \;   # directories
+find /var/www/site -type f -exec chmod 644 {} \;   # files
+chmod 600 /var/www/site/.env                       # secrets file
+</code></pre>
+      </div>
+
+      <h3>Reset permissions on a freshly cloned repo</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Clear weird permissions inherited from Windows / archive
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+find . -name '*.sh' -exec chmod +x {} \;        # restore script execute
+</code></pre>
+      </div>
+
+      <h3>Programmatic chmod in Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import os, stat
+
+# Set permissions (note: the leading 0o for octal literal)
+os.chmod('deploy.sh', 0o755)
+
+# Add execute permission without affecting others
+current = os.stat('script.sh').st_mode
+os.chmod('script.sh', current | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+</code></pre>
+      </div>
+
+      <h3>chmod in Node.js</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>import { chmod } from 'node:fs/promises';
+
+await chmod('deploy.sh', 0o755);
+await chmod('id_rsa', 0o600);   // private key
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>The umask — your default permission mask</h2>
+      <p>When a process creates a new file, the OS doesn't grant arbitrary permissions — it starts from a "maximum" (<code>666</code> for files, <code>777</code> for directories) and <strong>subtracts</strong> the bits in your <code>umask</code>. Common umask values:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>umask</th><th>New file permission</th><th>New directory permission</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td><code>022</code></td><td><code>644</code></td><td><code>755</code></td><td>Default on most Linuxes — files readable by everyone, only owner writes.</td></tr>
+          <tr><td><code>077</code></td><td><code>600</code></td><td><code>700</code></td><td>Maximum privacy — only owner sees anything new. Default on multi-user shells like Tilde clubs.</td></tr>
+          <tr><td><code>002</code></td><td><code>664</code></td><td><code>775</code></td><td>Group-writable by default. Useful for shared development directories.</td></tr>
+          <tr><td><code>027</code></td><td><code>640</code></td><td><code>750</code></td><td>Group reads, others get nothing. Common on Debian for system files.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Check current umask
+umask                  # → 0022 (the leading 0 is octal indicator)
+
+# Set for current shell session
+umask 077              # tighter — owner-only by default
+
+# Set permanently in shell config
+echo 'umask 022' &gt;&gt; ~/.bashrc
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>chmod best practices — and what NOT to do</h2>
+      <ul>
+        <li><strong>Never <code>chmod 777</code> in production.</strong> World-writable files are a major security hole. If a script "needs" 777 to work, the actual problem is wrong ownership (use <code>chown</code>) or wrong group membership.</li>
+        <li><strong>Use <code>755</code> for directories, <code>644</code> for files</strong> as your default. This is the standard pattern for web roots, project directories, and content trees.</li>
+        <li><strong>Lock down secrets to <code>600</code>.</strong> SSH keys, <code>.env</code> files, OAuth tokens, anything credential-like. SSH client refuses to use keys with permissions broader than <code>600</code>.</li>
+        <li><strong>Use <code>find</code> for recursive permission changes.</strong> <code>chmod -R</code> applies the same mode to files AND directories, which is rarely what you want. Use <code>find -type d -exec chmod 755</code> and <code>find -type f -exec chmod 644</code> separately.</li>
+        <li><strong>Audit setuid binaries.</strong> Run <code>find / -perm -u+s -type f 2&gt;/dev/null</code> to find them. Each one is a potential privilege escalation path. Remove ones you don't need.</li>
+        <li><strong>Set umask in your shell profile</strong> for consistent defaults. Don't rely on system defaults — they vary by distro.</li>
+        <li><strong>Use ACLs (<code>setfacl</code>) for complex rules.</strong> If you need "user X can read but not write while group Y has full access", traditional chmod can't express it. <code>setfacl</code> can.</li>
+        <li><strong>Capabilities &gt; setuid for new code.</strong> Linux Capabilities (<code>setcap cap_net_bind_service+ep myserver</code>) grant fine-grained privileges without needing root. Modern alternative to setuid.</li>
+        <li><strong>Don't forget the difference between file permissions and directory permissions.</strong> A file with <code>644</code> inside a <code>700</code> directory is inaccessible to anyone but the directory's owner — directory permissions gate file access.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is chmod and how do Unix file permissions work?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><code>chmod</code> (change mode) is a Unix/Linux command that modifies file and directory permissions. Permissions are organized into three classes: <strong>Owner</strong> (user who owns the file), <strong>Group</strong> (users in the file's group), and <strong>Others</strong> (everyone else). Each class can have <strong>Read</strong> (value 4), <strong>Write</strong> (value 2), and <strong>Execute</strong> (value 1). These values are summed per class to produce an octal digit — for example, <code>chmod 755</code> means Owner=rwx(7), Group=r-x(5), Others=r-x(5).</div></div>
@@ -207,8 +476,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — Chmod Calculator</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const checks=document.querySelectorAll('.perm-table input[type="checkbox"]');

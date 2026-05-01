@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hex to RGB Converter Online — Color Code Converter Free | FreeDevTool</title>
-  <meta name="description" content="Convert hex color codes to RGB, RGBA and HSL instantly. Supports 3-digit, 6-digit and 8-digit hex codes with alpha. Free color converter.">
+  <title>Hex to RGB Color Converter Online — HEX, RGB, HSL, OKLCH Free | FreeDevTool</title>
+  <meta name="description" content="Free hex to RGB color converter. Convert HEX ↔ RGB ↔ HSL ↔ OKLCH ↔ HSLA with live preview, alpha support, WCAG contrast checks. Runs in browser, no signup.">
+  <meta name="keywords" content="hex to rgb, rgb to hex, color converter online, hex color code, hsl to rgb, oklch color, css color converter, color picker, alpha hex">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/hex-to-rgb">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Hex to RGB Color Converter — HEX/RGB/HSL/OKLCH Free | FreeDevTool">
+  <meta name="twitter:description" content="Convert HEX ↔ RGB ↔ HSL ↔ OKLCH instantly. Live preview, alpha, WCAG contrast. Runs in browser, no signup.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -259,13 +260,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Color Tool</div>
-    <h1>Hex to RGB Color Converter</h1>
+    <h1>Hex to RGB Color Converter Online</h1>
     <p class="tool-description">
-      Convert any hex color code to RGB, RGBA, and HSL instantly with a live preview. This free online hex to RGB converter supports 3-digit shorthand (<code>#F53</code>), standard 6-digit (<code>#FF5733</code>), and 8-digit hex codes with alpha transparency (<code>#FF573380</code>). Use the color picker or RGB sliders to find the perfect color for your CSS, Tailwind, or design system. All conversions happen client-side in your browser.
+      Convert any hex color code to <strong>RGB</strong>, <strong>RGBA</strong>, <strong>HSL</strong>, <strong>HSLA</strong>, and <strong>OKLCH</strong> instantly with a live preview. This free hex to RGB converter supports 3-digit shorthand (<code>#F53</code>), standard 6-digit (<code>#FF5733</code>), and 8-digit hex codes with alpha transparency (<code>#FF573380</code>). Use the color picker, RGB sliders, or paste a code from your design system. Includes WCAG contrast ratios against white and black backgrounds. All conversions happen client-side.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -336,6 +336,354 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a hex color code?</h2>
+      <p>A <strong>hex color code</strong> is a six-character (or three, or eight) hexadecimal string that represents a color on the screen. The format dates to early HTML and remains the dominant way developers and designers communicate colors today. The string <code>#FF5733</code> encodes three numbers: <code>FF</code> (red, 255), <code>57</code> (green, 87), <code>33</code> (blue, 51) — together producing a vibrant orange.</p>
+      <p>Each pair of hex digits represents one byte (0–255) of intensity for one of the three primary additive light colors: red, green, blue. The combinations span 16,777,216 distinct colors (256³) — far more than the human eye can distinguish in most viewing conditions. The leading <code>#</code> is HTML/CSS convention; in CSS, both <code>#FF5733</code> and <code>FF5733</code> are valid in some contexts but the hash is universally accepted.</p>
+      <p>Hex codes have variants for different use cases: <strong>3-digit shorthand</strong> (<code>#F53</code>) where each digit is duplicated to form 6 — useful for short writing of palette colors; the <strong>6-digit standard</strong>; and <strong>8-digit with alpha</strong> (<code>#FF573380</code>) where the last two digits encode opacity from <code>00</code> (transparent) to <code>FF</code> (opaque).</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How hex, RGB, HSL, and OKLCH relate</h2>
+      <p>All four formats describe the same color in different ways. Picking the right format matters when you're tweaking colors programmatically or designing accessible palettes.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Format</th><th>Syntax</th><th>Best for</th><th>Limitations</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Hex</strong></td><td><code>#FF5733</code> or <code>#FF573380</code></td><td>Compact transmission, design specs, cross-language compatibility</td><td>Can't tweak hue/saturation directly. Hard to interpolate.</td></tr>
+          <tr><td><strong>RGB / RGBA</strong></td><td><code>rgb(255 87 51)</code> / <code>rgb(255 87 51 / 0.5)</code></td><td>Same as hex, more readable. Native to <code>&lt;canvas&gt;</code> and image processing.</td><td>Doesn't reflect human perception of color similarity.</td></tr>
+          <tr><td><strong>HSL / HSLA</strong></td><td><code>hsl(11 100% 60%)</code></td><td>Designing palettes — adjust lightness or saturation while preserving hue.</td><td>"Lightness" doesn't match perceived brightness across hues. Yellow at L=50% looks brighter than blue at L=50%.</td></tr>
+          <tr><td><strong>OKLCH</strong></td><td><code>oklch(0.71 0.18 27)</code></td><td>Modern accessible palettes — perceptually uniform. Best for fade transitions and dark-mode generation.</td><td>Newer; some color picker tools don't support it. Check browser support.</td></tr>
+          <tr><td><strong>Named colors</strong></td><td><code>tomato</code>, <code>cornflowerblue</code></td><td>Quick prototyping, readable demos</td><td>Only 147 named CSS colors. Limited palette.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The same color in every format</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">css</div>
+<pre><code>/* All identical — vibrant orange */
+color: #FF5733;
+color: rgb(255 87 51);
+color: hsl(11 100% 60%);
+color: oklch(0.66 0.18 32);
+color: tomato;  /* close, but not exact */
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>How hex → RGB conversion actually works</h2>
+      <p>The math is trivial — just convert each pair of hex digits to a base-10 number 0–255. The clever parts are handling the variants:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">algorithm</div>
+<pre><code>// Parse hex string to RGB tuple
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+
+  // 3-digit shorthand: F53 → FF5533
+  if (hex.length === 3) {
+    hex = hex.split('').map(c =&gt; c + c).join('');
+  }
+
+  // Now we have 6 (RGB) or 8 (RGBA) chars
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const a = hex.length === 8 ? parseInt(hex.slice(6, 8), 16) / 255 : 1;
+
+  return { r, g, b, a };
+}
+
+hexToRgb('#FF5733');     // { r: 255, g: 87, b: 51, a: 1 }
+hexToRgb('F53');         // { r: 255, g: 85, b: 51, a: 1 }
+hexToRgb('#FF573380');   // { r: 255, g: 87, b: 51, a: 0.5 }
+</code></pre>
+      </div>
+
+      <p>RGB to HSL conversion is more involved (~25 lines of arithmetic). The full algorithm finds the min and max channel, derives lightness, then derives saturation and hue based on which channel is dominant. Most languages have a built-in or one-line library function — <code>chroma-js</code>, <code>colord</code>, <code>tinycolor2</code> in JS; <code>colorsys</code> in Python; CSS Color Module Level 4 has native conversion functions.</p>
+
+      <h3>OKLCH — the modern perceptually uniform color space</h3>
+      <p>OKLCH (Oklab + L = lightness, C = chroma, H = hue) is a modern color space designed by Björn Ottosson in 2020. Unlike HSL, the <strong>lightness component matches human perception</strong>. Two colors with the same OKLCH lightness look equally bright to the eye — finally, a color space that does what designers expect.</p>
+      <ul>
+        <li>OKLCH lightness 0 = black, 1 = white. Linear and predictable.</li>
+        <li>Chroma is unbounded (typical max ~0.4 for sRGB-displayable colors).</li>
+        <li>Hue is 0–360°, same as HSL.</li>
+        <li>Use case: generating accessible color palettes by varying lightness while keeping chroma + hue constant.</li>
+      </ul>
+      <p>Browser support for OKLCH in CSS landed in 2023 (Chrome 111, Firefox 113, Safari 16.4) — safe to use in production for modern audiences.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Color in CSS — practical patterns</h2>
+
+      <h3>CSS custom properties (variables)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">css</div>
+<pre><code>:root {
+  --color-primary:    #00d084;
+  --color-primary-50: #e6faf3;
+  --color-primary-500: #00d084;
+  --color-primary-900: #003d27;
+}
+
+.btn { background: var(--color-primary); }
+.btn--soft { background: var(--color-primary-50); }
+</code></pre>
+      </div>
+
+      <h3>RGB with alpha for layering</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">css</div>
+<pre><code>:root {
+  --primary-rgb: 0, 208, 132;  /* store as RGB triple */
+}
+
+.glass {
+  background: rgba(var(--primary-rgb), 0.08);  /* easy alpha tweaks */
+  border: 1px solid rgba(var(--primary-rgb), 0.3);
+}
+</code></pre>
+      </div>
+
+      <h3>Modern color spaces with fallback</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">css</div>
+<pre><code>:root {
+  /* Fallback for older browsers */
+  --primary: #00d084;
+  /* Modern, perceptually-uniform fallback */
+  --primary: oklch(0.78 0.18 158);
+}
+
+/* Or use color-mix for tints */
+.tint-50 { background: color-mix(in oklch, var(--primary), white 50%); }
+</code></pre>
+      </div>
+
+      <h3>Tailwind v4 / arbitrary values</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">html</div>
+<pre><code>&lt;!-- Tailwind v4 supports OKLCH natively --&gt;
+&lt;div class="bg-[oklch(0.78_0.18_158)]"&gt;...&lt;/div&gt;
+
+&lt;!-- Or with hex --&gt;
+&lt;div class="bg-[#00d084]"&gt;...&lt;/div&gt;
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Color conversion in 8 programming languages</h2>
+
+      <h3>JavaScript / TypeScript</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Vanilla — hex to RGB
+const hexToRgb = h =&gt; {
+  const v = h.replace('#','').match(/.{2}/g);
+  return v.map(x =&gt; parseInt(x, 16));
+};
+hexToRgb('#FF5733'); // [255, 87, 51]
+
+// Better — use a library like colord (1KB, robust)
+import { colord } from 'colord';
+const c = colord('#FF5733');
+c.toRgb();    // { r: 255, g: 87, b: 51, a: 1 }
+c.toHsl();    // { h: 11, s: 100, l: 60, a: 1 }
+c.alpha(0.5).toHex(); // "#ff573380"
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import colorsys
+
+# Hex → RGB tuple (0-255)
+def hex_to_rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
+
+# RGB → HSL (note: colorsys uses 0-1 range)
+r, g, b = hex_to_rgb('#FF5733')
+h, l, s = colorsys.rgb_to_hls(r/255, g/255, b/255)
+# h*360 = 11°, l*100 = 60%, s*100 = 100%
+
+# Modern approach: use 'colour' or 'colormath' libs
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>function hexToRgb($hex) {
+    $hex = ltrim($hex, '#');
+    if (strlen($hex) === 3) {
+        $hex = $hex[0].$hex[0].$hex[1].$hex[1].$hex[2].$hex[2];
+    }
+    return [
+        'r' =&gt; hexdec(substr($hex, 0, 2)),
+        'g' =&gt; hexdec(substr($hex, 2, 2)),
+        'b' =&gt; hexdec(substr($hex, 4, 2)),
+    ];
+}
+print_r(hexToRgb('#FF5733'));
+</code></pre>
+      </div>
+
+      <h3>Java / Kotlin</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import java.awt.Color;
+
+Color c = Color.decode("#FF5733");
+int r = c.getRed();    // 255
+int g = c.getGreen();  // 87
+int b = c.getBlue();   // 51
+
+// HSB (HSL variant)
+float[] hsb = Color.RGBtoHSB(r, g, b, null);
+// hsb[0] * 360 = hue, hsb[1] * 100 = saturation, hsb[2] * 100 = brightness
+</code></pre>
+      </div>
+
+      <h3>Swift / iOS</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">swift</div>
+<pre><code>extension UIColor {
+    convenience init(hex: String) {
+        let h = hex.replacingOccurrences(of: "#", with: "")
+        var rgb: UInt64 = 0
+        Scanner(string: h).scanHexInt64(&amp;rgb)
+        self.init(
+            red:   CGFloat((rgb &gt;&gt; 16) &amp; 0xFF) / 255,
+            green: CGFloat((rgb &gt;&gt; 8) &amp; 0xFF) / 255,
+            blue:  CGFloat(rgb &amp; 0xFF) / 255,
+            alpha: 1
+        )
+    }
+}
+let orange = UIColor(hex: "#FF5733")
+</code></pre>
+      </div>
+
+      <h3>Android Kotlin (Jetpack Compose)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">kotlin</div>
+<pre><code>// Compose Color from hex
+import androidx.compose.ui.graphics.Color
+
+val orange = Color(0xFFFF5733)  // ARGB hex literal
+
+// Convert from String
+val orange2 = Color(android.graphics.Color.parseColor("#FF5733"))
+
+// Get RGB components
+val r = orange.red    // 1.0f (0..1 range)
+val g = orange.green  // 0.341f
+val b = orange.blue   // 0.2f
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "image/color"
+
+func HexToRGBA(hex string) color.RGBA {
+    var r, g, b, a uint8 = 0, 0, 0, 255
+    if hex[0] == '#' { hex = hex[1:] }
+    fmt.Sscanf(hex, "%02x%02x%02x", &amp;r, &amp;g, &amp;b)
+    if len(hex) == 8 { fmt.Sscanf(hex[6:], "%02x", &amp;a) }
+    return color.RGBA{r, g, b, a}
+}
+</code></pre>
+      </div>
+
+      <h3>Bash / shell</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Hex to RGB
+hex="FF5733"
+r=$((16#${hex:0:2}))
+g=$((16#${hex:2:2}))
+b=$((16#${hex:4:2}))
+echo "rgb($r, $g, $b)"  # rgb(255, 87, 51)
+
+# Reverse: RGB to hex
+printf '#%02X%02X%02X\n' 255 87 51  # #FF5733
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>WCAG contrast — making colors accessible</h2>
+      <p>Color choice has legal and ethical consequences in 2026. The Web Content Accessibility Guidelines (WCAG) specify minimum contrast ratios between text and background:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Level</th><th>Normal text (under 18pt or 14pt bold)</th><th>Large text (18pt+ or 14pt+ bold)</th><th>Non-text (icons, borders)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>WCAG AA</strong> (legal minimum in EU, US ADA)</td><td>4.5:1</td><td>3:1</td><td>3:1</td></tr>
+          <tr><td><strong>WCAG AAA</strong> (gold standard)</td><td>7:1</td><td>4.5:1</td><td>3:1</td></tr>
+        </tbody>
+      </table>
+
+      <p>The contrast ratio is computed from the relative luminance of the two colors using the <a href="https://www.w3.org/TR/WCAG21/#dfn-relative-luminance" rel="noopener">WCAG 2.1 formula</a>. White on black is 21:1 (maximum). White text (<code>#FFF</code>) on the FreeDevTool accent green (<code>#00d084</code>) is 1.79:1 — fails AA badly. Use our <a href="wcag-contrast">WCAG Contrast Checker</a> to verify pairs before shipping.</p>
+
+      <h3>Common color pitfalls that fail WCAG</h3>
+      <ul>
+        <li><strong>Light gray text on white</strong> — looks elegant in mockups, fails 4.5:1 below <code>#767676</code>.</li>
+        <li><strong>Brand color buttons with white text</strong> — most pastel/neon brand colors fail. You need a darker variant for button backgrounds.</li>
+        <li><strong>Red error / green success indicators alone</strong> — 8% of men have red-green colorblindness. Pair color with an icon or label.</li>
+        <li><strong>Dark mode &lt;#222</strong> with regular text colors — dark backgrounds need lighter text than you'd think.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Color spaces — sRGB, Display P3, and beyond</h2>
+      <p>The hex code <code>#FF5733</code> alone is ambiguous about <em>which</em> color space — the same numbers display differently on a standard monitor (sRGB) vs a wide-gamut display (Display P3, ProPhoto RGB). Modern CSS Color Module Level 4 lets you specify color space:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">css</div>
+<pre><code>/* sRGB (default — what hex/rgb() means historically) */
+.box { background: #FF5733; }
+
+/* Display P3 — about 25% wider gamut, vivid greens and reds */
+.box { background: color(display-p3 1 0.341 0.2); }
+
+/* Rec. 2020 — even wider, mostly for HDR video */
+.box { background: color(rec2020 1 0.341 0.2); }
+
+/* Same color in different spaces — pixel intensity differs */
+</code></pre>
+      </div>
+
+      <p>For most web apps in 2026, sRGB is still the safe default. But on macOS and modern phones (iPhone X+, iPad Pro, all M-series Macs), users have wide-gamut displays. Brands that care about color fidelity (Apple itself, Stripe, Linear) ship sRGB and Display P3 variants together.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Color picker best practices</h2>
+      <ul>
+        <li><strong>Use CSS custom properties for every color</strong>, not hardcoded hex. Refactoring becomes a one-line change. Theming, dark mode, and brand updates all benefit.</li>
+        <li><strong>Define semantic names, not visual.</strong> <code>--color-primary</code>, <code>--color-text</code>, <code>--color-error</code> — not <code>--color-blue-500</code> or <code>--color-red</code>. When the brand changes, the names still make sense.</li>
+        <li><strong>Always check WCAG contrast.</strong> 4.5:1 minimum for body text. Use the <a href="wcag-contrast">contrast checker</a> on every text-on-bg pair.</li>
+        <li><strong>Test in dark mode.</strong> A color that works on white might fail on dark backgrounds. Define paired colors for each mode.</li>
+        <li><strong>Use OKLCH for generating palettes.</strong> Perceptually uniform lightness means tints/shades look consistent across hues. <code>oklch(70% 0.15 H)</code> at multiple H values gives an accessible, harmonious palette.</li>
+        <li><strong>Ship a fallback for OKLCH.</strong> Older browsers don't support it. Use <code>@supports</code> or stack fallbacks.</li>
+        <li><strong>Don't use exact RGB triples for transparency.</strong> Define base colors as RGB triples (<code>--primary-rgb: 0 208 132</code>), then use <code>rgb(var(--primary-rgb) / 0.5)</code> for variable alpha.</li>
+        <li><strong>Avoid relying on color alone for state.</strong> Pair with icons, labels, or shape changes — accessibility for color-blind users.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- FAQ -->
   <!-- How to use + mistakes -->
@@ -458,9 +806,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — Hex to RGB Converter</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

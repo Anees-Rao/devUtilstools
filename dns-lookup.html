@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNS Lookup Tool — Free Online DNS Query Tool | FreeDevTool</title>
-  <meta name="description" content="Query DNS records instantly. Look up A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. Free, private, no signup.">
+  <title>DNS Lookup Tool Online — A, MX, TXT, CNAME Records Free | FreeDevTool</title>
+  <meta name="description" content="Free DNS lookup. Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. SPF/DKIM/DMARC inspection. Browser-based, no signup.">
+  <meta name="keywords" content="dns lookup, dns query online, mx record lookup, txt record check, dns over https, doh, spf check, dkim verify, dmarc lookup, nameserver check">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/dns-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="DNS Lookup Tool — A/MX/TXT/CNAME Free | FreeDevTool">
+  <meta name="twitter:description" content="Query DNS records via Cloudflare DoH. SPF/DKIM/DMARC inspection. Runs in browser, no signup, no logs.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="DNS Lookup Tool — Free Online DNS Query Tool">
@@ -140,9 +145,9 @@
     </a>
 
     <span class="tool-badge">Network</span>
-    <h1>DNS Lookup Tool</h1>
-    <p>This DNS lookup tool queries authoritative records for any domain directly from your browser using Cloudflare's DNS-over-HTTPS endpoint. Inspect A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records without installing dig or nslookup. Every query runs client-side, so your lookups never touch our servers — they travel encrypted to Cloudflare's 1.1.1.1 public resolver and back. Useful for debugging propagation issues, verifying SPF/DKIM/DMARC records, checking mail routing, auditing CAA policies, and confirming nameserver delegation during domain migrations or DNS provider switches.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>DNS Lookup Tool Online — Query A, MX, TXT, CNAME Records</h1>
+    <p>This DNS lookup tool queries authoritative records for any domain directly from your browser using <a href="https://www.cloudflare.com/learning/dns/dns-over-tls/" rel="noopener" style="color:var(--accent)">Cloudflare DNS-over-HTTPS</a>. Inspect <strong>A, AAAA, CNAME, MX, TXT, NS, SOA, CAA</strong> records without installing <code>dig</code> or <code>nslookup</code>. Every query runs client-side; lookups travel encrypted to <code>1.1.1.1</code> and back — never our servers. Use it for debugging propagation, verifying <strong>SPF / DKIM / DMARC</strong>, checking mail routing, auditing CAA policies, and confirming nameserver delegation during migrations.</p>
+    <span class="last-updated">Last updated: April 2026</span>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -177,6 +182,268 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is DNS and how does a lookup work?</h2>
+      <p>The <strong>Domain Name System</strong> (DNS) is the internet's phonebook — it translates human-friendly names like <code>freedevtool.org</code> into machine-friendly IP addresses like <code>104.21.x.x</code>. Every web request, every email, every API call begins with at least one DNS lookup. The DNS protocol is defined in <a href="https://datatracker.ietf.org/doc/html/rfc1035" rel="noopener">RFC 1035</a> (1987) with dozens of subsequent updates that added security, IPv6, and modern transport protocols.</p>
+      <p>A typical DNS lookup involves four parties:</p>
+      <ul>
+        <li><strong>Stub resolver</strong> — your OS's DNS client. Asks the recursive resolver and caches answers.</li>
+        <li><strong>Recursive resolver</strong> — your ISP's resolver, or a public one (1.1.1.1, 8.8.8.8). Walks the DNS hierarchy to find authoritative answers, then caches.</li>
+        <li><strong>Root and TLD servers</strong> — the global hierarchy. Root servers (.) point to TLD servers (.com, .org). TLD servers point to authoritative servers for individual domains.</li>
+        <li><strong>Authoritative server</strong> — owned by the domain's DNS provider (Cloudflare, Route53, Namecheap). Has the actual records.</li>
+      </ul>
+      <p>This tool uses <strong>DNS-over-HTTPS</strong> (DoH) to bypass your local resolver and query Cloudflare's <code>1.1.1.1</code> directly. That means you see what Cloudflare's cache contains <em>right now</em>, ignoring stale entries on your laptop, router, or ISP. Useful when debugging "DNS hasn't propagated" — the answer is often that your <em>local</em> cache is stale, not the global DNS.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>The 8 most important DNS record types</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Type</th><th>Purpose</th><th>Example</th><th>Common use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>IPv4 address</td><td><code>example.com → 93.184.216.34</code></td><td>Map a hostname to an IPv4 server</td></tr>
+          <tr><td><strong>AAAA</strong></td><td>IPv6 address</td><td><code>example.com → 2606:2800:220:1:248:1893:25c8:1946</code></td><td>IPv6 equivalent of A</td></tr>
+          <tr><td><strong>CNAME</strong></td><td>Canonical alias</td><td><code>www.example.com → example.com</code></td><td>Point one name at another. Cannot coexist with other records on the same name.</td></tr>
+          <tr><td><strong>MX</strong></td><td>Mail exchange</td><td><code>10 mail.example.com</code></td><td>Where to deliver email for the domain. Number = priority (lower wins).</td></tr>
+          <tr><td><strong>TXT</strong></td><td>Free-form text</td><td><code>"v=spf1 include:_spf.google.com ~all"</code></td><td>SPF, DKIM, DMARC, domain verification (Google, Facebook, etc.)</td></tr>
+          <tr><td><strong>NS</strong></td><td>Name server</td><td><code>example.com → ns1.cloudflare.com</code></td><td>Which authoritative servers are responsible for the zone</td></tr>
+          <tr><td><strong>SOA</strong></td><td>Start of authority</td><td>Primary NS, admin email, serial, TTLs</td><td>Zone metadata. Serial number increments on every change.</td></tr>
+          <tr><td><strong>CAA</strong></td><td>Certificate authority authorization</td><td><code>0 issue "letsencrypt.org"</code></td><td>Restricts which CAs can issue TLS certs for the domain</td></tr>
+          <tr><td><strong>PTR</strong></td><td>Reverse lookup (IP → name)</td><td><code>34.216.184.93.in-addr.arpa → example.com</code></td><td>Required for production mail servers (deliverability)</td></tr>
+          <tr><td><strong>SRV</strong></td><td>Service location</td><td><code>_sip._tcp.example.com → 0 5 5060 sip.example.com</code></td><td>Service discovery — XMPP, SIP, Active Directory, Kerberos</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Email DNS — SPF, DKIM, DMARC explained</h2>
+      <p>Setting up reliable email delivery in 2026 requires three TXT-record-based standards working together. Skip any one and your domain ends up in spam folders.</p>
+
+      <h3>SPF (Sender Policy Framework)</h3>
+      <p>Tells receiving mail servers which IPs are <em>allowed</em> to send mail "from" your domain. A TXT record on the domain root:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">spf</div>
+<pre><code>example.com.    TXT    "v=spf1 include:_spf.google.com include:mailgun.org -all"
+                                ↓                       ↓                  ↓
+                          Google Workspace        Mailgun           hard-fail
+                          allowed               allowed           anything else
+</code></pre>
+      </div>
+
+      <h3>DKIM (DomainKeys Identified Mail)</h3>
+      <p>Cryptographically signs outgoing email so receivers can verify it wasn't tampered with. The public key lives in DNS:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">dkim</div>
+<pre><code>google._domainkey.example.com.    TXT    "v=DKIM1; k=rsa; p=MIGfMA0GCSqGS..."
+       ↑                                      ↑       ↑       ↑
+   "selector"                              version  algorithm  public key
+</code></pre>
+      </div>
+      <p>The selector is provider-specific (e.g. <code>google</code> for Google Workspace, <code>k1</code> for Mailgun, <code>s1</code> for SendGrid). Outgoing mail headers reference which selector to look up.</p>
+
+      <h3>DMARC (Domain-based Message Authentication, Reporting &amp; Conformance)</h3>
+      <p>Tells receivers what to do when SPF or DKIM fails. Required by Google, Yahoo, and Apple as of 2024 for bulk senders.</p>
+      <div class="lang-block">
+        <div class="lang-block-header">dmarc</div>
+<pre><code>_dmarc.example.com.    TXT    "v=DMARC1; p=reject; rua=mailto:dmarc-reports@example.com"
+                                       ↓                     ↓
+                                   policy             where to send aggregate reports
+                                 (none/quarantine/reject)
+
+# Start with p=none, monitor reports for 2 weeks, escalate to quarantine, then reject.
+</code></pre>
+      </div>
+
+      <p><strong>How to use this tool to verify email setup:</strong></p>
+      <ul>
+        <li>TXT lookup on root domain → check SPF</li>
+        <li>TXT lookup on <code>_dmarc.example.com</code> → check DMARC</li>
+        <li>TXT lookup on <code>SELECTOR._domainkey.example.com</code> → check DKIM (selector varies)</li>
+        <li>MX lookup → confirm mail routing is correct</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>DNS query in 8 environments</h2>
+
+      <h3>dig (the gold standard)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Basic lookup (default = A record)
+dig example.com
+
+# Specific record type
+dig example.com MX
+dig example.com TXT
+
+# Short output (just the answers)
+dig +short example.com
+
+# Use a specific resolver
+dig @1.1.1.1 example.com
+dig @8.8.8.8 example.com
+
+# Full DNS trace (root → TLD → authoritative)
+dig +trace example.com
+
+# DNSSEC validation
+dig +dnssec example.com
+
+# Reverse lookup (PTR)
+dig -x 8.8.8.8
+</code></pre>
+      </div>
+
+      <h3>nslookup (Windows-friendly)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Basic lookup
+nslookup example.com
+
+# Specific record type
+nslookup -type=MX example.com
+nslookup -type=TXT example.com
+
+# Specific server
+nslookup example.com 1.1.1.1
+</code></pre>
+      </div>
+
+      <h3>host</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code>host example.com               # all common record types
+host -t MX example.com
+host -t TXT example.com
+host -a example.com            # ANY (often blocked by modern resolvers)
+</code></pre>
+      </div>
+
+      <h3>JavaScript (DoH from the browser)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Cloudflare DoH JSON API
+async function dnsLookup(name, type = 'A') {
+  const r = await fetch(
+    `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&amp;type=${type}`,
+    { headers: { Accept: 'application/dns-json' } }
+  );
+  const data = await r.json();
+  return data.Answer || [];
+}
+
+const records = await dnsLookup('example.com', 'MX');
+records.forEach(r =&gt; console.log(r.data));
+</code></pre>
+      </div>
+
+      <h3>Node.js (built-in)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>import { promises as dns } from 'node:dns';
+
+await dns.resolve4('example.com');         // ['93.184.216.34']
+await dns.resolveMx('example.com');         // [{ priority: 10, exchange: 'mail.example.com' }]
+await dns.resolveTxt('example.com');        // [['v=spf1 ~all']]
+await dns.reverse('8.8.8.8');               // ['dns.google']
+</code></pre>
+      </div>
+
+      <h3>Python (dnspython)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import dns.resolver
+
+resolver = dns.resolver.Resolver()
+resolver.nameservers = ['1.1.1.1']  # use Cloudflare
+
+# Query records
+for rdata in resolver.resolve('example.com', 'MX'):
+    print(rdata.preference, rdata.exchange)
+
+# DoH (Python 3.7+)
+import dns.message, dns.query
+q = dns.message.make_query('example.com', 'A')
+r = dns.query.https(q, 'https://cloudflare-dns.com/dns-query')
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "net"
+
+ips, _ := net.LookupIP("example.com")
+mx, _ := net.LookupMX("example.com")
+txt, _ := net.LookupTXT("example.com")
+ns, _ := net.LookupNS("example.com")
+
+// For DoH or custom resolvers, use github.com/miekg/dns
+</code></pre>
+      </div>
+
+      <h3>curl (simplest DoH command line)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># JSON-format DoH (Cloudflare)
+curl -s -H 'accept: application/dns-json' \
+  'https://cloudflare-dns.com/dns-query?name=example.com&amp;type=MX' | jq
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common DNS issues — and how to debug them</h2>
+
+      <h3>1. "DNS hasn't propagated yet"</h3>
+      <p>The most common DNS complaint, and almost always caused by caching at one of three layers: your OS, your router, or your ISP's resolver. <strong>Fix:</strong> use this tool (queries Cloudflare directly, bypassing all your caches), or run <code>dig @1.1.1.1 example.com</code>. If Cloudflare shows the new value, propagation is done — your local cache is the culprit. Flush DNS:</p>
+      <ul>
+        <li>macOS: <code>sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</code></li>
+        <li>Linux (systemd-resolved): <code>sudo resolvectl flush-caches</code></li>
+        <li>Windows: <code>ipconfig /flushdns</code></li>
+        <li>Browser: clear browser DNS cache (Chrome: <code>chrome://net-internals/#dns</code>)</li>
+      </ul>
+
+      <h3>2. CNAME at the apex (root domain)</h3>
+      <p>RFC requires that the root of a domain (apex / "naked" domain) cannot have a CNAME record alongside MX, NS, or other records. So <code>example.com → CNAME proxy.cloud.com</code> isn't legal. Cloudflare and Route53 work around this with "ALIAS" or "ANAME" records that resolve at query-time. <strong>Fix:</strong> use ALIAS/ANAME records, or just use an A record pointing to the resolved IP.</p>
+
+      <h3>3. SPF lookup limit (10 DNS lookups)</h3>
+      <p>SPF records have a strict 10-lookup limit per evaluation (RFC 7208). Each <code>include:</code>, <code>a:</code>, <code>mx:</code>, <code>exists:</code> counts. Adding too many third-party senders → SPF "permerror" → mail rejected. <strong>Fix:</strong> consolidate, use SPF flattening services (sparingly — they break when underlying records change), or remove unused senders.</p>
+
+      <h3>4. Wrong PTR record on outbound mail</h3>
+      <p>Major email providers (Gmail, Outlook, Yahoo) reject mail from servers without proper reverse DNS. The PTR record for your sending IP must match the HELO/EHLO hostname. <strong>Fix:</strong> request reverse DNS from your hosting provider (AWS: through Route53 or support ticket; DigitalOcean: control panel).</p>
+
+      <h3>5. TTL set too high during migration</h3>
+      <p>If you plan to move DNS providers and your TTL is 24 hours, plan to wait 24 hours after the change for everyone to see the new values. <strong>Fix:</strong> lower TTL to 300 seconds (5 minutes) <em>at least 48 hours before</em> the migration. After migration completes, raise TTLs back to 3600 or higher for stability and performance.</p>
+
+      <h3>6. CAA records blocking certificate issuance</h3>
+      <p>If your CAA records list <code>letsencrypt.org</code> only, but you try to issue a cert via DigiCert, the CA must refuse. <strong>Fix:</strong> review CAA records before switching CA providers; add the new CA's identifier first.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>DNS best practices for production domains</h2>
+      <ul>
+        <li><strong>Use multiple authoritative DNS providers.</strong> A single provider is a single point of failure (Dyn 2016, Route53 2019 outages). Set up secondary DNS at a second provider for redundancy.</li>
+        <li><strong>Enable DNSSEC.</strong> Cryptographically signs your DNS responses, preventing cache-poisoning attacks. Most providers enable it with one click.</li>
+        <li><strong>Set CAA records.</strong> Limit which certificate authorities can issue TLS certs for your domain. Prevents rogue cert issuance.</li>
+        <li><strong>Lower TTLs before migrations.</strong> Drop to 300 seconds 48 hours before any planned change. Raise back after stability.</li>
+        <li><strong>Monitor your records.</strong> Use uptime monitors that check DNS resolution, not just HTTP. UptimeRobot, Pingdom, BetterUptime all support this.</li>
+        <li><strong>Set up SPF, DKIM, DMARC.</strong> All three. Required by Google &amp; Yahoo for bulk senders since 2024. Even small senders see deliverability boost.</li>
+        <li><strong>Document your DNS records.</strong> A wiki page or Notion doc with each record's purpose, owner, and last-changed date saves you when things break in 3 years.</li>
+        <li><strong>Use IPv6 (AAAA records) alongside IPv4.</strong> Major mobile networks now run IPv6-only. Without AAAA, you're slower or unreachable for those users.</li>
+        <li><strong>Don't use CNAME at the apex.</strong> Use ALIAS/ANAME if your provider supports it, or A records.</li>
+        <li><strong>Reverse DNS for mail servers.</strong> PTR records matching your HELO hostname are mandatory for production email.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a DNS lookup?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A DNS lookup queries the Domain Name System to translate a human-readable hostname (like <code>example.com</code>) into machine-readable metadata — most commonly IP addresses for an <strong>A</strong> (IPv4) or <strong>AAAA</strong> (IPv6) record, but also mail servers (<strong>MX</strong>), text metadata (<strong>TXT</strong> — used for SPF, DKIM, DMARC, domain verification), authoritative name servers (<strong>NS</strong>), or certificate authority policy (<strong>CAA</strong>). Every time you load a web page, send an email, or open an app, a chain of DNS lookups happens behind the scenes before a single byte of application data is exchanged.</div></div>
@@ -198,8 +465,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — DNS Lookup Tool</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const TYPE_NAMES={1:'A',2:'NS',5:'CNAME',6:'SOA',12:'PTR',15:'MX',16:'TXT',28:'AAAA',33:'SRV',257:'CAA'};

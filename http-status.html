@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTTP Status Codes Reference — Complete List with Examples | FreeDevTool</title>
-  <meta name="description" content="Complete HTTP status codes reference. Search 1xx, 2xx success, 3xx redirect, 4xx client error, 5xx server error with descriptions and examples. Free.">
+  <title>HTTP Status Codes Reference — Complete 1xx-5xx List with Examples | FreeDevTool</title>
+  <meta name="description" content="Complete HTTP status codes reference. 1xx info, 2xx success, 3xx redirect, 4xx client error, 5xx server error. Search by code/keyword. Examples + RFC 9110.">
+  <meta name="keywords" content="http status codes, http response codes, 200 OK, 301 redirect, 401 unauthorized, 404 not found, 500 internal server error, RFC 9110, REST API status">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/http-status">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="HTTP Status Codes Reference — 1xx to 5xx | FreeDevTool">
+  <meta name="twitter:description" content="Complete HTTP status code reference with descriptions, use cases &amp; examples. RFC 9110 compliant. Searchable.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="HTTP Status Codes Reference — Complete List with Examples">
@@ -135,9 +140,9 @@
     </a>
 
     <span class="tool-badge">Reference</span>
-    <h1>HTTP Status Codes Reference</h1>
-    <p>Complete list of HTTP response status codes with descriptions, use cases and examples. Search by code number or keyword to quickly find what you need for API development, debugging and server configuration.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>HTTP Status Codes Reference — Complete 1xx to 5xx List</h1>
+    <p>Complete list of HTTP response status codes with descriptions, use cases, and real-world examples. Search by code number or keyword to find what you need for API development, debugging, and server configuration. Aligned with <a href="https://datatracker.ietf.org/doc/html/rfc9110" rel="noopener" style="color:var(--accent)">RFC 9110</a> (HTTP Semantics, 2022) — the current authoritative HTTP standard.</p>
+    <span class="last-updated">Last updated: April 2026</span>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -158,6 +163,337 @@
     </div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What are HTTP status codes?</h2>
+      <p><strong>HTTP status codes</strong> are three-digit numerical responses servers send to clients to communicate the outcome of an HTTP request. They are the universal language of the web: <code>200 OK</code> means success, <code>404 Not Found</code> means the resource doesn't exist, <code>500 Internal Server Error</code> means something broke server-side. The current authoritative spec is <a href="https://datatracker.ietf.org/doc/html/rfc9110" rel="noopener">RFC 9110</a> ("HTTP Semantics", 2022), which consolidates and supersedes RFC 2616, RFC 7230–7235, and several others.</p>
+      <p>Status codes split into five families based on the first digit:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Class</th><th>Range</th><th>Meaning</th><th>Action by client</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1xx Informational</strong></td><td>100–199</td><td>Provisional response — request received, processing</td><td>Wait for final response</td></tr>
+          <tr><td><strong>2xx Success</strong></td><td>200–299</td><td>Request succeeded</td><td>Render / consume response</td></tr>
+          <tr><td><strong>3xx Redirection</strong></td><td>300–399</td><td>Further action needed (usually a different URL)</td><td>Follow the redirect</td></tr>
+          <tr><td><strong>4xx Client error</strong></td><td>400–499</td><td>Client sent something invalid or unauthorized</td><td>Fix the request, do not retry blindly</td></tr>
+          <tr><td><strong>5xx Server error</strong></td><td>500–599</td><td>Server failed to fulfill a valid request</td><td>Retry with backoff; the server is at fault</td></tr>
+        </tbody>
+      </table>
+
+      <p>Why this matters: every layer of the modern web — browsers, CDNs, proxies, load balancers, monitoring systems, search engines — relies on status codes to make decisions. Send the wrong code and Google deindexes you, Cloudflare caches errors, retries hammer your servers, and users see broken UI.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>The 12 most important HTTP status codes you'll actually use</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Code</th><th>Name</th><th>Use when</th></tr></thead>
+        <tbody>
+          <tr><td><strong>200</strong></td><td>OK</td><td>Successful GET, successful PUT/PATCH that updated</td></tr>
+          <tr><td><strong>201</strong></td><td>Created</td><td>Successful POST that created a resource. Include <code>Location:</code> header.</td></tr>
+          <tr><td><strong>204</strong></td><td>No Content</td><td>Successful DELETE, or successful PUT with no body to return</td></tr>
+          <tr><td><strong>301</strong></td><td>Moved Permanently</td><td>URL changed forever. Search engines transfer SEO equity. Update bookmarks.</td></tr>
+          <tr><td><strong>302 / 307</strong></td><td>Found / Temporary Redirect</td><td>Temporary redirect. SEO equity stays on the original URL.</td></tr>
+          <tr><td><strong>304</strong></td><td>Not Modified</td><td>Conditional GET — client's cache is still valid. No body.</td></tr>
+          <tr><td><strong>400</strong></td><td>Bad Request</td><td>Malformed JSON, missing required field, type mismatch</td></tr>
+          <tr><td><strong>401</strong></td><td>Unauthorized</td><td>Missing or expired authentication. The user has NOT proven who they are.</td></tr>
+          <tr><td><strong>403</strong></td><td>Forbidden</td><td>Authenticated, but lacks permission for this resource</td></tr>
+          <tr><td><strong>404</strong></td><td>Not Found</td><td>Resource doesn't exist. Most-recognized error code in the world.</td></tr>
+          <tr><td><strong>409</strong></td><td>Conflict</td><td>State conflict — duplicate slug, version mismatch, simultaneous edit</td></tr>
+          <tr><td><strong>422</strong></td><td>Unprocessable Entity</td><td>Syntactically valid request but semantically invalid (validation failed)</td></tr>
+          <tr><td><strong>429</strong></td><td>Too Many Requests</td><td>Rate-limited. Include <code>Retry-After:</code> header.</td></tr>
+          <tr><td><strong>500</strong></td><td>Internal Server Error</td><td>Unhandled exception. Don't leak stack traces to users.</td></tr>
+          <tr><td><strong>502</strong></td><td>Bad Gateway</td><td>Upstream service (the API your server proxies to) failed</td></tr>
+          <tr><td><strong>503</strong></td><td>Service Unavailable</td><td>Server is overloaded or down for maintenance</td></tr>
+          <tr><td><strong>504</strong></td><td>Gateway Timeout</td><td>Upstream service didn't respond in time</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>301 vs 302 vs 307 vs 308 — the redirect maze</h2>
+      <p>Four codes cover redirects. Picking the wrong one breaks SEO, breaks form re-submission, or both.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Code</th><th>Permanent?</th><th>Method preserved?</th><th>SEO transfers?</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>301</strong> Moved Permanently</td><td>Yes</td><td>Browsers may change POST → GET (legacy)</td><td>Yes — &gt; 99% in 2026</td><td>Permanent URL changes (site migrations, slug changes)</td></tr>
+          <tr><td><strong>302</strong> Found</td><td>No</td><td>Browsers may change POST → GET (legacy)</td><td>No</td><td>Temporary redirect, A/B tests, geo-routing</td></tr>
+          <tr><td><strong>307</strong> Temporary Redirect</td><td>No</td><td>Yes — POST stays POST</td><td>No</td><td>Modern temporary redirect when you need to preserve method/body</td></tr>
+          <tr><td><strong>308</strong> Permanent Redirect</td><td>Yes</td><td>Yes — POST stays POST</td><td>Yes</td><td>Modern permanent redirect when method preservation matters</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The "POST → GET" gotcha (301/302 only)</h3>
+      <p>Historically, browsers were inconsistent about whether to change a POST to a GET when following a 301 or 302. Most modern browsers preserve the method, but some legacy tools don't. <strong>Use 307/308 if method preservation matters.</strong> For plain URL redirects (which are the common case), 301 is still the right answer in 2026 — Google fully understands it transfers SEO equity, and ~all browsers handle it correctly.</p>
+
+      <div class="article-aside">
+        <strong>SEO rule:</strong> if a URL change is permanent, use 301. Period. 302 is for A/B tests, geo-redirects, or maintenance — not for "I changed my mind about the URL." Wrong choice fragments your link equity.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>401 vs 403 — Unauthorized vs Forbidden</h2>
+      <p>Confused constantly. They mean different things:</p>
+
+      <h3>401 Unauthorized — "Who are you?"</h3>
+      <p>The client has NOT successfully authenticated. Either the credentials are missing entirely or invalid. The expected client behavior: prompt for login, retry with credentials.</p>
+      <ul>
+        <li>Missing <code>Authorization</code> header</li>
+        <li>Expired JWT</li>
+        <li>Invalid API key</li>
+        <li>Wrong username/password</li>
+      </ul>
+      <p>The response should include a <code>WWW-Authenticate</code> header indicating the auth scheme (Bearer, Basic, etc.).</p>
+
+      <h3>403 Forbidden — "I know who you are, you can't do this"</h3>
+      <p>The client IS authenticated but lacks permission. No amount of re-authentication will help — they need different permissions.</p>
+      <ul>
+        <li>Read-only API key trying to POST</li>
+        <li>Free-tier user accessing premium endpoint</li>
+        <li>Admin route accessed by non-admin user</li>
+        <li>IP-based geo-blocking ("Sorry, not available in your region")</li>
+      </ul>
+
+      <p><strong>Mnemonic:</strong> 401 = "Authenticate yourself." 403 = "Authentication accepted; access still denied."</p>
+    </section>
+
+    <section class="article-section">
+      <h2>200 vs 201 vs 204 — the success codes</h2>
+      <p>For REST APIs, picking the right success code communicates intent:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Code</th><th>HTTP method</th><th>Body</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>200 OK</strong></td><td>GET, PUT, PATCH</td><td>The current state of the resource</td><td><code>GET /users/42</code> → user JSON</td></tr>
+          <tr><td><strong>201 Created</strong></td><td>POST</td><td>The new resource (or just <code>Location:</code>)</td><td><code>POST /users</code> → 201 + <code>Location: /users/43</code></td></tr>
+          <tr><td><strong>202 Accepted</strong></td><td>POST/PUT (async)</td><td>Job ID or status URL</td><td><code>POST /reports/generate</code> → 202 (job queued)</td></tr>
+          <tr><td><strong>204 No Content</strong></td><td>DELETE, PUT (no body)</td><td>Empty</td><td><code>DELETE /users/42</code> → 204</td></tr>
+          <tr><td><strong>206 Partial Content</strong></td><td>GET with Range</td><td>Requested byte range</td><td>Video streaming, resumable downloads</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>4xx vs 5xx in practice — who do you blame?</h2>
+
+      <h3>4xx codes blame the client</h3>
+      <p>"You did something wrong." 4xx codes should NOT be retried automatically — retrying with the same input gets the same error. The client must change the request. Common 4xx in monitoring dashboards:</p>
+      <ul>
+        <li><strong>400</strong> — malformed JSON, validation failed</li>
+        <li><strong>401</strong> — token expired (very common — auto-refresh tokens to handle gracefully)</li>
+        <li><strong>403</strong> — permission denied</li>
+        <li><strong>404</strong> — typo in URL, deleted resource, dynamic 404 from your CMS</li>
+        <li><strong>410 Gone</strong> — explicitly deleted, will never come back. Stronger than 404 for SEO removal.</li>
+        <li><strong>422</strong> — semantic validation (email format, password too short, age out of range)</li>
+        <li><strong>429</strong> — rate-limited; client must back off</li>
+      </ul>
+
+      <h3>5xx codes blame the server</h3>
+      <p>"I tried, I failed." 5xx codes ARE typically retryable — with backoff. Most production monitors page on-call when 5xx rate exceeds 0.5%.</p>
+      <ul>
+        <li><strong>500</strong> — unhandled exception in your code (log + fix)</li>
+        <li><strong>502 Bad Gateway</strong> — your nginx couldn't reach your app server (app crashed?)</li>
+        <li><strong>503 Service Unavailable</strong> — overloaded; database down; deploying. Include <code>Retry-After</code>.</li>
+        <li><strong>504 Gateway Timeout</strong> — upstream took too long. Increase timeout or speed up upstream.</li>
+      </ul>
+
+      <h3>The hidden case: returning 200 with an error in the body</h3>
+      <p>Common anti-pattern: <code>200 OK</code> with <code>{ "error": "User not found" }</code>. Why it's bad:</p>
+      <ul>
+        <li>Monitoring tools think everything is fine; alerts don't fire</li>
+        <li>Cloudflare and CDN cache the error response</li>
+        <li>Retry logic doesn't trigger (clients only retry on 5xx)</li>
+        <li>Browser DevTools shows green status; users debugging are confused</li>
+      </ul>
+      <p><strong>Fix:</strong> use the right status. <code>404</code> for "not found", <code>400</code> for "invalid input", <code>500</code> for "I broke." The response body can <em>also</em> contain detail — but the status comes first.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Status codes for SEO — what Google really cares about</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Code</th><th>Google's interpretation</th><th>Long-term effect</th></tr></thead>
+        <tbody>
+          <tr><td><strong>200</strong></td><td>Page exists, may be indexed</td><td>Indexed if content is good</td></tr>
+          <tr><td><strong>301</strong></td><td>Permanent move; transfer all signals to new URL</td><td>Old URL drops, new URL inherits backlinks &amp; rankings</td></tr>
+          <tr><td><strong>302/307</strong></td><td>Temporary; keep original in index</td><td>Original URL stays indexed; new URL doesn't accumulate signals</td></tr>
+          <tr><td><strong>404</strong></td><td>Doesn't exist (yet); will retry crawling</td><td>Eventually drops from index after weeks of consistent 404</td></tr>
+          <tr><td><strong>410 Gone</strong></td><td>Definitively gone; deindex faster than 404</td><td>Drops from index in days, not weeks</td></tr>
+          <tr><td><strong>500/503</strong></td><td>Temporary issue; retry later</td><td>Won't deindex unless persistent for weeks</td></tr>
+          <tr><td><strong>429</strong></td><td>Slow down crawling</td><td>Reduced crawl rate for a few days</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Common SEO mistakes around status codes:</strong></p>
+      <ul>
+        <li><strong>"Soft 404"</strong> — returning 200 OK with a "Sorry, not found" page. Google recognizes the pattern as a 404 anyway and penalizes the trick.</li>
+        <li><strong>302-redirecting permanent moves</strong> — fragments link equity. Use 301.</li>
+        <li><strong>Returning 503 for too long during deploys</strong> — Google's crawler cuts crawl rate. Aim for sub-minute deploys.</li>
+        <li><strong>Returning 410 instead of 404 for deleted content</strong> — actually a positive in some cases. Use 410 when you've deliberately removed content forever (deleted blog post, removed product).</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Returning HTTP status codes in 8 frameworks</h2>
+
+      <h3>Express (Node.js)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">express</div>
+<pre><code>app.get('/users/:id', async (req, res) =&gt; {
+  const user = await db.user.findById(req.params.id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.status(200).json(user);
+});
+
+app.post('/users', async (req, res) =&gt; {
+  const u = await db.user.create(req.body);
+  res.status(201).location(`/users/${u.id}`).json(u);
+});
+</code></pre>
+      </div>
+
+      <h3>FastAPI (Python)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">fastapi</div>
+<pre><code>from fastapi import FastAPI, HTTPException, status
+
+@app.get("/users/{id}", status_code=status.HTTP_200_OK)
+def get_user(id: int):
+    user = db.find_user(id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+@app.post("/users", status_code=status.HTTP_201_CREATED)
+def create_user(user: UserIn):
+    return db.create_user(user)
+</code></pre>
+      </div>
+
+      <h3>Spring Boot (Java)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">spring-boot</div>
+<pre><code>@GetMapping("/users/{id}")
+public ResponseEntity&lt;User&gt; getUser(@PathVariable Long id) {
+    return userRepo.findById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+}
+
+@PostMapping("/users")
+public ResponseEntity&lt;User&gt; createUser(@RequestBody User u) {
+    User saved = userRepo.save(u);
+    return ResponseEntity.created(URI.create("/users/" + saved.getId())).body(saved);
+}
+</code></pre>
+      </div>
+
+      <h3>Rails (Ruby)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rails</div>
+<pre><code>def show
+  user = User.find_by(id: params[:id])
+  return render(json: { error: 'Not found' }, status: :not_found) unless user
+  render json: user, status: :ok
+end
+
+def create
+  user = User.create!(user_params)
+  render json: user, status: :created, location: user_url(user)
+end
+</code></pre>
+      </div>
+
+      <h3>Go (net/http)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>func userHandler(w http.ResponseWriter, r *http.Request) {
+    user, err := db.GetUser(r.URL.Path[7:])
+    if err != nil {
+        http.Error(w, "User not found", http.StatusNotFound)
+        return
+    }
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(user)
+}
+</code></pre>
+      </div>
+
+      <h3>Laravel (PHP)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">laravel</div>
+<pre><code>public function show($id) {
+    $user = User::find($id);
+    if (!$user) return response()-&gt;json(['error' =&gt; 'Not found'], 404);
+    return response()-&gt;json($user, 200);
+}
+
+public function store(Request $request) {
+    $user = User::create($request-&gt;validated());
+    return response()-&gt;json($user, 201)
+        -&gt;header('Location', "/users/{$user-&gt;id}");
+}
+</code></pre>
+      </div>
+
+      <h3>Cloudflare Workers / Edge runtimes</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">workers</div>
+<pre><code>export default {
+  async fetch(req, env) {
+    const u = await env.DB.get(extractId(req));
+    if (!u) return new Response('Not found', { status: 404 });
+    return new Response(JSON.stringify(u), {
+      status: 200,
+      headers: { 'content-type': 'application/json' },
+    });
+  },
+};
+</code></pre>
+      </div>
+
+      <h3>Bash / curl (testing)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Show only the status code (great for monitoring scripts)
+curl -s -o /dev/null -w '%{http_code}\n' https://example.com
+
+# Show full headers
+curl -I https://example.com
+
+# Follow redirects and report all hops
+curl -ILs https://example.com
+
+# Fail bash script if status is not 2xx
+curl --fail-with-body https://example.com/api
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Status code best practices</h2>
+      <ul>
+        <li><strong>Use the most specific code.</strong> 422 for validation errors beats 400 for everything. 410 for permanently-deleted content beats 404. Specificity helps clients build better error handling.</li>
+        <li><strong>Never return 200 with an error.</strong> Status codes are how every layer of the stack makes decisions. Lying about success breaks monitoring, retries, caching.</li>
+        <li><strong>Add <code>Retry-After</code> on 429 and 503.</strong> Tells clients exactly how long to wait. Servers and CDNs (Cloudflare) honor it automatically.</li>
+        <li><strong>Don't leak stack traces in 500 responses.</strong> Generic "Internal Server Error" + log the real details server-side. Stack traces in production are a security hole.</li>
+        <li><strong>Use 301 for permanent URL changes; 302 for temporary.</strong> Confusing them fragments SEO equity.</li>
+        <li><strong>Return a structured error body</strong> with the status code: <code>{ "error": { "code": "USER_NOT_FOUND", "message": "...", "details": {} } }</code>. Lets clients programmatically handle specific errors.</li>
+        <li><strong>Set proper headers alongside status codes.</strong> <code>Location:</code> on 201/3xx, <code>WWW-Authenticate:</code> on 401, <code>Retry-After:</code> on 429/503, <code>Allow:</code> on 405.</li>
+        <li><strong>Use 405 Method Not Allowed</strong> for "this endpoint exists, but you can't POST to it." Include <code>Allow: GET, PUT</code> in response.</li>
+        <li><strong>Distinguish 401 (auth) from 403 (permissions).</strong> Critical for client retry logic — 401 prompts re-login, 403 doesn't.</li>
+        <li><strong>Don't use 200 for "delete succeeded".</strong> Use 204 No Content. Saves bandwidth, signals intent.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are HTTP status codes and why are they important?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">HTTP status codes are three-digit numbers returned by a web server in response to a client's request, standardized in RFC 7231 and related RFCs. They are grouped into five categories: 1xx (informational), 2xx (success), 3xx (redirection), 4xx (client error), and 5xx (server error). Understanding these codes is essential for API development, web server configuration, frontend error handling, SEO optimization, and debugging network issues.</div></div>
@@ -175,8 +511,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — HTTP Status Codes Reference</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const codes=[

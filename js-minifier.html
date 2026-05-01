@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JavaScript Minifier &amp; Beautifier Online — Compress JS Free | FreeDevTool</title>
-  <meta name="description" content="Minify JavaScript to reduce bundle size and improve page speed, or beautify minified JS for readability. Free JS minifier — optimize Core Web Vitals and TTI. No signup.">
+  <meta name="description" content="Free JavaScript minifier &amp; beautifier. 30–60% bundle size reduction, faster TTI, better INP. Mangling, dead code elim. Source map friendly. Runs in browser.">
+  <meta name="keywords" content="javascript minifier, js minifier, minify javascript online, js compressor, terser online, esbuild minify, bundle size reduction, web performance">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/js-minifier">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="JavaScript Minifier &amp; Beautifier — Free | FreeDevTool">
+  <meta name="twitter:description" content="Compress JS for production, beautify minified code. Boost TTI &amp; INP. Runs in browser, no signup, no uploads.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -139,13 +144,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Optimization Tool</div>
-    <h1>JavaScript Minifier &amp; Beautifier</h1>
+    <h1>JavaScript Minifier &amp; Beautifier Online</h1>
     <p class="tool-description">
-      Minify JavaScript to reduce bundle size and improve page load speed, or beautify minified JS code for debugging and readability. This free online JavaScript minifier removes whitespace, comments, and unnecessary characters to optimize your scripts for production. Smaller JavaScript bundles improve Time to Interactive (TTI), Total Blocking Time (TBT), and Interaction to Next Paint (INP) — all critical Core Web Vitals for Google rankings in 2026. All processing runs client-side.
+      Minify JavaScript to reduce bundle size for production, or beautify minified JS for debugging. This free JS minifier strips whitespace, comments, and dead code to cut bundles by 30–60%. Smaller bundles improve <strong>Time to Interactive (TTI)</strong>, <strong>Total Blocking Time (TBT)</strong>, and <strong>Interaction to Next Paint (INP)</strong> — all <a href="https://web.dev/articles/vitals" rel="noopener" style="color:var(--accent)">Core Web Vitals</a> ranking factors in 2026. All processing runs in your browser; code never leaves your machine.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -190,6 +194,331 @@ greet('World');" oninput="process()" rows="8"></textarea>
     </div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is JavaScript minification?</h2>
+      <p><strong>JavaScript minification</strong> is the process of transforming your readable JS source into a functionally identical but byte-smaller version — by stripping whitespace, comments, renaming local variables to single letters, eliminating dead code, and applying compiler-like optimizations. A 200 KB hand-written file typically minifies to 60–90 KB. Combined with gzip/Brotli compression, a 200 KB source can ship as 18–25 KB over the wire.</p>
+      <p>Minification is the single biggest performance lever for JavaScript-heavy sites. JavaScript is <strong>parsed, compiled, and executed</strong> on the main thread — bigger bundles mean longer parse times, longer compile times, longer time before the page becomes interactive. Google's Core Web Vitals (specifically <strong>INP</strong>, <strong>TTI</strong>, <strong>TBT</strong>) all penalize bloated JS. Lighthouse flags "minify JavaScript" as a high-impact opportunity, and PageSpeed Insights shows estimated savings.</p>
+      <p>Three practical wins from minification:</p>
+      <ul>
+        <li><strong>Smaller download</strong> — cuts bytes-over-wire by 30–60% (before gzip), 5–15% incremental win after gzip.</li>
+        <li><strong>Faster parse + compile</strong> — V8 / SpiderMonkey / JavaScriptCore parse minified code faster because there's less text to tokenize.</li>
+        <li><strong>Smaller cache footprint</strong> — important on low-storage mobile devices where the HTTP cache evicts assets aggressively.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Minification vs uglification vs obfuscation</h2>
+      <p>These three terms are often confused. They overlap but mean different things in 2026:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Process</th><th>Goal</th><th>Reversible?</th><th>Example tools</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Minification</strong></td>
+            <td>Reduce file size while preserving exact behavior</td>
+            <td>Yes (with source maps)</td>
+            <td>esbuild, Terser, SWC, this tool</td>
+          </tr>
+          <tr>
+            <td><strong>Uglification</strong></td>
+            <td>Originally meant minification + variable renaming. Now used interchangeably.</td>
+            <td>Yes (with source maps)</td>
+            <td>UglifyJS (legacy), Terser (its successor)</td>
+          </tr>
+          <tr>
+            <td><strong>Obfuscation</strong></td>
+            <td>Make code intentionally hard to reverse-engineer (anti-piracy, license enforcement)</td>
+            <td>Difficult by design</td>
+            <td>JScrambler, javascript-obfuscator, Closure Compiler ADVANCED</td>
+          </tr>
+          <tr>
+            <td><strong>Dead Code Elimination</strong></td>
+            <td>Remove unused code branches</td>
+            <td>Yes</td>
+            <td>Built into Terser, esbuild, SWC, Closure</td>
+          </tr>
+          <tr>
+            <td><strong>Tree-shaking</strong></td>
+            <td>Remove unused exports/imports across modules</td>
+            <td>Yes</td>
+            <td>Rollup, esbuild, webpack, Vite</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>For 99% of developers in 2026:</strong> you want minification. Obfuscation is for proprietary software where source theft is a real concern; it adds significant runtime overhead and isn't actually unbreakable.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How JS minifiers work — the transformations</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Transformation</th><th>Before</th><th>After</th></tr></thead>
+        <tbody>
+          <tr><td>Strip whitespace</td><td><code>function add(a, b) {<br>  return a + b;<br>}</code></td><td><code>function add(a,b){return a+b}</code></td></tr>
+          <tr><td>Strip comments</td><td><code>// adds two numbers<br>function add...</code></td><td><code>function add...</code></td></tr>
+          <tr><td>Mangle local variables</td><td><code>function calculateTotal(items, taxRate) {...}</code></td><td><code>function calculateTotal(t,a){...}</code></td></tr>
+          <tr><td>Constant folding</td><td><code>const px = 24 * 4 + 16</code></td><td><code>const px=112</code></td></tr>
+          <tr><td>Dead code elimination</td><td><code>if (false) { /* ... */ }</code></td><td>(removed)</td></tr>
+          <tr><td>Boolean shortening</td><td><code>true</code>, <code>false</code></td><td><code>!0</code>, <code>!1</code></td></tr>
+          <tr><td>Inline single-use functions</td><td><code>function double(x){return x*2}<br>const y = double(5);</code></td><td><code>const y=10</code></td></tr>
+          <tr><td>Property access shortening</td><td><code>obj["foo"]</code></td><td><code>obj.foo</code></td></tr>
+          <tr><td>Use shorter operators</td><td><code>void 0</code></td><td><code>undefined</code> shortened back to <code>void 0</code> (3 chars vs 9)</td></tr>
+          <tr><td>Remove unused parameters &amp; variables</td><td><code>function f(a,b,c){return a+b}</code></td><td><code>function f(a,b){return a+b}</code></td></tr>
+        </tbody>
+      </table>
+
+      <p>What minifiers <strong>preserve</strong>: top-level (module-level) names exposed via exports, side effects on globals, behavior of every code path, exception types and messages (mostly), reflection-style code (<code>obj[propName]</code> with dynamic <code>propName</code> can't be mangled).</p>
+
+      <div class="article-aside">
+        <strong>Watch out:</strong> aggressive minifiers may break code that relies on <code>Function.prototype.toString()</code> introspection, <code>arguments.callee.name</code>, or function names in error stack traces. If your testing or analytics depend on function names, configure the minifier to <code>keep_fnames</code> and <code>keep_classnames</code>.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>The 2026 JavaScript minifier landscape</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>Speed</th><th>Compression</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>esbuild</strong></td>
+            <td>10–100× faster than Terser</td>
+            <td>~95% as compact as Terser</td>
+            <td>Default for new projects in 2026. Used by Vite under the hood.</td>
+          </tr>
+          <tr>
+            <td><strong>SWC</strong></td>
+            <td>Comparable to esbuild (Rust-based)</td>
+            <td>Comparable to Terser</td>
+            <td>Used by Next.js, Parcel 2, Deno. Drop-in Babel replacement.</td>
+          </tr>
+          <tr>
+            <td><strong>Terser</strong></td>
+            <td>Slowest of the three (JS-based)</td>
+            <td>The gold standard for compression</td>
+            <td>Maximum size reduction. Used by Rollup &amp; webpack defaults.</td>
+          </tr>
+          <tr>
+            <td><strong>UglifyJS</strong></td>
+            <td>Slower than Terser</td>
+            <td>Doesn't support modern ES (ES2015+). Use Terser instead.</td>
+            <td>Legacy projects. Don't pick for new work.</td>
+          </tr>
+          <tr>
+            <td><strong>Closure Compiler ADVANCED</strong></td>
+            <td>Slow — runs full type analysis</td>
+            <td>Best compression, often beats Terser by 10–20%</td>
+            <td>Apps that can adopt Closure's type-annotation conventions. Used by Google.</td>
+          </tr>
+          <tr>
+            <td><strong>oxc-minify</strong> (Rust)</td>
+            <td>Fastest in 2026</td>
+            <td>Catching up to Terser quickly</td>
+            <td>Cutting-edge new projects. Still pre-1.0 as of early 2026.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>JS minification in 8 build pipelines</h2>
+
+      <h3>esbuild (CLI + JS API)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">esbuild</div>
+<pre><code># CLI
+esbuild src/app.js --minify --bundle --outfile=dist/app.min.js \
+  --target=es2020 --sourcemap
+
+# JS API
+import { build } from 'esbuild';
+await build({
+  entryPoints: ['src/app.js'],
+  outfile: 'dist/app.min.js',
+  minify: true,
+  bundle: true,
+  sourcemap: true,
+  target: 'es2020',
+});
+</code></pre>
+      </div>
+
+      <h3>Vite (built-in)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">vite</div>
+<pre><code>// vite.config.js — minification on by default in production
+export default {
+  build: {
+    minify: 'esbuild',  // 'esbuild' | 'terser' | false
+    sourcemap: true,
+    target: 'es2020',
+  },
+};
+</code></pre>
+      </div>
+
+      <h3>Next.js (uses SWC)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">next.js</div>
+<pre><code>// next.config.js — SWC minifier is default in Next 12+
+module.exports = {
+  swcMinify: true,  // default in Next 13+
+  // Or for Terser instead:
+  // swcMinify: false,
+};
+</code></pre>
+      </div>
+
+      <h3>webpack</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">webpack</div>
+<pre><code>// webpack.config.js
+const TerserPlugin = require('terser-webpack-plugin');
+
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      terserOptions: {
+        compress: { drop_console: true },
+        mangle: true,
+        format: { comments: false },
+      },
+    })],
+  },
+};
+</code></pre>
+      </div>
+
+      <h3>Rollup</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rollup</div>
+<pre><code>// rollup.config.js
+import terser from '@rollup/plugin-terser';
+
+export default {
+  input: 'src/app.js',
+  output: { file: 'dist/app.min.js', format: 'es' },
+  plugins: [terser()],
+};
+</code></pre>
+      </div>
+
+      <h3>Direct Terser (Node)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">terser</div>
+<pre><code>import { minify } from 'terser';
+import { readFile, writeFile } from 'node:fs/promises';
+
+const src = await readFile('app.js', 'utf-8');
+const { code, map } = await minify(src, {
+  compress: { drop_console: true, pure_funcs: ['console.log'] },
+  mangle: { toplevel: true },
+  sourceMap: true,
+  format: { comments: false },
+});
+await writeFile('app.min.js', code);
+await writeFile('app.min.js.map', map);
+</code></pre>
+      </div>
+
+      <h3>SWC CLI</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">swc</div>
+<pre><code># Install
+npm i -D @swc/cli @swc/core
+
+# Minify a single file
+npx swc app.js -o app.min.js --config-file .swcrc.minify.json
+
+# .swcrc.minify.json:
+# {
+#   "minify": true,
+#   "jsc": { "minify": { "compress": true, "mangle": true } }
+# }
+</code></pre>
+      </div>
+
+      <h3>Bash one-liner with esbuild</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># If you don't want to install anything globally
+npx esbuild app.js --minify &gt; app.min.js
+
+# Or via Docker for ephemeral builds
+docker run --rm -v $(pwd):/work node:20 \
+  npx --yes terser /work/app.js --compress --mangle &gt; app.min.js
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Source maps for production debugging</h2>
+      <p>Minified JavaScript is almost unreadable. When a production user reports "the dashboard crashed at <code>l.k(a,b,5)</code>", that line tells you nothing. <strong>Source maps</strong> bridge minified code back to your original source — variable names, line numbers, even original file names.</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">source-map</div>
+<pre><code>// At the bottom of your minified file:
+//# sourceMappingURL=app.min.js.map
+
+// The .map file is JSON with character-level mappings:
+{
+  "version": 3,
+  "file": "app.min.js",
+  "sources": ["src/dashboard.js", "src/utils.js", ...],
+  "names": ["calculateTotal", "items", "taxRate", ...],
+  "mappings": "AAAA;AACA,SAAS,..."  // VLQ-encoded mappings
+}
+</code></pre>
+      </div>
+
+      <h3>Production source-map strategy</h3>
+      <ul>
+        <li><strong>Always generate</strong> source maps in your build pipeline.</li>
+        <li><strong>Don't expose them publicly</strong> by default — they reveal your source code. Most CI/CD setups upload maps to your error tracker (Sentry, Bugsnag) instead, then strip the <code>sourceMappingURL=</code> comment from the deployed bundle.</li>
+        <li><strong>For internal tools</strong>, expose source maps publicly — the debug productivity is worth more than the obscurity.</li>
+        <li><strong>Use <code>hidden-source-map</code> mode</strong> in webpack/esbuild — generates the map file but doesn't add the <code>sourceMappingURL</code> reference. Browsers can't find them, but you can upload to Sentry.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Common JS minification gotchas</h2>
+      <ul>
+        <li><strong>Don't minify in development.</strong> Slows down rebuild and breaks debugging. Only minify in production builds.</li>
+        <li><strong>Don't minify already-minified files.</strong> If you import a vendor lib's <code>*.min.js</code>, your bundler doesn't need to re-minify it. Most do this automatically by detecting "minified" patterns; verify.</li>
+        <li><strong><code>console.log</code> survives by default.</strong> Most minifiers don't strip console output unless you configure them: <code>drop_console: true</code> (Terser) or <code>pure_funcs: ['console.log']</code>.</li>
+        <li><strong>Don't break <code>Function.prototype.toString()</code>.</strong> Some libraries (DI frameworks, dependency injection containers, AngularJS pre-Angular) read function source code at runtime. Use <code>keep_fnames</code> and <code>keep_classnames</code> if you depend on this.</li>
+        <li><strong>Mind the <code>"use strict"</code> directive.</strong> Hoist it to the top of the output, or your minified module behaves differently from your source.</li>
+        <li><strong>Watch out for object property mangling.</strong> Default Terser doesn't mangle property names (too risky). Closure Compiler ADVANCED does — it can break <code>obj.foo</code> if you ever access it as <code>obj["foo"]</code> elsewhere.</li>
+        <li><strong>ES module exports stay readable.</strong> Top-level exports (named or default) preserve their names. Only locals get mangled to single letters.</li>
+        <li><strong>Don't over-minify with ADVANCED Closure</strong> unless you're prepared to write Closure-style type annotations. ADVANCED rewrites code aggressively — broken behavior is hard to track down without the type info.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>JS minification best practices for 2026</h2>
+      <ul>
+        <li><strong>Use esbuild or SWC by default</strong> for new projects. 10–100× faster builds = faster feedback loop.</li>
+        <li><strong>Always tree-shake before minifying.</strong> Removing unused exports is a much bigger win than minification alone — typical savings: 30–70%.</li>
+        <li><strong>Code-split aggressively.</strong> Don't ship one giant <code>app.min.js</code>. Use dynamic <code>import()</code> for routes, modals, and rarely-used features. Browsers parse fewer bytes upfront.</li>
+        <li><strong>Strip <code>console.*</code> in production.</strong> Reduces bundle size, prevents accidental info leakage. Configure in your minifier.</li>
+        <li><strong>Cache-bust via filename hashing.</strong> <code>app.a3f7c2.min.js</code> with <code>Cache-Control: max-age=31536000, immutable</code>.</li>
+        <li><strong>Brotli &gt; Gzip on the server.</strong> Brotli compresses minified JS ~20% better. Cloudflare and most CDNs support it.</li>
+        <li><strong>Audit with Lighthouse.</strong> Don't trust eyeballed bundle sizes — Lighthouse and PageSpeed Insights tell you exactly how much each minification opportunity would save.</li>
+        <li><strong>Use modern targets.</strong> Setting <code>target: "es2020"</code> in esbuild lets the minifier output shorter modern syntax. Targeting ES5 inflates output by 20–40%.</li>
+        <li><strong>Set up bundle-size budgets in CI.</strong> Block PRs that exceed your budget by 10%. Tools: <code>size-limit</code>, <code>bundlewatch</code>, <code>webpack-bundle-analyzer</code>.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item open">
@@ -226,8 +555,8 @@ greet('World');" oninput="process()" rows="8"></textarea>
 </div>
 
 <footer>
-  <div>&copy; 2026 FreeDevTool — JavaScript Minifier & Beautifier</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — JavaScript Minifier &amp; Beautifier</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

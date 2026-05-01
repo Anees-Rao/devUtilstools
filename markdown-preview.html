@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown Editor &amp; Preview Online — Convert Markdown to HTML Free | FreeDevTool</title>
-  <meta name="description" content="Write and preview markdown in real time with a split-screen editor. Convert markdown to clean HTML. Supports GitHub Flavored Markdown tables, code blocks and task lists. Free, no signup.">
+  <title>Markdown Editor &amp; Live Preview Online — Free GFM Editor | FreeDevTool</title>
+  <meta name="description" content="Free Markdown editor with live preview. GitHub Flavored Markdown (GFM): tables, code blocks, task lists, strikethrough. Convert MD to HTML. Browser-based.">
+  <meta name="keywords" content="markdown editor, markdown preview, markdown to html, github flavored markdown, gfm online, readme editor, markdown converter, online md editor">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/markdown-preview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Markdown Editor &amp; Live Preview — Free | FreeDevTool">
+  <meta name="twitter:description" content="GFM editor with live preview. Tables, code blocks, task lists. Convert markdown to HTML. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -170,13 +175,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Content Tool</div>
-    <h1>Markdown Editor &amp; Live Preview</h1>
+    <h1>Markdown Editor &amp; Live Preview Online</h1>
     <p class="tool-description">
-      Write markdown and see a live rendered preview side by side. This free online markdown editor supports GitHub Flavored Markdown (GFM) including tables, fenced code blocks, task lists, strikethrough, and autolinks. Convert your markdown to clean, semantic HTML with one click. Perfect for writing README files, documentation, blog posts, and technical content. All rendering happens in your browser — nothing is uploaded.
+      Write markdown and see a live rendered preview side by side. This free markdown editor supports <a href="https://github.github.com/gfm/" rel="noopener" style="color:var(--accent)">GitHub Flavored Markdown (GFM)</a>: tables, fenced code blocks with language syntax highlighting, task lists, strikethrough, autolinks. Convert markdown to clean, semantic HTML with one click. Perfect for writing README files, documentation, blog posts, and PR descriptions. All rendering happens in your browser — nothing is uploaded.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -252,6 +256,390 @@ Made with ♥ by [FreeDevTool](https://freedevtool.org)
     <div class="output-block" id="html-output" style="font-size:12px; max-height:200px; overflow:auto"></div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is Markdown and why has it conquered the developer world?</h2>
+      <p><strong>Markdown</strong> is a lightweight markup language created by John Gruber and Aaron Swartz in 2004. The design goal was deceptively simple: a plain-text format that reads naturally as-is, and converts cleanly to HTML when needed. Two decades later, Markdown is the universal write-once-render-everywhere format for technical content — README files on every GitHub repo, posts on Reddit and Stack Overflow, documentation on Notion and Obsidian, blog posts on Substack, slides in Marp, papers in Pandoc, even chat messages in Slack and Discord.</p>
+      <p>Why did Markdown win where heavier alternatives (HTML, AsciiDoc, RST, BBCode) didn't?</p>
+      <ul>
+        <li><strong>Readable in raw form.</strong> A markdown file is meaningful as plain text — you don't need to mentally render it.</li>
+        <li><strong>Tiny syntax surface.</strong> Headings (<code>#</code>), bold (<code>**</code>), italic (<code>*</code>), links (<code>[text](url)</code>), lists (<code>-</code>), code blocks (<code>```</code>) — that's 90% of what you'll ever use. Five minutes to learn.</li>
+        <li><strong>Plays well with version control.</strong> Plain-text diffs are clean. Code review on Markdown is sane in a way that Word docs or Notion exports aren't.</li>
+        <li><strong>Render targets are everywhere.</strong> Every static site generator (Hugo, Jekyll, Eleventy, Astro, Next.js MDX), every developer platform (GitHub, GitLab, Bitbucket, Codeberg), every documentation system (Docusaurus, MkDocs, GitBook, ReadTheDocs).</li>
+      </ul>
+      <p>The trade-off: <strong>fragmentation.</strong> The original 2004 spec was incomplete and ambiguous. Different parsers produced different output for the same input. CommonMark (2014) standardized 80% of the syntax; GitHub Flavored Markdown extends it with practical features. This editor renders <strong>GFM</strong>, the dominant variant in 2026.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>The Markdown family — CommonMark vs GFM vs MultiMarkdown</h2>
+      <p>"Markdown" today is an umbrella term. Knowing which dialect your platform uses prevents formatting surprises.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Variant</th><th>Year</th><th>What it adds</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Original Markdown</strong></td>
+            <td>2004</td>
+            <td>Headings, emphasis, lists, links, code blocks, blockquotes</td>
+            <td>Historical artifact — most parsers extend it</td>
+          </tr>
+          <tr>
+            <td><strong>CommonMark</strong></td>
+            <td>2014</td>
+            <td>Strict, unambiguous spec. Edge cases formally defined.</td>
+            <td>Reddit, Discourse, Discord, Stack Overflow (basis)</td>
+          </tr>
+          <tr>
+            <td><strong>GitHub Flavored Markdown (GFM)</strong></td>
+            <td>2017</td>
+            <td>Tables, task lists, strikethrough, autolinks, fenced code with language tags</td>
+            <td>GitHub, GitLab, Codeberg, Discord, Slack (subset), most blog platforms</td>
+          </tr>
+          <tr>
+            <td><strong>MultiMarkdown</strong></td>
+            <td>2005</td>
+            <td>Footnotes, citations, definition lists, math (MathJax), metadata</td>
+            <td>Academic writing, Pandoc</td>
+          </tr>
+          <tr>
+            <td><strong>MDX</strong></td>
+            <td>2018</td>
+            <td>Embed JSX/React components in markdown</td>
+            <td>Next.js, Docusaurus, Storybook docs</td>
+          </tr>
+          <tr>
+            <td><strong>Obsidian / Notion / Roam Markdown</strong></td>
+            <td>2018+</td>
+            <td>Wikilinks (<code>[[Page]]</code>), block references, embeds</td>
+            <td>Personal knowledge management apps</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>For 95% of writing in 2026:</strong> use GFM. It's understood by every platform, supports the practical features you need, and degrades gracefully when something doesn't render in CommonMark-only parsers.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Markdown syntax cheatsheet</h2>
+
+      <h3>Headings</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code># H1 — page title (use only once)
+## H2 — main section
+### H3 — sub-section
+#### H4 — sub-sub-section
+
+# Alternative for H1 / H2:
+H1 with underline
+=================
+
+H2 with underline
+-----------------</code></pre>
+      </div>
+
+      <h3>Emphasis</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>*italic* or _italic_
+**bold** or __bold__
+***bold italic***
+~~strikethrough~~
+`inline code`
+==highlighted== (some parsers, e.g. Obsidian)</code></pre>
+      </div>
+
+      <h3>Lists</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>- Unordered list (also: * or +)
+- Item 2
+  - Nested (indent 2 spaces)
+  - Another nested
+
+1. Ordered list
+2. Item 2
+   1. Nested ordered
+
+- [ ] Unchecked task (GFM)
+- [x] Checked task</code></pre>
+      </div>
+
+      <h3>Links and images</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>[link text](https://example.com)
+[link with title](https://example.com "Hover title")
+[reference style][1]
+&lt;https://autolink.com&gt; (GFM auto-detects URLs without angle brackets)
+
+![image alt text](image.jpg)
+![image with title](image.jpg "Hover title")
+
+[1]: https://example.com  (defined anywhere in the document)</code></pre>
+      </div>
+
+      <h3>Code</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>Inline `code` uses single backticks.
+
+```js
+// fenced block with language hint for syntax highlighting
+function add(a, b) {
+  return a + b;
+}
+```
+
+    Indented 4 spaces is also a code block (legacy)</code></pre>
+      </div>
+
+      <h3>Tables (GFM only)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>| Column 1 | Column 2 | Column 3 |
+|----------|:--------:|---------:|
+| left     | center   | right    |
+| aligned  | aligned  | aligned  |</code></pre>
+      </div>
+
+      <h3>Blockquotes</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>&gt; This is a quote.
+&gt; Multiple lines stay quoted.
+&gt;
+&gt; &gt; Nested quote.
+
+&gt; **Bold inside quote** still works.</code></pre>
+      </div>
+
+      <h3>Horizontal rules &amp; line breaks</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">markdown</div>
+<pre><code>---  (or *** or ___)
+
+End a line with two spaces
+to get a soft line break.
+
+Empty line above creates a new paragraph.</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>GFM-specific features you need to know</h2>
+
+      <h3>Task lists with checkboxes</h3>
+      <p>GitHub renders <code>- [ ]</code> and <code>- [x]</code> as actual interactive checkboxes in issues and PRs. Used everywhere for to-do tracking.</p>
+
+      <h3>Tables with alignment</h3>
+      <p>The colon position in the separator row controls alignment: <code>|---|</code> = default, <code>|:---|</code> = left, <code>|:---:|</code> = center, <code>|---:|</code> = right.</p>
+
+      <h3>Autolinks</h3>
+      <p>Bare URLs (<code>https://example.com</code>) and email addresses become clickable automatically — no need for <code>&lt;...&gt;</code> brackets.</p>
+
+      <h3>Strikethrough</h3>
+      <p><code>~~struck through~~</code> renders with a line through it. Originally a Slack/GFM extension; now widely supported.</p>
+
+      <h3>Fenced code blocks with language tags</h3>
+      <p>Triple-backtick code blocks accept a language hint (<code>```js</code>, <code>```python</code>, <code>```yaml</code>) which most renderers use for syntax highlighting via Prism.js, highlight.js, or Shiki.</p>
+
+      <h3>GitHub-specific extras (rendered only on github.com)</h3>
+      <ul>
+        <li><strong>Mermaid diagrams</strong> — <code>```mermaid</code> blocks render flowcharts, sequence diagrams, ER diagrams.</li>
+        <li><strong>Math expressions</strong> — <code>$E = mc^2$</code> for inline; <code>$$...$$</code> for blocks (since 2022).</li>
+        <li><strong>Alerts</strong> — <code>&gt; [!NOTE]</code>, <code>&gt; [!WARNING]</code>, <code>&gt; [!IMPORTANT]</code> render as styled callouts.</li>
+        <li><strong>Issue and PR mentions</strong> — <code>#123</code> linkifies to the issue/PR.</li>
+        <li><strong>User mentions</strong> — <code>@username</code> notifies the user.</li>
+        <li><strong>Emoji shortcodes</strong> — <code>:rocket:</code> renders as 🚀.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Markdown processors in 8 languages</h2>
+
+      <h3>JavaScript (marked, markdown-it, remark)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// marked — the simplest, fastest
+import { marked } from 'marked';
+const html = marked.parse(mdString);
+
+// markdown-it — most extensible (used by VS Code)
+import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
+md.use(require('markdown-it-task-lists'));
+const html = md.render(mdString);
+
+// remark — AST-based, used by MDX, Astro, Docusaurus
+import { remark } from 'remark';
+import remarkHtml from 'remark-html';
+const html = String(await remark().use(remarkHtml).process(mdString));
+</code></pre>
+      </div>
+
+      <h3>Python (markdown / markdown-it-py)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import markdown
+
+html = markdown.markdown(md_string, extensions=['fenced_code', 'tables', 'extra'])
+
+# markdown-it-py — port of JS markdown-it, more features
+from markdown_it import MarkdownIt
+md = MarkdownIt('gfm-like').enable('table').enable('strikethrough')
+html = md.render(md_string)
+</code></pre>
+      </div>
+
+      <h3>Go (Goldmark)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import (
+    "bytes"
+    "github.com/yuin/goldmark"
+    "github.com/yuin/goldmark/extension"
+)
+
+md := goldmark.New(goldmark.WithExtensions(extension.GFM))
+var buf bytes.Buffer
+md.Convert([]byte(source), &amp;buf)
+fmt.Println(buf.String())
+</code></pre>
+      </div>
+
+      <h3>Rust (pulldown-cmark)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use pulldown_cmark::{Parser, Options, html};
+
+let mut opts = Options::empty();
+opts.insert(Options::ENABLE_TABLES);
+opts.insert(Options::ENABLE_TASKLISTS);
+opts.insert(Options::ENABLE_STRIKETHROUGH);
+
+let parser = Parser::new_ext(md, opts);
+let mut html_output = String::new();
+html::push_html(&amp;mut html_output, parser);
+</code></pre>
+      </div>
+
+      <h3>PHP (Parsedown)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// composer require erusev/parsedown
+$parsedown = new Parsedown();
+$parsedown-&gt;setSafeMode(true);  // sanitize HTML
+echo $parsedown-&gt;text($mdString);
+</code></pre>
+      </div>
+
+      <h3>Ruby (Redcarpet / kramdown)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'redcarpet'
+
+renderer = Redcarpet::Render::HTML.new(filter_html: true, safe_links_only: true)
+md = Redcarpet::Markdown.new(renderer, fenced_code_blocks: true, tables: true)
+html = md.render(md_string)
+
+# Or kramdown — more features, slightly slower
+require 'kramdown'
+html = Kramdown::Document.new(md_string, input: 'GFM').to_html
+</code></pre>
+      </div>
+
+      <h3>Java (CommonMark-Java + extensions)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.ext.gfm.tables.TablesExtension;
+
+List&lt;Extension&gt; extensions = Arrays.asList(TablesExtension.create());
+Parser parser = Parser.builder().extensions(extensions).build();
+HtmlRenderer renderer = HtmlRenderer.builder().extensions(extensions).build();
+
+String html = renderer.render(parser.parse(mdString));
+</code></pre>
+      </div>
+
+      <h3>Pandoc (the Swiss Army knife)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">pandoc</div>
+<pre><code># Convert markdown to HTML
+pandoc input.md -o output.html
+
+# Markdown to PDF (via LaTeX)
+pandoc input.md -o output.pdf --pdf-engine=xelatex
+
+# Markdown to Word
+pandoc input.md -o output.docx
+
+# Specific markdown variant
+pandoc input.md --from=gfm --to=html --standalone -o output.html
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Real-world Markdown use cases</h2>
+
+      <h3>README files (~80% of all markdown)</h3>
+      <p>Every GitHub repo expects <code>README.md</code> at the root. It's the project's landing page — for both humans and the GitHub algorithm. Standard structure: project name + tagline, badges, install, quick start, usage, license. <strong>Tip:</strong> add an <code>&lt;img&gt;</code> tag with an <code>alt</code> attribute at the top to render a hero image without breaking text-mode <code>cat README.md</code>.</p>
+
+      <h3>Documentation sites (Docusaurus, MkDocs, Astro)</h3>
+      <p>Modern docs systems take markdown source, run it through plugins (link rewriting, ToC generation, syntax highlighting, mermaid diagrams), and produce static HTML. The result: docs are version-controlled with the code, contributors edit them like any other file, and review happens via PR.</p>
+
+      <h3>Static blog posts</h3>
+      <p>Hugo, Jekyll, Eleventy, Astro, Next.js MDX — all read markdown files with frontmatter (YAML metadata block at the top) and render to HTML. The author writes in markdown; the build pipeline produces SEO-optimized HTML with structured data.</p>
+
+      <h3>Pull request descriptions and issue templates</h3>
+      <p>GitHub renders the body of every issue, PR, and comment as GFM. Use checklists for PR todos, code blocks for stack traces, links to other issues with <code>#123</code>, mentions with <code>@username</code>.</p>
+
+      <h3>Slack &amp; Discord messages</h3>
+      <p>Both apps support a subset of markdown. <code>**bold**</code>, <code>*italic*</code>, <code>~~strike~~</code>, code blocks, and links work in both. Discord additionally supports headings, block quotes, and lists; Slack stops at inline formatting.</p>
+
+      <h3>Note-taking apps (Obsidian, Joplin, Logseq)</h3>
+      <p>Plain-text markdown files in a folder = your knowledge base. Vendor lock-in is gone — your notes work in any markdown editor.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Common Markdown mistakes</h2>
+      <ul>
+        <li><strong>Forgetting blank lines around blocks.</strong> Markdown often merges blocks if there's no blank line between a paragraph and a list/heading/code block. Insert a blank line before and after every block-level element.</li>
+        <li><strong>Mixing tabs and spaces in nested lists.</strong> Some parsers handle either, but the offside rule for nested lists is space-sensitive. Pick one style site-wide.</li>
+        <li><strong>Hard-wrapping prose at 80 chars manually.</strong> GFM treats single newlines as soft breaks (rendered as spaces); double newlines as paragraphs. Many editors render hard wraps as ugly mid-sentence breaks. Let prose flow.</li>
+        <li><strong>Using <code>**bold**</code> and <code>__bold__</code> inconsistently.</strong> They're equivalent in GFM, but Reddit's old parser only supported <code>**</code>. Pick one for portability.</li>
+        <li><strong>Forgetting language tags on code blocks.</strong> A bare <code>```</code> block won't get syntax highlighting. Always add the language: <code>```js</code>, <code>```python</code>, <code>```yaml</code>.</li>
+        <li><strong>HTML inside markdown.</strong> Most renderers allow it (<code>&lt;sup&gt;</code>, <code>&lt;br&gt;</code>, <code>&lt;img&gt;</code>), but linters and platforms (npm, PyPI) often strip it. Use markdown syntax where possible.</li>
+        <li><strong>Relative paths in a README that gets reposted.</strong> If your README is shown on PyPI, npm, GitHub, and your blog, relative links break in 3 of 4 places. Use absolute URLs.</li>
+        <li><strong>Inline images without dimensions.</strong> Markdown's <code>![alt](url)</code> doesn't support dimensions. For width/height, fall back to <code>&lt;img src="..." width="400"&gt;</code> HTML.</li>
+        <li><strong>Long tables.</strong> GFM tables are great for short reference tables, terrible for long data — they don't scroll. Convert to CSV with our <a href="json-to-csv">JSON to CSV tool</a> and link to it.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Markdown best practices</h2>
+      <ul>
+        <li><strong>Stick to GFM.</strong> It's understood by every platform you'll publish on.</li>
+        <li><strong>Use the most semantic syntax available.</strong> <code>### Heading</code> not <code>**heading**</code>; <code>1. Item</code> not <code>1) Item</code>; lists for lists, blockquotes for quotes.</li>
+        <li><strong>Lint your markdown.</strong> <code>markdownlint-cli</code> catches missing blank lines, wrong list indentation, and other portability issues. Add it to CI.</li>
+        <li><strong>Preview before pushing.</strong> Use this tool, your IDE's preview, or <code>grip</code> (locally renders GFM as GitHub would) to catch broken layouts.</li>
+        <li><strong>Keep README focused.</strong> Top of the file is the most-read part. Hero (badge, name, tagline) → install → quick start → link to full docs. The wiki is for everything else.</li>
+        <li><strong>Use frontmatter for metadata.</strong> Static-site generators read YAML at the top of MD files for title, slug, date, tags. Keeps prose clean.</li>
+        <li><strong>Don't paste from Word/Google Docs.</strong> Hidden formatting characters break rendering. Use our <a href="word-to-markdown">Word to Markdown converter</a> first.</li>
+        <li><strong>Add alt text to images.</strong> Accessibility, SEO, and graceful degradation when images fail to load.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the markdown editor</h2>
@@ -311,8 +699,8 @@ Made with ♥ by [FreeDevTool](https://freedevtool.org)
 </div>
 
 <footer>
-  <div>&copy; 2026 FreeDevTool — Markdown Editor & Preview</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — Markdown Editor &amp; Preview</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

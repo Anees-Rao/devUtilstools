@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YAML to JSON Converter Online — Convert YAML to JSON Free | FreeDevTool</title>
-  <meta name="description" content="Convert YAML to JSON and JSON to YAML instantly. Validate YAML syntax, handle nested objects, arrays, anchors and aliases. Free browser-based converter, no signup.">
+  <title>YAML to JSON Converter Online — Bidirectional Free Tool | FreeDevTool</title>
+  <meta name="description" content="Free YAML ⇄ JSON converter. Validate YAML syntax, handle anchors, aliases, multi-doc streams. Docker Compose, k8s &amp; GitHub Actions friendly. Runs in browser.">
+  <meta name="keywords" content="yaml to json, json to yaml, yaml converter online, yaml validator, yml to json, k8s yaml, docker compose yaml, yaml parser online">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/yaml-to-json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="YAML ⇄ JSON Converter Online — Free | FreeDevTool">
+  <meta name="twitter:description" content="Convert between YAML and JSON. Anchors, aliases, multi-doc support. Runs in browser, no signup, no uploads.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="YAML to JSON Converter Online — Convert YAML to JSON Free">
@@ -124,9 +129,9 @@
     </a>
 
     <span class="tool-badge">Conversion</span>
-    <h1>YAML to JSON Converter</h1>
-    <p>Convert between YAML and JSON formats instantly. Supports nested objects, arrays, multi-line strings, comments and more — all processed in your browser with zero server calls.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>YAML ⇄ JSON Converter Online</h1>
+    <p>Convert between YAML and JSON in either direction with full <a href="https://yaml.org/spec/1.2.2/" rel="noopener" style="color:var(--accent)">YAML 1.2</a> support. Handles nested objects, arrays, multi-line strings, anchors (<code>&amp;name</code>) and aliases (<code>*name</code>), multi-document streams (<code>---</code>), and comments. Perfect for converting Docker Compose, Kubernetes manifests, GitHub Actions workflows, and Helm charts. All parsing runs in your browser — config files with secrets or hostnames never reach a server.</p>
+    <span class="last-updated">Last updated: April 2026</span>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -158,6 +163,367 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is YAML and why convert to JSON?</h2>
+      <p><strong>YAML</strong> ("YAML Ain't Markup Language") is a human-friendly data serialization format defined in the <a href="https://yaml.org/spec/1.2.2/" rel="noopener">YAML 1.2.2 specification</a>. It is the dominant format for configuration files in the cloud-native ecosystem: Kubernetes manifests, Docker Compose, GitHub Actions workflows, GitLab CI, Ansible playbooks, Helm charts, OpenAPI / Swagger specs, AWS CloudFormation, and Cargo / Cabal config files. The reason: <strong>YAML is comment-friendly, indentation-based, and reads like English</strong>. JSON, while more strict and machine-friendly, is verbose for humans to write — every key needs quotes, no comments allowed, brackets everywhere.</p>
+      <p>Why convert YAML ⇄ JSON? Three common reasons:</p>
+      <ul>
+        <li><strong>API consumption</strong> — your config is in YAML, but the tool you're integrating with expects JSON (most REST APIs, GraphQL, NoSQL databases).</li>
+        <li><strong>Validation and schema checks</strong> — JSON Schema validators are far more mature than YAML schema tools. Convert YAML to JSON, validate, then back.</li>
+        <li><strong>Debugging</strong> — when a YAML file breaks, converting to JSON often reveals the actual structure (especially the dreaded "Norway problem" where <code>NO</code> becomes boolean <code>false</code>).</li>
+      </ul>
+      <p>JSON and YAML are both subsets of the same conceptual data model: scalars (strings, numbers, booleans, null), sequences (arrays), and mappings (objects). YAML 1.2 was specifically designed so that <strong>every JSON document is valid YAML</strong>. The reverse is not true — YAML has features (anchors, multi-document streams, custom tags) that JSON cannot represent.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>YAML vs JSON — feature-by-feature comparison</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Feature</th><th>YAML 1.2</th><th>JSON (RFC 8259)</th></tr></thead>
+        <tbody>
+          <tr><td>Comments</td><td><code># comment</code> on any line</td><td><span class="no">Not supported</span> (use JSONC for comments)</td></tr>
+          <tr><td>Trailing commas</td><td>Not applicable (no commas in block style)</td><td><span class="no">Forbidden</span></td></tr>
+          <tr><td>Quoted keys</td><td>Optional</td><td><span class="yes">Required</span> (always double quotes)</td></tr>
+          <tr><td>String quoting</td><td>Optional, single, or double quotes</td><td>Double quotes only</td></tr>
+          <tr><td>Multi-line strings</td><td><span class="yes">Yes</span> — <code>|</code> (literal) and <code>&gt;</code> (folded)</td><td>Single line only (use <code>\n</code> escapes)</td></tr>
+          <tr><td>Anchors &amp; aliases (<code>&amp;</code>, <code>*</code>)</td><td><span class="yes">Yes</span> — DRY config via reusable nodes</td><td><span class="no">No</span></td></tr>
+          <tr><td>Multi-document streams (<code>---</code>)</td><td><span class="yes">Yes</span> — multiple docs per file</td><td><span class="no">No</span> (one root value)</td></tr>
+          <tr><td>Custom tags / types</td><td><span class="yes">Yes</span> — <code>!!str</code>, <code>!Ref</code>, custom</td><td><span class="no">No</span></td></tr>
+          <tr><td>Indentation-significant</td><td><span class="yes">Yes</span> — spaces only (no tabs)</td><td><span class="no">No</span> (whitespace ignored)</td></tr>
+          <tr><td>Parser ambiguity</td><td>Higher — Norway problem, octal numbers</td><td>Minimal — strict grammar</td></tr>
+          <tr><td>File size (typical)</td><td>~30–40% smaller than equivalent JSON</td><td>Larger due to required punctuation</td></tr>
+          <tr><td>Best for</td><td>Human-edited config (k8s, CI, Compose)</td><td>API payloads, machine-to-machine data</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Rule of thumb:</strong> humans should edit YAML; machines should exchange JSON. The conversion is lossless when going from JSON → YAML (because JSON is a subset). It is <strong>almost</strong> lossless from YAML → JSON — features like anchors get expanded inline, comments are stripped, and custom tags are flattened to plain values.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>YAML syntax — what every developer should know</h2>
+
+      <h3>Scalars (the basic types)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">yaml</div>
+<pre><code># Plain scalars (no quotes — YAML guesses the type)
+name: Anees                  # string
+age: 30                      # integer
+height: 5.9                  # float
+active: true                 # boolean
+nickname: null               # null (also: ~)
+phone: "+1 555 1234"         # explicitly string (quotes prevent number parsing)
+
+# Multi-line strings
+literal: |                   # preserves newlines
+  Line 1
+  Line 2
+
+folded: &gt;                    # folds newlines to spaces
+  Line 1
+  continues here
+</code></pre>
+      </div>
+
+      <h3>Sequences (arrays)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">yaml</div>
+<pre><code># Block style (preferred for readability)
+fruits:
+  - apple
+  - banana
+  - cherry
+
+# Flow style (compact, JSON-like)
+fruits: [apple, banana, cherry]
+
+# Nested sequence
+matrix:
+  - [1, 2, 3]
+  - [4, 5, 6]
+</code></pre>
+      </div>
+
+      <h3>Mappings (objects)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">yaml</div>
+<pre><code># Block style
+user:
+  name: Anees
+  age: 30
+  email: anees@example.com
+
+# Flow style
+user: {name: Anees, age: 30, email: anees@example.com}
+
+# Mappings of sequences
+team:
+  developers:
+    - alice
+    - bob
+  managers:
+    - carol
+</code></pre>
+      </div>
+
+      <h3>Anchors and aliases — DRY config</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">yaml</div>
+<pre><code># Define an anchor with &amp;
+defaults: &amp;defaults
+  timeout: 30
+  retries: 3
+  region: us-east-1
+
+# Reuse with *
+production:
+  &lt;&lt;: *defaults     # merge key — inherit all defaults
+  region: us-west-2  # override one field
+
+staging:
+  &lt;&lt;: *defaults
+</code></pre>
+      </div>
+
+      <h3>Multi-document streams</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">yaml</div>
+<pre><code># A single .yaml file can contain multiple documents,
+# separated by --- (and optionally ended with ...)
+
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: app-config }
+---
+apiVersion: v1
+kind: Secret
+metadata: { name: app-secret }
+---
+# common in kubectl apply -f and Helm templates
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>The infamous YAML pitfalls</h2>
+
+      <h3>1. The Norway problem (YAML 1.1 only — but it bites)</h3>
+      <p>YAML 1.1 treats <code>NO</code>, <code>YES</code>, <code>ON</code>, <code>OFF</code>, <code>true</code>, <code>false</code> (in any case) as booleans. So <code>country: NO</code> becomes <code>{"country": false}</code>, not <code>{"country": "NO"}</code>. YAML 1.2 fixed this — only <code>true</code>/<code>false</code> (lowercase) are booleans now. But many parsers default to YAML 1.1 for backward compatibility. <strong>Fix:</strong> always quote string values that look like booleans: <code>country: "NO"</code>.</p>
+
+      <h3>2. Tabs are forbidden</h3>
+      <p>YAML allows only spaces for indentation. Tabs in indentation cause parse errors. Looks fine in editors that render tabs as spaces. <strong>Fix:</strong> configure your editor to use spaces; lint with <code>yamllint</code>.</p>
+
+      <h3>3. Octal numbers</h3>
+      <p>In YAML 1.1, <code>version: 010</code> is parsed as octal <strong>8</strong>, not the string "010" or the integer 10. YAML 1.2 fixed this (octals require <code>0o</code> prefix), but legacy parsers still bite. <strong>Fix:</strong> quote leading-zero values: <code>version: "010"</code>.</p>
+
+      <h3>4. Mixed indentation widths</h3>
+      <p>Some sub-blocks use 2 spaces; others use 4. Parsers handle this consistently as long as siblings match, but it's a style nightmare and can cause parser disagreements between strict and lenient implementations.</p>
+
+      <h3>5. Numbers vs strings ambiguity</h3>
+      <ul>
+        <li><code>version: 1.0</code> → number 1.0 (the trailing zero is lost)</li>
+        <li><code>version: "1.0"</code> → string "1.0"</li>
+        <li><code>price: 1,000</code> → string "1,000" (comma makes it non-numeric)</li>
+        <li><code>id: 1234567890</code> → integer (might overflow JS Number precision at 2^53)</li>
+      </ul>
+
+      <h3>6. Empty values</h3>
+      <p><code>name:</code> (with nothing after) parses as <code>null</code>, not <code>""</code>. To get an empty string, use <code>name: ""</code> or <code>name: ''</code>.</p>
+
+      <h3>7. Anchors get expanded on conversion</h3>
+      <p>Convert YAML with anchors to JSON, then back, and you'll lose the anchors — they're inlined. The result has the same data but loses the DRY abstraction.</p>
+
+      <div class="article-aside">
+        <strong>Pro tip:</strong> use <code>yamllint</code> in CI to catch these issues before they cause production outages. The default config catches all the above.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>YAML/JSON conversion in 8 programming languages</h2>
+
+      <h3>Node.js (js-yaml)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js</div>
+<pre><code>import yaml from 'js-yaml';
+
+// YAML → JSON object
+const data = yaml.load(yamlString);
+
+// JSON object → YAML
+const yamlOut = yaml.dump(data, { indent: 2, lineWidth: 120 });
+
+// Multi-document YAML stream
+const docs = yaml.loadAll(yamlString);  // returns array of docs
+</code></pre>
+      </div>
+
+      <h3>Python (PyYAML)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import yaml
+import json
+
+# YAML → dict (use safe_load to disable arbitrary code execution)
+data = yaml.safe_load(yaml_string)
+
+# dict → YAML
+yaml_out = yaml.dump(data, default_flow_style=False, sort_keys=False)
+
+# Multi-document
+for doc in yaml.safe_load_all(yaml_string):
+    print(doc)
+
+# YAML → JSON
+print(json.dumps(yaml.safe_load(yaml_string), indent=2))
+</code></pre>
+      </div>
+
+      <h3>Python (ruamel.yaml — preserves comments)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>from ruamel.yaml import YAML
+yaml = YAML()
+yaml.preserve_quotes = True
+
+# Round-trips with comments and ordering preserved
+with open('config.yml') as f:
+    data = yaml.load(f)
+
+data['new_key'] = 'value'
+with open('config.yml', 'w') as f:
+    yaml.dump(data, f)  # Comments survive!
+</code></pre>
+      </div>
+
+      <h3>Go (gopkg.in/yaml.v3)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "gopkg.in/yaml.v3"
+
+type Config struct {
+    Name    string `yaml:"name"`
+    Servers []string `yaml:"servers"`
+}
+
+var c Config
+yaml.Unmarshal([]byte(yamlData), &amp;c)
+
+// Encode
+out, _ := yaml.Marshal(c)
+</code></pre>
+      </div>
+
+      <h3>Rust (serde_yaml)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+struct Config { name: String, servers: Vec&lt;String&gt; }
+
+// YAML → struct
+let c: Config = serde_yaml::from_str(&amp;yaml_str)?;
+
+// struct → YAML
+let yaml = serde_yaml::to_string(&amp;c)?;
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'yaml'
+require 'json'
+
+# YAML → Hash (safe_load is Ruby's recommended)
+data = YAML.safe_load(yaml_str)
+
+# Hash → YAML
+yaml_out = data.to_yaml
+
+# Multi-document stream
+YAML.load_stream(yaml_str) { |doc| puts doc }
+
+# YAML → JSON
+puts JSON.pretty_generate(YAML.safe_load(yaml_str))
+</code></pre>
+      </div>
+
+      <h3>PHP (Symfony Yaml)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// composer require symfony/yaml
+use Symfony\Component\Yaml\Yaml;
+
+$data = Yaml::parse($yamlString);
+$yaml = Yaml::dump($data, 4);  // 4-space indent
+
+// PHP built-in (PECL yaml extension)
+$data = yaml_parse($yamlString);
+$yaml = yaml_emit($data);
+</code></pre>
+      </div>
+
+      <h3>Bash (yq + jq)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># yq is "jq for YAML" — install via brew/snap/apt
+
+# YAML → JSON
+yq -o=json '.' config.yml
+
+# JSON → YAML
+yq -P '.' data.json
+
+# Edit a YAML field in place
+yq -i '.image.tag = "v1.2.3"' deployment.yml
+
+# Combined with jq for complex queries
+yq -o=json . k8s.yml | jq '.spec.containers[].image'
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Real-world use cases</h2>
+
+      <h3>Kubernetes manifests</h3>
+      <p>Every <code>kubectl apply -f file.yaml</code> command parses YAML into JSON internally before sending it to the Kubernetes API server. The API itself is JSON-only. Your local <code>kubectl get pod -o yaml</code> works in reverse — JSON in, YAML out for human reading. Tools like <code>kustomize</code> and <code>helm</code> manipulate YAML to produce final manifests.</p>
+
+      <h3>Docker Compose</h3>
+      <p>Compose files are pure YAML. Converting them to JSON is useful when programmatically generating Compose configurations from another tool, or when building CI matrices that test multiple configurations.</p>
+
+      <h3>GitHub Actions workflows</h3>
+      <p>Workflows are YAML, but the GitHub API serves them as JSON. Programmatic generation (e.g. dynamically creating a workflow from a database of jobs) usually goes via JSON, then dumps to YAML for the final <code>.github/workflows/*.yml</code> file.</p>
+
+      <h3>OpenAPI / Swagger specs</h3>
+      <p>OpenAPI 3.x supports both YAML and JSON. The YAML form is preferred for editing (comments, multi-line); the JSON form is what you ship with your SDK or pipe into validation tools.</p>
+
+      <h3>AWS CloudFormation &amp; Helm charts</h3>
+      <p>Both rely heavily on YAML's anchor &amp; alias features for DRY templates. When converting to JSON, anchors expand inline — you lose abstraction but gain machine-friendliness.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>YAML best practices</h2>
+      <ul>
+        <li><strong>Always quote string values that look like booleans, numbers, or dates.</strong> <code>country: "NO"</code>, <code>version: "1.0"</code>, <code>id: "01234"</code>.</li>
+        <li><strong>Configure your editor for spaces, not tabs.</strong> Add <code>.editorconfig</code> with <code>indent_style = space</code> for <code>*.yml</code> and <code>*.yaml</code>.</li>
+        <li><strong>Use <code>yamllint</code> in CI.</strong> Catches indentation errors, trailing whitespace, line length, document start markers — fast, deterministic, low-overhead.</li>
+        <li><strong>Use <code>safe_load</code>, never <code>load</code>.</strong> Python's <code>yaml.load</code> can execute arbitrary code (CVE-2017-18342). Always use <code>safe_load</code> for untrusted input.</li>
+        <li><strong>Don't store secrets in YAML.</strong> Use a secret manager (AWS Secrets Manager, Vault, Sealed Secrets, sops). Reference at runtime, never commit plaintext.</li>
+        <li><strong>Pick YAML 1.2 parsers when possible.</strong> They fix the Norway problem, octal-number gotchas, and other ambiguities. <code>js-yaml &gt;= 4</code>, <code>ruamel.yaml</code>, and Go's <code>yaml.v3</code> are 1.2.</li>
+        <li><strong>Validate with JSON Schema.</strong> JSON Schema works on YAML too (after parsing). Catches type errors, missing required fields, and unexpected properties before deployment.</li>
+        <li><strong>Use <code>kubeval</code> or <code>kubeconform</code></strong> for Kubernetes YAMLs. They validate against the actual K8s OpenAPI schema for your cluster version.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- How to use + mistakes -->
   <section class="use-cases">
@@ -199,8 +565,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — YAML ⇄ JSON Converter</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 function getIndent(){return parseInt(document.getElementById('indent-size').value);}

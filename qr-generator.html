@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator Free — Create QR Codes Online No Signup | FreeDevTool</title>
-  <meta name="description" content="Generate QR codes for URLs, text, WiFi, email and phone numbers instantly. Download as PNG or SVG. Free QR code generator — no signup, no watermark, works offline.">
+  <title>QR Code Generator Online — Free, No Watermark, No Signup | FreeDevTool</title>
+  <meta name="description" content="Free QR code generator. Create QR codes for URLs, WiFi, vCards, email, SMS. PNG &amp; SVG download. Custom error correction. No signup, no watermark, runs in browser.">
+  <meta name="keywords" content="qr code generator, qr code online, free qr code maker, qr code no signup, wifi qr code, vcard qr, qr code with logo, qr svg, qr png download">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/qr-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="QR Code Generator Online — Free, No Watermark | FreeDevTool">
+  <meta name="twitter:description" content="Generate QR codes for URLs, WiFi, vCards. PNG/SVG download, custom error correction. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -147,13 +152,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Utility Tool</div>
-    <h1>QR Code Generator — Free, No Watermark</h1>
+    <h1>QR Code Generator Online — Free, No Watermark</h1>
     <p class="tool-description">
-      Generate QR codes instantly for URLs, plain text, WiFi credentials, email addresses, and phone numbers. Download as high-resolution PNG. This free QR code generator creates static QR codes directly in your browser — no signup, no watermark, no tracking. Your data never leaves your device. Customize the size for print or digital use. Works offline once loaded.
+      Generate QR codes instantly for <strong>URLs</strong>, plain text, <strong>WiFi credentials</strong>, email addresses, phone numbers, and <strong>vCards</strong>. Download as high-resolution PNG or scalable SVG. Adjustable error-correction level (L, M, Q, H) — higher correction lets QR codes survive partial damage or logo overlays. Static QR codes generated directly in your browser using the <a href="https://www.iso.org/standard/62021.html" rel="noopener" style="color:var(--accent)">ISO/IEC 18004</a> standard. No signup, no watermark, no tracking — your data never leaves your device.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -231,6 +235,269 @@
     </div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a QR code and how does it work?</h2>
+      <p>A <strong>QR code</strong> (Quick Response code) is a 2D barcode that encodes data — text, URLs, contact info, payment info — in a black-and-white grid pattern that smartphone cameras can read instantly. Invented in 1994 by Masahiro Hara at Denso Wave (originally for tracking automotive parts), QR codes went mainstream during the 2020 pandemic when restaurants needed contactless menus. Today they're everywhere: payment apps, transit tickets, restaurant menus, business cards, marketing posters, WiFi sharing, two-factor authentication.</p>
+      <p>The "Quick Response" name comes from how fast scanners can read them — 10× faster than 1D barcodes. A QR code can store up to 4,296 alphanumeric characters or 7,089 numeric digits, and reads correctly from any angle (4-way rotation). Three large square "finder patterns" in three corners let scanners find and orient the code in milliseconds.</p>
+      <p>Modern QR codes use Reed-Solomon error correction: even if part of the code is damaged, dirty, or covered by a logo, the data can still be reconstructed. The <a href="https://www.iso.org/standard/62021.html" rel="noopener">ISO/IEC 18004:2024</a> standard formalizes the encoding, and major mobile OS camera apps (iOS Camera, Android Google Lens) can scan them natively without a separate app.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>QR code structure — what's inside</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Element</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Finder patterns</strong> (3 large squares)</td><td>Top-left, top-right, bottom-left corners. Tell the scanner this is a QR code and which way is "up."</td></tr>
+          <tr><td><strong>Alignment patterns</strong> (small squares)</td><td>Help correct for camera distortion when the code isn't perfectly flat.</td></tr>
+          <tr><td><strong>Timing patterns</strong></td><td>Alternating black/white lines connecting finder patterns — used to determine module size.</td></tr>
+          <tr><td><strong>Format info</strong></td><td>Encodes which error-correction level the code uses (L, M, Q, or H).</td></tr>
+          <tr><td><strong>Version info</strong></td><td>Versions 1–40, indicating size: V1 = 21×21 modules, V40 = 177×177.</td></tr>
+          <tr><td><strong>Data &amp; error correction</strong></td><td>The actual payload + redundant bytes for Reed-Solomon recovery.</td></tr>
+          <tr><td><strong>Quiet zone</strong></td><td>4-module-wide white border. Without it, scanners often fail.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Error correction levels — picking the right one</h2>
+      <p>QR codes use Reed-Solomon error correction, which adds redundant data so the code stays scannable even when partially damaged or obscured. Higher correction = bigger QR (more modules) but more robust:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Level</th><th>Recoverable damage</th><th>Best for</th><th>Trade-off</th></tr></thead>
+        <tbody>
+          <tr><td><strong>L (Low)</strong></td><td>~7%</td><td>Clean digital displays, screens, online ads</td><td>Smallest code, holds most data</td></tr>
+          <tr><td><strong>M (Medium)</strong></td><td>~15%</td><td>Default — most printed materials, posters, packaging</td><td>Balanced size + robustness</td></tr>
+          <tr><td><strong>Q (Quartile)</strong></td><td>~25%</td><td>Industrial labels, dirty environments</td><td>Larger, holds less data</td></tr>
+          <tr><td><strong>H (High)</strong></td><td>~30%</td><td>QR codes with embedded logos, outdoor billboards, products that may scratch</td><td>Largest code; required if you add a center logo</td></tr>
+        </tbody>
+      </table>
+
+      <div class="article-aside">
+        <strong>Logo overlay rule:</strong> if you place a logo in the center of a QR code, you MUST use level H error correction. The logo covers ~25–30% of the data area, and only level H can reconstruct lost data at that scale.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common QR code use cases — what people actually do</h2>
+
+      <h3>URLs (most common — ~80% of all QR codes)</h3>
+      <p>Just encode the full URL with <code>https://</code>. Keep URLs short — long URLs make the QR code larger and harder to scan. For URLs over 100 chars, shorten with bit.ly, your own domain redirect, or a UTM-stripped version.</p>
+
+      <h3>WiFi network sharing</h3>
+      <p>The format is a special string starting with <code>WIFI:</code>:</p>
+      <div class="lang-block">
+        <div class="lang-block-header">wifi-format</div>
+<pre><code>WIFI:T:WPA;S:NetworkName;P:Password;H:false;;
+
+// T = encryption (WPA, WEP, or "nopass" for open networks)
+// S = SSID (network name)
+// P = password
+// H = true if the network is hidden, false otherwise
+// Final ;; (yes, double semicolon) terminates the format</code></pre>
+      </div>
+      <p>Both iOS and Android cameras recognize this format and offer one-tap "Connect to WiFi". Print it on a small card for guest WiFi.</p>
+
+      <h3>vCard (digital business card)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">vcard</div>
+<pre><code>BEGIN:VCARD
+VERSION:3.0
+FN:Anees Ur Rehman
+TITLE:Full-stack Developer
+ORG:FreeDevTool
+EMAIL:anees@example.com
+TEL:+1-555-1234567
+URL:https://freedevtool.org
+END:VCARD</code></pre>
+      </div>
+      <p>Scanning saves the contact directly to the user's address book. Far better than a printed business card that gets lost.</p>
+
+      <h3>Email links</h3>
+      <p>Format: <code>mailto:address@example.com?subject=Hello&amp;body=Message</code>. The user's mail app opens with everything pre-filled.</p>
+
+      <h3>Phone numbers</h3>
+      <p>Format: <code>tel:+15551234567</code>. Use international format (E.164) for cross-country compatibility.</p>
+
+      <h3>SMS</h3>
+      <p>Format: <code>SMSTO:+15551234567:Pre-written message text</code>. Tapping opens the SMS app with recipient + body filled in.</p>
+
+      <h3>Geolocation</h3>
+      <p>Format: <code>geo:37.7749,-122.4194</code>. Opens the user's default maps app at those coordinates.</p>
+
+      <h3>Calendar events</h3>
+      <p>iCalendar format encoded in a QR code. Useful for event invitations on flyers.</p>
+
+      <h3>Cryptocurrency payments</h3>
+      <p>Bitcoin: <code>bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa?amount=0.001</code>. Ethereum: <code>ethereum:0xAbC...</code>. Wallet apps recognize these formats automatically.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>QR code generation in 8 programming languages</h2>
+
+      <h3>JavaScript (qrcode library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// npm i qrcode
+import QRCode from 'qrcode';
+
+// Generate as PNG data URL
+const dataUrl = await QRCode.toDataURL('https://example.com', {
+  errorCorrectionLevel: 'H',
+  margin: 4,
+  width: 512,
+});
+
+// Generate as SVG string
+const svg = await QRCode.toString('https://example.com', { type: 'svg' });
+
+// Save to canvas (in browser)
+QRCode.toCanvas(document.getElementById('canvas'), 'https://example.com');
+</code></pre>
+      </div>
+
+      <h3>Python (qrcode library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import qrcode
+
+qr = qrcode.QRCode(
+    version=None,                 # auto-detect size
+    error_correction=qrcode.constants.ERROR_CORRECT_H,
+    box_size=10,
+    border=4,
+)
+qr.add_data('https://example.com')
+qr.make(fit=True)
+
+img = qr.make_image(fill_color='black', back_color='white')
+img.save('output.png')
+
+# Or output SVG
+import qrcode.image.svg
+img = qr.make_image(image_factory=qrcode.image.svg.SvgImage)
+img.save('output.svg')
+</code></pre>
+      </div>
+
+      <h3>PHP (endroid/qr-code)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// composer require endroid/qr-code
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\ErrorCorrectionLevel;
+
+$result = Builder::create()
+    -&gt;data('https://example.com')
+    -&gt;errorCorrectionLevel(ErrorCorrectionLevel::High)
+    -&gt;size(512)
+    -&gt;margin(40)
+    -&gt;build();
+
+$result-&gt;saveToFile(__DIR__ . '/output.png');
+</code></pre>
+      </div>
+
+      <h3>Java (ZXing)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+
+BitMatrix matrix = new MultiFormatWriter().encode(
+    "https://example.com",
+    BarcodeFormat.QR_CODE,
+    512, 512
+);
+MatrixToImageWriter.writeToPath(matrix, "PNG", Paths.get("output.png"));
+</code></pre>
+      </div>
+
+      <h3>Go (skip2/go-qrcode)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import qrcode "github.com/skip2/go-qrcode"
+
+err := qrcode.WriteFile("https://example.com", qrcode.High, 512, "output.png")
+
+// Or to bytes
+png, _ := qrcode.Encode("https://example.com", qrcode.Medium, 256)
+</code></pre>
+      </div>
+
+      <h3>Rust (qrcode crate)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use qrcode::{QrCode, EcLevel};
+use image::Luma;
+
+let code = QrCode::with_error_correction_level("https://example.com", EcLevel::H)?;
+let image = code.render::&lt;Luma&lt;u8&gt;&gt;().build();
+image.save("output.png")?;
+
+// Or as SVG
+let svg = code.render::&lt;qrcode::render::svg::Color&gt;().build();
+</code></pre>
+      </div>
+
+      <h3>Bash (qrencode)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Install: brew install qrencode (macOS) / apt install qrencode (Debian)
+
+# Print to terminal (ANSI)
+qrencode -t ANSI 'https://example.com'
+
+# Save to PNG
+qrencode -o output.png -s 10 -m 4 -l H 'https://example.com'
+
+# WiFi credentials
+qrencode -o wifi.png 'WIFI:T:WPA;S:MyNetwork;P:secret123;;'
+
+# Pipe stdin (great for scripts)
+echo 'https://example.com' | qrencode -o stdin.png
+</code></pre>
+      </div>
+
+      <h3>API approach (no library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">curl</div>
+<pre><code># goqr.me (deprecated as of 2024 — use a self-hosted alternative)
+# Or qrserver.com:
+curl 'https://api.qrserver.com/v1/create-qr-code/?data=https://example.com&amp;size=512x512' \
+  -o output.png
+
+# Better: self-host with the qrcode lib in your favorite language</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>QR code best practices for production use</h2>
+      <ul>
+        <li><strong>Test on real phones, multiple OSes.</strong> Print preview and dev-tool scanners are forgiving; real phone cameras under fluorescent lighting fail with low contrast or compression artifacts. Always test before mass-printing.</li>
+        <li><strong>Use SVG for the web, PNG for print.</strong> SVG scales infinitely, has tiny file size, and renders crisply at any DPI. PNG only when the rendering platform forces raster (some print drivers, certain CMS systems).</li>
+        <li><strong>Use level H if you add a logo.</strong> Below level H, even a small logo breaks scannability. With H, you can cover ~25–30% of the center.</li>
+        <li><strong>Maintain a 4-module quiet zone.</strong> The white margin around the code is required by the spec. Cropping it tight breaks scanning.</li>
+        <li><strong>Keep contrast high.</strong> Dark on light. Aim for 4.5:1 minimum (WCAG AA). Brand-color QR codes in pastels often fail.</li>
+        <li><strong>Don't shorten URLs aggressively.</strong> A bit.ly URL works, but it's an extra hop, can break, and obscures destination. For your own pages, use clean URLs and let the QR code be slightly bigger.</li>
+        <li><strong>Print at minimum 1 inch (~25mm) for arm's-length scanning.</strong> Larger for billboards (visible from across a room: 6+ inches; from across a parking lot: 12+ inches).</li>
+        <li><strong>Avoid dynamic QR services for permanent print.</strong> "Dynamic QR codes" route through a third-party service. If they shut down or change pricing, your printed materials break. Use static QR codes for anything you commit to print.</li>
+        <li><strong>Don't QR-encode tiny strings.</strong> A 5-character string makes a tiny, dense QR code that's hard to scan. For short data (a phone number, a coupon code), just print the text.</li>
+        <li><strong>Track scans with UTM parameters.</strong> <code>?utm_source=poster&amp;utm_campaign=spring2026</code> in the destination URL tells you which physical location drove which clicks.</li>
+        <li><strong>Avoid scanning prompts.</strong> "Scan this QR code with your camera!" is no longer needed in 2026 — every modern phone scans QR codes natively. Trust users to know.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the QR code generator</h2>
@@ -291,7 +558,7 @@
 
 <footer>
   <div>&copy; 2026 FreeDevTool — QR Code Generator</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

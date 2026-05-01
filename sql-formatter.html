@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Formatter & Beautifier Online — Format SQL Queries Free | FreeDevTool</title>
-  <meta name="description" content="Format, beautify and minify SQL queries. Support for MySQL, PostgreSQL, SQL Server, Oracle syntax. Indent, uppercase keywords, validate SQL statements. Free, no signup, runs in browser.">
+  <title>SQL Formatter & Beautifier Online — Pretty Print SQL Queries Free | FreeDevTool</title>
+  <meta name="description" content="Free SQL formatter &amp; beautifier. Pretty print queries for MySQL, PostgreSQL, SQL Server, Oracle, SQLite. Customizable indent &amp; case. Runs in browser, no signup.">
+  <meta name="keywords" content="sql formatter, sql beautifier, sql pretty print, format sql online, sql minifier, sqlfluff alternative, MySQL formatter, PostgreSQL formatter">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/sql-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="SQL Formatter &amp; Beautifier Online — Free | FreeDevTool">
+  <meta name="twitter:description" content="Pretty print SQL queries for MySQL, PostgreSQL, SQL Server &amp; Oracle. Runs in browser, no signup, no logging.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="SQL Formatter & Beautifier Online — Format SQL Queries Free">
@@ -90,9 +95,9 @@
     </a>
 
     <span class="tool-badge">Formatting</span>
-    <h1>SQL Formatter & Beautifier</h1>
-    <p>Format, beautify and minify SQL queries online. Proper indentation, keyword uppercasing and clean structure — processed entirely in your browser for complete privacy.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>SQL Formatter &amp; Beautifier Online</h1>
+    <p>Format, beautify, and minify SQL queries with dialect-aware rules for <strong>MySQL</strong>, <strong>PostgreSQL</strong>, <strong>SQL Server</strong>, <strong>Oracle</strong>, and <strong>SQLite</strong>. Pick keyword casing (UPPER/lower/preserve), indent width (2/4 spaces or tabs), and comma placement. Validates basic syntax and processes queries entirely in your browser — even queries containing real customer data, API keys, or production schemas never reach a server.</p>
+    <span class="last-updated">Last updated: April 2026</span>
   </section>
 
   <div class="tool-card">
@@ -131,6 +136,283 @@
 
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is SQL formatting and why does it matter?</h2>
+      <p><strong>SQL formatting</strong> (or <em>beautifying</em>) is the practice of applying consistent indentation, line breaks, and casing to SQL queries so they are easier to read, review, and debug. While the SQL standard (<a href="https://en.wikipedia.org/wiki/SQL:2023" rel="noopener">ISO/IEC 9075</a>) doesn't mandate any particular layout — engines accept the same query as a single line or 50 — there are decades of community conventions that make code review faster, bug-spotting easier, and onboarding cheaper.</p>
+      <p>A well-formatted query communicates structure at a glance: the <code>SELECT</code> list, the <code>FROM</code> chain of joins, the <code>WHERE</code> predicates, the <code>GROUP BY</code> dimensions, the <code>HAVING</code> filters, and the <code>ORDER BY</code> sort. Compare these two equivalent queries:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">unformatted</div>
+<pre><code>SELECT u.id, u.email, count(o.id) AS orders, sum(o.total) AS revenue FROM users u LEFT JOIN orders o ON o.user_id=u.id WHERE u.created_at &gt;'2026-01-01' AND u.deleted_at IS NULL GROUP BY u.id, u.email HAVING count(o.id)&gt;0 ORDER BY revenue DESC LIMIT 100;</code></pre>
+      </div>
+
+      <div class="lang-block">
+        <div class="lang-block-header">formatted</div>
+<pre><code>SELECT
+    u.id,
+    u.email,
+    COUNT(o.id) AS orders,
+    SUM(o.total) AS revenue
+FROM users u
+LEFT JOIN orders o ON o.user_id = u.id
+WHERE u.created_at &gt; '2026-01-01'
+  AND u.deleted_at IS NULL
+GROUP BY u.id, u.email
+HAVING COUNT(o.id) &gt; 0
+ORDER BY revenue DESC
+LIMIT 100;</code></pre>
+      </div>
+
+      <p>The formatted version has the same logic and identical execution plan, but pull-request reviewers can scan the join chain and the filters in seconds. When something breaks in production, the on-call engineer can read the query in their phone's <code>kubectl logs</code> output without unpacking 200 chars of compressed text.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How SQL formatters work under the hood</h2>
+      <p>A SQL formatter is a small compiler. The pipeline has three stages:</p>
+
+      <ul>
+        <li><strong>1. Lexer / tokenizer.</strong> Splits the input into tokens — keywords (<code>SELECT</code>, <code>FROM</code>), identifiers (<code>users</code>, <code>u</code>), operators (<code>=</code>, <code>&gt;</code>), literals (<code>'2026-01-01'</code>, <code>100</code>), comments, and whitespace. The tokenizer needs to know the dialect to recognize keywords correctly — <code>LIMIT</code> is a keyword in MySQL/Postgres but a function in SQL Server (<code>TOP</code> instead).</li>
+        <li><strong>2. Parser.</strong> Builds an Abstract Syntax Tree (AST) from the token stream, recognizing the structure: <code>SELECT</code> lists, <code>FROM</code> chains with joins, predicates, subqueries, CTEs, and so on. A robust parser handles dialect quirks like Postgres <code>RETURNING</code>, SQL Server <code>OUTPUT</code>, MySQL <code>ON DUPLICATE KEY</code>.</li>
+        <li><strong>3. Pretty-printer.</strong> Walks the AST and emits formatted SQL with the chosen indent width, comma style, keyword case, and line-break rules. This step decides whether <code>JOIN</code> keywords align with <code>FROM</code>, whether commas go before or after fields, whether short queries stay on one line, and so on.</li>
+      </ul>
+
+      <p>This tool uses a battle-tested SQL parser (the same approach as <code>sql-formatter</code> on npm and PgFormatter) and runs all three stages in your browser. No query ever leaves your machine — important when you're formatting queries that touch real customer data, contain hard-coded credentials, or expose schema names you'd rather not share.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>SQL dialect differences — what to know</h2>
+      <p>"SQL" isn't one language. The 1992 ANSI SQL standard is the common ancestor, but every major engine has added features (and quirks) over decades. The five dialects this formatter handles cover &gt;95% of real-world SQL.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Feature</th><th>MySQL</th><th>PostgreSQL</th><th>SQL Server</th><th>Oracle</th><th>SQLite</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Limit syntax</td><td><code>LIMIT n</code></td><td><code>LIMIT n</code></td><td><code>SELECT TOP n</code> / <code>OFFSET FETCH</code></td><td><code>FETCH FIRST n ROWS</code></td><td><code>LIMIT n</code></td></tr>
+          <tr><td>String concat</td><td><code>CONCAT()</code> only</td><td><code>||</code> or <code>CONCAT()</code></td><td><code>+</code> or <code>CONCAT()</code></td><td><code>||</code></td><td><code>||</code></td></tr>
+          <tr><td>Identifier quoting</td><td>Backticks <code>`tbl`</code></td><td>Double quotes <code>"tbl"</code></td><td>Brackets <code>[tbl]</code> or quotes</td><td>Double quotes</td><td>Backticks or quotes</td></tr>
+          <tr><td>Case-sensitivity (unquoted)</td><td>Database-config dependent</td><td>Folded to lowercase</td><td>Insensitive by default</td><td>Folded to UPPERCASE</td><td>Insensitive</td></tr>
+          <tr><td>Auto-increment</td><td><code>AUTO_INCREMENT</code></td><td><code>SERIAL</code> / <code>IDENTITY</code></td><td><code>IDENTITY(1,1)</code></td><td>Sequences + triggers</td><td><code>AUTOINCREMENT</code></td></tr>
+          <tr><td>Boolean type</td><td><code>TINYINT(1)</code></td><td><code>BOOLEAN</code></td><td><code>BIT</code></td><td>No native — use <code>NUMBER(1)</code></td><td><code>INTEGER</code></td></tr>
+          <tr><td>Insert + return</td><td>Two queries</td><td><code>INSERT ... RETURNING</code></td><td><code>OUTPUT INSERTED.*</code></td><td><code>RETURNING ... INTO</code></td><td><code>RETURNING</code> (3.35+)</td></tr>
+          <tr><td>Common Table Exprs (CTEs)</td><td><span class="yes">8.0+</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="yes">3.8+</span></td></tr>
+          <tr><td>Window functions</td><td><span class="yes">8.0+</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="yes">3.25+</span></td></tr>
+          <tr><td>JSON support</td><td><span class="yes">Yes (5.7+)</span></td><td><span class="yes">JSONB (best)</span></td><td><span class="yes">Yes (2016+)</span></td><td><span class="yes">JSON_TABLE</span></td><td><span class="yes">JSON1</span></td></tr>
+        </tbody>
+      </table>
+
+      <p>Pick the right dialect in the formatter dropdown — it changes how reserved words are recognized, how strings are quoted, and how identifiers are escaped. Formatting Postgres SQL with the MySQL setting can incorrectly uppercase or quote things.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Formatting style choices — pick once, apply everywhere</h2>
+      <p>Even with a fixed dialect, formatters expose dozens of style toggles. The four that matter most:</p>
+
+      <h3>1. Keyword case</h3>
+      <ul>
+        <li><strong>UPPERCASE</strong> (most common in dbt, traditional enterprise) — keywords stand out from identifiers, easy to spot in dense code review.</li>
+        <li><strong>lowercase</strong> (modern style, popular in startups, used by <a href="https://github.com/sqlfluff/sqlfluff" rel="noopener">SQLFluff</a> defaults) — looks cleaner, modern editors highlight keywords with color anyway.</li>
+        <li><strong>Preserve</strong> — leave the original case. Useful when reformatting legacy code without imposing a style.</li>
+      </ul>
+
+      <h3>2. Indent width</h3>
+      <p>4 spaces is the historical default. Modern teams often use 2 spaces to fit deeply-nested CTEs in a single screen. Tabs are rare in SQL but valid. Pick one site-wide; mixing is a code-review red flag.</p>
+
+      <h3>3. Comma placement</h3>
+      <ul>
+        <li><strong>Trailing comma</strong> (after the field): <code>SELECT a, b, c</code> — most common. Easy to type. Diff-noisy when adding fields (because the last line changes).</li>
+        <li><strong>Leading comma</strong> (before the field): <code>SELECT a<br>     , b<br>     , c</code> — diff-friendly but visually unusual outside data-warehouse teams.</li>
+      </ul>
+
+      <h3>4. JOIN style</h3>
+      <p>Modern SQL strongly prefers explicit <code>JOIN</code> with <code>ON</code> conditions over the legacy comma-and-<code>WHERE</code> style. Implicit joins are still valid but easy to miss when scanning, and join conditions get tangled with filter conditions.</p>
+
+      <div class="article-aside">
+        <strong>Team tip:</strong> commit a <code>.sqlfluff</code> or <code>sql-formatter.config.json</code> to your repo. Pin every style choice. Run formatting in CI. The PR comments about indentation will stop forever.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>SQL formatting in 8 toolchains</h2>
+
+      <h3>npm: sql-formatter</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">node.js / typescript</div>
+<pre><code>import { format } from 'sql-formatter';
+
+const formatted = format(rawSQL, {
+  language: 'postgresql',     // mysql | postgresql | tsql | plsql | sqlite | bigquery
+  keywordCase: 'upper',
+  tabWidth: 4,
+  useTabs: false,
+  linesBetweenQueries: 2,
+});
+</code></pre>
+      </div>
+
+      <h3>Python: sqlparse</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import sqlparse
+
+formatted = sqlparse.format(
+    raw_sql,
+    reindent=True,
+    keyword_case='upper',
+    indent_width=4,
+)
+</code></pre>
+      </div>
+
+      <h3>Python: SQLFluff (linter + formatter)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Lint
+sqlfluff lint queries/ --dialect postgres
+
+# Auto-fix style violations
+sqlfluff fix queries/ --dialect postgres
+
+# Format only (no linting)
+sqlfluff format query.sql --dialect postgres
+</code></pre>
+      </div>
+
+      <h3>VS Code: SQL formatters</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">vscode-extensions</div>
+<pre><code>// Top extensions:
+//  - "SQL Formatter" (adpyke) — uses sql-formatter under the hood
+//  - "SQLFluff" — for dbt projects
+//  - "Prettier SQL VSCode" — Prettier-style formatting
+
+// Keybind format-on-save in settings.json:
+{
+  "editor.formatOnSave": true,
+  "[sql]": { "editor.defaultFormatter": "adpyke.vscode-sql-formatter" }
+}
+</code></pre>
+      </div>
+
+      <h3>JetBrains DataGrip / IntelliJ</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">datagrip</div>
+<pre><code>// Built-in formatter: Code → Reformat Code (Ctrl+Alt+L / Cmd+Opt+L)
+// Settings → Editor → Code Style → SQL → [Dialect]
+// Per-dialect rules. Sync via "Settings Repository" or .editorconfig
+</code></pre>
+      </div>
+
+      <h3>PostgreSQL: pg_format / PgFormatter</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Install
+brew install pgformatter            # macOS
+sudo apt install pgformatter        # Debian/Ubuntu
+
+# Format a file
+pg_format -s 4 -u 1 query.sql > query.formatted.sql
+
+# Pipe input
+echo "select * from users where id=1;" | pg_format
+</code></pre>
+      </div>
+
+      <h3>dbt: built-in formatting</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">dbt</div>
+<pre><code># dbt uses SQLFluff under the hood
+# In your dbt project root, add .sqlfluff config:
+
+[sqlfluff]
+dialect = snowflake
+templater = dbt
+exclude_rules = L032
+
+# Then run:
+sqlfluff fix models/
+</code></pre>
+      </div>
+
+      <h3>Bash one-liner via Docker</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># If you don't want to install anything:
+docker run --rm -i sqlfluff/sqlfluff:latest format - --dialect postgres &lt; query.sql
+
+# Or use Prettier with @prettier/plugin-sql
+npx prettier --plugin=prettier-plugin-sql --parser=postgresql query.sql
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common SQL anti-patterns the formatter exposes</h2>
+      <p>Beautified SQL doesn't just look nice — it makes anti-patterns easier to spot. Here are the most common ones:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Anti-pattern</th><th>Why it's bad</th><th>Better</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>SELECT *</code> in production</td>
+            <td>Breaks when columns added; sends unused data; obscures dependencies</td>
+            <td>Enumerate columns explicitly</td>
+          </tr>
+          <tr>
+            <td>Implicit joins (<code>FROM a, b WHERE</code>)</td>
+            <td>Easy to miss the join condition; mixing with explicit joins is a mess</td>
+            <td>Explicit <code>JOIN ... ON</code></td>
+          </tr>
+          <tr>
+            <td>Subqueries instead of CTEs</td>
+            <td>Hard to read deeply nested; can't reuse the same subquery twice</td>
+            <td>Use <code>WITH cte AS (...)</code> CTEs (modern SQL)</td>
+          </tr>
+          <tr>
+            <td>Cartesian product from missing <code>ON</code></td>
+            <td>Returns rows×rows; massive result sets, slow queries</td>
+            <td>Always provide a join condition; review join chains carefully</td>
+          </tr>
+          <tr>
+            <td>Functions on indexed columns in <code>WHERE</code></td>
+            <td><code>WHERE LOWER(email) = 'x'</code> can't use the index on <code>email</code></td>
+            <td>Use case-insensitive collation, or a functional index</td>
+          </tr>
+          <tr>
+            <td><code>OFFSET</code> for pagination at scale</td>
+            <td>O(N) — Postgres has to scan and skip rows. Slow past page 100</td>
+            <td>Cursor pagination using <code>WHERE id &gt; last_seen_id</code></td>
+          </tr>
+          <tr>
+            <td><code>NOT IN</code> with <code>NULL</code> values</td>
+            <td>Returns nothing — three-valued logic gotcha</td>
+            <td><code>NOT EXISTS</code> or <code>LEFT JOIN ... WHERE x IS NULL</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>SQL formatter best practices</h2>
+      <ul>
+        <li><strong>Format on save in your editor.</strong> The diff between formatted and unformatted SQL should never appear in a PR. Set up <code>editor.formatOnSave</code> for SQL files.</li>
+        <li><strong>Pin a config file.</strong> Commit <code>.sqlfluff</code>, <code>.sql-formatter</code>, or your IDE settings to the repo. Don't rely on each developer's local preferences.</li>
+        <li><strong>Run formatting in CI.</strong> Block PRs that don't match the agreed style. <code>sqlfluff lint --dialect postgres</code> is the easiest gate.</li>
+        <li><strong>Don't format auto-generated SQL.</strong> ORM-emitted queries (Hibernate, ActiveRecord, Sequelize) live in your logs, not your repo. Reformatting them just adds review noise.</li>
+        <li><strong>Format BEFORE committing.</strong> Reformatting committed code creates noisy diffs that bury real changes. Set up a pre-commit hook.</li>
+        <li><strong>Use <code>git blame</code>-friendly mode in massive reformats.</strong> Use <code>.git-blame-ignore-revs</code> to mark "format-only" commits so blame still shows real authors.</li>
+        <li><strong>Format inside string literals carefully.</strong> SQL embedded in JS/Python/Go strings often shouldn't be reformatted — multi-line raw strings preserve indentation. Most formatters skip these correctly; verify.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the SQL formatter</h2>
@@ -149,7 +431,7 @@
       <li><strong>Mixing <code>JOIN</code> styles.</strong> Pick implicit (<code>FROM a, b WHERE</code>) or explicit (<code>FROM a JOIN b ON</code>) and stick to it. Mixing is a code-smell flagged by senior devs in review.</li>
       <li><strong>Trusting <code>SELECT *</code>.</strong> Breaks when columns are added, slows queries by fetching unused data, and obscures what you actually depend on. Always enumerate columns in production code.</li>
       <li><strong>Forgetting <code>WHERE</code> on <code>UPDATE</code>/<code>DELETE</code>.</strong> Without it, every row is touched. The classic outage. Many tools (DBeaver, MySQL Workbench) warn — don't dismiss.</li>
-      <li><strong>Using string interpolation instead of parameters.</strong> <code>WHERE id = ${userId}</code> is SQL injection waiting to happen. Always use parameterized queries (<code>?</code> or <code>  <section class="faq-section"></code>).</li>
+      <li><strong>Using string interpolation instead of parameters.</strong> <code>WHERE id = ${userId}</code> is SQL injection waiting to happen. Always use parameterized queries (<code>?</code> placeholders or named parameters like <code>$1</code>, <code>:id</code>).</li>
       <li><strong>Casing inconsistencies.</strong> Postgres folds unquoted identifiers to lowercase; MySQL is case-insensitive on Windows but case-sensitive on Linux. Quote identifiers if you care about case.</li>
     </ul>
   </section>
@@ -171,8 +453,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — SQL Formatter &amp; Beautifier</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const SQL_KW = ['SELECT','FROM','WHERE','JOIN','INNER JOIN','LEFT JOIN','RIGHT JOIN','FULL JOIN','FULL OUTER JOIN','CROSS JOIN','LEFT OUTER JOIN','RIGHT OUTER JOIN','ON','AND','OR','NOT','IN','EXISTS','BETWEEN','LIKE','IS NULL','IS NOT NULL','ORDER BY','GROUP BY','HAVING','LIMIT','OFFSET','UNION','UNION ALL','INTERSECT','EXCEPT','INSERT INTO','VALUES','UPDATE','SET','DELETE FROM','DELETE','CREATE TABLE','CREATE INDEX','CREATE VIEW','ALTER TABLE','DROP TABLE','DROP INDEX','DROP VIEW','ADD COLUMN','DROP COLUMN','MODIFY','CASE','WHEN','THEN','ELSE','END','AS','DISTINCT','ALL','TOP','INTO','IF','BEGIN','COMMIT','ROLLBACK','GRANT','REVOKE','WITH','RECURSIVE','OVER','PARTITION BY','ROWS','RANGE','FETCH','NEXT','ONLY','FOR','RETURNING','CASCADE','RESTRICT','REFERENCES','FOREIGN KEY','PRIMARY KEY','UNIQUE','CHECK','DEFAULT','INDEX','CONSTRAINT','TRIGGER','PROCEDURE','FUNCTION','DECLARE','CURSOR','OPEN','CLOSE','DEALLOCATE','EXEC','EXECUTE','USE','DATABASE','SCHEMA','TABLE','VIEW','TEMPORARY','TEMP','TRUNCATE','EXPLAIN','ANALYZE','VACUUM','REINDEX','CLUSTER'];

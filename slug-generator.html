@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Slug Generator Online — Create SEO-Friendly Slugs Free | FreeDevTool</title>
-  <meta name="description" content="Generate SEO-friendly URL slugs. Slugify strings for API endpoints, build kebab-case permalinks, transliterate accented characters. Free, no signup.">
+  <title>URL Slug Generator Online — SEO-Friendly Permalink Maker Free | FreeDevTool</title>
+  <meta name="description" content="Free URL slug generator. Convert titles to clean kebab-case permalinks. Transliterates Cyrillic, Greek, accented Latin, CJK. SEO-optimized. Runs in browser.">
+  <meta name="keywords" content="url slug generator, slugify online, seo slug, kebab case generator, permalink generator, slugify javascript, transliteration slug, url path generator">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/slug-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="URL Slug Generator — SEO Permalink Maker Free | FreeDevTool">
+  <meta name="twitter:description" content="Convert titles to clean URL slugs. 80+ language transliteration, SEO-friendly. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -201,13 +206,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Text Tool</div>
-    <h1>URL Slug Generator</h1>
+    <h1>URL Slug Generator Online — SEO Permalink Maker</h1>
     <p class="tool-description">
-      Generate SEO-friendly URL slugs from any title or text. This free online slug generator creates clean, URL-friendly strings perfect for permalinks, blog post URLs, and API endpoints. Converts text to kebab-case with proper SEO URL structure, transliterates accented characters, and produces hyphenated slugs optimized for search engines. Build clean URLs that improve your site's SEO and readability — all processing happens in your browser.
+      Generate clean, SEO-friendly URL slugs from any title, product name, or string. This free slug generator produces lowercased, hyphen-separated permalinks perfect for blog URLs, REST API endpoints, file names, and content management systems. Transliterates Cyrillic (<code>Привет</code>), Greek (<code>Γειά</code>), accented Latin (<code>café</code>), and CJK characters into ASCII. Optional stop-word removal for shorter URLs. Custom max length (Google truncates around 75 chars in mobile SERPs). Runs entirely in your browser.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -254,6 +258,283 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a URL slug and why does it matter?</h2>
+      <p>A <strong>URL slug</strong> is the human-readable, URL-safe portion of a web address that identifies a specific page — typically the part after the last slash. In <code>https://freedevtool.org/url-encoder</code>, the slug is <code>url-encoder</code>. In <code>https://example.com/blog/best-developer-tools-2026</code>, the slug is <code>best-developer-tools-2026</code>.</p>
+      <p>Slugs serve three audiences simultaneously, and each cares about something different:</p>
+      <ul>
+        <li><strong>Search engines</strong> — Google's John Mueller has confirmed that keyword-rich, descriptive slugs are a (small but real) ranking factor. They also influence which keywords get bolded in SERP snippets.</li>
+        <li><strong>Users</strong> — when a URL appears in search results, social media previews, or email links, a readable slug builds trust and predicts the page content. <code>/best-react-hooks</code> is more clickable than <code>/post-12847</code>.</li>
+        <li><strong>Developers &amp; content editors</strong> — slugs in URLs are easier to recognize and manage than database IDs. Manual editing, log inspection, and analytics all benefit from human-readable URLs.</li>
+      </ul>
+      <p>Modern CMS platforms (WordPress, Ghost, Strapi, Contentful, Notion) auto-generate slugs from page titles using slug generation algorithms. When you publish a post titled "10 Best React Hooks for 2026," the CMS produces <code>/10-best-react-hooks-for-2026</code> automatically. This tool exposes that algorithm so you can preview, customize, and validate slugs before publishing.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>How a slug generator actually works</h2>
+      <p>Behind the scenes, a slug generator runs a six-step pipeline on the input text:</p>
+
+      <ul>
+        <li><strong>1. Normalize Unicode.</strong> Decompose accented characters (NFD form) so <code>é</code> becomes <code>e</code> + combining-acute-accent — easier to strip in step 3.</li>
+        <li><strong>2. Transliterate non-ASCII.</strong> Replace each character with an ASCII equivalent. <code>café</code> → <code>cafe</code>, <code>Привет</code> → <code>Privet</code>, <code>北京</code> → <code>bei jing</code>. Uses lookup tables built from ICU/Unicode data.</li>
+        <li><strong>3. Lowercase.</strong> Convert all letters to lowercase. URLs are technically case-sensitive in the path, but lowercase is the SEO and consistency standard.</li>
+        <li><strong>4. Strip non-alphanumeric.</strong> Replace anything that isn't a letter, digit, or hyphen with a separator. Punctuation, emoji, control chars all go.</li>
+        <li><strong>5. Collapse separators.</strong> Multiple consecutive hyphens become one (<code>foo---bar</code> → <code>foo-bar</code>). Strip leading and trailing hyphens.</li>
+        <li><strong>6. Truncate (optional).</strong> Cut to max length, then trim back to the previous word boundary so you don't end mid-word.</li>
+      </ul>
+
+      <h3>Worked example: "Café del Mar — Best Songs (2026 Update)!"</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">pipeline</div>
+<pre><code>Step 1 — Normalize:    "Café del Mar — Best Songs (2026 Update)!"
+Step 2 — Transliterate: "Cafe del Mar -- Best Songs (2026 Update)!"
+Step 3 — Lowercase:     "cafe del mar -- best songs (2026 update)!"
+Step 4 — Strip:         "cafe-del-mar---best-songs--2026-update-"
+Step 5 — Collapse:      "cafe-del-mar-best-songs-2026-update"
+Step 6 — Truncate(50):  "cafe-del-mar-best-songs-2026-update"   (already short)</code></pre>
+      </div>
+
+      <p>The end result: a clean, ASCII-only, lowercase, hyphen-separated permalink that works in any URL context, indexes cleanly in search engines, and stays human-readable.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Slug style guide — best practices for every URL</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Rule</th><th>Why</th><th>Good</th><th>Bad</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Use hyphens, not underscores</td>
+            <td>Google has explicitly recommended hyphens since 2008. They're treated as word separators; underscores are treated as part of the word.</td>
+            <td><code>/my-cool-post</code></td>
+            <td><code>/my_cool_post</code></td>
+          </tr>
+          <tr>
+            <td>Lowercase always</td>
+            <td>URLs are case-sensitive in path. Mixed casing creates duplicate-content issues and inconsistent inbound links.</td>
+            <td><code>/about-us</code></td>
+            <td><code>/About-Us</code> or <code>/aboutus</code></td>
+          </tr>
+          <tr>
+            <td>Keep slugs short (3–5 words ideal)</td>
+            <td>Mobile SERPs truncate URLs around 75 chars. Long slugs reduce click-through.</td>
+            <td><code>/best-react-hooks-2026</code></td>
+            <td><code>/the-10-best-react-hooks-you-need-to-know-in-2026</code></td>
+          </tr>
+          <tr>
+            <td>Strip stop words</td>
+            <td>"a", "the", "and", "of" rarely add value to URLs. Cleaner is better.</td>
+            <td><code>/guide-css-grid</code></td>
+            <td><code>/the-complete-guide-to-css-grid</code></td>
+          </tr>
+          <tr>
+            <td>Use ASCII, not Unicode</td>
+            <td>URLs with raw Unicode become percent-encoded (<code>résumé</code> → <code>r%C3%A9sum%C3%A9</code>) — ugly in SERPs and shares.</td>
+            <td><code>/resume-template</code></td>
+            <td><code>/résumé-template</code></td>
+          </tr>
+          <tr>
+            <td>Avoid stop characters</td>
+            <td>Periods, commas, exclamation points, question marks all reserved or get encoded.</td>
+            <td><code>/q3-revenue-up-15-percent</code></td>
+            <td><code>/q3-revenue!-up-15%25</code></td>
+          </tr>
+          <tr>
+            <td>Add the year when relevant</td>
+            <td>"Best X for 2026" beats "Best X" — Google's freshness signal + matches user intent.</td>
+            <td><code>/best-developer-tools-2026</code></td>
+            <td><code>/best-developer-tools</code></td>
+          </tr>
+          <tr>
+            <td>Don't change slugs after publishing</td>
+            <td>Breaks inbound links from search results, social shares, bookmarks. Set up 301 redirects if you must change.</td>
+            <td>Pick once, ship 301s if you change</td>
+            <td>Silently change without redirects</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Hyphens vs underscores vs nothing — the SEO debate</h2>
+      <p>Google's <a href="https://developers.google.com/search/docs/crawling-indexing/url-structure" rel="noopener">URL structure guidelines</a> have always recommended hyphens. The reason traces back to how Google's tokenizer parses URLs. Hyphens are treated as word boundaries — <code>my-cool-post</code> tokenizes to <code>{my, cool, post}</code>, three keywords each indexed independently. Underscores aren't word boundaries — <code>my_cool_post</code> tokenizes to a single token <code>my_cool_post</code>, which never matches the user's three-word search query.</p>
+      <p>The same applies to omitting separators entirely. <code>/mycoolpost</code> = one token, useless for search. Don't do it.</p>
+
+      <h3>The "no separator" exception: branded short URLs</h3>
+      <p>For brand top-level paths like <code>/api</code>, <code>/about</code>, <code>/blog</code>, single words are fine — no separator needed. The "use hyphens" rule applies to multi-word slugs.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Slug generation in 8 programming languages</h2>
+
+      <h3>JavaScript / Node.js (slugify library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// npm i slugify
+import slugify from 'slugify';
+
+slugify('Café del Mar — Best Songs (2026)!');
+// 'Cafe-del-Mar-Best-Songs-2026'
+
+slugify('Hello World', { lower: true, strict: true, locale: 'en' });
+// 'hello-world'
+
+// Custom: remove specific words
+slugify(title, {
+  lower: true,
+  strict: true,
+  remove: /[*+~.()'"!:@]/g,
+});
+</code></pre>
+      </div>
+
+      <h3>Python (python-slugify)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>from slugify import slugify
+
+slugify('Café del Mar — Best Songs (2026)!')
+# 'cafe-del-mar-best-songs-2026'
+
+# Custom max length, separator, stop words
+slugify(title, max_length=50, separator='-', stopwords=['the', 'a', 'an'])
+
+# Multi-language transliteration
+slugify('Привет мир')   # 'privet-mir'
+slugify('北京')           # 'bei-jing'
+</code></pre>
+      </div>
+
+      <h3>PHP (Symfony / Cocur Slugify)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Symfony String component
+use Symfony\Component\String\Slugger\AsciiSlugger;
+
+$slugger = new AsciiSlugger();
+$slug = $slugger-&gt;slug('Café del Mar — Best Songs (2026)!')-&gt;lower()-&gt;toString();
+// 'cafe-del-mar-best-songs-2026'
+
+// Or Cocur Slugify (more configurable)
+use Cocur\Slugify\Slugify;
+$slugify = new Slugify(['lowercase' =&gt; true, 'separator' =&gt; '-']);
+$slugify-&gt;slugify('Café del Mar');  // 'cafe-del-mar'
+</code></pre>
+      </div>
+
+      <h3>Ruby on Rails</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code># Built-in
+require 'active_support/core_ext/string/inflections'
+"Café del Mar — Best Songs (2026)!".parameterize
+# 'cafe-del-mar-best-songs-2026'
+
+# With friendly_id gem (most popular in Rails)
+class Post &lt; ApplicationRecord
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+end
+post.title = "10 Best React Hooks 2026"
+post.save
+post.slug   # '10-best-react-hooks-2026'
+</code></pre>
+      </div>
+
+      <h3>Go (gosimple/slug)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>// go get github.com/gosimple/slug
+import "github.com/gosimple/slug"
+
+slug.Make("Café del Mar — Best Songs (2026)!")
+// "cafe-del-mar-best-songs-2026"
+
+// Language-specific transliteration
+slug.MakeLang("Привет мир", "ru")  // "privet-mir"
+
+// Custom max length
+slug.MaxLength = 50
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use slug::slugify;
+
+let s = slugify("Café del Mar — Best Songs (2026)!");
+// "cafe-del-mar-best-songs-2026"
+
+// For more control, use deunicode + manual processing
+use deunicode::deunicode;
+let ascii = deunicode("北京");  // "Bei Jing"
+</code></pre>
+      </div>
+
+      <h3>Java (slugify library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>import com.github.slugify.Slugify;
+
+Slugify slg = Slugify.builder().lowerCase(true).build();
+String slug = slg.slugify("Café del Mar — Best Songs (2026)!");
+// "cafe-del-mar-best-songs-2026"
+</code></pre>
+      </div>
+
+      <h3>Bash / Shell</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># One-liner using iconv + sed + tr
+echo "Café del Mar — Best Songs (2026)!" | \
+  iconv -f utf-8 -t ascii//TRANSLIT | \
+  tr '[:upper:]' '[:lower:]' | \
+  sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g'
+# cafe-del-mar-best-songs-2026
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common slug mistakes that hurt SEO</h2>
+      <ul>
+        <li><strong>Changing slugs after publishing.</strong> Every change breaks inbound links. If you must change, set up a 301 redirect from the old slug. WordPress &amp; Ghost handle this automatically; custom systems often don't.</li>
+        <li><strong>Auto-generating from user input without sanitization.</strong> An attacker submits a title with <code>../../etc/passwd</code> and your slug generator produces a path-traversal vulnerability. Always sanitize and reject obviously malicious patterns.</li>
+        <li><strong>Including the date in every slug.</strong> <code>/2024/05/best-react-hooks</code> looks dated by 2025. Skip the date in the URL; use the page's published date as a separate field.</li>
+        <li><strong>Ignoring duplicates.</strong> Two posts titled "Hello World" produce the same slug. Append a counter, ID, or year: <code>/hello-world</code>, <code>/hello-world-2</code>, <code>/hello-world-2026</code>.</li>
+        <li><strong>Using underscores or camelCase.</strong> <code>/myCoolPost</code> is legal but indexes poorly. Stick to lowercase + hyphens.</li>
+        <li><strong>Slugs longer than 80 chars.</strong> Mobile SERPs truncate around 50 visible chars. Aim for 3–5 words; trim aggressively.</li>
+        <li><strong>Mixing slug styles across the site.</strong> <code>/about-us</code>, <code>/contact_us</code>, <code>/Help</code> all in one site. Pick one style; redirect old patterns with 301.</li>
+        <li><strong>URL parameters instead of slugs.</strong> <code>/page?id=42</code> is technically indexable but vastly worse for SEO than <code>/best-react-hooks-2026</code>.</li>
+        <li><strong>Including session tokens or trackers in URLs.</strong> <code>/blog/post?utm_source=email</code> creates duplicate URLs in Google's index. Use canonicals or strip params at the CDN.</li>
+        <li><strong>Forgetting to re-validate after CMS migrations.</strong> Importing 5,000 posts from WordPress to Hugo? Slug generators may produce different output. Audit randomly sampled URLs before going live.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Slug generation best practices</h2>
+      <ul>
+        <li><strong>Generate slugs once, lock them.</strong> Auto-generate from the title at create time. Let the user edit explicitly. Don't silently regenerate when titles change.</li>
+        <li><strong>Limit to 3–5 words / 50–60 characters.</strong> Mobile SERP truncation; clickable preview length; user attention span.</li>
+        <li><strong>Use a battle-tested library</strong> in your language — slugify (JS), python-slugify, Cocur (PHP), gosimple/slug (Go). Don't roll your own.</li>
+        <li><strong>Always lowercase, always hyphens.</strong> Pick once, enforce site-wide.</li>
+        <li><strong>Use 301 redirects when slugs change.</strong> Preserves SEO juice and existing inbound links.</li>
+        <li><strong>Set up a slug-uniqueness check at the database level.</strong> Add a unique index on the slug column so the app can't accidentally publish two pages with the same URL.</li>
+        <li><strong>For multi-language sites, slug per language.</strong> <code>/en/best-react-hooks</code> + <code>/es/mejores-hooks-react</code> + <code>/fr/meilleurs-hooks-react</code>. Use <code>hreflang</code> tags to link them.</li>
+        <li><strong>Don't skip the slug step in the CMS workflow.</strong> Make slug-preview visible to authors before publish — many discover SEO opportunities in the slug edit UI.</li>
+        <li><strong>Keep ASCII-only for paths.</strong> Use Unicode in titles, headlines, and content; ASCII-only in URLs. Saves percent-encoding pain everywhere.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- FAQ -->
   <!-- How to use + mistakes -->
@@ -366,9 +647,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — URL Slug Generator</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

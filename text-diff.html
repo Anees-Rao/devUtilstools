@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Diff Checker Online — Compare Two Texts Free | FreeDevTool</title>
-  <meta name="description" content="Compare two texts side by side and find differences instantly. Highlights additions, deletions and modifications. Free diff checker for code, JSON, HTML and plain text. No signup.">
+  <title>Text Diff Checker Online — Compare Two Texts Side-by-Side Free | FreeDevTool</title>
+  <meta name="description" content="Free text diff checker. Side-by-side comparison, line-by-line highlighting, additions/deletions. Works for code, JSON, configs. Runs in browser, no signup.">
+  <meta name="keywords" content="text diff, diff checker online, compare texts, file compare, json diff, code diff, side by side diff, git diff alternative, line diff">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/text-diff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Text Diff Checker — Compare Two Texts | FreeDevTool">
+  <meta name="twitter:description" content="Side-by-side diff for code, JSON, configs. Line-by-line highlighting. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -167,13 +172,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Developer Tool</div>
-    <h1>Text Diff Checker — Compare Two Texts</h1>
+    <h1>Text Diff Checker — Compare Two Texts Side-by-Side</h1>
     <p class="tool-description">
-      Compare two texts side by side and instantly find every difference. This free online diff checker highlights additions, deletions, and unchanged lines using a line-by-line comparison algorithm. Works with any text format — code (JavaScript, Python, Go), data formats (JSON, XML, YAML), configuration files, or plain text. Similar to <code>git diff</code> but in your browser. All processing runs client-side — nothing is uploaded to a server.
+      Compare two texts side by side and instantly find every difference. This free diff checker highlights additions, deletions, and unchanged lines using a line-by-line comparison algorithm (similar to <code>git diff</code> and Unix <code>diff</code>). Works with any text format — code (JavaScript, Python, Go), data formats (JSON, XML, YAML), configuration files, or plain text. All processing runs in your browser; even comparing files with secrets, credentials, or PII never reaches a server.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -215,6 +219,192 @@
     </div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is a text diff and how does it work?</h2>
+      <p>A <strong>text diff</strong> is the computed difference between two pieces of text, showing what was added, removed, or changed. It's the algorithm behind Git's <code>git diff</code>, every code review tool, every IDE merge conflict resolver, every "track changes" feature in Word and Google Docs, and most database synchronization tools. The most influential algorithm — <a href="https://www.cs.dartmouth.edu/~doug/diff.pdf" rel="noopener">"An O(ND) Difference Algorithm and its Variations"</a> by Eugene Myers (1986) — still powers Git, GNU diff, and most production diff tools 40 years later.</p>
+      <p>Conceptually, a diff finds the <strong>longest common subsequence (LCS)</strong> between two texts and reports everything that's NOT in that LCS as either an addition (in the new file) or deletion (only in the old file). The result is the smallest possible "patch" that turns the old text into the new.</p>
+      <p>Different tools display diffs differently:</p>
+      <ul>
+        <li><strong>Unified diff</strong> — Git's default. Shows old/new on alternating lines, prefixed with <code>-</code> and <code>+</code>.</li>
+        <li><strong>Side-by-side diff</strong> — old on left, new on right, aligned. Easier to read for prose; what most code review tools (GitHub, GitLab, Phabricator) use as default.</li>
+        <li><strong>Inline diff</strong> — single column with strikethrough for deletions and color for additions. Compact but harder for big changes.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Diff granularity — line vs word vs character</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Granularity</th><th>Best for</th><th>Tool</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Line-level</strong></td><td>Code, configs — most common diff type</td><td>git diff, GNU diff, this tool</td></tr>
+          <tr><td><strong>Word-level</strong></td><td>Prose, documentation, blog posts</td><td>git diff <code>--word-diff</code>, Google Docs</td></tr>
+          <tr><td><strong>Character-level</strong></td><td>Tiny strings, IDs, version numbers</td><td>JS libraries (diff-match-patch), Word</td></tr>
+          <tr><td><strong>Hunk / block</strong></td><td>Showing context around changes</td><td>git diff <code>-U3</code> (3-line context)</td></tr>
+          <tr><td><strong>Semantic / AST</strong></td><td>Understanding logic changes in code</td><td>difftastic, semantic-diff (research-grade)</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>This tool uses line-level diff</strong> with optional word-level highlighting within changed lines. That matches what you'd expect from <code>git diff</code> or a typical code-review interface.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Common diff use cases</h2>
+      <ul>
+        <li><strong>Code review</strong> — comparing two versions of a file before merging a PR. The most common use, and what most diff tools optimize for.</li>
+        <li><strong>Configuration drift detection</strong> — comparing the running config of a server against the canonical version in your repo. Catches manual changes that didn't make it into version control.</li>
+        <li><strong>API response comparison</strong> — running the same API call before and after a deploy and diffing the responses. Catches subtle regressions in serialization or default values.</li>
+        <li><strong>Log file analysis</strong> — diffing yesterday's log output against today's. New error messages stand out instantly.</li>
+        <li><strong>Document version comparison</strong> — comparing two drafts of a contract, blog post, or specification. Lawyers and editors use this all day.</li>
+        <li><strong>Database schema migration verification</strong> — comparing <code>SHOW CREATE TABLE</code> output before and after a migration to verify changes.</li>
+        <li><strong>Detecting copy-paste content theft</strong> — paste suspect content alongside the original; diff highlights how much was copied verbatim.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Diffing in 8 environments</h2>
+
+      <h3>Git (the most common diff in 2026)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">git</div>
+<pre><code># Diff working tree vs last commit
+git diff
+
+# Diff between two commits
+git diff abc123 def456
+
+# Side-by-side via tool integration
+git difftool -t vimdiff   # or vscode, meld, kdiff3, beyond compare
+
+# Word-level diff for prose
+git diff --word-diff
+
+# Show only filenames changed
+git diff --name-only
+
+# Statistics summary
+git diff --stat
+
+# Diff a specific file across all commits
+git log -p -- path/to/file.txt</code></pre>
+      </div>
+
+      <h3>GNU diff (POSIX command line)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Unified format (most readable)
+diff -u old.txt new.txt
+
+# Side-by-side
+diff -y old.txt new.txt
+
+# Recursive directory diff
+diff -ur old_dir/ new_dir/
+
+# Ignore whitespace changes
+diff -u -w old.txt new.txt
+
+# Generate a patch and apply it
+diff -u old.txt new.txt &gt; changes.patch
+patch old.txt &lt; changes.patch
+</code></pre>
+      </div>
+
+      <h3>JavaScript (diff library)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>import { diffLines, diffWords, diffChars } from 'diff';
+
+const changes = diffLines(oldText, newText);
+changes.forEach(part =&gt; {
+  const sign = part.added ? '+' : part.removed ? '-' : ' ';
+  console.log(sign + part.value);
+});
+
+// Word-level
+const wordChanges = diffWords(oldText, newText);
+
+// Generate unified-format patch
+import { createPatch } from 'diff';
+const patch = createPatch('file.txt', oldText, newText, 'old version', 'new version');
+</code></pre>
+      </div>
+
+      <h3>Python (difflib — built-in)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import difflib
+
+old = open('old.txt').readlines()
+new = open('new.txt').readlines()
+
+# Unified diff
+for line in difflib.unified_diff(old, new, fromfile='old', tofile='new'):
+    print(line, end='')
+
+# HTML side-by-side
+html = difflib.HtmlDiff().make_file(old, new)
+
+# Quick similarity ratio (0–1)
+ratio = difflib.SequenceMatcher(None, old_str, new_str).ratio()
+</code></pre>
+      </div>
+
+      <h3>Go (golang-diff)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "github.com/sergi/go-diff/diffmatchpatch"
+
+dmp := diffmatchpatch.New()
+diffs := dmp.DiffMain(oldText, newText, false)
+fmt.Println(dmp.DiffPrettyText(diffs))
+</code></pre>
+      </div>
+
+      <h3>Online tools beyond Git</h3>
+      <ul>
+        <li><strong>Beyond Compare</strong> — paid, best-in-class folder diff (Windows/Mac).</li>
+        <li><strong>Meld</strong> — open-source 3-way diff, great for merge conflicts.</li>
+        <li><strong>VS Code's built-in diff</strong> — open two files, right-click → "Compare Selected".</li>
+        <li><strong>JetBrains IDEs</strong> — built-in diff, supports code-aware highlighting.</li>
+        <li><strong>difftastic</strong> — modern AST-aware diff. Treats <code>{x: 1, y: 2}</code> and <code>{ "y": 2, "x": 1 }</code> as the same.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Common diff problems &amp; fixes</h2>
+      <ul>
+        <li><strong>"Every line shows as changed."</strong> Caused by line-ending mismatches (CRLF vs LF). Normalize with <code>dos2unix</code> first or use <code>git diff -w</code>.</li>
+        <li><strong>Trailing whitespace makes diff noisy.</strong> Use <code>diff -w</code> or <code>git diff --ignore-all-space</code> to focus on meaningful changes.</li>
+        <li><strong>Reordered keys in JSON show as huge changes.</strong> Sort keys before diffing, or use <code>jq --sort-keys</code> on both sides first.</li>
+        <li><strong>Auto-formatter ran across the file.</strong> Looks like a massive refactor. Rebase onto a "format-only" commit, mark it in <code>.git-blame-ignore-revs</code>, then diff the actual logic changes.</li>
+        <li><strong>Binary files diff as gibberish.</strong> Most diff tools don't handle binary. Use <code>git diff --binary</code> for transport or specialized tools (xxdiff for hex).</li>
+        <li><strong>Patches don't apply cleanly.</strong> The base file changed since the patch was created. Use <code>git apply --3way</code> or merge tools.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Diff best practices</h2>
+      <ul>
+        <li><strong>Keep PRs small.</strong> A 50-line diff is reviewed in 10 minutes; a 500-line diff in days. Break big changes into stacked PRs.</li>
+        <li><strong>Format before commit.</strong> Save formatting changes for separate commits so logic diffs aren't drowned in whitespace noise.</li>
+        <li><strong>Use <code>.gitattributes</code> for binary &amp; minified files.</strong> Mark them as <code>binary</code> so Git doesn't try to diff them.</li>
+        <li><strong>Diff JSON with <code>jq --sort-keys</code></strong> first to get clean output regardless of key order.</li>
+        <li><strong>Use <code>--word-diff</code> for prose.</strong> Far more useful than line-diff for documentation, blog posts, and contracts.</li>
+        <li><strong>Set up <code>git config diff.algorithm histogram</code></strong> for better diff results on refactored code.</li>
+        <li><strong>For visual diff in PRs, configure your platform's "render" mode.</strong> Markdown, JSON, and image diffs render specially in GitHub/GitLab.</li>
+        <li><strong>Don't reformat &amp; logic-change in one commit.</strong> Reviewers can't tell formatting from substance. Two commits = two PRs of clean review.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item open">
@@ -252,7 +442,7 @@
 
 <footer>
   <div>&copy; 2026 FreeDevTool — Text Diff Checker</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

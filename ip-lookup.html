@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IP Address Lookup &amp; Subnet Calculator Online Free | FreeDevTool</title>
-  <meta name="description" content="Validate and analyze IPv4/IPv6 addresses, calculate subnets with CIDR notation. Find network and broadcast addresses, subnet masks, and host ranges. Free, offline.">
+  <title>IP Address Lookup &amp; Subnet Calculator Online — IPv4/IPv6 Free | FreeDevTool</title>
+  <meta name="description" content="Free IP &amp; subnet calculator. IPv4/IPv6 validation, CIDR notation, network/broadcast addresses, host ranges, RFC 1918 detection. Runs offline in browser.">
+  <meta name="keywords" content="ip lookup, ip address calculator, subnet calculator, cidr calculator, ipv4 ipv6 validator, network broadcast address, RFC 1918, private ip range">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/ip-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="IP Lookup &amp; Subnet Calculator — IPv4/IPv6 Free | FreeDevTool">
+  <meta name="twitter:description" content="Validate IP addresses, calculate subnets &amp; CIDR. IPv4 + IPv6, RFC 1918 detection. Runs offline, no API calls.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -297,13 +302,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Network Tool</div>
-    <h1>IP Address Lookup &amp; Analyzer</h1>
+    <h1>IP Address Lookup &amp; Subnet Calculator</h1>
     <p class="tool-description">
-      Validate and analyze any IPv4 or IPv6 address instantly. See binary, decimal, and hex representations, classify addresses as public or private (RFC 1918), and calculate subnet details using CIDR notation. This free IP address lookup tool computes network addresses, broadcast addresses, subnet masks, wildcard masks, and usable host ranges entirely in your browser — no external API calls, no data sent to any server. Supports IPv4 vs IPv6 address checking, IP subnet calculation, and private IP range identification. Works offline.
+      Validate and analyze any <strong>IPv4</strong> or <strong>IPv6</strong> address instantly. See binary, decimal, and hex representations, classify addresses as public or private (<a href="https://datatracker.ietf.org/doc/html/rfc1918" rel="noopener" style="color:var(--accent)">RFC 1918</a>), and calculate subnet details using CIDR notation. Computes network addresses, broadcast addresses, subnet masks, wildcard masks, and usable host ranges entirely in your browser — no external API calls, no IP geolocation lookups, no logs. Supports IPv4 ↔ IPv6 conversion, IP subnet calculation, and private/reserved-range identification. Works offline.
     </p>
+    <span class="last-updated">Last updated: April 2026</span>
   </div>
 
   <div class="tool-card">
@@ -377,6 +381,316 @@
 
     </div>
   </div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is an IP address and how does subnet math work?</h2>
+      <p>An <strong>IP address</strong> (Internet Protocol address) is the numerical identifier assigned to every device on a network. It has two roles fused together: identifying <em>which network</em> a device is on, and identifying <em>which device</em> on that network. The split between "network part" and "host part" is determined by the <strong>subnet mask</strong> (in IPv4) or <strong>prefix length</strong> (in IPv6 and modern CIDR notation).</p>
+      <p>The internet runs on two parallel address systems:</p>
+      <ul>
+        <li><strong>IPv4</strong> — 32-bit addresses, written as four decimal octets (<code>192.168.1.42</code>). 4.3 billion possible addresses, exhausted at the ARIN/RIPE level since 2011. Still dominant on the public internet (~75% of traffic in 2026).</li>
+        <li><strong>IPv6</strong> — 128-bit addresses, written as eight hexadecimal groups (<code>2001:db8::1</code>). 340 undecillion addresses — effectively unlimited. Native on most ISPs, mobile networks, and AWS/GCP/Azure default subnets in 2026.</li>
+      </ul>
+      <p>Subnet calculations let network engineers split a large address block into smaller, isolated networks. <strong>CIDR notation</strong> (<code>192.168.0.0/24</code>) is the modern way to express this: the number after the slash is the prefix length — how many bits of the address identify the network. Higher number = smaller subnet.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>CIDR cheat sheet — common subnet sizes</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>CIDR</th><th>Subnet mask (IPv4)</th><th>Total addresses</th><th>Usable hosts</th><th>Common use</th></tr></thead>
+        <tbody>
+          <tr><td><code>/8</code></td><td>255.0.0.0</td><td>16,777,216</td><td>16,777,214</td><td>Massive ISP allocation; <code>10.0.0.0/8</code> private range</td></tr>
+          <tr><td><code>/12</code></td><td>255.240.0.0</td><td>1,048,576</td><td>1,048,574</td><td><code>172.16.0.0/12</code> private range</td></tr>
+          <tr><td><code>/16</code></td><td>255.255.0.0</td><td>65,536</td><td>65,534</td><td>Class B; <code>192.168.0.0/16</code> private range</td></tr>
+          <tr><td><code>/20</code></td><td>255.255.240.0</td><td>4,096</td><td>4,094</td><td>Mid-size enterprise subnet</td></tr>
+          <tr><td><code>/24</code></td><td>255.255.255.0</td><td>256</td><td>254</td><td>Standard LAN — most home/office networks</td></tr>
+          <tr><td><code>/27</code></td><td>255.255.255.224</td><td>32</td><td>30</td><td>Small department, AWS subnet minimum</td></tr>
+          <tr><td><code>/28</code></td><td>255.255.255.240</td><td>16</td><td>14</td><td>Tiny VLAN, small DMZ</td></tr>
+          <tr><td><code>/30</code></td><td>255.255.255.252</td><td>4</td><td>2</td><td>Point-to-point links between routers</td></tr>
+          <tr><td><code>/31</code></td><td>255.255.255.254</td><td>2</td><td>2 (RFC 3021)</td><td>Modern point-to-point — uses both addresses</td></tr>
+          <tr><td><code>/32</code></td><td>255.255.255.255</td><td>1</td><td>1</td><td>Single host (e.g. firewall rule for one server)</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>Why "usable hosts" is 2 less than total:</strong> the first address in any subnet is the <strong>network address</strong> (not assignable to a host) and the last is the <strong>broadcast address</strong>. A <code>/24</code> has 256 addresses but only 254 are usable on hosts. Modern <code>/31</code> subnets are an exception — RFC 3021 lets both addresses be used on point-to-point links.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Private vs public IP ranges (RFC 1918)</h2>
+      <p>Three IPv4 ranges are reserved for <strong>private use</strong> — they're not routed on the public internet, so multiple organizations can use them simultaneously without conflict. Defined in <a href="https://datatracker.ietf.org/doc/html/rfc1918" rel="noopener">RFC 1918</a>:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Range</th><th>CIDR</th><th>Address count</th><th>Common use</th></tr></thead>
+        <tbody>
+          <tr><td><code>10.0.0.0 – 10.255.255.255</code></td><td><code>10.0.0.0/8</code></td><td>16,777,216</td><td>Big enterprises, AWS default VPC, Kubernetes pods</td></tr>
+          <tr><td><code>172.16.0.0 – 172.31.255.255</code></td><td><code>172.16.0.0/12</code></td><td>1,048,576</td><td>Docker default bridge network, mid-size companies</td></tr>
+          <tr><td><code>192.168.0.0 – 192.168.255.255</code></td><td><code>192.168.0.0/16</code></td><td>65,536</td><td>Almost every home router (especially <code>192.168.0.0/24</code> and <code>192.168.1.0/24</code>)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Other reserved IPv4 ranges to know</h3>
+      <table class="ref-table">
+        <thead><tr><th>Range</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>0.0.0.0/8</code></td><td>"This network" — wildcard binding</td></tr>
+          <tr><td><code>127.0.0.0/8</code></td><td>Loopback (localhost). <code>127.0.0.1</code> is the most famous IP.</td></tr>
+          <tr><td><code>169.254.0.0/16</code></td><td>Link-local / APIPA — auto-assigned when DHCP fails</td></tr>
+          <tr><td><code>224.0.0.0/4</code></td><td>Multicast (one-to-many)</td></tr>
+          <tr><td><code>100.64.0.0/10</code></td><td>Carrier-grade NAT (CGNAT) — used by mobile/cable ISPs</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>How subnet math actually works (with examples)</h2>
+
+      <h3>Example: parsing <code>192.168.50.130/27</code></h3>
+      <div class="lang-block">
+        <div class="lang-block-header">subnet-math</div>
+<pre><code>Address (decimal):    192 . 168 . 50  . 130
+Address (binary):     11000000.10101000.00110010.10000010
+Prefix /27:           11111111.11111111.11111111.11100000  (27 ones)
+                      └────────── network ──────────┘└host┘
+
+Network address (AND): 11000000.10101000.00110010.10000000  = 192.168.50.128
+Broadcast (OR):        11000000.10101000.00110010.10011111  = 192.168.50.159
+First usable host:     192.168.50.129
+Last usable host:      192.168.50.158
+Usable hosts:          30  (32 total − network − broadcast)
+Subnet mask:           255.255.255.224
+Wildcard mask:         0.0.0.31</code></pre>
+      </div>
+
+      <h3>Quick mental shortcuts</h3>
+      <ul>
+        <li><strong>Subnet size doubles every −1 to the prefix.</strong> <code>/24</code> = 256, <code>/23</code> = 512, <code>/22</code> = 1024.</li>
+        <li><strong>The prefix tells you the boundary.</strong> A <code>/27</code> aligns to multiples of 32 (256/8 = 32). Subnets start at .0, .32, .64, .96, .128...</li>
+        <li><strong>Wildcard mask = inverse of subnet mask.</strong> Subnet <code>255.255.255.224</code> ↔ wildcard <code>0.0.0.31</code>. Cisco ACLs use wildcard masks.</li>
+        <li><strong>Two adjacent subnets can be merged.</strong> <code>192.168.0.0/25</code> + <code>192.168.0.128/25</code> = <code>192.168.0.0/24</code>. This is "supernetting."</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>IPv6 — what changes from IPv4</h2>
+      <p>IPv6 fixes IPv4's address-exhaustion problem with 128-bit addresses. The mental model is similar but the notation and conventions differ:</p>
+
+      <div class="lang-block">
+        <div class="lang-block-header">ipv6</div>
+<pre><code>Full form:        2001:0db8:85a3:0000:0000:8a2e:0370:7334
+Compressed:       2001:db8:85a3::8a2e:370:7334
+                              └ "::" replaces consecutive zeros (only once per address)
+
+Loopback:         ::1
+Unspecified:      ::
+Link-local:       fe80::/10  (auto-configured per-interface)
+Unique local:     fc00::/7   (private — IPv6 equivalent of RFC 1918)
+Multicast:        ff00::/8
+
+Standard host subnet: /64  (always /64 for hosts; SLAAC requires it)
+Standard site allocation: /48 to /56 from ISP</code></pre>
+      </div>
+
+      <h3>Common gotchas migrating from IPv4</h3>
+      <ul>
+        <li><strong>NAT is not used.</strong> IPv6 networks don't typically NAT — every device gets a globally routable address.</li>
+        <li><strong>Subnet sizes are huge.</strong> Even a tiny /64 subnet has 18 quintillion addresses. Don't think small.</li>
+        <li><strong>Both addresses on a /127 work.</strong> Like IPv4 /31, point-to-point links use /127 in modern practice (RFC 6164).</li>
+        <li><strong>Privacy extensions matter.</strong> Modern OSes use temporary addresses (privacy addresses) for outbound connections to prevent tracking via MAC-derived addresses.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>IP &amp; subnet operations in 8 languages</h2>
+
+      <h3>JavaScript / Node.js</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Built-in net.isIP (Node.js)
+import { isIP, isIPv4, isIPv6 } from 'node:net';
+isIP('192.168.1.1');     // 4
+isIP('::1');             // 6
+isIP('not-an-ip');       // 0
+
+// CIDR with the 'ip' package (npm i ip)
+import ip from 'ip';
+ip.cidrSubnet('192.168.0.1/24').firstAddress;  // '192.168.0.1'
+ip.toLong('192.168.0.1');                       // 3232235521
+ip.fromLong(3232235521);                        // '192.168.0.1'
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>from ipaddress import ip_address, ip_network, IPv4Network
+
+# Parse + classify
+addr = ip_address('192.168.1.1')
+addr.is_private        # True
+addr.is_loopback       # False
+addr.version           # 4
+
+# Subnet math
+net = ip_network('192.168.1.0/24')
+net.network_address    # IPv4Address('192.168.1.0')
+net.broadcast_address  # IPv4Address('192.168.1.255')
+net.num_addresses      # 256
+list(net.hosts())      # [IPv4Address('192.168.1.1'), ..., IPv4Address('192.168.1.254')]
+
+# IPv6 also works
+ip_network('2001:db8::/32').num_addresses  # huge number
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "net/netip"
+
+// Modern netip package (Go 1.18+)
+addr := netip.MustParseAddr("192.168.1.1")
+addr.Is4()              // true
+addr.IsLoopback()       // false
+addr.IsPrivate()        // true (Go 1.20+)
+
+// Prefix / CIDR
+prefix := netip.MustParsePrefix("192.168.0.0/24")
+prefix.Contains(addr)   // true
+prefix.Bits()           // 24
+
+// Iterate over hosts
+for a := prefix.Addr(); prefix.Contains(a); a = a.Next() {
+    fmt.Println(a)
+}
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use std::net::{IpAddr, Ipv4Addr};
+use ipnet::Ipv4Net;
+
+let addr: Ipv4Addr = "192.168.1.1".parse().unwrap();
+addr.is_private();         // true
+addr.is_loopback();        // false
+
+let net: Ipv4Net = "192.168.0.0/24".parse().unwrap();
+net.network();             // 192.168.0.0
+net.broadcast();           // 192.168.0.255
+net.contains(&amp;addr);       // true
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Validation
+filter_var('192.168.1.1', FILTER_VALIDATE_IP);          // string or false
+filter_var('::1', FILTER_VALIDATE_IP, FILTER_FLAG_IPV6); // ::1 or false
+filter_var('192.168.1.1', FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE);  // false (it's private)
+
+// CIDR matching (manual)
+function ipInCidr(string $ip, string $cidr): bool {
+    [$subnet, $bits] = explode('/', $cidr);
+    $ip = ip2long($ip);
+    $subnet = ip2long($subnet);
+    $mask = -1 &lt;&lt; (32 - (int)$bits);
+    return ($ip &amp; $mask) === ($subnet &amp; $mask);
+}
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>// Built-in InetAddress
+import java.net.InetAddress;
+
+InetAddress addr = InetAddress.getByName("192.168.1.1");
+addr.isLoopbackAddress();
+addr.isLinkLocalAddress();
+addr.isSiteLocalAddress();  // RFC 1918 private
+
+// CIDR — use Apache Commons Net's SubnetUtils
+import org.apache.commons.net.util.SubnetUtils;
+
+SubnetUtils utils = new SubnetUtils("192.168.1.0/24");
+utils.getInfo().getNetworkAddress();    // "192.168.1.0"
+utils.getInfo().getBroadcastAddress();  // "192.168.1.255"
+utils.getInfo().isInRange("192.168.1.42");  // true
+</code></pre>
+      </div>
+
+      <h3>Bash / shell</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># Basic IPv4 validation
+ip="192.168.1.1"
+if [[ $ip =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then echo "valid"; fi
+
+# subnet math via 'ipcalc' (install via apt/brew)
+ipcalc 192.168.1.0/24
+#  Network: 192.168.1.0/24
+#  HostMin: 192.168.1.1
+#  HostMax: 192.168.1.254
+#  Broadcast: 192.168.1.255
+
+# Modern alternative: 'sipcalc' or Python one-liner
+python3 -c "from ipaddress import ip_network; n=ip_network('192.168.1.0/24'); print(n.broadcast_address)"
+</code></pre>
+      </div>
+
+      <h3>SQL (PostgreSQL native types)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">postgresql</div>
+<pre><code>-- Postgres has native inet and cidr types
+SELECT '192.168.1.1'::inet;                    -- 192.168.1.1
+SELECT '192.168.0.0/24'::cidr;                 -- 192.168.0.0/24
+SELECT '192.168.1.42'::inet &lt;&lt;= '192.168.0.0/24'::cidr;  -- true (contained)
+SELECT host('192.168.0.5/24'::inet);           -- '192.168.0.5'
+SELECT broadcast('192.168.0.0/24');            -- 192.168.0.255
+
+-- Indexed lookups for "what subnet does this IP belong to?"
+CREATE INDEX idx_subnet ON subnets USING gist (cidr inet_ops);
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common IP/subnet mistakes</h2>
+      <ul>
+        <li><strong>Confusing /24 with 24 hosts.</strong> A <code>/24</code> has 256 addresses (254 usable). Higher CIDR number = smaller subnet, not larger.</li>
+        <li><strong>Forgetting RFC 1918 ranges aren't routable.</strong> Common cause of "works locally, fails in production" — your laptop on <code>10.x</code> can't be reached from the internet.</li>
+        <li><strong>Using 192.168.1.0/24 in cloud VPCs.</strong> Many home routers default to this range. If your laptop's home network and your AWS VPC overlap, your VPN is broken. Use <code>10.x</code> ranges in cloud, save 192.168 for home.</li>
+        <li><strong>Ignoring the network and broadcast addresses</strong> in /30 designs. A point-to-point link wants /31 (RFC 3021), not /30 — saves 2 addresses per link.</li>
+        <li><strong>IPv4-mapped IPv6 confusion.</strong> <code>::ffff:192.168.1.1</code> is the same address in IPv6 form. Some firewalls treat them differently.</li>
+        <li><strong>Forgetting CGNAT.</strong> Mobile and cable ISPs increasingly use <code>100.64.0.0/10</code> for customer addresses. If your IP is in this range, traditional IP-based geo-blocking and reputation systems may misclassify you.</li>
+        <li><strong>Subnet overlap in firewall rules.</strong> Allowing <code>10.0.0.0/8</code> when you meant <code>10.0.0.0/24</code> exposes 16 million extra addresses.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>IP address best practices</h2>
+      <ul>
+        <li><strong>Use modern CIDR notation</strong> (<code>192.168.1.0/24</code>) everywhere — it's clearer than separate IP + subnet mask.</li>
+        <li><strong>Plan IPv4 ranges with overlap-avoidance in mind.</strong> Don't use <code>192.168.1.0/24</code> in cloud VPCs (collides with home routers). Use <code>10.x.y.0/24</code> blocks.</li>
+        <li><strong>Document subnet allocations.</strong> Even a simple Google Sheet with "10.20.0.0/24 = production-eu-west" beats nothing. NetBox or Phpipam for serious environments.</li>
+        <li><strong>Reserve ranges for growth.</strong> Don't allocate <code>/24</code> if you'll need <code>/22</code> in two years. Re-numbering is painful.</li>
+        <li><strong>Use IPv6 when possible.</strong> All major cloud providers offer it. Modern apps should work with both.</li>
+        <li><strong>Validate IPs at API boundaries.</strong> Use your language's standard library (<code>ip_address</code> in Python, <code>netip</code> in Go, <code>InetAddress</code> in Java). Don't roll your own regex.</li>
+        <li><strong>Don't trust client-provided IPs alone.</strong> <code>X-Forwarded-For</code> headers are user-controlled until your edge proxy strips them. Always set them server-side at the LB/CDN.</li>
+        <li><strong>Use Postgres <code>inet</code>/<code>cidr</code> types</strong> instead of <code>VARCHAR</code> for storing IPs. Native types are smaller, indexable, and let you query subnet membership.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <!-- FAQ -->
   <section class="faq-section">
@@ -464,11 +778,12 @@
 </div>
 
 <footer>
-  <div>&copy; 2026 FreeDevTool — IP Address Lookup</div>
+  <div>&copy; 2026 FreeDevTool — IP Lookup &amp; Subnet Calculator</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 
