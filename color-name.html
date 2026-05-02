@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Color Name from Hex — Find CSS Named Color Free">
+  <meta name="twitter:description" content="Find the closest CSS named color from any hex code. Top-5 nearest matches with distance, RGB and HSL values, searchable grid of all 147 names.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Color Name from Hex — Nearest Named Color Finder">
@@ -154,7 +154,7 @@
     <span class="tool-badge">Color</span>
     <h1>Color Name from Hex</h1>
     <p>Find the color name from hex code in a single click. Paste any hex value or pick a color, and this tool identifies the nearest CSS named color from the full list of 147 standard names — plus the four runner-up matches with their distance metric. You also see RGB and HSL equivalents, can copy either the color name or hex value to your clipboard, and browse every CSS named color in a searchable grid. Useful when you have a random hex from a screenshot, a design tool, or a brand palette and want the closest human-readable name.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -196,6 +196,100 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>CSS named colors — history, the 147 names you can use, and when to actually use them</h2>
+    <p>Tomato. RebeccaPurple. PapayaWhip. The CSS named-color list is one of the quirkiest legacy artifacts on the web platform — 147 names inherited from a 1989 X11 desktop, frozen into the CSS Color Module Level 4 spec, and still valid in every modern browser. Most professional codebases never use them in production, but they show up in tutorials, demos, browser DevTools, and color-naming tools like this one. This guide covers where the names came from, how nearest-color algorithms actually work, the perceptual-vs-RGB distance debate, and the design-system patterns that have replaced "named colors" in real-world projects.</p>
+
+    <h3>Where the 147 names came from</h3>
+    <p>The story starts at MIT in 1989. The X Window System needed a way for users to specify colors without remembering hex, so the maintainers shipped <code>rgb.txt</code> — a file mapping ~600 ASCII names to RGB values. Many of the names came from a paint-color sample book one of the developers happened to own (Sinclair Paints), which is why CSS today inherits "PapayaWhip" and "MistyRose" rather than something more systematic.</p>
+    <ul>
+      <li><strong>HTML 4.01 (1997)</strong> standardized 16 names: aqua, black, blue, fuchsia, gray, green, lime, maroon, navy, olive, purple, red, silver, teal, white, yellow.</li>
+      <li><strong>CSS 2.1 (2011)</strong> added "orange" — making it 17.</li>
+      <li><strong>SVG 1.0 (2001)</strong> brought in the full X11 set as <code>rgb.txt</code>: 130 additional names.</li>
+      <li><strong>CSS3 Color Module (2011)</strong> formally adopted the SVG list, giving us 147.</li>
+      <li><strong>CSS Color Module Level 4 (2014)</strong> added <code>rebeccapurple</code> (#663399) — a tribute to web-design pioneer Eric Meyer's daughter Rebecca, who died at age 6.</li>
+    </ul>
+
+    <h3>The 147 names — categorized</h3>
+    <p>The list is more interesting if you group it by hue. Roughly:</p>
+    <table class="ref-table">
+      <thead><tr><th>Hue family</th><th>Count</th><th>Notable names</th></tr></thead>
+      <tbody>
+        <tr><td>Reds / pinks</td><td>16</td><td>Crimson, DeepPink, HotPink, IndianRed, LightCoral, LightPink, MediumVioletRed, MistyRose, PaleVioletRed, Pink, Salmon, DarkSalmon, LightSalmon, Tomato</td></tr>
+        <tr><td>Oranges</td><td>4</td><td>Coral, DarkOrange, Orange, OrangeRed</td></tr>
+        <tr><td>Yellows</td><td>11</td><td>DarkKhaki, Gold, Khaki, LemonChiffon, LightGoldenRodYellow, LightYellow, Moccasin, PaleGoldenRod, PapayaWhip, PeachPuff, Yellow</td></tr>
+        <tr><td>Greens</td><td>21</td><td>Chartreuse, DarkGreen, DarkOliveGreen, ForestGreen, GreenYellow, Honeydew, Lime, LimeGreen, MediumSeaGreen, MediumSpringGreen, MintCream, Olive, OliveDrab, PaleGreen, SeaGreen, SpringGreen, YellowGreen</td></tr>
+        <tr><td>Cyans / aquas</td><td>9</td><td>Aqua, Aquamarine, Cyan, DarkCyan, DarkTurquoise, MediumAquamarine, MediumTurquoise, PaleTurquoise, Turquoise</td></tr>
+        <tr><td>Blues</td><td>21</td><td>AliceBlue, BlueViolet, CadetBlue, CornflowerBlue, DarkBlue, DarkSlateBlue, DeepSkyBlue, DodgerBlue, LightBlue, LightSkyBlue, LightSteelBlue, MediumBlue, MidnightBlue, Navy, PowderBlue, RoyalBlue, SkyBlue, SlateBlue, SteelBlue</td></tr>
+        <tr><td>Purples / magentas</td><td>16</td><td>BlueViolet, DarkMagenta, DarkOrchid, DarkViolet, Fuchsia, Indigo, Lavender, Magenta, MediumOrchid, MediumPurple, Orchid, Plum, Purple, RebeccaPurple, Thistle, Violet</td></tr>
+        <tr><td>Browns / earth</td><td>17</td><td>Bisque, BlanchedAlmond, Brown, BurlyWood, Chocolate, Cornsilk, DarkGoldenRod, GoldenRod, Maroon, NavajoWhite, Peru, RosyBrown, SaddleBrown, SandyBrown, Sienna, Tan, Wheat</td></tr>
+        <tr><td>Whites / off-whites</td><td>9</td><td>AntiqueWhite, FloralWhite, GhostWhite, Ivory, Linen, OldLace, SeaShell, Snow, White, WhiteSmoke</td></tr>
+        <tr><td>Grays</td><td>11</td><td>Black, DarkGray, DarkSlateGray, DimGray, Gainsboro, Gray, LightGray, LightSlateGray, Silver, SlateGray</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Nearest-color math — RGB Euclidean vs perceptual distance</h3>
+    <p>This tool finds the nearest named color using <strong>Euclidean distance in RGB space</strong>:</p>
+    <pre><code>distance = sqrt((r1-r2)² + (g1-g2)² + (b1-b2)²)</code></pre>
+    <p>It works well enough for color naming because the 147 names are widely spaced. But Euclidean RGB has a known weakness: human eyes are more sensitive to green than red, and more sensitive to red than blue. A "10 unit" jump in red looks bigger than a "10 unit" jump in blue.</p>
+    <p>The perceptually-correct alternatives:</p>
+    <table class="ref-table">
+      <thead><tr><th>Algorithm</th><th>Color space</th><th>Perceptual accuracy</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>Euclidean RGB</td><td>sRGB</td><td>Low</td><td>Trivial</td></tr>
+        <tr><td>Weighted RGB (CompuPhase)</td><td>sRGB with empirical weights</td><td>Medium</td><td>Trivial</td></tr>
+        <tr><td>Delta E 76 (CIE76)</td><td>CIE LAB</td><td>Good</td><td>Moderate</td></tr>
+        <tr><td>Delta E 94 (CIE94)</td><td>CIE LAB with industry weights</td><td>Better</td><td>Moderate</td></tr>
+        <tr><td>Delta E 2000 (CIEDE2000)</td><td>CIE LAB with hue/chroma corrections</td><td>Best</td><td>High</td></tr>
+        <tr><td>OKLAB / OKLCH delta</td><td>OKLAB (2020)</td><td>Best, simpler than CIEDE2000</td><td>Moderate</td></tr>
+      </tbody>
+    </table>
+    <p>For matching one of 147 widely-spaced names, all of these produce the same answer 95%+ of the time. For applications like "find the closest Pantone for this hex" where the candidates are tightly packed, Delta E 2000 or OKLAB matters.</p>
+
+    <h3>What the distance number means in practice</h3>
+    <p>For 8-bit RGB Euclidean distance:</p>
+    <ul>
+      <li><strong>0</strong>: exact match. The hex you entered <em>is</em> a CSS named color.</li>
+      <li><strong>1–10</strong>: visually identical. Most human observers cannot tell the two apart.</li>
+      <li><strong>11–30</strong>: close family. The name is in the right hue, slightly different shade.</li>
+      <li><strong>31–60</strong>: same hue, distinct shade. The name is approximate but useful.</li>
+      <li><strong>60+</strong>: the name is just the closest available; the actual color is between two named colors.</li>
+      <li><strong>Maximum theoretical:</strong> ~441 (pure black to pure white).</li>
+    </ul>
+
+    <h3>When to use named colors in production CSS</h3>
+    <p>The honest answer for 2026 codebases:</p>
+    <ul>
+      <li><strong>Almost never in production.</strong> Design tokens (CSS custom properties, Tailwind tokens, Radix tokens) win on consistency, dark-mode support, and rebrand-ability.</li>
+      <li><strong>Sometimes in CSS demos and tutorials.</strong> "background: tomato" reads better than "background: #ff6347" in a code sample.</li>
+      <li><strong>Rarely in documentation.</strong> When you need a quick color reference everyone recognises.</li>
+      <li><strong>Useful in DevTools.</strong> Browser color-pickers list named colors as suggestions; recognizing them speeds up debugging.</li>
+      <li><strong>Useful in SVG.</strong> SVG inherits the full named-color set, and they read more naturally in markup than hex codes.</li>
+    </ul>
+    <p>The named colors that <em>do</em> show up in real codebases are the originals: <code>black</code>, <code>white</code>, <code>red</code>, <code>green</code>, <code>blue</code>, <code>currentColor</code> (technically not in the list but works alongside it). The exotic names are mostly for color naming, not styling.</p>
+
+    <h3>Common color-naming mistakes</h3>
+    <ul>
+      <li><strong>Using <code>aliceblue</code> in production CSS.</strong> Future maintainers won't recognise it. Use <code>--surface-cool</code> or similar from your design system.</li>
+      <li><strong>Trusting the name without checking distance.</strong> "Tomato" might be 65 units away from your hex. The name is wrong; show the distance to know.</li>
+      <li><strong>Assuming <code>gray</code> and <code>grey</code> are different.</strong> Both spellings are valid CSS aliases for #808080.</li>
+      <li><strong>Confusing CSS <code>green</code> with X11 <code>green</code>.</strong> CSS <code>green</code> = #008000 (HTML 4 dark green). X11's <code>green</code> in <code>rgb.txt</code> = #00FF00. CSS uses <code>lime</code> for the X11 bright green.</li>
+      <li><strong>Forgetting that <code>aqua</code> and <code>cyan</code> are aliases.</strong> Both are #00FFFF. Same for <code>fuchsia</code> and <code>magenta</code> (#FF00FF).</li>
+      <li><strong>Using named colors and expecting the screen color to match the name.</strong> Names were chosen on 1989 CRT monitors; perception on modern wide-gamut displays differs.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://drafts.csswg.org/css-color/#named-colors" rel="noopener" target="_blank">CSS Color Module Level 4 — Named colors specification</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/named-color" rel="noopener" target="_blank">MDN — &lt;named-color&gt; reference (full list with swatches)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/X11_color_names" rel="noopener" target="_blank">Wikipedia — X11 color names history</a></li>
+        <li><a href="https://meyerweb.com/eric/thoughts/2014/06/19/rebeccapurple/" rel="noopener" target="_blank">Eric Meyer — the story of RebeccaPurple</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Color_difference" rel="noopener" target="_blank">Wikipedia — Color difference (Delta E) algorithms</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I find the color name from a hex code?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Paste your hex code into the input box or use the color picker. The tool instantly compares your color against all 147 standard CSS named colors using Euclidean distance in RGB space, and returns the closest match. You also see the next four closest names for context. Because only 147 names exist across 16.7 million possible RGB values, the "match" is often approximate — always check the distance metric to judge how close the name really is.</div></div>
@@ -217,7 +311,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const NAMED_COLORS={

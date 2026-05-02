@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="AI Token Counter &amp; Cost Estimator — GPT &amp; Claude">
+  <meta name="twitter:description" content="Estimate token count and per-request cost for GPT-4o, GPT-4 Turbo, GPT-3.5, Claude Opus 4, Sonnet 4, Haiku 4. Live calculation, browser-only.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="AI Token Counter — GPT & Claude Cost Estimator">
@@ -145,7 +145,7 @@
     <span class="tool-badge">AI</span>
     <h1>AI Token Counter</h1>
     <p>A fast AI token counter and cost estimator for the major LLM APIs — GPT-4o, GPT-4 Turbo, GPT-3.5, Claude Opus 4, Claude Sonnet 4, and Claude Haiku 4. Paste or type into the textarea and see live estimates of token count, character count, and word count, plus a per-million-token cost breakdown for input, output, and total spend. Pick a model, optionally specify expected output tokens, and get an instant budget for any prompt. Ideal for sizing up long prompts before you send them and for estimating batch-job costs without having to run them first.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool AI engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -192,6 +192,144 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Tokens, tokenizers, and the math of LLM cost — what every AI engineer needs in their head</h2>
+    <p>"Token" is the unit of work for every modern LLM. You pay per token, you fit prompts into a context window measured in tokens, you get rate-limited per token. Yet most developers using these APIs never look under the hood at how text becomes tokens, why the same prompt costs differently across providers, or what actually drives output cost. This guide walks through the byte-pair-encoding mechanics, the per-model tokenizer differences in 2026, the cost-modeling math you should use for budgets, and the specific patterns (prompt caching, batch APIs, smaller models for routing) that cut bills by 50–90%.</p>
+
+    <h3>What a "token" actually is</h3>
+    <p>An LLM does not see characters or words; it sees integer IDs. Behind that is a fixed vocabulary — typically 50,000 to 200,000 entries — built once during model training, where each entry maps to a sequence of bytes. Tokenization is the algorithm that splits incoming text into the longest matching pieces from that vocabulary.</p>
+    <p>Almost every modern LLM uses <strong>Byte-Pair Encoding (BPE)</strong> or a close variant (SentencePiece, WordPiece). BPE works bottom-up:</p>
+    <ol>
+      <li>Start with the byte-level alphabet (256 entries: every possible UTF-8 byte).</li>
+      <li>Find the most frequent adjacent pair in the training corpus; merge it into a new token.</li>
+      <li>Repeat 50,000–200,000 times.</li>
+    </ol>
+    <p>The result: common words become single tokens (<code>" the"</code>, <code>" and"</code>, <code>" of"</code>), rarer words split into 2–4 sub-tokens (<code>"unbelievable"</code> → <code>"un"</code> + <code>"believable"</code>), and unusual sequences fall back to per-byte tokens (a long random hex string can become 30+ tokens).</p>
+
+    <h3>The 2026 tokenizer landscape — same text, different counts</h3>
+    <table class="ref-table">
+      <thead><tr><th>Model</th><th>Tokenizer</th><th>Vocabulary</th><th>Avg. chars/token (English)</th></tr></thead>
+      <tbody>
+        <tr><td>GPT-4 / GPT-4 Turbo / GPT-3.5</td><td>cl100k_base (BPE)</td><td>100 277</td><td>~4.0</td></tr>
+        <tr><td>GPT-4o / GPT-4o-mini / o3</td><td>o200k_base (BPE)</td><td>200 019</td><td>~4.4 (English) / much better for non-English</td></tr>
+        <tr><td>Claude 3 / 3.5 / Opus 4 / Sonnet 4 / Haiku 4</td><td>Anthropic proprietary BPE</td><td>~65 000</td><td>~3.7</td></tr>
+        <tr><td>Gemini 1.5 / 2.0</td><td>SentencePiece</td><td>~256 000</td><td>~4.5</td></tr>
+        <tr><td>Llama 3 / 3.1</td><td>SentencePiece (tiktoken-compat for code)</td><td>128 256</td><td>~4.1</td></tr>
+        <tr><td>Mistral Large / Mixtral</td><td>SentencePiece</td><td>32 768 / 32 000</td><td>~3.9</td></tr>
+      </tbody>
+    </table>
+    <p>Practical impact: the same 1,000-word English article runs about 1,250 tokens on GPT-4o (cl100k_base + o200k upgrades) but ~1,400 tokens on Claude. A 10,000-word document can differ by 1,500+ tokens — meaningful for both cost and context-window planning.</p>
+
+    <h3>What inflates token count beyond the 4-chars rule</h3>
+    <ul>
+      <li><strong>Code:</strong> indentation, punctuation, and identifiers chew through tokens. JavaScript and Python both run roughly 30% denser than English prose.</li>
+      <li><strong>JSON:</strong> structural <code>{</code>/<code>}</code>/<code>"</code>/<code>,</code>/<code>:</code> punctuation each becomes its own token. JSON is typically 50% more tokens-per-character than equivalent prose.</li>
+      <li><strong>Long random strings:</strong> UUIDs, hashes, base64 — each character can become its own token. A 36-char UUID is often 25+ tokens.</li>
+      <li><strong>Non-English text:</strong> older tokenizers (cl100k_base) split CJK characters into 2-3 byte tokens each. Newer tokenizers (o200k_base, Gemini's SentencePiece) handle this better.</li>
+      <li><strong>Emoji and Unicode:</strong> each emoji is typically 2-4 tokens because they're multi-byte.</li>
+      <li><strong>Tool-call schemas:</strong> the JSON schema for a function definition is sent every turn. A 500-token tool definition × 10 tools × 20-turn conversation = 100K wasted tokens.</li>
+    </ul>
+
+    <h3>Pricing landscape — January 2026 reference</h3>
+    <table class="ref-table">
+      <thead><tr><th>Model</th><th>Input ($/M tokens)</th><th>Output ($/M tokens)</th><th>Context window</th></tr></thead>
+      <tbody>
+        <tr><td>GPT-4o</td><td>$2.50</td><td>$10</td><td>128 K</td></tr>
+        <tr><td>GPT-4o-mini</td><td>$0.15</td><td>$0.60</td><td>128 K</td></tr>
+        <tr><td>GPT-4 Turbo</td><td>$10</td><td>$30</td><td>128 K</td></tr>
+        <tr><td>GPT-3.5 Turbo</td><td>$0.50</td><td>$1.50</td><td>16 K</td></tr>
+        <tr><td>Claude Opus 4</td><td>$15</td><td>$75</td><td>200 K</td></tr>
+        <tr><td>Claude Sonnet 4</td><td>$3</td><td>$15</td><td>200 K</td></tr>
+        <tr><td>Claude Haiku 4</td><td>$1</td><td>$5</td><td>200 K</td></tr>
+        <tr><td>Gemini 2.0 Flash</td><td>$0.075</td><td>$0.30</td><td>1 M</td></tr>
+        <tr><td>Gemini 2.0 Pro</td><td>$1.25</td><td>$5</td><td>2 M</td></tr>
+      </tbody>
+    </table>
+    <p>The 3:1 to 5:1 input-to-output price ratio is consistent across providers. This is because <em>generation</em> is more expensive than <em>prefill</em>: the model has to autoregress one token at a time, while reading input runs in parallel.</p>
+
+    <h3>Prompt caching — the biggest cost lever in 2026</h3>
+    <p>Both OpenAI and Anthropic now support <strong>prompt caching</strong> — pay full price the first time you send a long system prompt, then up to 90% off for repeat reads in the next 5 minutes. The math:</p>
+    <ul>
+      <li><strong>Anthropic</strong>: 90% discount on cache reads, 25% premium on cache writes. Break-even after 2 reads. Use it when the same system prompt fires 3+ times per session.</li>
+      <li><strong>OpenAI</strong>: 50% discount on cached tokens, no write premium, automatic for prompts ≥ 1024 tokens. No opt-in required.</li>
+      <li><strong>Bedrock / Vertex</strong>: provider-specific; check the AWS/GCP docs.</li>
+    </ul>
+    <p>If your system prompt is 5,000 tokens and you fire 100 conversations against it per hour, caching saves about $1.10/hour on Sonnet 4 (5,000 × 0.9 × $3/M × 100 = $1.35 saved on input).</p>
+
+    <h3>Batch APIs — 50% off for non-urgent work</h3>
+    <p>Both OpenAI and Anthropic offer <strong>Batch APIs</strong> at 50% discount for jobs that don't need real-time responses. The API accepts a JSONL file of prompts and returns results within 24 hours. Use cases:</p>
+    <ul>
+      <li>Embedding large document corpora.</li>
+      <li>Bulk classification (10K product descriptions, 1M support tickets).</li>
+      <li>Synthetic data generation for fine-tuning.</li>
+      <li>Backfilling AI summaries on historical data.</li>
+    </ul>
+    <p>Combined with caching, this can cut bills 60–70% on batch workloads.</p>
+
+    <h3>Counting tokens precisely — language by language</h3>
+    <div class="lang-block"><strong>Python (OpenAI):</strong><pre><code>import tiktoken
+enc = tiktoken.encoding_for_model("gpt-4o")
+tokens = enc.encode("Hello, world!")
+print(len(tokens))   # exact count</code></pre></div>
+    <div class="lang-block"><strong>Python (Anthropic):</strong><pre><code>import anthropic
+client = anthropic.Anthropic()
+result = client.messages.count_tokens(
+  model="claude-sonnet-4-latest",
+  messages=[{"role": "user", "content": "Hello"}]
+)
+print(result.input_tokens)</code></pre></div>
+    <div class="lang-block"><strong>Node.js (OpenAI):</strong><pre><code>import { encoding_for_model } from 'tiktoken';
+const enc = encoding_for_model('gpt-4o');
+const tokens = enc.encode('Hello, world!');
+console.log(tokens.length);
+enc.free();   // tiktoken uses WASM, free to release memory</code></pre></div>
+    <div class="lang-block"><strong>Node.js (Anthropic):</strong><pre><code>import Anthropic from '@anthropic-ai/sdk';
+const client = new Anthropic();
+const result = await client.messages.countTokens({
+  model: 'claude-sonnet-4-latest',
+  messages: [{ role: 'user', content: 'Hello' }]
+});
+console.log(result.input_tokens);</code></pre></div>
+    <div class="lang-block"><strong>Go (OpenAI):</strong><pre><code>import "github.com/pkoukk/tiktoken-go"
+enc, _ := tiktoken.EncodingForModel("gpt-4o")
+tokens := enc.Encode("Hello, world!", nil, nil)
+fmt.Println(len(tokens))</code></pre></div>
+
+    <h3>Cost optimization patterns that actually work</h3>
+    <ol>
+      <li><strong>Smaller model for routing.</strong> Route 80% of requests to Haiku/4o-mini ($0.15-1/M); reserve Opus/GPT-4o for the 20% that need it. Savings: 5-10× on routing-eligible traffic.</li>
+      <li><strong>Cache the system prompt.</strong> If 90%+ of your input is identical across requests, caching alone cuts input cost by ~80%.</li>
+      <li><strong>Trim conversation history.</strong> Don't re-send the full transcript every turn. Use sliding window (last N turns) or semantic compaction (LLM-summarized history).</li>
+      <li><strong>Cap <code>max_tokens</code>.</strong> Output is 3-5× more expensive than input. A 500-token cap saves money even when the model could keep going.</li>
+      <li><strong>Use Batch API for non-interactive workloads.</strong> 50% off, ships in &lt; 24 h.</li>
+      <li><strong>Strip tool schemas you don't need.</strong> Each tool definition is sent every turn. Conditionally include only the tools relevant to the current step.</li>
+      <li><strong>Move from JSON-mode to structured output schemas.</strong> Schema-mode (OpenAI's JSON Schema, Anthropic's tool-call schema) reduces malformed outputs and saves retry tokens.</li>
+      <li><strong>Pre-tokenize and reject overlong prompts.</strong> A user prompt that exceeds the context window costs you a failed call <em>and</em> the wasted prompt input bytes.</li>
+    </ol>
+
+    <h3>Common token-counting mistakes</h3>
+    <ul>
+      <li><strong>Trusting the 4-chars rule for non-English text.</strong> CJK languages run 1.5-3 chars/token on older tokenizers. Use the actual tokenizer.</li>
+      <li><strong>Forgetting tool calls and function schemas.</strong> They count as input tokens every turn.</li>
+      <li><strong>Counting only the user message and missing the system prompt.</strong> Long system prompts (instructions, persona, examples) often dominate.</li>
+      <li><strong>Counting input tokens but not estimating output.</strong> Output dominates cost on most chat workloads.</li>
+      <li><strong>Comparing prices without comparing models.</strong> Claude Haiku 4 ($1/$5) is not equivalent quality to GPT-4o ($2.50/$10). Run quality eval before optimizing on price.</li>
+      <li><strong>Sending whole files as context.</strong> A 10 MB log file dumped into a prompt is &gt; 2 M tokens. Pre-process: chunk + retrieve + summarize.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://platform.openai.com/docs/pricing" rel="noopener" target="_blank">OpenAI — Pricing reference</a></li>
+        <li><a href="https://www.anthropic.com/pricing" rel="noopener" target="_blank">Anthropic — Pricing reference</a></li>
+        <li><a href="https://github.com/openai/tiktoken" rel="noopener" target="_blank">tiktoken — OpenAI's official tokenizer (Python + Rust)</a></li>
+        <li><a href="https://platform.openai.com/docs/guides/prompt-caching" rel="noopener" target="_blank">OpenAI — Prompt caching documentation</a></li>
+        <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" rel="noopener" target="_blank">Anthropic — Prompt caching documentation</a></li>
+        <li><a href="https://huggingface.co/learn/nlp-course/chapter6/5" rel="noopener" target="_blank">Hugging Face — Byte-Pair Encoding tutorial</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How accurate is the 4-characters-per-token estimate?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The <strong>4 characters/token</strong> heuristic is an approximation OpenAI publishes as a rule of thumb for English prose. Actual counts depend on the exact tokenizer — GPT-4o uses <code>o200k_base</code>, GPT-3.5 and GPT-4 Turbo use <code>cl100k_base</code>, and Claude uses Anthropic's proprietary BPE tokenizer. Expect accuracy within <strong>10–15%</strong> for typical English text. Code, JSON, non-English languages, unusual punctuation, and long unique identifiers can all produce counts that differ by 30% or more from the estimate.</div></div>
@@ -213,7 +351,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const MODELS={

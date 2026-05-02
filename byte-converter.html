@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Byte Converter — KB MB GB Free Tool">
+  <meta name="twitter:description" content="Convert bytes, KB, MB, GB, TB, PB and binary KiB, MiB, GiB, TiB. SI vs IEC standards explained. Click to copy any value.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Byte Converter Online — Data Size Unit Converter Free">
@@ -133,7 +133,7 @@
     <span class="tool-badge">Conversion</span>
     <h1>Byte Converter</h1>
     <p>Convert between data size units instantly. Supports both decimal (SI) units like KB, MB, GB and binary (IEC) units like KiB, MiB, GiB. Click any value to copy it.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool systems engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -168,6 +168,100 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>KB vs KiB — the binary / decimal split, the storage industry's lawsuit history, and why it still matters</h2>
+    <p>Computer storage has two coexisting unit systems that look almost identical and differ by ~7%. The split has been the subject of class-action lawsuits against drive manufacturers, design changes in macOS, and a still-unfinished standardization effort that started in 1998. This guide breaks down the SI / IEC distinction, the practical numbers you need to remember, the operating system that displays each variant, and the network-vs-storage convention split that bites every backend engineer.</p>
+
+    <h3>The two systems — SI vs IEC</h3>
+    <table class="ref-table">
+      <thead><tr><th>SI (decimal, base 10)</th><th>Bytes</th><th>IEC (binary, base 2)</th><th>Bytes</th></tr></thead>
+      <tbody>
+        <tr><td>kilobyte (KB)</td><td>1 000 (10³)</td><td>kibibyte (KiB)</td><td>1 024 (2¹⁰)</td></tr>
+        <tr><td>megabyte (MB)</td><td>1 000 000 (10⁶)</td><td>mebibyte (MiB)</td><td>1 048 576 (2²⁰)</td></tr>
+        <tr><td>gigabyte (GB)</td><td>10⁹</td><td>gibibyte (GiB)</td><td>2³⁰ ≈ 1.074 × 10⁹</td></tr>
+        <tr><td>terabyte (TB)</td><td>10¹²</td><td>tebibyte (TiB)</td><td>2⁴⁰ ≈ 1.100 × 10¹²</td></tr>
+        <tr><td>petabyte (PB)</td><td>10¹⁵</td><td>pebibyte (PiB)</td><td>2⁵⁰ ≈ 1.126 × 10¹⁵</td></tr>
+      </tbody>
+    </table>
+    <p>The drift is exponential: KB and KiB differ by 2.4%, MB and MiB by 4.9%, GB and GiB by 7.4%, TB and TiB by ~10%. The bigger the unit, the bigger the gap. A 1 TB drive (1,000,000,000,000 bytes) is reported as ~931 GiB by Windows.</p>
+
+    <h3>Who shows what</h3>
+    <table class="ref-table">
+      <thead><tr><th>System</th><th>Default display</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Windows (Explorer)</td><td>Binary, but labels "GB"</td><td>Reports 1 GiB and calls it 1 GB. The single biggest cause of confusion.</td></tr>
+        <tr><td>macOS (Finder, since 10.6 Snow Leopard)</td><td>Decimal SI</td><td>1 GB = 10⁹ bytes. Matches drive vendor numbers.</td></tr>
+        <tr><td>Linux (most distros)</td><td>Mixed; <code>du -h</code> uses binary, <code>du -h --si</code> uses decimal</td><td>Coreutils respects <code>POSIXLY_CORRECT</code> env var.</td></tr>
+        <tr><td>iOS / Android (Settings → Storage)</td><td>Decimal SI</td><td>Aligns with Apple/Samsung marketing copy.</td></tr>
+        <tr><td>Drive / RAM manufacturers</td><td>Decimal for drives, binary for RAM</td><td>RAM is sized in powers of 2 (8 GiB, 16 GiB) but labeled "GB".</td></tr>
+        <tr><td>Cloud storage (S3, GCS, Azure)</td><td>Decimal SI for billing</td><td>1 TB egress means 10¹² bytes, not 2⁴⁰.</td></tr>
+        <tr><td>Network (bandwidth)</td><td>Decimal SI, in <em>bits</em>, not bytes</td><td>"1 Gbps" = 10⁹ bits/s = 125 MB/s decimal.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The lawsuit history — why drive vendors switched</h3>
+    <p>Through the 1990s, hard-drive vendors freely mixed decimal and binary in marketing. After multiple US class-action suits (notably <em>Cho v. Seagate</em>, 2007), the industry standardized on decimal SI for capacity claims and added explicit fine print. This is also why Apple changed Finder in macOS 10.6 (2009) to display decimal — to match what users see on the box.</p>
+    <p>Windows still shows binary with "GB" labels (technically wrong by IEC standards) for backward compatibility. Microsoft has acknowledged the issue but has never changed it.</p>
+
+    <h3>Bits vs bytes — network bandwidth confusion</h3>
+    <p>Networking has always used <strong>bits</strong>, storage has always used <strong>bytes</strong>. 1 byte = 8 bits, so a "1 Gbps" connection delivers 125 MB/s in decimal terms — never 1 GB/s. The distinction matters every time someone says "I have a 1 Gig connection but my download speed is only 100 MB/s":</p>
+    <ul>
+      <li>1 Gbps (Gigabit per second) = 10⁹ bits/s = 125 × 10⁶ bytes/s = ~125 MB/s decimal.</li>
+      <li>1 GB/s (Gigabyte per second) = 10⁹ bytes/s = 8 × 10⁹ bits/s = 8 Gbps.</li>
+    </ul>
+    <p>The "MB" in "100 MB/s download speed" you see in browsers is decimal MB (10⁶ bytes). The "MB" in "1 GB RAM" is binary MiB (2²⁰ bytes). Same letters, different meanings, no warning.</p>
+
+    <h3>Common storage benchmarks — actual byte counts</h3>
+    <table class="ref-table">
+      <thead><tr><th>Item</th><th>Bytes</th><th>Decimal (SI)</th><th>Binary (IEC)</th></tr></thead>
+      <tbody>
+        <tr><td>Tweet (280 chars UTF-8)</td><td>~280–840</td><td>—</td><td>—</td></tr>
+        <tr><td>Average web page (HTML, 2025)</td><td>~75 000</td><td>75 KB</td><td>~73 KiB</td></tr>
+        <tr><td>HD photo (JPEG, 4K)</td><td>~3 000 000</td><td>3 MB</td><td>~2.86 MiB</td></tr>
+        <tr><td>MP3 song (3 min, 320 kbps)</td><td>~7 200 000</td><td>7.2 MB</td><td>~6.87 MiB</td></tr>
+        <tr><td>HD movie (1 hour, H.264)</td><td>~1.4 × 10⁹</td><td>1.4 GB</td><td>~1.30 GiB</td></tr>
+        <tr><td>4K UHD movie (2 hours)</td><td>~50 × 10⁹</td><td>50 GB</td><td>~46.6 GiB</td></tr>
+        <tr><td>Wikipedia text dump (English, 2026)</td><td>~22 × 10⁹</td><td>22 GB</td><td>~20.5 GiB</td></tr>
+        <tr><td>Netflix's video library (estimate)</td><td>~3 × 10¹⁵</td><td>3 PB</td><td>~2.66 PiB</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Programming language conventions</h3>
+    <table class="ref-table">
+      <thead><tr><th>Language / API</th><th>What "1 MB" means</th></tr></thead>
+      <tbody>
+        <tr><td>Java <code>1_000_000L</code></td><td>Decimal — explicit literal.</td></tr>
+        <tr><td>Java <code>FileUtils.byteCountToDisplaySize</code></td><td>Binary (KB = 1024) — Apache Commons treats KB as KiB.</td></tr>
+        <tr><td>Node.js <code>fs.statSync(file).size</code></td><td>Returns bytes; conversion is your job.</td></tr>
+        <tr><td>Python <code>os.path.getsize</code></td><td>Returns bytes.</td></tr>
+        <tr><td>Linux <code>du -BM</code></td><td>Binary mebibytes; <code>du --si -BM</code> for decimal.</td></tr>
+        <tr><td>AWS S3 <code>Content-Length</code></td><td>Bytes; AWS billing uses decimal GB.</td></tr>
+        <tr><td>Docker <code>docker stats</code></td><td>Mixed historically; recent versions use binary KiB/MiB consistently.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Common byte-conversion mistakes</h3>
+    <ul>
+      <li><strong>Calling KiB "KB" in user-facing copy.</strong> Use the actual unit; users notice when their 256 GB phone shows 238 GB available.</li>
+      <li><strong>Mixing units in dashboards.</strong> If your CDN reports decimal GB and your origin reports binary GiB, a "100% match" looks like 7% drift.</li>
+      <li><strong>Storing sizes as "5 MB" strings instead of integers.</strong> Always store bytes; format on display.</li>
+      <li><strong>Confusing megabits and megabytes when reading speeds.</strong> A "100 Mbps" link delivers 12.5 MB/s, not 100.</li>
+      <li><strong>Forgetting that drive size includes filesystem overhead.</strong> A 1 TB drive provides 1 TB of <em>raw</em> capacity; ext4/NTFS/APFS each consume 0.5–3% for journaling, indexes, and reserved blocks.</li>
+      <li><strong>Calculating monthly bandwidth in GB but pricing in GiB.</strong> Cloud invoices and your monitoring graphs disagree by 7%; the gap compounds at terabyte scale.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://www.iec.ch/si/binary.htm" rel="noopener" target="_blank">IEC 80000-13 — Binary prefixes (KiB, MiB, GiB...)</a></li>
+        <li><a href="https://physics.nist.gov/cuu/Units/binary.html" rel="noopener" target="_blank">NIST — Prefixes for Binary Multiples</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Binary_prefix" rel="noopener" target="_blank">Wikipedia — Binary prefix history</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/JEDEC_memory_standards" rel="noopener" target="_blank">JEDEC memory standards (RAM uses binary GB)</a></li>
+        <li><a href="https://support.apple.com/en-us/102119" rel="noopener" target="_blank">Apple — Macs report storage in decimal (Snow Leopard change)</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between KB and KiB (binary vs decimal)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>KB</strong> (kilobyte) uses the SI decimal standard: 1 KB = 1,000 bytes. <strong>KiB</strong> (kibibyte) uses the IEC binary standard: 1 KiB = 1,024 bytes. The distinction matters because storage manufacturers use decimal (making drives appear larger), while operating systems traditionally use binary (showing less usable space). The IEC introduced binary prefixes (KiB, MiB, GiB) in 1998 to eliminate this confusion.</div></div>
@@ -186,7 +280,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const units={

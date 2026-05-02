@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Git Commands Cheatsheet — 60+ Commands &amp; Examples">
+  <meta name="twitter:description" content="60+ git commands organized in 11 categories with copy-ready examples. Live search, 10-step learning path, and a deep guide to git internals.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Git Commands Cheatsheet — 60+ Commands Reference">
@@ -139,7 +139,7 @@
     <span class="tool-badge">Reference</span>
     <h1>Git Commands Cheatsheet</h1>
     <p>A complete git commands cheatsheet with more than 60 commands organized into 11 practical categories. Every entry includes a concise description, a real-world example, and a one-click copy button. The live search at the top filters across names, descriptions, and examples so you can jump directly to what you need. Whether you're setting up your first repository, untangling a messy history, rebasing a feature branch, or managing submodules on a large monorepo, this page is designed to be the single page you keep open in a tab. Skim the 10-step learning path if you're new.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool platform engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -194,6 +194,166 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Git in production — the workflows, recovery patterns, and modern conventions that ship</h2>
+    <p>The cheat-sheet above covers the commands. This section covers the patterns: how teams actually use git day to day, the recovery moves that pull you out of any mess, the conventional-commits / semantic-release pipeline that has become standard, and the security practices around signed commits and protected branches that show up in any audited codebase.</p>
+
+    <h3>The five commit-message conventions you'll meet</h3>
+    <table class="ref-table">
+      <thead><tr><th>Convention</th><th>Example</th><th>Used by</th></tr></thead>
+      <tbody>
+        <tr><td>Conventional Commits</td><td><code>feat(auth): add OAuth login</code></td><td>Most modern repos. Drives semantic-release and changelog generation.</td></tr>
+        <tr><td>Angular style</td><td><code>fix(http): handle 504 retries</code></td><td>Older Angular projects; ancestor of Conventional Commits.</td></tr>
+        <tr><td>Gitmoji</td><td><code>:sparkles: Add OAuth login</code></td><td>Smaller repos that want visual scanability in <code>git log</code>.</td></tr>
+        <tr><td>Linear / Imperative</td><td><code>Add OAuth login (LIN-1234)</code></td><td>Linear- and Jira-driven teams. Ticket ID upfront.</td></tr>
+        <tr><td>"Fix typo"-style</td><td><code>Fix typo</code></td><td>Avoid. Useless in <code>git log</code> 6 months later.</td></tr>
+      </tbody>
+    </table>
+    <p>The 2026 default for serious projects is <strong>Conventional Commits</strong>, because it pairs with <code>semantic-release</code>, <code>release-please</code>, or <code>changesets</code> to auto-generate changelogs and version bumps. The format:</p>
+    <pre><code>type(scope): summary in present tense
+
+Optional body explaining why, not what.
+Wraps at ~72 chars per line.
+
+Optional footer:
+BREAKING CHANGE: removed deprecated `oldFunction`.
+Refs: LIN-1234, #567</code></pre>
+    <p>Types: <code>feat</code> (new feature → minor version bump), <code>fix</code> (bug fix → patch), <code>docs</code>, <code>refactor</code>, <code>test</code>, <code>chore</code>, <code>perf</code>, <code>ci</code>, <code>build</code>, <code>style</code>. <code>BREAKING CHANGE</code> in the footer triggers a major bump.</p>
+
+    <h3>The recovery patterns that pull you out of any git mess</h3>
+    <table class="ref-table">
+      <thead><tr><th>Situation</th><th>Recovery command</th></tr></thead>
+      <tbody>
+        <tr><td>Accidentally <code>reset --hard</code> and lost work</td><td><code>git reflog</code> → find the SHA → <code>git reset --hard &lt;sha&gt;</code></td></tr>
+        <tr><td>Committed to wrong branch</td><td><code>git reset --soft HEAD~1</code> → switch branch → <code>git commit</code></td></tr>
+        <tr><td>Want to undo a pushed commit safely</td><td><code>git revert &lt;sha&gt;</code> → push the inverse commit</td></tr>
+        <tr><td>Want to remove last N commits locally</td><td><code>git reset --hard HEAD~N</code> (private branches only)</td></tr>
+        <tr><td>Want to combine last N commits into one</td><td><code>git reset --soft HEAD~N</code> → <code>git commit</code></td></tr>
+        <tr><td>Need to find when a bug was introduced</td><td><code>git bisect start</code> → <code>git bisect bad</code> → <code>git bisect good &lt;old-sha&gt;</code></td></tr>
+        <tr><td>Accidentally committed a secret</td><td><code>git filter-repo</code> (preferred over BFG since 2021); rotate the secret immediately</td></tr>
+        <tr><td>Want to restore a single file from another commit</td><td><code>git checkout &lt;sha&gt; -- path/to/file</code></td></tr>
+        <tr><td>Pull is failing because local has divergent history</td><td><code>git pull --rebase</code> or <code>git fetch &amp;&amp; git rebase origin/main</code></td></tr>
+        <tr><td>Detached HEAD with valuable work</td><td><code>git switch -c new-branch</code> while in detached state</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Modern command verbs — switch and restore</h3>
+    <p>Since git 2.23 (2019), there are two new commands that disambiguate <code>checkout</code>'s historic dual personality:</p>
+    <ul>
+      <li><strong><code>git switch</code></strong> — change branches. Replaces <code>git checkout &lt;branch&gt;</code>.</li>
+      <li><strong><code>git restore</code></strong> — restore files. Replaces <code>git checkout -- file</code> (working tree) and <code>git reset HEAD file</code> (staging).</li>
+    </ul>
+    <p><code>git checkout</code> still works for backward compatibility. New scripts and tutorials should use <code>switch</code>/<code>restore</code> — they're clearer to readers.</p>
+
+    <h3>Branch protection — the rules every shipping repo enforces</h3>
+    <p>Production-ready GitHub/GitLab repos set up branch protection on <code>main</code> to prevent the easy mistakes:</p>
+    <ul>
+      <li><strong>Require pull requests.</strong> No direct pushes to main.</li>
+      <li><strong>Require approving reviews.</strong> One or two reviewers depending on team size.</li>
+      <li><strong>Require status checks to pass.</strong> Tests, lint, security scans, build.</li>
+      <li><strong>Require conversation resolution.</strong> No merging while review threads are open.</li>
+      <li><strong>Require signed commits.</strong> Verified signatures only.</li>
+      <li><strong>Disable force pushes.</strong> Even admins can't rewrite history.</li>
+      <li><strong>Disable branch deletion.</strong> Belt-and-suspenders against catastrophe.</li>
+      <li><strong>Linear history.</strong> No merge commits — only fast-forward or squash merges.</li>
+    </ul>
+
+    <h3>Signed commits — the security upgrade most teams skip</h3>
+    <p>By default, anyone can author a commit with any name and email. The <code>git config user.email</code> setting is purely cosmetic. Signed commits cryptographically prove the commit was made by someone holding the private key.</p>
+    <p>Two signing methods:</p>
+    <ul>
+      <li><strong>GPG signing</strong> (the original): generate a GPG key, register the public key with GitHub/GitLab, run <code>git config commit.gpgsign true</code>. Verified signatures appear with a green badge in the UI.</li>
+      <li><strong>SSH signing</strong> (since git 2.34, 2021): reuse your existing SSH key. Faster setup, no separate keyring. <code>git config gpg.format ssh</code> and <code>git config user.signingKey ~/.ssh/id_ed25519.pub</code>.</li>
+    </ul>
+    <p>Required for SOC 2 audits and increasingly common in financial-services and healthcare codebases.</p>
+
+    <h3>The .gitignore patterns every project should ship with</h3>
+    <pre><code># Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+vendor/
+target/
+
+# Build output
+dist/
+build/
+*.log
+
+# Secrets — NEVER commit these
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+secrets.json
+
+# Coverage
+coverage/
+.nyc_output/
+
+# OS-level
+.bash_history
+.zsh_history</code></pre>
+    <p>Even with <code>.gitignore</code>, secrets occasionally slip through. Tools like <code>git-secrets</code>, <code>truffleHog</code>, <code>gitleaks</code>, and GitHub's native secret scanning catch them in CI.</p>
+
+    <h3>Git hooks — the automation layer most teams under-use</h3>
+    <p>Git triggers scripts at well-defined moments. The most useful hooks:</p>
+    <table class="ref-table">
+      <thead><tr><th>Hook</th><th>Fires</th><th>Common use</th></tr></thead>
+      <tbody>
+        <tr><td><code>pre-commit</code></td><td>Before <code>git commit</code> creates the commit</td><td>Run lint, format, simple tests</td></tr>
+        <tr><td><code>commit-msg</code></td><td>After commit message is entered</td><td>Validate Conventional Commits format</td></tr>
+        <tr><td><code>pre-push</code></td><td>Before <code>git push</code> sends commits</td><td>Run unit tests, prevent push to main</td></tr>
+        <tr><td><code>post-merge</code></td><td>After successful merge / pull</td><td>Auto-install new dependencies</td></tr>
+      </tbody>
+    </table>
+    <p>Manage them with <code>husky</code> + <code>lint-staged</code> (Node ecosystem), <code>pre-commit</code> (Python ecosystem), or <code>lefthook</code> (cross-language). Native git hooks live in <code>.git/hooks/</code> but aren't shared across the team — always use a hook manager.</p>
+
+    <h3>Monorepo patterns — when "git as a database" hits scale limits</h3>
+    <p>Once a repo grows past ~10 GB or has thousands of contributors, raw git starts to slow down. The fixes:</p>
+    <ul>
+      <li><strong>Shallow clones</strong> (<code>git clone --depth 1</code>) — pull only the latest commit. Useful in CI.</li>
+      <li><strong>Partial clones</strong> (<code>git clone --filter=blob:none</code>) — defer downloading file contents until needed.</li>
+      <li><strong>Sparse checkout</strong> (<code>git sparse-checkout init --cone</code>) — work on a subset of the directory tree.</li>
+      <li><strong>Git LFS</strong> — for large binary assets (videos, ML model weights, design files). Replaces the file with a tiny pointer in the repo.</li>
+      <li><strong>Microsoft's GVFS / Scalar</strong> — used internally on the Windows codebase (300 GB, 4 million files). Streams contents on demand.</li>
+      <li><strong>Mercurial / Sapling</strong> — Meta's git replacement, faster on multi-million-file repos.</li>
+    </ul>
+
+    <h3>Common git mistakes that bite</h3>
+    <ul>
+      <li><strong>Committing <code>.env</code> with real secrets.</strong> Even after deletion, the secret is in history. Rotate it; use <code>git filter-repo</code> or BFG if you must scrub history.</li>
+      <li><strong>Force-pushing to a shared branch.</strong> Coordinate first; use <code>--force-with-lease</code>; never force-push to main.</li>
+      <li><strong>Rebasing already-pushed work.</strong> Causes painful merge conflicts for everyone who pulled the old commits.</li>
+      <li><strong>Using <code>git pull</code> with merge instead of rebase.</strong> Produces noisy "Merge branch 'main' of …" commits. Set <code>git config pull.rebase true</code> globally.</li>
+      <li><strong>Committing huge binary files.</strong> Video files, design assets, ML weights — all bloat the clone forever. Use Git LFS or store them out-of-tree.</li>
+      <li><strong>Long-lived feature branches.</strong> A branch alive for 3 weeks accumulates conflicts. Merge often, ship behind feature flags.</li>
+      <li><strong>Squash-merging without preserving the original SHAs in the PR description.</strong> Useful for cherry-picking later.</li>
+      <li><strong>Skipping <code>git fetch</code> before <code>git rebase</code>.</strong> Rebases on stale base; conflicts on push.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://git-scm.com/doc" rel="noopener" target="_blank">git-scm.com — Official Git documentation</a></li>
+        <li><a href="https://www.conventionalcommits.org/" rel="noopener" target="_blank">Conventional Commits — specification</a></li>
+        <li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/about-protected-branches" rel="noopener" target="_blank">GitHub — Branch protection rules</a></li>
+        <li><a href="https://github.com/newren/git-filter-repo" rel="noopener" target="_blank">git-filter-repo — modern history-rewriting tool</a></li>
+        <li><a href="https://github.com/git-lfs/git-lfs" rel="noopener" target="_blank">Git LFS — large file storage extension</a></li>
+        <li><a href="https://trunkbaseddevelopment.com/" rel="noopener" target="_blank">trunkbaseddevelopment.com — modern branching reference</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between git reset and git revert?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>git reset</strong> rewrites history by moving the current branch pointer backward — the commits it moves past become unreachable (though recoverable via reflog for a while). <strong>git revert</strong> creates a new commit that applies the inverse of a previous commit's changes, leaving history intact. Use <code>revert</code> on shared branches where other people may have pulled the commits you want to undo; reset is only safe on private branches nobody else has seen.</div></div>
@@ -215,7 +375,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const GIT_COMMANDS=[

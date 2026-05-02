@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Timestamp Diff Calculator — Unix Epoch Free Tool">
+  <meta name="twitter:description" content="Calculate the difference between two Unix timestamps or ISO dates. Output in days, hours, minutes, seconds. Auto-detects 10/13-digit epoch.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Timestamp Diff Calculator","url":"https://freedevtool.org/timestamp-diff","description":"Calculate difference between two timestamps or dates in days, hours, minutes, seconds.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
@@ -119,8 +119,9 @@
     </a>
 
   <div class="tool-header">
-    
-<div class="tool-badge">Time Tool</div><h1>Timestamp Diff Calculator</h1><p class="tool-description">Calculate the exact difference between two Unix timestamps, ISO 8601 dates, or human-readable date/time values. See results in days, hours, minutes, seconds, and milliseconds. Supports both 10-digit (seconds) and 13-digit (milliseconds) epoch timestamps. Perfect for debugging log files, measuring API response times, and calculating durations. All computation runs in your browser.</p></div>
+
+<div class="tool-badge">Time Tool</div><h1>Timestamp Diff Calculator</h1><p class="tool-description">Calculate the exact difference between two Unix timestamps, ISO 8601 dates, or human-readable date/time values. See results in days, hours, minutes, seconds, and milliseconds. Supports both 10-digit (seconds) and 13-digit (milliseconds) epoch timestamps. Perfect for debugging log files, measuring API response times, and calculating durations. All computation runs in your browser.</p>
+<div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool backend engineering team</div></div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">timestamp-diff.tool</span></div>
     <div class="tool-body">
@@ -150,6 +151,139 @@
       </div>
     </div>
   </div>
+  <section class="article-section">
+    <h2>Working with timestamps — Unix epoch, ISO 8601, and the time-zone traps that haunt every backend</h2>
+    <p>Time is the single most error-prone primitive in software. Time zones, daylight saving, leap seconds, leap years, locale calendars, and the inconsistent way languages handle "now" all combine into a category of bugs that show up at 02:00 on the second Sunday in March and again on the first Sunday in November. This guide is the working reference for the two formats you actually need (Unix epoch and ISO 8601), the duration calculations that bite teams, and the language-by-language code that does it correctly.</p>
+
+    <h3>Unix epoch — what it actually is</h3>
+    <p>Unix time is the number of seconds elapsed since <strong>1970-01-01T00:00:00 UTC</strong> (the "epoch"). It is the universal time format in databases, APIs, log files, and inter-service messaging because it is:</p>
+    <ul>
+      <li><strong>Always UTC.</strong> No time zone ambiguity.</li>
+      <li><strong>Monotonic.</strong> A larger number is always later in time.</li>
+      <li><strong>Sortable.</strong> Numeric ordering matches chronological ordering.</li>
+      <li><strong>Compact.</strong> A 32-bit signed integer covers 1901 → 2038.</li>
+    </ul>
+    <p>The two common widths:</p>
+    <ul>
+      <li><strong>10 digits = seconds.</strong> Used by Unix tools, Postgres timestamps, most APIs. Auto-detected by length.</li>
+      <li><strong>13 digits = milliseconds.</strong> Used by JavaScript's <code>Date.now()</code>, Java's <code>System.currentTimeMillis()</code>, Kafka.</li>
+      <li><strong>16 / 19 digits = microseconds / nanoseconds.</strong> Used by Postgres <code>timestamp(6)</code>, Go's <code>time.Now().UnixNano()</code>.</li>
+    </ul>
+
+    <h3>The Year-2038 problem (Y2K38)</h3>
+    <p>A 32-bit signed integer storing seconds-since-1970 overflows on <strong>2038-01-19T03:14:07 UTC</strong>. After that moment, naive 32-bit Unix time wraps to <code>-2,147,483,648</code> (December 1901). This affects:</p>
+    <ul>
+      <li>Embedded systems and IoT devices using 32-bit time_t.</li>
+      <li>Old SQL databases with INT timestamp columns.</li>
+      <li>Some MySQL <code>DATETIME</code> columns prior to 5.6.</li>
+      <li>32-bit file systems (ext2, ext3 inode timestamps).</li>
+    </ul>
+    <p>Modern systems use <strong>64-bit time_t</strong>, which gives ~292 billion years of headroom. If you ship to embedded systems or maintain legacy software, audit for 32-bit time storage now — the failure mode is silent and starts hitting 30-year mortgages and 20-year insurance contracts already.</p>
+
+    <h3>ISO 8601 — the human-readable companion</h3>
+    <p>ISO 8601 is the international standard for date/time representation. The canonical forms:</p>
+    <ul>
+      <li><code>2026-05-02</code> — date only.</li>
+      <li><code>2026-05-02T14:30:00Z</code> — full datetime in UTC (the <code>Z</code> means "Zulu", i.e. UTC).</li>
+      <li><code>2026-05-02T14:30:00+05:00</code> — full datetime with explicit offset.</li>
+      <li><code>2026-05-02T14:30:00.123Z</code> — millisecond precision.</li>
+      <li><code>P1Y2M10DT2H30M</code> — duration: 1 year, 2 months, 10 days, 2 hours, 30 minutes.</li>
+    </ul>
+    <p>Always include the timezone marker (<code>Z</code> or <code>±HH:MM</code>). A bare <code>2026-05-02T14:30:00</code> is ambiguous — different parsers interpret it as UTC vs local vs throw an error.</p>
+
+    <h3>Computing durations — the two correct approaches</h3>
+    <p>Duration calculations work cleanly in two regimes:</p>
+    <ol>
+      <li><strong>Fixed-length units (seconds, minutes, hours, days, weeks)</strong> — just subtract the timestamps and divide. A "day" in this regime is exactly 86,400 seconds, regardless of DST or calendar.</li>
+      <li><strong>Calendar units (months, years)</strong> — depend on which months are involved. "One month from January 31" can mean Feb 28, Mar 1, Mar 2, or Mar 3 depending on the rule. Use a real datetime library, not arithmetic.</li>
+    </ol>
+    <p>The conversion table for fixed units:</p>
+    <table class="ref-table">
+      <thead><tr><th>Unit</th><th>Seconds</th><th>Milliseconds</th></tr></thead>
+      <tbody>
+        <tr><td>Second</td><td>1</td><td>1 000</td></tr>
+        <tr><td>Minute</td><td>60</td><td>60 000</td></tr>
+        <tr><td>Hour</td><td>3 600</td><td>3 600 000</td></tr>
+        <tr><td>Day</td><td>86 400</td><td>86 400 000</td></tr>
+        <tr><td>Week</td><td>604 800</td><td>604 800 000</td></tr>
+        <tr><td>30-day month (approx)</td><td>2 592 000</td><td>2 592 000 000</td></tr>
+        <tr><td>365-day year (approx)</td><td>31 536 000</td><td>31 536 000 000</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Duration calculations across 6 languages</h3>
+    <div class="lang-block"><strong>JavaScript:</strong><pre><code>const a = new Date('2026-05-02T09:00:00Z');
+const b = new Date('2026-05-02T11:30:00Z');
+const seconds = (b - a) / 1000;        // 9000
+const minutes = seconds / 60;           // 150
+const hours   = minutes / 60;           // 2.5</code></pre></div>
+    <div class="lang-block"><strong>Python (use the standard library):</strong><pre><code>from datetime import datetime, timezone
+a = datetime(2026, 5, 2, 9, 0, tzinfo=timezone.utc)
+b = datetime(2026, 5, 2, 11, 30, tzinfo=timezone.utc)
+delta = b - a                  # timedelta(seconds=9000)
+print(delta.total_seconds())   # 9000.0</code></pre></div>
+    <div class="lang-block"><strong>Go:</strong><pre><code>import "time"
+a, _ := time.Parse(time.RFC3339, "2026-05-02T09:00:00Z")
+b, _ := time.Parse(time.RFC3339, "2026-05-02T11:30:00Z")
+diff := b.Sub(a)               // 2h30m0s
+seconds := diff.Seconds()      // 9000</code></pre></div>
+    <div class="lang-block"><strong>Java (java.time, since Java 8):</strong><pre><code>import java.time.*;
+Instant a = Instant.parse("2026-05-02T09:00:00Z");
+Instant b = Instant.parse("2026-05-02T11:30:00Z");
+Duration d = Duration.between(a, b);   // PT2H30M
+long secs = d.getSeconds();</code></pre></div>
+    <div class="lang-block"><strong>Rust (chrono):</strong><pre><code>use chrono::{DateTime, Utc};
+let a: DateTime&lt;Utc&gt; = "2026-05-02T09:00:00Z".parse().unwrap();
+let b: DateTime&lt;Utc&gt; = "2026-05-02T11:30:00Z".parse().unwrap();
+let d = b - a;                  // Duration
+let secs = d.num_seconds();     // 9000</code></pre></div>
+    <div class="lang-block"><strong>SQL (Postgres):</strong><pre><code>SELECT EXTRACT(EPOCH FROM ('2026-05-02 11:30:00+00'::timestamptz
+                       -  '2026-05-02 09:00:00+00'::timestamptz))
+AS seconds_diff;   -- 9000</code></pre></div>
+
+    <h3>Time-zone gotchas — what bites every team</h3>
+    <ul>
+      <li><strong>DST transitions.</strong> On the spring-forward day, 02:00 local time does not exist; on fall-back, 01:30 happens twice. "Today minus 24 hours" can equal yesterday OR the day before.</li>
+      <li><strong>Naive Date in JavaScript.</strong> <code>new Date('2026-05-02')</code> parses as midnight UTC; <code>new Date(2026, 4, 2)</code> parses as midnight local time. Different result, no warning.</li>
+      <li><strong>Server timezone vs database timezone vs app timezone.</strong> If any two disagree, all queries lie. Set everything to UTC and convert at the edge.</li>
+      <li><strong>Daylight saving in cron.</strong> Linux <code>cron</code> can skip a job (during spring-forward) or run it twice (during fall-back). Schedulers that respect named time zones (<code>kubernetes CronJob</code> with <code>spec.timeZone</code>) avoid this.</li>
+      <li><strong>Time zone naming differences.</strong> "EST" can mean Eastern Standard Time or Australian Eastern Standard Time. Always use IANA tz names: <code>America/New_York</code>, not <code>EST</code>.</li>
+      <li><strong>Leap seconds.</strong> UTC has occasional leap seconds (61 since 1972) that Unix time mostly ignores. NTP and POSIX both fudge them; if you need true monotonic time, use <code>CLOCK_MONOTONIC</code>.</li>
+    </ul>
+
+    <h3>Practical use cases for timestamp diff</h3>
+    <ul>
+      <li><strong>API response time:</strong> log <code>request_start</code> and <code>response_end</code> timestamps; diff gives latency.</li>
+      <li><strong>Session duration:</strong> when a user logged in vs logged out.</li>
+      <li><strong>Cache TTL verification:</strong> compare <code>created_at</code> with <code>now()</code>; if greater than TTL, evict.</li>
+      <li><strong>Token expiration check:</strong> compare <code>exp</code> claim with current time.</li>
+      <li><strong>Build-pipeline duration:</strong> CI starts at T1, finishes at T2; diff is the build time.</li>
+      <li><strong>SLA reporting:</strong> incident detected at T1, resolved at T2; diff feeds MTTR metrics.</li>
+      <li><strong>Lead-time tracking:</strong> commit time vs deploy time = DORA "lead time for changes".</li>
+    </ul>
+
+    <h3>Common timestamp mistakes</h3>
+    <ul>
+      <li><strong>Mixing 10-digit and 13-digit timestamps.</strong> Subtracting <code>1714660000</code> (seconds) from <code>1714660000000</code> (ms) without converting gives a meaningless result.</li>
+      <li><strong>Storing local-time strings in databases.</strong> "2026-05-02 14:00:00" without TZ is a bug waiting to happen. Use <code>timestamptz</code> in Postgres, <code>DATETIME WITH TIME ZONE</code>, or store ISO 8601 with explicit offset.</li>
+      <li><strong>Computing months as 30 days.</strong> February has 28; July has 31. Always round-trip through a real datetime library.</li>
+      <li><strong>Trusting <code>Date.parse()</code> on partially-formed strings.</strong> Browsers vary in tolerance; Safari is stricter than Chrome. Always pass full ISO 8601.</li>
+      <li><strong>Forgetting microsecond precision in databases.</strong> Postgres stores microseconds; if you compare a JS millisecond timestamp against a Postgres timestamp, you may miss matches by a microsecond.</li>
+      <li><strong>Using <code>Date.now()</code> for benchmarks.</strong> The system clock can jump backward (NTP correction). For elapsed-time measurement use <code>performance.now()</code> in browsers or <code>CLOCK_MONOTONIC</code> on Linux.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc3339" rel="noopener" target="_blank">RFC 3339 — Date and Time on the Internet (ISO 8601 profile)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/Year_2038_problem" rel="noopener" target="_blank">Year 2038 problem — overview</a></li>
+        <li><a href="https://www.iana.org/time-zones" rel="noopener" target="_blank">IANA Time Zone Database</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" rel="noopener" target="_blank">MDN — JavaScript Date object reference</a></li>
+        <li><a href="https://docs.python.org/3/library/datetime.html" rel="noopener" target="_blank">Python datetime module documentation</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section"><h2>Frequently Asked Questions</h2>
     <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">How do I calculate the difference between two Unix timestamps?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Subtract one timestamp from the other to get the difference in seconds: <code>diff = timestamp2 - timestamp1</code>. Then convert: divide by <strong>86,400</strong> for days, <strong>3,600</strong> for hours, <strong>60</strong> for minutes. This tool does the conversion automatically and shows results in all units simultaneously.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a Unix epoch timestamp?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A Unix timestamp (POSIX time / epoch time) is the number of <strong>seconds elapsed since January 1, 1970 00:00:00 UTC</strong>. It's the universal standard for storing and comparing dates in programming. JavaScript uses <strong>millisecond</strong> timestamps (13 digits), while most Unix systems use seconds (10 digits). This tool auto-detects both formats.</div></div>
@@ -163,7 +297,7 @@
     <a class="related-card" href="number-base"><div class="related-icon">01</div><div class="related-card-info"><div class="related-card-name">Number Base Converter</div><div class="related-card-desc">Convert between binary, hex, decimal</div></div></a>
   </div></section>
 </div>
-<footer><div>&copy; 2026 FreeDevTool — Timestamp Diff Calculator</div><div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div></footer>
+<footer><div>&copy; 2026 FreeDevTool — Timestamp Diff Calculator</div><div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div></footer>
 <script>
 function parseTime(val){val=val.trim();if(!val)return null;if(/^\d{10}$/.test(val))return new Date(parseInt(val)*1000);if(/^\d{13}$/.test(val))return new Date(parseInt(val));const d=new Date(val);return isNaN(d)?null:d}
 function formatDate(d){return d.toLocaleString()+' ('+d.toISOString()+')'}

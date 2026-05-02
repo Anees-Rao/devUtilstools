@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="HTTP Request Builder — cURL, fetch, axios Free">
+  <meta name="twitter:description" content="Compose HTTP requests visually and generate cURL, fetch, axios, Python requests, and Node fetch code. Send live, view response, browser-only.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="HTTP Request Builder — Free Online cURL Generator">
@@ -160,7 +160,7 @@
     <span class="tool-badge">Network</span>
     <h1>HTTP Request Builder</h1>
     <p>This HTTP request builder lets you compose a full HTTP call — method, URL, headers, query parameters, and body — through a visual UI, then instantly generates the equivalent code as a cURL command, browser <code>fetch()</code>, axios, Python <code>requests</code>, and Node fetch. You can also fire the request live from your browser to inspect the status, response headers, and body (subject to CORS). It's ideal for drafting API calls, reproducing bug reports, sharing reproducible curl snippets with teammates, and bootstrapping HTTP client code in multiple languages without leaving the tab.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool API engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -216,6 +216,150 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>HTTP requests in 2026 — methods, headers, status codes, and the API patterns that ship</h2>
+    <p>HTTP is the protocol layer every networked product runs on. Even when you are calling a "GraphQL API", a "gRPC service", or a "WebSocket endpoint", you are still riding HTTP/1.1, HTTP/2, or HTTP/3 underneath. Knowing the protocol cold pays off in every debugging session — every "why does this work in Postman but not in my code?" question, every CORS preflight mystery, every 401-when-it-should-be-403, every cached-response surprise. This guide is the working reference for the protocol fundamentals (RFC 9110), the headers that actually matter, the auth schemes that secure modern APIs, and the cURL → code patterns that live in every backend codebase.</p>
+
+    <h3>HTTP methods — what each one is for, and what's idempotent</h3>
+    <table class="ref-table">
+      <thead><tr><th>Method</th><th>Purpose</th><th>Body?</th><th>Safe?</th><th>Idempotent?</th></tr></thead>
+      <tbody>
+        <tr><td><code>GET</code></td><td>Read a resource</td><td>No (per RFC, ignored if present)</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td><code>HEAD</code></td><td>Read headers only (no body)</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td><code>POST</code></td><td>Create / non-idempotent action</td><td>Yes</td><td>No</td><td>No</td></tr>
+        <tr><td><code>PUT</code></td><td>Replace a resource at a known URL</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+        <tr><td><code>PATCH</code></td><td>Partial update</td><td>Yes</td><td>No</td><td>No (typically)</td></tr>
+        <tr><td><code>DELETE</code></td><td>Remove a resource</td><td>Usually no</td><td>No</td><td>Yes</td></tr>
+        <tr><td><code>OPTIONS</code></td><td>Discover allowed methods, CORS preflight</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+        <tr><td><code>CONNECT</code></td><td>Tunnel (proxies use this)</td><td>—</td><td>No</td><td>No</td></tr>
+        <tr><td><code>TRACE</code></td><td>Diagnostic loopback</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+      </tbody>
+    </table>
+    <p>"Safe" means the request should not change server state. "Idempotent" means N identical requests have the same effect as one. These properties drive practical decisions:</p>
+    <ul>
+      <li><strong>Retry policies:</strong> safe to auto-retry GET, HEAD, PUT, DELETE on network errors. Don't auto-retry POST without an idempotency key.</li>
+      <li><strong>Caching:</strong> only safe methods can be cached. GET is the workhorse here.</li>
+      <li><strong>CSRF protection:</strong> only state-changing methods (POST, PUT, PATCH, DELETE) need CSRF tokens.</li>
+    </ul>
+
+    <h3>The headers you actually need to know</h3>
+    <table class="ref-table">
+      <thead><tr><th>Header</th><th>Direction</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>Content-Type</code></td><td>Both</td><td>What format the body is. <code>application/json</code>, <code>multipart/form-data</code>, <code>application/x-www-form-urlencoded</code>.</td></tr>
+        <tr><td><code>Accept</code></td><td>Request</td><td>What formats the client can handle. Most APIs only return one, but content-negotiation libraries respect it.</td></tr>
+        <tr><td><code>Authorization</code></td><td>Request</td><td><code>Bearer &lt;token&gt;</code> for JWT/OAuth, <code>Basic &lt;b64&gt;</code> for HTTP Basic.</td></tr>
+        <tr><td><code>User-Agent</code></td><td>Request</td><td>Identifies your client. Many APIs require it; some rate-limit by it.</td></tr>
+        <tr><td><code>Cache-Control</code></td><td>Both</td><td>Caching directives. <code>no-store</code>, <code>max-age=300</code>, <code>private</code>, <code>public</code>.</td></tr>
+        <tr><td><code>ETag</code> / <code>If-None-Match</code></td><td>Both</td><td>Conditional requests; server returns 304 Not Modified.</td></tr>
+        <tr><td><code>Last-Modified</code> / <code>If-Modified-Since</code></td><td>Both</td><td>Same idea, timestamp-based.</td></tr>
+        <tr><td><code>Idempotency-Key</code></td><td>Request</td><td>Stripe, Square, Square Cash all support — safe POST retries.</td></tr>
+        <tr><td><code>X-Request-Id</code> / <code>traceparent</code></td><td>Both</td><td>Distributed-tracing correlation. Echo it back in logs.</td></tr>
+        <tr><td><code>Access-Control-*</code></td><td>Response</td><td>CORS headers. Server-controlled; clients read them.</td></tr>
+        <tr><td><code>Content-Encoding</code></td><td>Response</td><td><code>gzip</code>, <code>br</code> (Brotli), <code>zstd</code>. The server has compressed the body.</td></tr>
+        <tr><td><code>Set-Cookie</code></td><td>Response</td><td>Set a cookie. <code>HttpOnly; Secure; SameSite=Lax</code> are the defaults you want.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Status code groups — which ones mean what</h3>
+    <table class="ref-table">
+      <thead><tr><th>Range</th><th>Class</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>1xx</td><td>Informational</td><td>100 Continue, 101 Switching Protocols (WebSocket upgrade)</td></tr>
+        <tr><td>2xx</td><td>Success</td><td>200 OK, 201 Created, 202 Accepted (async), 204 No Content</td></tr>
+        <tr><td>3xx</td><td>Redirection</td><td>301 Permanent, 302 Found (temp), 304 Not Modified, 308 Permanent (preserve method)</td></tr>
+        <tr><td>4xx</td><td>Client error</td><td>400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable, 429 Too Many Requests</td></tr>
+        <tr><td>5xx</td><td>Server error</td><td>500 Internal, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout</td></tr>
+      </tbody>
+    </table>
+    <p>Two distinctions every junior dev gets wrong:</p>
+    <ul>
+      <li><strong>401 vs 403:</strong> 401 means "you didn't authenticate" (no/invalid token); 403 means "you authenticated but you can't access this".</li>
+      <li><strong>302 vs 307 vs 308:</strong> 302 historically allowed clients to change POST→GET on redirect; 307/308 explicitly preserve the method. Use 308 for permanent redirects of POST endpoints.</li>
+    </ul>
+
+    <h3>Authentication schemes — what to use where</h3>
+    <table class="ref-table">
+      <thead><tr><th>Scheme</th><th>Header</th><th>Use for</th></tr></thead>
+      <tbody>
+        <tr><td>Bearer (JWT / OAuth)</td><td><code>Authorization: Bearer &lt;token&gt;</code></td><td>Modern APIs; standard.</td></tr>
+        <tr><td>HTTP Basic</td><td><code>Authorization: Basic base64(user:pass)</code></td><td>Internal services, dev tools. Requires HTTPS.</td></tr>
+        <tr><td>API Key (header)</td><td><code>X-API-Key: ...</code> or custom</td><td>Server-to-server. Rotate regularly.</td></tr>
+        <tr><td>API Key (query param)</td><td><code>?api_key=...</code></td><td>Avoid — leaks into logs and Referer headers.</td></tr>
+        <tr><td>HMAC (request signing)</td><td><code>Authorization: AWS4-HMAC-SHA256 ...</code></td><td>AWS, Cloudflare, anywhere replay-protection matters.</td></tr>
+        <tr><td>Mutual TLS (mTLS)</td><td>Client cert</td><td>Service-to-service in zero-trust networks.</td></tr>
+        <tr><td>Cookies (Set-Cookie)</td><td>Implicit on every request</td><td>Browser-based apps; pair with CSRF tokens.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>CORS — the browser policy that confuses everyone</h3>
+    <p>The Same-Origin Policy stops a page on <code>evil.com</code> from reading responses from <code>bank.com</code>. CORS is the carve-out: a server can opt-in to allow specific cross-origin requests. The flow:</p>
+    <ol>
+      <li><strong>Simple requests</strong> (GET/HEAD/POST with simple Content-Type) — browser sends the request directly. Server responds with <code>Access-Control-Allow-Origin: &lt;origin&gt;</code> or <code>*</code>.</li>
+      <li><strong>Preflighted requests</strong> (PUT, DELETE, custom headers, JSON body) — browser sends an <code>OPTIONS</code> preflight first. Server must respond with <code>Access-Control-Allow-Methods</code>, <code>Access-Control-Allow-Headers</code>, and <code>Access-Control-Allow-Origin</code>.</li>
+      <li><strong>Credentialed requests</strong> (cookies, Authorization header, client certs) — server must respond with <code>Access-Control-Allow-Credentials: true</code> AND a specific origin (not <code>*</code>).</li>
+    </ol>
+    <p>The single biggest debugging tip: <strong>CORS errors only happen in browsers</strong>. The same request from cURL, Postman, or your Node backend works fine. If your browser request fails but cURL succeeds, it's CORS — fix the server.</p>
+
+    <h3>cURL — the lingua franca of API debugging</h3>
+    <p>The cURL output is the de-facto sharing format. Common flags:</p>
+    <pre><code>curl -X POST https://api.example.com/users \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: $(uuidgen)" \
+  -d '{"email":"alice@example.com","name":"Alice"}' \
+  -i        # include response headers
+  -v        # verbose: show request &amp; response in detail
+  -L        # follow redirects
+  -s        # silent (no progress bar)
+  -w "%{http_code}\n"   # write out specific values
+  --fail-with-body      # exit non-zero on 4xx/5xx but still print body
+  --resolve api.example.com:443:127.0.0.1   # bypass DNS for local testing</code></pre>
+
+    <h3>HTTP/1.1 vs HTTP/2 vs HTTP/3 — what changes</h3>
+    <ul>
+      <li><strong>HTTP/1.1 (1997):</strong> Text protocol. One in-flight request per connection (or pipelining, which never worked reliably). Requires multiple TCP connections to parallelize.</li>
+      <li><strong>HTTP/2 (2015):</strong> Binary, multiplexed. Multiple streams over a single TLS connection. Header compression (HPACK). Server push (deprecated 2022).</li>
+      <li><strong>HTTP/3 (2022):</strong> Built on QUIC over UDP instead of TCP. No head-of-line blocking. Faster connection setup. Production-ready in Cloudflare, Akamai, Fastly, Google.</li>
+    </ul>
+    <p>For most APIs, HTTP/2 is the default, HTTP/3 is the upgrade path. From the application code's perspective the API is identical — you write <code>fetch()</code> or <code>requests.get()</code> the same way. Performance differences show up in p99 latency and concurrent-request scenarios.</p>
+
+    <h3>Idempotency keys — the pattern that makes retries safe</h3>
+    <p>Stripe, Square, Adyen, Paddle, and every modern payments API support idempotency keys. The client sends a unique key with the POST; the server stores the response keyed by that key. If the client retries (because the network dropped, or the server timed out), the server returns the cached response instead of double-charging. The pattern:</p>
+    <pre><code>POST /charges HTTP/1.1
+Idempotency-Key: 09cb3b3f-6e7f-4bba-8a4d-5d07c5b2c91a
+Content-Type: application/json
+
+{"amount": 1000, "currency": "usd"}</code></pre>
+    <p>Use a UUID v4 generated once per logical operation. Don't reuse a key across distinct operations or you'll get the cached response from the previous one.</p>
+
+    <h3>Common HTTP-request mistakes</h3>
+    <ul>
+      <li><strong>Putting API keys in query strings.</strong> Leaks into server logs, browser history, and Referer headers. Use the <code>Authorization</code> header.</li>
+      <li><strong>Not setting <code>Content-Type</code> on POST/PUT.</strong> Server can't parse the body. <code>application/json</code> is the right answer 95% of the time.</li>
+      <li><strong>Treating 200 as success and everything else as failure.</strong> 201, 202, 204 are also success. Check <code>2xx</code> generally.</li>
+      <li><strong>Not handling 429 (rate limit).</strong> Servers return <code>Retry-After</code> in the response — wait that long before retrying.</li>
+      <li><strong>Auto-retrying POST without idempotency key.</strong> You can charge a customer twice.</li>
+      <li><strong>Forgetting to follow redirects.</strong> 3xx responses need to be followed; some clients don't by default.</li>
+      <li><strong>Using cookies on a third-party API.</strong> Modern browsers reject third-party cookies by default. Use Authorization headers.</li>
+      <li><strong>Confusing <code>application/json</code> with <code>application/x-www-form-urlencoded</code>.</strong> Different body formats; the server cares which.</li>
+      <li><strong>Sending the body as a string when the server expects JSON.</strong> Stringify with <code>JSON.stringify()</code> in JS, but make sure the receiver parses it.</li>
+      <li><strong>Pasting curl from DevTools without removing cookies/auth.</strong> Right-click → "Copy as cURL" includes session cookies that expire — strip them or replace with explicit auth headers before sharing.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc9110" rel="noopener" target="_blank">RFC 9110 — HTTP Semantics (the modern HTTP spec)</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc9112" rel="noopener" target="_blank">RFC 9112 — HTTP/1.1</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc9114" rel="noopener" target="_blank">RFC 9114 — HTTP/3 (over QUIC)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" rel="noopener" target="_blank">MDN — CORS reference</a></li>
+        <li><a href="https://stripe.com/docs/api/idempotent_requests" rel="noopener" target="_blank">Stripe — Idempotency keys documentation</a></li>
+        <li><a href="https://curl.se/docs/manual.html" rel="noopener" target="_blank">cURL — official manual</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is an HTTP request builder?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">An <strong>HTTP request builder</strong> is a visual tool for constructing HTTP requests — pick a method, type a URL, add headers and query params, paste a body — and see the equivalent code in multiple languages. It's the lightweight cousin of Postman or Insomnia: handy when you just need a quick curl snippet, want to show a colleague exactly what request you sent, or need to turn a working browser DevTools request into production code without hand-editing escape sequences.</div></div>
@@ -238,7 +382,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const METHODS_WITH_BODY=new Set(['POST','PUT','PATCH']);

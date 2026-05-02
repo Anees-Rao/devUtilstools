@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Relative Time Calculator — '3 Days Ago' Free Tool">
+  <meta name="twitter:description" content="Convert any timestamp into '3 days ago' / 'in 2 hours' phrases. Auto-detect epoch sec/ms/us, ISO 8601, RFC 2822. Bulk mode, live update.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Relative Time Calculator — Free Timestamp Converter">
@@ -146,7 +146,7 @@
     <span class="tool-badge">Time</span>
     <h1>Relative Time Calculator</h1>
     <p>This relative time calculator turns any timestamp into a human-readable phrase like "3 days ago" or "in 2 hours", the same style used in GitHub issues, Slack messages, and most modern UIs. Paste a Unix epoch (seconds, milliseconds, or microseconds), an ISO 8601 string, an RFC 2822 date, or virtually any date format your browser can parse — the tool auto-detects the format, shows the picked unit, breaks the delta down across seconds/minutes/hours/days/weeks/months/years, and displays both local and UTC times. A bulk mode converts whole lists at once, and the live clock keeps sub-minute phrases accurate.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool i18n engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -178,6 +178,132 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Relative time formatting — the "3 days ago" pattern that ships in every modern UI</h2>
+    <p>Every successful product UI shows times relatively rather than absolutely. GitHub commits, Slack messages, Twitter posts, Stripe transactions, Linear issues — they all tell you "5 minutes ago" or "yesterday" rather than dumping a full ISO timestamp. Relative formatting feels human; absolute formatting feels like log output. This guide covers the threshold buckets that produce natural-sounding phrases, the <code>Intl.RelativeTimeFormat</code> API that ships in every modern browser, the i18n surprises (English uses "yesterday"; Japanese has separate "<ruby>昨日<rp>(</rp><rt>kinou</rt><rp>)</rp></ruby>" for spoken vs written), and the live-update pattern that keeps "1 minute ago" from going stale.</p>
+
+    <h3>The threshold buckets — where the boundaries are</h3>
+    <p>The convention used by Twitter, GitHub, Slack, and the JavaScript Intl spec all converge on roughly these thresholds:</p>
+    <table class="ref-table">
+      <thead><tr><th>Delta</th><th>Phrase</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>0–10 s</td><td>"just now"</td><td>Sub-resolution; treats "right now" as a single bucket.</td></tr>
+        <tr><td>10–60 s</td><td>"42 seconds ago"</td><td>Show seconds for live feeds; some products skip and jump to "less than a minute ago".</td></tr>
+        <tr><td>1–60 min</td><td>"5 minutes ago"</td><td>The most common bucket for UI activity feeds.</td></tr>
+        <tr><td>1–24 h</td><td>"3 hours ago"</td><td>Round down (3.7 h shows as "3 hours ago", not "4").</td></tr>
+        <tr><td>1–7 days</td><td>"yesterday" / "3 days ago"</td><td>"Yesterday" is special-cased.</td></tr>
+        <tr><td>1–4 weeks</td><td>"2 weeks ago"</td><td>Some UIs prefer "10 days ago" up to ~14 days, then switch.</td></tr>
+        <tr><td>1–12 months</td><td>"6 months ago"</td><td>Calendar months, not 30-day blocks.</td></tr>
+        <tr><td>≥ 1 year</td><td>"3 years ago" or absolute date</td><td>GitHub switches to absolute "Mar 2023" past 1 year.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Intl.RelativeTimeFormat — the platform API</h3>
+    <p>The browser ships an i18n-aware relative-time formatter as of 2018 (Chrome 71, Firefox 65, Safari 14). It handles plurals, future vs past, and locale-specific phrasing automatically:</p>
+    <pre><code>const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+rtf.format(-1, 'day');     // "yesterday"
+rtf.format( 0, 'day');     // "today"
+rtf.format( 1, 'day');     // "tomorrow"
+rtf.format(-3, 'day');     // "3 days ago"
+rtf.format( 5, 'minute');  // "in 5 minutes"
+
+// numeric: 'always' forces numbers (for log displays)
+new Intl.RelativeTimeFormat('en', { numeric: 'always' })
+  .format(-1, 'day');      // "1 day ago"
+
+// Different locales handle phrasing differently
+new Intl.RelativeTimeFormat('ja', { numeric: 'auto' })
+  .format(-1, 'day');      // "昨日"
+new Intl.RelativeTimeFormat('de', { numeric: 'auto' })
+  .format(-1, 'day');      // "gestern"</code></pre>
+    <p>This is the recommended approach in 2026. It eliminates the "I shipped my homegrown relative formatter and it broke for German users" class of bug.</p>
+
+    <h3>The live-update pattern — keeping "1 min ago" fresh</h3>
+    <p>If the user lands on the page and a comment was posted 30 seconds ago, the UI shows "30 seconds ago". One minute later it should say "1 minute ago", then "2 minutes ago", and so on. The standard implementation:</p>
+    <pre><code>function startRelativeTimeUpdates() {
+  const elements = document.querySelectorAll('time[datetime]');
+
+  function updateAll() {
+    const now = Date.now();
+    elements.forEach(el =&gt; {
+      const t = new Date(el.dateTime).getTime();
+      el.textContent = formatRelative(t - now);
+    });
+  }
+
+  updateAll();
+  setInterval(updateAll, 30_000);   // refresh every 30s
+}</code></pre>
+    <p>For a feed with hundreds of timestamps, batching updates like this beats a per-element timer. Stop the interval when the tab is hidden (use the Page Visibility API) to save battery.</p>
+
+    <h3>Why "n minutes ago" vs "in n minutes" matters more than it seems</h3>
+    <p>Future and past tense in relative time should never collide. A naive implementation might show:</p>
+    <ul>
+      <li><code>30 seconds ago</code> — the comment was posted just now (correct).</li>
+      <li><code>30 seconds ago</code> — your access token <em>expired</em> 30 seconds ago (also correct, but the phrase is identical).</li>
+      <li><code>in 30 seconds</code> — your access token expires in 30 seconds (different).</li>
+    </ul>
+    <p>Always preserve the sign of the delta. "Created 5 min ago" and "Expires in 5 min" are different states; collapsing them to the same phrase has caused real bugs in dashboard expiry warnings.</p>
+
+    <h3>Time-zone surprises — the "yesterday" trap</h3>
+    <p>"Yesterday" is a calendar concept, not a duration. A timestamp 18 hours ago might be "yesterday" or "today" depending on the user's local time:</p>
+    <ul>
+      <li>It is now 09:00 local. A timestamp 18 hours ago happened at 15:00 local <em>yesterday</em>. "Yesterday" is correct.</li>
+      <li>It is now 23:00 local. A timestamp 18 hours ago happened at 05:00 local <em>today</em>. "Today" / "18 hours ago" is correct.</li>
+    </ul>
+    <p>Use the local-date concept (zero-out the time portion of both timestamps and compare days) when you want to special-case "today", "yesterday", "last week".</p>
+
+    <h3>Locale differences that bite</h3>
+    <table class="ref-table">
+      <thead><tr><th>Locale</th><th>"3 days ago"</th><th>"in 3 days"</th></tr></thead>
+      <tbody>
+        <tr><td>English (en)</td><td>3 days ago</td><td>in 3 days</td></tr>
+        <tr><td>German (de)</td><td>vor 3 Tagen</td><td>in 3 Tagen</td></tr>
+        <tr><td>Spanish (es)</td><td>hace 3 días</td><td>dentro de 3 días</td></tr>
+        <tr><td>French (fr)</td><td>il y a 3 jours</td><td>dans 3 jours</td></tr>
+        <tr><td>Japanese (ja)</td><td>3 日前</td><td>3 日後</td></tr>
+        <tr><td>Arabic (ar)</td><td>قبل 3 أيام</td><td>خلال 3 أيام</td></tr>
+        <tr><td>Russian (ru)</td><td>3 дня назад</td><td>через 3 дня</td></tr>
+      </tbody>
+    </table>
+    <p>Languages with grammatical gender (Russian, Arabic) or different plural rules (Russian: 1 / 2-4 / 5+ all use different forms) make hand-rolling impossible. Always use Intl.RelativeTimeFormat for any product going beyond English.</p>
+
+    <h3>Library landscape — when to reach for what</h3>
+    <table class="ref-table">
+      <thead><tr><th>Tool</th><th>Bundle size</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td>Intl.RelativeTimeFormat</td><td>0 (built-in)</td><td>Everything new in 2026.</td></tr>
+        <tr><td><code>date-fns</code> formatDistanceToNow</td><td>~14 KB minified+gzipped</td><td>Apps already using date-fns; tree-shakable.</td></tr>
+        <tr><td><code>day.js</code> + relativeTime plugin</td><td>~3 KB</td><td>Lightweight Moment.js replacement.</td></tr>
+        <tr><td><code>luxon</code> toRelative()</td><td>~70 KB</td><td>Heavy-duty calendars and TZ work.</td></tr>
+        <tr><td>Moment.js fromNow()</td><td>~232 KB</td><td>Legacy code only — Moment is in maintenance mode.</td></tr>
+        <tr><td>Vercel <code>@formatjs/intl-relativetimeformat</code></td><td>~6 KB + locale files</td><td>Polyfill for older browsers (still useful for India/Africa Android fleets).</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Common relative-time mistakes</h3>
+    <ul>
+      <li><strong>Forgetting to update.</strong> A static "5 minutes ago" rendered server-side becomes hilariously wrong an hour later. Always re-render or invalidate.</li>
+      <li><strong>Using "ago" for future timestamps.</strong> The expired/expires distinction must respect sign.</li>
+      <li><strong>Hand-rolling pluralization.</strong> "1 minutes ago" looks broken; "1 minute ago" requires plural-aware code. Intl handles this.</li>
+      <li><strong>Skipping the absolute timestamp on hover.</strong> "Yesterday" is friendly; for debugging or audit trails users need the actual timestamp. Render the absolute time in a <code>title</code> or <code>&lt;time datetime&gt;</code> attribute so it's accessible.</li>
+      <li><strong>Treating every event as relative.</strong> A meeting "in 3 hours" is helpful; a contract that "expires in 11 months" is not — show the actual date for far-future and far-past events.</li>
+      <li><strong>Forgetting screen readers.</strong> Wrap relative times in <code>&lt;time datetime="2026-05-02T14:30:00Z"&gt;3 hours ago&lt;/time&gt;</code> so assistive tech can announce the exact value if needed.</li>
+      <li><strong>Server / client clock drift.</strong> If your server thinks a comment was 0.1 s ago and the client thinks 30 s have passed, the relative phrase jumps. Use server-rendered relative time on initial load, then re-render on the client.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat" rel="noopener" target="_blank">MDN — Intl.RelativeTimeFormat reference</a></li>
+        <li><a href="https://tc39.es/ecma402/#relativetimeformat-objects" rel="noopener" target="_blank">ECMA-402 — RelativeTimeFormat specification</a></li>
+        <li><a href="https://date-fns.org/docs/formatDistanceToNow" rel="noopener" target="_blank">date-fns — formatDistanceToNow documentation</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time" rel="noopener" target="_blank">MDN — &lt;time&gt; element (machine-readable timestamps)</a></li>
+        <li><a href="https://cldr.unicode.org/" rel="noopener" target="_blank">Unicode CLDR — locale data behind Intl APIs</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a relative time calculator?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A <strong>relative time calculator</strong> converts an absolute timestamp — Unix epoch, ISO 8601, RFC 2822, or a natural date string — into a human-readable phrase relative to <em>right now</em>: "3 days ago", "in 2 hours", "last week", "just now". It's the same formatting vocabulary you see in GitHub issues, Slack, Twitter, and most modern UIs. Developers use it to sanity-check log timestamps, design notification copy, debug TTL/expiry fields, or translate large lists of backend timestamps into something humans can skim.</div></div>
@@ -200,7 +326,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 function parseTimestamp(raw){

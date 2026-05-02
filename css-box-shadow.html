@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="CSS Box Shadow Generator — Layered Shadows Free Tool">
+  <meta name="twitter:description" content="Visual box-shadow builder with sliders for offset, blur, spread, color, inset. Stack unlimited layers for Material elevations, neumorphism, neon glows.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="CSS Box Shadow Generator — Free Visual Shadow Tool">
@@ -142,7 +142,7 @@
     <span class="tool-badge">CSS</span>
     <h1>CSS Box Shadow Generator</h1>
     <p>This CSS box shadow generator builds production-ready shadows with visual sliders for offset, blur, spread, color and the inset keyword. Stack unlimited shadow layers to create Material-style elevations, neumorphic surfaces, neon glows, or soft ambient lighting. Every change updates the live preview and rewrites the CSS in real time, so you can copy the finished declaration straight into your stylesheet. Pick a preset to start fast, or dial in custom values on both axes. All calculation runs in your browser — no sign-up, no tracking, works offline once the page is cached.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -187,6 +187,117 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Box-shadow in 2026 — anatomy, layered shadows, and the design-system patterns that ship</h2>
+    <p>The <code>box-shadow</code> property is one of the oldest CSS3 features — yet good shadows still distinguish a polished interface from one that looks like a wireframe. This guide unpacks the syntax (each of the four numeric values does something specific), the physics-aware patterns Google's Material team and Apple's Human Interface team use to build elevation systems, the new <code>filter: drop-shadow()</code> alternative for irregular shapes, and the performance pitfalls that cause shadow-heavy pages to drop frames during scroll.</p>
+
+    <h3>The four numbers — what each value actually does</h3>
+    <p>The full <code>box-shadow</code> grammar from CSS Backgrounds and Borders Module Level 3:</p>
+    <pre><code>box-shadow: [inset?] &lt;offset-x&gt; &lt;offset-y&gt; [blur-radius] [spread-radius] [color];</code></pre>
+    <table class="ref-table">
+      <thead><tr><th>Value</th><th>Effect</th><th>Direction of "+"</th></tr></thead>
+      <tbody>
+        <tr><td><strong>offset-x</strong></td><td>Horizontal shift</td><td>Positive = shadow to the right</td></tr>
+        <tr><td><strong>offset-y</strong></td><td>Vertical shift</td><td>Positive = shadow below the element</td></tr>
+        <tr><td><strong>blur-radius</strong></td><td>How soft the edge is</td><td>0 = hard edge; large = diffuse</td></tr>
+        <tr><td><strong>spread-radius</strong></td><td>Grow / shrink before blur</td><td>Positive = bigger; negative = inset-clipped</td></tr>
+        <tr><td><strong>color</strong></td><td>Shadow color (any CSS color)</td><td>Default = current text color</td></tr>
+        <tr><td><strong>inset</strong></td><td>Paint inside the box</td><td>Default is outer (drop) shadow</td></tr>
+      </tbody>
+    </table>
+    <p>The blur and spread interact in non-obvious ways. A 24 px blur with 0 spread creates a 24-pixel-wide gradient on each edge. A −12 px spread with a 24 px blur shrinks the source rectangle first, so you only see the right half of the gradient — useful for tight inner-glow effects.</p>
+
+    <h3>Layered shadows — why the best shadows are three shadows</h3>
+    <p>Real-world shadows are not a single blur. A pen on a desk in a sunlit room casts:</p>
+    <ol>
+      <li>A <strong>contact shadow</strong> — sharp, dark, right under the object.</li>
+      <li>A <strong>key shadow</strong> — a softer mid-distance shadow from the dominant light source.</li>
+      <li>An <strong>ambient shadow</strong> — a wide, very soft shadow from indirect light bouncing around the room.</li>
+    </ol>
+    <p>Material Design and Apple's HIG both encode this in their elevation systems. A typical 8-dp Material card:</p>
+    <pre><code>box-shadow:
+  0  1px  2px rgba(0,0,0,.10),  /* contact */
+  0  4px  8px rgba(0,0,0,.08),  /* key */
+  0 12px 24px rgba(0,0,0,.06);  /* ambient */</code></pre>
+    <p>The pattern is: progressively bigger offset and blur, progressively lower opacity. Designers call the result "smell of money" — UIs that feel premium without anyone being able to articulate why.</p>
+
+    <h3>Material Design elevation, in CSS form</h3>
+    <p>The Material 3 elevation tokens, translated to CSS box-shadow:</p>
+    <table class="ref-table">
+      <thead><tr><th>Level</th><th>Use for</th><th>Box-shadow</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>Flat surfaces, app bar at rest</td><td><code>none</code></td></tr>
+        <tr><td>1</td><td>Cards, switches, raised buttons</td><td><code>0 1px 2px rgba(0,0,0,.30), 0 1px 3px 1px rgba(0,0,0,.15)</code></td></tr>
+        <tr><td>2</td><td>FAB rest, snackbars</td><td><code>0 1px 2px rgba(0,0,0,.30), 0 2px 6px 2px rgba(0,0,0,.15)</code></td></tr>
+        <tr><td>3</td><td>FAB hover, navigation drawer</td><td><code>0 1px 3px rgba(0,0,0,.30), 0 4px 8px 3px rgba(0,0,0,.15)</code></td></tr>
+        <tr><td>4</td><td>Dialogs, picked-up items</td><td><code>0 2px 3px rgba(0,0,0,.30), 0 6px 10px 4px rgba(0,0,0,.15)</code></td></tr>
+        <tr><td>5</td><td>Modal overlays</td><td><code>0 4px 4px rgba(0,0,0,.30), 0 8px 12px 6px rgba(0,0,0,.15)</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Neumorphism — the two-light pattern</h3>
+    <p>Soft-UI / neumorphic surfaces look extruded out of the background. The trick: two opposing shadows, one lighter than the surface, one darker.</p>
+    <pre><code>background: #e0e5ec;
+box-shadow:
+  9px  9px 18px #a3b1c6,    /* darker, bottom-right */
+ -9px -9px 18px #ffffff;    /* lighter, top-left */</code></pre>
+    <p>Neumorphism died as a mainstream trend around 2022, partly because the low-contrast aesthetic is an accessibility nightmare. Use it for marketing pages and design portfolios where contrast is decorative; do not ship it in transactional UI.</p>
+
+    <h3>Inner shadows for inputs, pressed buttons, and depth</h3>
+    <p>The <code>inset</code> keyword paints the shadow inside the box. Use cases:</p>
+    <ul>
+      <li><strong>Pressed button state:</strong> a small inset shadow at the top creates a "pushed in" feel.</li>
+      <li><strong>Form field focus:</strong> a soft inset glow draws the eye without changing layout.</li>
+      <li><strong>Inset highlight on a card:</strong> <code>inset 0 1px 0 rgba(255,255,255,.15)</code> across the top edge mimics a subtle bevel.</li>
+      <li><strong>Recessed input:</strong> <code>inset 0 2px 4px rgba(0,0,0,.06)</code> makes the field feel carved into the surface.</li>
+    </ul>
+
+    <h3>box-shadow vs filter: drop-shadow() — when to use each</h3>
+    <table class="ref-table">
+      <thead><tr><th>Aspect</th><th>box-shadow</th><th>filter: drop-shadow()</th></tr></thead>
+      <tbody>
+        <tr><td>Shape followed</td><td>Box (with border-radius)</td><td>Actual painted shape (incl. transparent PNG / SVG cut-outs)</td></tr>
+        <tr><td>Spread radius</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Inset shadows</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Multiple shadows</td><td>Comma-list</td><td>Chain <code>drop-shadow()</code> calls</td></tr>
+        <tr><td>Performance</td><td>Lower GPU cost</td><td>Higher cost (creates new stacking context)</td></tr>
+        <tr><td>Best for</td><td>Cards, buttons, rectangles with rounded corners</td><td>Logos, SVG icons, irregular shapes, PNG with transparency</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Performance — the shadow trap that drops frames</h3>
+    <p>Box-shadows are GPU-accelerated, but each shadow layer creates a paint area equal to the element rectangle plus the shadow extent on every side. A <code>0 0 100px 100px</code> shadow on a 200×200 box covers 600×600 pixels — nine times the original area. Multiply by stacked layers and you can blow out paint cost on weaker mobile GPUs.</p>
+    <p>The defensive habits:</p>
+    <ul>
+      <li><strong>Animate <code>opacity</code>, not the shadow itself.</strong> Put the shadow on a pseudo-element and fade it in — much cheaper than recomposing blur.</li>
+      <li><strong>Use <code>transform: translate3d(0,0,0)</code> or <code>will-change: transform</code></strong> on the parent to promote it to its own compositor layer.</li>
+      <li><strong>Avoid blur radii &gt; 50 px on long lists.</strong> A list of 200 cards each with a 60 px shadow runs the GPU into the ground on scroll.</li>
+      <li><strong>Prefer one well-tuned shadow to five layered ones</strong> on hot paths (animations, scroll containers).</li>
+      <li><strong>Test on a low-end device.</strong> Chrome DevTools' "Performance → CPU 4x slowdown" surfaces shadow-paint costs you'll never see on an M-series Mac.</li>
+    </ul>
+
+    <h3>Common box-shadow mistakes</h3>
+    <ul>
+      <li><strong>Pure black at 100% opacity.</strong> Real shadows are tinted and translucent. Use <code>rgba(17,24,39,.15)</code> or similar; pure black looks like a stage prop.</li>
+      <li><strong>Forgetting the unit on 0.</strong> <code>box-shadow: 0px 4px 12px black</code> is fine; <code>0 4px 12px black</code> is also valid (CSS lets you drop the unit on zero), but mixing styles in one codebase is messy.</li>
+      <li><strong>Using shadow for focus rings on inputs.</strong> Browsers expose <code>:focus-visible</code> and <code>outline</code>; users with custom OS contrast settings rely on outline. Replace it with a shadow only when you also re-add an accessible focus indicator.</li>
+      <li><strong>Animating <code>box-shadow</code> on every frame.</strong> Use opacity or transform-based hover effects.</li>
+      <li><strong>Inset shadow on a transparent element.</strong> Without a background color the shadow has nothing to paint over, so it appears to vanish.</li>
+      <li><strong>Forgetting that overflow:hidden clips the shadow.</strong> If a parent clips overflow, an outer box-shadow on a child gets cut off — the shadow paints outside the box.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://drafts.csswg.org/css-backgrounds/#box-shadow" rel="noopener" target="_blank">CSS Backgrounds and Borders Module Level 3 — box-shadow spec</a></li>
+        <li><a href="https://m3.material.io/styles/elevation/applying-elevation" rel="noopener" target="_blank">Material 3 — applying elevation</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow" rel="noopener" target="_blank">MDN — box-shadow reference</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter-function/drop-shadow" rel="noopener" target="_blank">MDN — filter: drop-shadow() reference</a></li>
+        <li><a href="https://web.dev/articles/animations-guide" rel="noopener" target="_blank">web.dev — Animations performance guide</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does each value in a CSS box-shadow mean?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The <strong>box-shadow</strong> property takes up to six values: horizontal offset, vertical offset, blur radius, spread radius, color, and an optional <code>inset</code> keyword. Positive <em>h-offset</em> moves the shadow to the right; positive <em>v-offset</em> moves it down. <strong>Blur</strong> softens the edge — a blur of 0 creates a hard-edged shadow, while larger values create a diffuse gradient. <strong>Spread</strong> grows or shrinks the whole shadow uniformly before blurring. The <strong>inset</strong> keyword paints the shadow inside the element instead of outside.</div></div>
@@ -208,7 +319,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 let layers=[

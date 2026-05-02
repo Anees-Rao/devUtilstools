@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Open Graph Preview — Social Card Tester Free">
+  <meta name="twitter:description" content="Live Open Graph and Twitter Card preview for Facebook, LinkedIn, X, WhatsApp. Edit OG meta tags, see real-time card mockups, copy ready HTML.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Open Graph Preview Tool — OG Tag Tester & Generator">
@@ -145,7 +145,7 @@
     <span class="tool-badge">SEO</span>
     <h1>Open Graph Preview Tool</h1>
     <p>Preview how your website appears when shared on Facebook, Twitter/X, LinkedIn and WhatsApp. Edit Open Graph and Twitter Card meta tags and see live social media card mockups instantly.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool SEO engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -208,6 +208,125 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Open Graph and social link previews — the protocol that controls how your URL looks everywhere</h2>
+    <p>Every link you share — in Slack, in iMessage, in a Discord channel, on LinkedIn, in WhatsApp, in a Tweet — renders as a card. The card's title, description, image, and brand badge are not picked by the platform; they are read out of the HTML <code>&lt;head&gt;</code> of the page you linked. Get the meta tags right and your links convert. Get them wrong and your URL shows up as a bare blue link with no preview at all. This guide is the working reference for Open Graph, Twitter Cards, and the platform-specific quirks that trip up every team's first marketing campaign.</p>
+
+    <h3>Open Graph — the de-facto standard</h3>
+    <p>The Open Graph protocol (originally Facebook's, now ubiquitous) is the meta-tag set every modern social platform reads. The minimum viable head:</p>
+    <pre><code>&lt;meta property="og:title"       content="Page Title — Brand"&gt;
+&lt;meta property="og:description" content="A two-sentence pitch that fits in 200 chars."&gt;
+&lt;meta property="og:url"         content="https://example.com/canonical-page"&gt;
+&lt;meta property="og:image"       content="https://example.com/og-1200x630.jpg"&gt;
+&lt;meta property="og:image:width" content="1200"&gt;
+&lt;meta property="og:image:height" content="630"&gt;
+&lt;meta property="og:type"        content="website"&gt;
+&lt;meta property="og:site_name"   content="Brand Name"&gt;</code></pre>
+    <p>Note the <code>property=</code> rather than <code>name=</code> — that is correct for OG tags. Mixing the two attributes is the most common reason a Facebook crawler "doesn't see" the tags.</p>
+
+    <h3>Twitter Cards — the parallel namespace</h3>
+    <p>Twitter (now X) reads its own <code>twitter:</code> namespace. Where a Twitter tag is missing, X falls back to the matching OG tag. The minimum:</p>
+    <pre><code>&lt;meta name="twitter:card"        content="summary_large_image"&gt;
+&lt;meta name="twitter:title"       content="Page Title"&gt;
+&lt;meta name="twitter:description" content="Description"&gt;
+&lt;meta name="twitter:image"       content="https://example.com/og-1200x630.jpg"&gt;
+&lt;meta name="twitter:site"        content="@yourbrand"&gt;
+&lt;meta name="twitter:creator"     content="@authorhandle"&gt;</code></pre>
+    <p>Important: Twitter uses <code>name=</code>, not <code>property=</code>. Do not mix.</p>
+
+    <h3>Image specs — the numbers each platform actually requires</h3>
+    <table class="ref-table">
+      <thead><tr><th>Platform</th><th>Recommended dimensions</th><th>Aspect</th><th>Min size</th><th>Max file size</th><th>Format</th></tr></thead>
+      <tbody>
+        <tr><td>Facebook (large card)</td><td>1200 × 630</td><td>1.91:1</td><td>600 × 315</td><td>8 MB</td><td>JPG, PNG, GIF, WebP</td></tr>
+        <tr><td>Twitter / X (summary_large_image)</td><td>1200 × 628</td><td>~1.91:1</td><td>300 × 157</td><td>5 MB</td><td>JPG, PNG, WebP, GIF</td></tr>
+        <tr><td>Twitter / X (summary)</td><td>240 × 240</td><td>1:1</td><td>144 × 144</td><td>5 MB</td><td>Same</td></tr>
+        <tr><td>LinkedIn</td><td>1200 × 627</td><td>~1.91:1</td><td>600 × 315</td><td>5 MB</td><td>JPG, PNG, GIF</td></tr>
+        <tr><td>WhatsApp</td><td>300 × 200 minimum, 1200 × 630 ideal</td><td>1.91:1</td><td>300 × 200</td><td>300 KB</td><td>JPG, PNG (≤ 600 KB hard cap on some clients)</td></tr>
+        <tr><td>Slack</td><td>1200 × 630 ideal</td><td>1.91:1</td><td>—</td><td>5 MB</td><td>JPG, PNG, GIF</td></tr>
+        <tr><td>Discord</td><td>1200 × 630</td><td>1.91:1</td><td>—</td><td>8 MB</td><td>JPG, PNG, GIF, WebP</td></tr>
+        <tr><td>iMessage</td><td>1200 × 630</td><td>1.91:1</td><td>—</td><td>—</td><td>JPG, PNG</td></tr>
+      </tbody>
+    </table>
+    <p>The single best image to ship for "everywhere" is <strong>1200 × 630 JPG, &lt; 300 KB, with text large enough to read at 200 px wide</strong>. That fits every platform's recommendations and keeps WhatsApp happy.</p>
+
+    <h3>The crawlers — who reads what</h3>
+    <ul>
+      <li><strong>facebookexternalhit/1.1</strong> — Facebook + WhatsApp + Instagram share previews.</li>
+      <li><strong>Twitterbot</strong> — Twitter / X share cards.</li>
+      <li><strong>LinkedInBot</strong> — LinkedIn share previews.</li>
+      <li><strong>Slackbot-LinkExpanding</strong> — Slack unfurls.</li>
+      <li><strong>Discordbot</strong> — Discord embeds.</li>
+      <li><strong>TelegramBot</strong> — Telegram link previews.</li>
+      <li><strong>WhatsApp</strong> — typically uses facebookexternalhit but sometimes its own UA.</li>
+    </ul>
+    <p>Two operational rules: serve the same HTML to bots as to humans (cloaking is a guideline violation everywhere), and do not block these UAs in your <code>robots.txt</code> or WAF — that's the most common cause of "the link preview disappeared yesterday".</p>
+
+    <h3>Cache invalidation — why old previews stick around</h3>
+    <p>Every platform aggressively caches the meta tags from your URL. After you change the OG image, the cache can hold the old version for hours or days. Each platform has its own purge tool:</p>
+    <ul>
+      <li><strong>Facebook:</strong> <a href="https://developers.facebook.com/tools/debug/" rel="noopener" target="_blank">Sharing Debugger</a> — paste URL, click "Scrape Again".</li>
+      <li><strong>Twitter / X:</strong> <a href="https://cards-dev.x.com/validator" rel="noopener" target="_blank">Card Validator</a> — refresh up to once per minute.</li>
+      <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/post-inspector/" rel="noopener" target="_blank">Post Inspector</a> — re-scrapes on demand.</li>
+      <li><strong>Slack:</strong> appending <code>?v=2</code> (any unique query param) forces a re-fetch.</li>
+      <li><strong>WhatsApp:</strong> add a fragment / query string variant. Cache lasts ~7 days.</li>
+    </ul>
+    <p>Production tip: bake a content hash into the OG image filename (<code>og-card-a3b9.jpg</code>) so the URL itself changes when the image does — bypassing every cache.</p>
+
+    <h3>Per-page OG vs site-wide OG — which to ship</h3>
+    <p>Hard rule: <strong>every important page should have unique OG tags</strong>. Site-wide identical tags cause every Facebook share to look the same — the "10 different blog posts all showing the homepage hero" problem. The pragmatic split:</p>
+    <ul>
+      <li><strong>Homepage:</strong> bespoke OG image and copy.</li>
+      <li><strong>Marketing pages:</strong> bespoke per page.</li>
+      <li><strong>Blog posts:</strong> auto-generate the OG image at build time (Next.js, Astro, Eleventy all have plugins) using the post title and feature image.</li>
+      <li><strong>Tool pages, docs, app screens:</strong> programmatic OG image at build or render time.</li>
+    </ul>
+
+    <h3>Programmatic OG image generation — the modern pattern</h3>
+    <p>Static OG images do not scale. The pattern that has won is server-rendered or build-time-rendered OG images using a templated SVG or HTML-to-image renderer. The best tools as of 2026:</p>
+    <ul>
+      <li><strong>Vercel <code>@vercel/og</code></strong> — render React JSX to a 1200 × 630 PNG at the edge.</li>
+      <li><strong>Cloudflare Workers OG</strong> — same idea on Cloudflare's runtime.</li>
+      <li><strong>Satori</strong> (Vercel's underlying engine) — local SSR JSX → SVG, then rasterize.</li>
+      <li><strong>Playwright headless browser</strong> — for complex layouts the lightweight renderers can't handle.</li>
+      <li><strong>Astro <code>satori-html</code></strong>, <strong>Eleventy <code>eleventy-plugin-og-image</code></strong> — build-time variants.</li>
+    </ul>
+
+    <h3>Common Open Graph mistakes</h3>
+    <ul>
+      <li><strong>Mixing <code>property=</code> and <code>name=</code>.</strong> OG uses <code>property</code>; Twitter uses <code>name</code>. Mixing causes Facebook to silently ignore the tag.</li>
+      <li><strong>Relative image URLs.</strong> Every social crawler needs absolute URLs. <code>/og-image.jpg</code> doesn't work; <code>https://example.com/og-image.jpg</code> does.</li>
+      <li><strong>Missing <code>og:image:width</code> and <code>og:image:height</code>.</strong> Without these, Facebook does an extra HEAD request to size the image — and may show the small card while it waits.</li>
+      <li><strong>OG image behind authentication.</strong> The crawler is unauthenticated. The image URL must be publicly fetchable.</li>
+      <li><strong>Image text too small.</strong> A 1200 × 630 image renders as ~500 × 260 in most feeds. Body text under 36 px is illegible.</li>
+      <li><strong>Forgetting to set <code>og:url</code> to the canonical URL.</strong> Tracking-parameter URLs all share with the same OG content if you canonicalize properly.</li>
+      <li><strong>Auto-generating OG images that fail to load.</strong> A broken OG image means the crawler falls back to "no image at all". Always have a static default OG image as a backup.</li>
+      <li><strong>Forgetting to test in dark mode.</strong> Slack and X both render social cards on dark backgrounds. If your image has a dark logo on transparent, it disappears.</li>
+    </ul>
+
+    <h3>Open Graph for non-website types</h3>
+    <p>The <code>og:type</code> property unlocks platform-specific rich content. The values that matter in 2026:</p>
+    <ul>
+      <li><code>website</code> — default. Generic page.</li>
+      <li><code>article</code> — blog posts, news. Enables <code>article:author</code>, <code>article:published_time</code>, <code>article:section</code>, <code>article:tag</code>.</li>
+      <li><code>product</code> — e-commerce. Enables <code>product:price:amount</code>, <code>product:price:currency</code>, <code>product:availability</code>.</li>
+      <li><code>video.other</code> / <code>video.movie</code> / <code>video.episode</code> — video content. Pairs with <code>og:video</code>.</li>
+      <li><code>music.song</code> / <code>music.album</code> — Spotify-style music links.</li>
+      <li><code>book</code> — paired with <code>book:isbn</code>, <code>book:author</code>.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://ogp.me/" rel="noopener" target="_blank">ogp.me — The Open Graph protocol official spec</a></li>
+        <li><a href="https://developer.x.com/en/docs/twitter-for-websites/cards/overview/abouts-cards" rel="noopener" target="_blank">X (Twitter) — Cards documentation</a></li>
+        <li><a href="https://developers.facebook.com/docs/sharing/webmasters" rel="noopener" target="_blank">Meta — Sharing for Webmasters</a></li>
+        <li><a href="https://www.linkedin.com/help/linkedin/answer/a521928" rel="noopener" target="_blank">LinkedIn — Post Inspector and OG tag requirements</a></li>
+        <li><a href="https://vercel.com/docs/og-image-generation" rel="noopener" target="_blank">Vercel @vercel/og — programmatic OG image generation</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are Open Graph tags and why do they matter?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Open Graph tags are HTML meta tags (prefixed with <code>og:</code>) that control how your URL appears when shared on Facebook, LinkedIn, WhatsApp and other platforms. They define the title, description, image and URL displayed in the share card. Without OG tags, platforms attempt to guess what to display, often resulting in poor-looking previews with wrong images or truncated text. Well-configured OG tags can increase social click-through rates significantly.</div></div>
@@ -226,7 +345,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

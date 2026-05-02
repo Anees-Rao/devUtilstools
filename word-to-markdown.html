@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Word to Markdown Converter — Paste &amp; Convert Free">
+  <meta name="twitter:description" content="Paste from Word, Google Docs, Notion to get clean GitHub-flavored Markdown. Headings, lists, tables, links, code preserved. Browser-only, no upload.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Text to Markdown Converter — Word & Rich Text Free">
@@ -141,7 +141,7 @@
     <span class="tool-badge">Markdown</span>
     <h1>Word to Markdown Converter</h1>
     <p>Need a fast text to markdown converter? Paste formatted content directly from Microsoft Word, Google Docs, Notion, or any rich-text source and this tool produces clean Markdown with headings (H1–H6), bold, italic, strikethrough, links, images, bullet and numbered lists, blockquotes, inline and fenced code, horizontal rules, and GitHub-flavored tables. If you already have HTML source, switch to the HTML tab and paste the raw markup instead. Everything runs locally in your browser — your draft never touches a server, which matters for NDAs, internal docs, and early-stage writing. Live character, line, and heading counts help you verify the output at a glance.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool documentation engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -172,6 +172,115 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>Word, Google Docs, Notion → Markdown — moving prose into version control</h2>
+    <p>Markdown is the writing format of every serious documentation system: GitHub README files, MDX-based docs sites, Astro and Next.js content pipelines, static site generators, Notion exports, Obsidian vaults, and AI training datasets. Yet most authoring still happens in Word, Google Docs, or Notion — tools where the source is a binary blob you cannot diff. The bridge is conversion: paste rich text, get Markdown. This guide walks through the Markdown spec landscape (yes, there is more than one), the lossy transitions that bite every team, and the practical moves that keep your converted content rendering correctly across GitHub, Notion, Obsidian, and your static site generator.</p>
+
+    <h3>Markdown is not one spec — it is six</h3>
+    <table class="ref-table">
+      <thead><tr><th>Flavor</th><th>Where you'll meet it</th><th>Notable features</th></tr></thead>
+      <tbody>
+        <tr><td>Original Markdown (Gruber, 2004)</td><td>Plain <code>.md</code> with no extensions</td><td>Headings, lists, links, code, blockquote. No tables.</td></tr>
+        <tr><td>CommonMark</td><td>The de-facto standard since 2014</td><td>Tightened parsing rules. Still no tables natively.</td></tr>
+        <tr><td>GitHub Flavored Markdown (GFM)</td><td>GitHub, GitLab, Bitbucket, most code hosts</td><td>Tables, strikethrough, task lists, autolinking, fenced code with syntax hints.</td></tr>
+        <tr><td>MDX</td><td>Next.js, Astro, Docusaurus, modern doc sites</td><td>JSX components inline in Markdown.</td></tr>
+        <tr><td>Pandoc Markdown</td><td>Academic / publishing pipelines</td><td>Footnotes, citations, math, raw HTML/LaTeX blocks.</td></tr>
+        <tr><td>Obsidian Markdown</td><td>Obsidian, Foam, Bear</td><td><code>[[wikilinks]]</code>, <code>![[embeds]]</code>, <code>%%comments%%</code>, callouts.</td></tr>
+      </tbody>
+    </table>
+    <p>This converter outputs <strong>GitHub Flavored Markdown</strong>, the safest target for portability. It renders correctly in GitHub, GitLab, Astro, Next.js, Eleventy, Hugo, MkDocs, Docusaurus, and most of Notion's import.</p>
+
+    <h3>What survives the conversion — and what does not</h3>
+    <table class="ref-table">
+      <thead><tr><th>Source feature</th><th>Survives?</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Heading 1–6 (semantic)</td><td>Yes</td><td>Becomes <code>#</code>–<code>######</code>.</td></tr>
+        <tr><td>"Big bold text" used as a fake heading</td><td>No</td><td>Browser sees only bold; not a heading. Fix in source first.</td></tr>
+        <tr><td>Bold / italic / strikethrough</td><td>Yes</td><td>Maps to <code>**</code>, <code>*</code>, <code>~~</code>.</td></tr>
+        <tr><td>Bullet / numbered lists</td><td>Yes</td><td>Including nested, up to ~6 levels.</td></tr>
+        <tr><td>Hyperlinks</td><td>Yes</td><td>Becomes <code>[text](url)</code>.</td></tr>
+        <tr><td>Inline images</td><td>Partial</td><td>External URLs survive; <code>blob:</code> URLs do not (browser-session only).</td></tr>
+        <tr><td>Tables</td><td>Yes</td><td>Maps to GFM pipe tables.</td></tr>
+        <tr><td>Footnotes</td><td>No</td><td>Pandoc-only feature; add manually.</td></tr>
+        <tr><td>Comments / track changes</td><td>No</td><td>Word-specific, no Markdown equivalent.</td></tr>
+        <tr><td>Page breaks, page numbers</td><td>No</td><td>Markdown is flow-based, not paginated.</td></tr>
+        <tr><td>Embedded fonts / colors</td><td>No</td><td>Markdown is content, not presentation. Use a CSS theme.</td></tr>
+        <tr><td>LaTeX math</td><td>No</td><td>Renders as plain text. Wrap in <code>$…$</code> manually if your renderer supports it.</td></tr>
+        <tr><td>Mermaid diagrams</td><td>No</td><td>Re-author as <code>```mermaid</code> code blocks.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The "fake heading" problem — why headings disappear</h3>
+    <p>The single biggest source of "the headings didn't come through" complaints is that the source document used direct formatting (font size 24, bold) instead of paragraph styles (Heading 1, Heading 2). Browsers expose only what HTML semantics encode. Direct formatting becomes <code>&lt;span style="font-size: 24pt; font-weight: bold"&gt;…&lt;/span&gt;</code>, which is just bold text — not an <code>&lt;h1&gt;</code>.</p>
+    <p>The fix is structural, not cosmetic:</p>
+    <ul>
+      <li><strong>Word:</strong> Home → Styles → apply Heading 1 / Heading 2 / Heading 3 from the gallery.</li>
+      <li><strong>Google Docs:</strong> Format → Paragraph styles → Heading 1 / Heading 2.</li>
+      <li><strong>Notion:</strong> the slash-menu styles ("/h1", "/h2") already create real headings.</li>
+      <li><strong>Pages, LibreOffice, Quip:</strong> all expose paragraph-style menus.</li>
+    </ul>
+
+    <h3>Image handling — the trickiest part</h3>
+    <p>Pasted images can come in three forms, each with different conversion behavior:</p>
+    <ol>
+      <li><strong>External URL</strong> (<code>https://example.com/img.png</code>) — survives intact. The Markdown image points to the original URL.</li>
+      <li><strong>Base64 data URI</strong> (<code>data:image/png;base64,…</code>) — survives, but inflates the file size by ~33% and embeds the image in the Markdown. Useful for self-contained docs; bad for git.</li>
+      <li><strong>Browser blob URL</strong> (<code>blob:https://docs.google.com/…</code>) — only works in the browser session that created it. After conversion, these images break unless you save them locally first.</li>
+    </ol>
+    <p>The pragmatic workflow for Google Docs: download the document as <code>.html</code> (which packages images) and paste from there, or use Docs' "Download as Markdown" if it has been enabled in your workspace.</p>
+
+    <h3>Table conversion — the two formats and their limits</h3>
+    <p>The output uses GFM pipe tables:</p>
+    <pre><code>| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| cell     | cell     | cell     |</code></pre>
+    <p>Limitations to be aware of:</p>
+    <ul>
+      <li>No row spans, no col spans. Word/Google tables with merged cells degrade.</li>
+      <li>No nested block content (lists, paragraphs, code blocks) inside cells. Multi-line content collapses.</li>
+      <li>No table captions in CommonMark / GFM. Pandoc Markdown supports them; for portability, just precede the table with a paragraph.</li>
+    </ul>
+
+    <h3>Common Word-to-Markdown mistakes</h3>
+    <ul>
+      <li><strong>Pasting from a PDF reader.</strong> PDFs are visually-laid-out, not semantically-tagged. The "headings" you see are usually just larger fonts. Use a Word document or HTML source.</li>
+      <li><strong>Forgetting that smart quotes break code blocks.</strong> Word auto-replaces straight quotes with curly quotes; curly quotes inside <code>```code```</code> blocks break syntax highlighters. Run a final find-and-replace.</li>
+      <li><strong>Em-dashes mangling pre-formatted text.</strong> Word also rewrites <code>--</code> to <code>—</code>. Add it to the same find-and-replace pass.</li>
+      <li><strong>Trusting "convert to Markdown" extensions blindly.</strong> Many produce <code>&lt;br&gt;</code> tags inside paragraphs because the source had soft line-breaks. Strip them or run the output through a Markdown formatter.</li>
+      <li><strong>Mixing line-ending styles.</strong> Pasting from Windows Word adds <code>\r\n</code>. Most renderers tolerate it; some build tools (older Eleventy versions) trip up. Normalize to <code>\n</code> on save.</li>
+      <li><strong>Forgetting that Markdown is whitespace-sensitive.</strong> A paragraph break is two newlines; a list item needs the right indentation; nested code requires four spaces. Word produces consistent line breaks but unpredictable indentation.</li>
+    </ul>
+
+    <h3>Round-tripping — Markdown → Word → Markdown</h3>
+    <p>Sometimes you need to send a Markdown file to a non-technical stakeholder, get edits in Word, and convert back. Pandoc is the gold-standard tool for round-tripping:</p>
+    <pre><code># Markdown to Word
+pandoc input.md -o output.docx
+
+# Word back to Markdown
+pandoc input.docx -t gfm -o output.md</code></pre>
+    <p>Round-tripping is lossy: Word adds direct formatting, table styling, and font specifications that translate back imperfectly. Always diff before merging.</p>
+
+    <h3>The build-time conversion pipeline</h3>
+    <p>For doc teams that author in Notion or Confluence and ship to a static site, automation beats manual conversion:</p>
+    <ul>
+      <li><strong>Notion → Markdown:</strong> the <code>notion-to-md</code> npm package, or Notion's official Markdown export.</li>
+      <li><strong>Confluence → Markdown:</strong> <code>confluence-to-markdown</code> CLI, or Atlassian's "Export to HTML" + Pandoc.</li>
+      <li><strong>Google Docs → Markdown:</strong> the official "Export to Markdown" Workspace add-on (2024+) or <code>docs-to-markdown</code> Apps Script.</li>
+      <li><strong>Word → Markdown:</strong> Pandoc remains the canonical answer.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://spec.commonmark.org/" rel="noopener" target="_blank">CommonMark — the canonical Markdown spec</a></li>
+        <li><a href="https://github.github.com/gfm/" rel="noopener" target="_blank">GitHub Flavored Markdown specification</a></li>
+        <li><a href="https://pandoc.org/MANUAL.html" rel="noopener" target="_blank">Pandoc — universal document converter manual</a></li>
+        <li><a href="https://www.markdownguide.org/extended-syntax/" rel="noopener" target="_blank">Markdown Guide — extended syntax reference</a></li>
+        <li><a href="https://www.npmjs.com/package/turndown" rel="noopener" target="_blank">Turndown — the de-facto JS library for HTML → Markdown</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I convert a Word document to Markdown?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Open the document in Microsoft Word, Google Docs, or any rich-text editor, select all content with <code>Ctrl+A</code> (<code>Cmd+A</code> on Mac), copy with <code>Ctrl+C</code>, then paste into the rich-text panel above. The browser receives the formatting along with the text. Click <strong>Convert to Markdown</strong> and the tool walks the HTML DOM to produce clean Markdown with headings, bold/italic, links, lists, and tables preserved. No file upload needed.</div></div>
@@ -193,7 +302,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const SAMPLE_HTML=`<h1>Project Brief</h1>

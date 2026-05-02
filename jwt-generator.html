@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="JWT Generator — Sign Tokens Online Free Tool">
+  <meta name="twitter:description" content="Generate signed JWTs (HS256/HS384/HS512) for local testing. Custom header, payload, claims; client-side Web Crypto signing. Never sends data to a server.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="JWT Generator Online — Create JSON Web Tokens Free">
@@ -133,7 +133,7 @@
     <span class="tool-badge">Security</span>
     <h1>JWT Generator</h1>
     <p>Generate signed JSON Web Tokens with custom headers, payload claims and HMAC-SHA signing. Your secret key never leaves your browser — signing uses the Web Crypto API client-side.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool security engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -217,6 +217,140 @@
     </ul>
   </section>
 
+  <section class="article-section">
+    <h2>JWTs in production — the spec, the algorithms, and the attacks you need to know</h2>
+    <p>JSON Web Tokens are the connective tissue of modern auth. OAuth 2.0 access tokens, OpenID Connect ID tokens, AWS Cognito sessions, Auth0 sessions, Firebase Auth, Cloudflare Zero Trust, and every framework's "auth helper" all hand you JWTs. The spec is small (RFC 7519) and the format is elegant — but the historical CVEs against JWT implementations are extensive, and most of them are caused by misuse rather than spec flaws. This guide walks through the structure, the algorithm choices that matter, the alg=none and key-confusion attacks every junior backend engineer needs to know about, and the rotation patterns that production systems actually use.</p>
+
+    <h3>The structure — three Base64URL parts joined by dots</h3>
+    <p>A JWT is <code>header.payload.signature</code>, all Base64URL-encoded:</p>
+    <pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0IiwibmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code></pre>
+    <p>Decoded:</p>
+    <ul>
+      <li><strong>Header:</strong> <code>{ "alg": "HS256", "typ": "JWT" }</code> — algorithm and token type.</li>
+      <li><strong>Payload:</strong> <code>{ "sub": "1234", "name": "John", "iat": 1516239022 }</code> — the claims.</li>
+      <li><strong>Signature:</strong> HMAC-SHA256 of <code>base64url(header) + "." + base64url(payload)</code> with the shared secret.</li>
+    </ul>
+    <p>The payload is <strong>not encrypted</strong>. Anyone with the token can read its contents. The signature only proves the token has not been modified since it was issued.</p>
+
+    <h3>Standard claims (RFC 7519) — what each one is for</h3>
+    <table class="ref-table">
+      <thead><tr><th>Claim</th><th>Name</th><th>Type</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>iss</code></td><td>Issuer</td><td>string</td><td>Who signed the token. Verifiers should check this.</td></tr>
+        <tr><td><code>sub</code></td><td>Subject</td><td>string</td><td>The subject the claim is about (typically user ID).</td></tr>
+        <tr><td><code>aud</code></td><td>Audience</td><td>string or array</td><td>Who the token is for. Reject tokens not addressed to your service.</td></tr>
+        <tr><td><code>exp</code></td><td>Expiration</td><td>Unix seconds</td><td>Token rejected after this time. Required for any non-trivial use.</td></tr>
+        <tr><td><code>nbf</code></td><td>Not Before</td><td>Unix seconds</td><td>Token rejected before this time.</td></tr>
+        <tr><td><code>iat</code></td><td>Issued At</td><td>Unix seconds</td><td>When the token was issued.</td></tr>
+        <tr><td><code>jti</code></td><td>JWT ID</td><td>string</td><td>Unique identifier for the token (replay protection).</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Algorithm choices — pick deliberately</h3>
+    <table class="ref-table">
+      <thead><tr><th>Algorithm</th><th>Type</th><th>Key</th><th>When to use</th></tr></thead>
+      <tbody>
+        <tr><td>HS256</td><td>HMAC + SHA-256</td><td>Shared secret (≥ 256 bits)</td><td>Single service signs and verifies its own tokens.</td></tr>
+        <tr><td>HS384 / HS512</td><td>HMAC + SHA-384 / 512</td><td>≥ 384 / 512 bits</td><td>Same as HS256 with stronger hash.</td></tr>
+        <tr><td>RS256</td><td>RSA + SHA-256</td><td>2048-bit private key</td><td>Issuer signs, multiple consumers verify with the public key.</td></tr>
+        <tr><td>ES256</td><td>ECDSA P-256 + SHA-256</td><td>256-bit ECC key</td><td>Same as RS256, smaller signatures, faster on mobile.</td></tr>
+        <tr><td>EdDSA / Ed25519</td><td>Edwards-curve DSA</td><td>256-bit Ed25519 key</td><td>Modern default for new asymmetric setups (RFC 8037).</td></tr>
+        <tr><td>PS256</td><td>RSA-PSS + SHA-256</td><td>RSA key</td><td>RSA signatures with probabilistic padding (modern variant).</td></tr>
+        <tr><td>none</td><td>Unsigned</td><td>None</td><td><strong>Never accept</strong>. Spec allows it; safe libraries reject by default.</td></tr>
+      </tbody>
+    </table>
+    <p>The fork in the road is symmetric vs asymmetric:</p>
+    <ul>
+      <li><strong>HS* (symmetric)</strong> — same secret signs and verifies. Simpler, faster. Use only when one entity owns both ends.</li>
+      <li><strong>RS* / ES* / EdDSA (asymmetric)</strong> — private key signs, public key verifies. Required for any setup where the issuer and verifier are different services or where verifiers need to be untrusted (mobile clients, third-party APIs).</li>
+    </ul>
+
+    <h3>The classic JWT attacks — and how to defend</h3>
+    <ol>
+      <li><strong>alg: none</strong> — the attacker resigns the token with <code>alg: "none"</code> and sends it. Vulnerable libraries skip signature verification because the spec technically allowed unsigned tokens. <em>Defence: hard-code an allow-list of accepted algorithms; reject everything else, especially "none".</em></li>
+      <li><strong>Algorithm confusion (RS → HS)</strong> — server is configured for RS256 but accepts any algorithm. Attacker takes the public key (which is, well, public) and uses it as the HMAC secret with HS256. The signature now verifies because the library treats the public key as a shared secret. <em>Defence: tie the algorithm to the key type — never let HS algorithms verify with an RSA public key.</em></li>
+      <li><strong>Key confusion via <code>jku</code> / <code>jwk</code> headers</strong> — attacker sets a header that points the server at an attacker-controlled JWKS URL. <em>Defence: never trust <code>jku</code> / <code>jwk</code> / <code>x5u</code> / <code>kid</code> values from the token; resolve keys from a server-side allow-list.</em></li>
+      <li><strong>Long-lived tokens</strong> — leaked tokens give permanent access if they never expire. <em>Defence: short-lived access tokens (5–60 min) + refresh tokens.</em></li>
+      <li><strong>Replay across services</strong> — token signed for service A is replayed against service B (which trusts the same issuer). <em>Defence: enforce <code>aud</code> claim validation per service.</em></li>
+      <li><strong>Information leakage</strong> — sensitive data in payload because "it's signed". JWTs are not encrypted. <em>Defence: keep payload minimal; for confidential data, use JWE (encrypted JWT) or store server-side and reference by ID.</em></li>
+    </ol>
+
+    <h3>Token rotation — the production pattern</h3>
+    <p>Long-lived JWTs are an operational liability. The pattern that scales:</p>
+    <ol>
+      <li><strong>Access token:</strong> short-lived JWT (5–15 minutes). Sent on every request. Stateless verification.</li>
+      <li><strong>Refresh token:</strong> opaque random string (not a JWT). Long-lived (days to weeks). Stored server-side, can be revoked. Used to mint new access tokens.</li>
+      <li><strong>Refresh-token rotation:</strong> each refresh issues a new refresh token; the old one is invalidated. Detects token theft when a stolen refresh token is used after the legitimate one.</li>
+      <li><strong>Key rotation:</strong> sign new tokens with key 2; keep verifying old tokens with key 1 until they all expire. Use the <code>kid</code> header so verifiers know which key to use.</li>
+    </ol>
+
+    <h3>Verification in 6 languages — the safe way</h3>
+    <div class="lang-block"><strong>Node.js (jsonwebtoken):</strong><pre><code>const jwt = require('jsonwebtoken');
+const decoded = jwt.verify(token, secret, {
+  algorithms: ['HS256'],   // explicit allow-list — defends against alg=none
+  issuer: 'https://issuer.example.com',
+  audience: 'my-service'
+});</code></pre></div>
+    <div class="lang-block"><strong>Python (PyJWT):</strong><pre><code>import jwt
+decoded = jwt.decode(
+  token, secret,
+  algorithms=['HS256'],
+  issuer='https://issuer.example.com',
+  audience='my-service'
+)</code></pre></div>
+    <div class="lang-block"><strong>Go (golang-jwt/jwt v5):</strong><pre><code>parser := jwt.NewParser(jwt.WithValidMethods([]string{"HS256"}))
+token, err := parser.Parse(tokenStr, func(t *jwt.Token) (any, error) {
+    return secret, nil
+})</code></pre></div>
+    <div class="lang-block"><strong>Java (Auth0 java-jwt):</strong><pre><code>Algorithm alg = Algorithm.HMAC256(secret);
+JWTVerifier verifier = JWT.require(alg)
+    .withIssuer("https://issuer.example.com")
+    .withAudience("my-service")
+    .build();
+DecodedJWT jwt = verifier.verify(token);</code></pre></div>
+    <div class="lang-block"><strong>Rust (jsonwebtoken crate):</strong><pre><code>use jsonwebtoken::{decode, DecodingKey, Validation, Algorithm};
+let mut v = Validation::new(Algorithm::HS256);
+v.set_audience(&amp;["my-service"]);
+v.set_issuer(&amp;["https://issuer.example.com"]);
+let token = decode::&lt;Claims&gt;(token, &amp;DecodingKey::from_secret(secret), &amp;v)?;</code></pre></div>
+    <div class="lang-block"><strong>PHP (firebase/php-jwt):</strong><pre><code>use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+$decoded = JWT::decode($token, new Key($secret, 'HS256'));</code></pre></div>
+
+    <h3>JWE vs JWS — when you need encryption, not just signing</h3>
+    <p>JWS (JSON Web Signature) is what most people mean when they say "JWT" — payload is signed but readable. JWE (JSON Web Encryption, RFC 7516) wraps the payload in encrypted form so it cannot be read without the key. Use JWE when:</p>
+    <ul>
+      <li>You need to put PII in the token (legal/GDPR concern).</li>
+      <li>The token traverses untrusted intermediaries.</li>
+      <li>You want server-to-server data passing without a database round-trip.</li>
+    </ul>
+    <p>JWE has 5 parts (<code>header.encrypted-key.iv.ciphertext.tag</code>), is roughly 50% larger than JWS, and adds complexity. Default to JWS unless you have a specific reason for encryption.</p>
+
+    <h3>Common JWT mistakes</h3>
+    <ul>
+      <li><strong>Storing JWT in localStorage.</strong> Vulnerable to XSS. Use <code>httpOnly</code> cookies for browser sessions; use Authorization headers for API clients.</li>
+      <li><strong>Skipping issuer/audience validation.</strong> Just calling <code>jwt.verify(token, secret)</code> without checking <code>iss</code> and <code>aud</code> opens cross-service replay.</li>
+      <li><strong>Putting passwords or full user objects in the payload.</strong> Sub claim + lookup is the standard. Never put sensitive material in JWTs unless using JWE.</li>
+      <li><strong>Forgetting clock skew.</strong> Servers' clocks drift; <code>exp</code> validation should allow ±30–60 seconds of leeway.</li>
+      <li><strong>Using <code>HS256</code> with a 12-character secret.</strong> The minimum security level requires the secret to be at least as long as the hash output (256 bits = 32 random bytes for HS256).</li>
+      <li><strong>Hard-coding secrets in client code.</strong> Anyone with the secret can forge tokens. Secrets live in env vars on the server, never in the bundle.</li>
+      <li><strong>Treating JWT logout as "delete the cookie".</strong> A copy of the token may exist in a tab, in monitoring, in a logger. Real logout requires server-side token blacklist or short expiry + refresh rotation.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc7519" rel="noopener" target="_blank">RFC 7519 — JSON Web Token (JWT)</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc7515" rel="noopener" target="_blank">RFC 7515 — JSON Web Signature (JWS)</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc7516" rel="noopener" target="_blank">RFC 7516 — JSON Web Encryption (JWE)</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc8725" rel="noopener" target="_blank">RFC 8725 — JWT Best Current Practices</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" rel="noopener" target="_blank">OWASP — JWT Security Cheat Sheet</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a JSON Web Token (JWT) and what are its parts?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A JWT is a compact, URL-safe token defined by RFC 7519 for securely transmitting claims between two parties. It has three Base64URL-encoded parts separated by dots: the <strong>Header</strong> (algorithm and token type), the <strong>Payload</strong> (claims like <code>iss</code>, <code>sub</code>, <code>exp</code>, <code>iat</code>), and the <strong>Signature</strong> (HMAC or RSA signature of the header and payload). JWTs are widely used in OAuth 2.0, OpenID Connect, and stateless API authentication.</div></div>
@@ -235,7 +369,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 function b64url(str){return btoa(str).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}

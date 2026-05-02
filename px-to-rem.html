@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="PX to REM Converter — Free CSS Unit Tool">
+  <meta name="twitter:description" content="Bidirectional px ↔ rem ↔ em converter. Custom base font size, reference table, CSS variables export. Free, browser-only, no signup.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="PX to REM Converter — Free Pixel to REM/EM Tool">
@@ -153,7 +153,7 @@
     <span class="tool-badge">CSS</span>
     <h1>PX to REM Converter</h1>
     <p>This px to rem converter turns any pixel value into the equivalent rem (and em) unit instantly, with a live bidirectional calculator: type in pixels and see rem, or type in rem and see pixels. Change the base font size and the reference table below updates in real time. The default base is 16px — the browser standard — but you can enter 10px, 14px, or any custom root value your design system uses. Click any cell in the reference grid to copy its value. A one-click CSS variables export generates a ready-to-paste :root block with a standard typography scale.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -215,6 +215,129 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>CSS units explained — px, em, rem, %, vw, vh, ch, and which to use where</h2>
+    <p>"Should I use px, em, or rem?" is a question every CSS author hits in their first month and still hits ten years later for new edge cases. The answer is not "rem for everything" — different units exist because different jobs demand different scaling behaviour. This guide is the working reference: how each unit is defined, the formula for converting between them, the accessibility argument for rem-based typography (it is a real WCAG requirement, not an opinion), and the modern viewport-relative units that ship in every evergreen browser.</p>
+
+    <h3>Absolute vs relative units</h3>
+    <table class="ref-table">
+      <thead><tr><th>Unit</th><th>Defined as</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td><code>px</code></td><td>1/96 of an inch (CSS reference pixel — not the device pixel)</td><td>Hairline borders, shadow offsets, exact-pixel icons.</td></tr>
+        <tr><td><code>em</code></td><td>Current element's computed <code>font-size</code></td><td>Padding, gap, border-radius that should scale with local text.</td></tr>
+        <tr><td><code>rem</code></td><td>Root element's <code>font-size</code> (typically 16 px)</td><td>Typography, spacing scale, breakpoints.</td></tr>
+        <tr><td><code>%</code></td><td>Parent dimension (depends on property)</td><td>Fluid layouts, image sizing.</td></tr>
+        <tr><td><code>vw / vh</code></td><td>1% of viewport width / height</td><td>Hero sections, full-bleed components.</td></tr>
+        <tr><td><code>svw / svh / lvw / lvh / dvw / dvh</code></td><td>Small / large / dynamic viewport (mobile-aware, 2022+)</td><td>Mobile UI that has to dodge the URL bar.</td></tr>
+        <tr><td><code>ch</code></td><td>Width of "0" character in current font</td><td>Reading-width constraints (<code>max-width: 65ch</code>).</td></tr>
+        <tr><td><code>ex</code></td><td>x-height of current font</td><td>Vertical alignment of inline icons.</td></tr>
+        <tr><td><code>cap</code></td><td>Capital letter height</td><td>Cap-aligned drop caps and badges.</td></tr>
+        <tr><td><code>fr</code></td><td>Fraction of available space (Grid only)</td><td>Grid track sizing.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The conversion formulas</h3>
+    <p>Given a default 16 px root and 16 px parent:</p>
+    <ul>
+      <li><code>rem = px / root_font_size</code></li>
+      <li><code>em = px / parent_font_size</code></li>
+      <li><code>px = rem × root_font_size</code></li>
+      <li><code>px = em × parent_font_size</code></li>
+    </ul>
+    <p>Worked examples for the standard 16 px root:</p>
+    <table class="ref-table">
+      <thead><tr><th>px</th><th>rem (16 px root)</th><th>rem (10 px root)</th><th>Use</th></tr></thead>
+      <tbody>
+        <tr><td>12 px</td><td>0.75 rem</td><td>1.2 rem</td><td>Caption / fine print</td></tr>
+        <tr><td>14 px</td><td>0.875 rem</td><td>1.4 rem</td><td>Secondary text</td></tr>
+        <tr><td>16 px</td><td>1 rem</td><td>1.6 rem</td><td>Body text — never go below in 2026</td></tr>
+        <tr><td>18 px</td><td>1.125 rem</td><td>1.8 rem</td><td>Lead paragraph</td></tr>
+        <tr><td>24 px</td><td>1.5 rem</td><td>2.4 rem</td><td>H4 / subhead</td></tr>
+        <tr><td>32 px</td><td>2 rem</td><td>3.2 rem</td><td>H2 / section heading</td></tr>
+        <tr><td>48 px</td><td>3 rem</td><td>4.8 rem</td><td>H1 / hero heading</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Why rem-based typography is a WCAG requirement, not a preference</h3>
+    <p>WCAG 2.1 Success Criterion <strong>1.4.4 Resize Text</strong> requires that text can be scaled up to 200% without loss of content or functionality. Browsers implement this through two mechanisms:</p>
+    <ol>
+      <li><strong>Page zoom (Ctrl++):</strong> scales everything, regardless of unit. Pixels included.</li>
+      <li><strong>Default font size preference:</strong> changes the root font size from 16 px to whatever the user picked in browser settings. <em>Only rem and em-based values respect this.</em> Pixel-based values stay frozen.</li>
+    </ol>
+    <p>Roughly 4% of users override their default browser font size. A site authored in pure pixels ignores them entirely — text stays the same physical size when the user has explicitly told the browser they need it larger. This is the single strongest argument for rem-based typography in production code.</p>
+
+    <h3>The 62.5% trick — making rem math easier</h3>
+    <p>Many design systems use this idiom:</p>
+    <pre><code>html {
+  font-size: 62.5%;   /* 10 px on a default 16 px root */
+}
+body {
+  font-size: 1.6rem;  /* 16 px — restore default body size */
+}</code></pre>
+    <p>Now the rem math is trivial: 1 rem = 10 px, 1.6 rem = 16 px, 2 rem = 20 px. The percentage form is critical — using <code>html { font-size: 10px }</code> instead breaks user font-size preferences. With <code>62.5%</code>, the result still scales when a user bumps their default to 20 px (yielding a 12.5 px effective root rather than ignoring the preference entirely).</p>
+
+    <h3>When to use em instead of rem</h3>
+    <p>Em is the right choice when you want a value to scale with its <em>local</em> context, not the document root:</p>
+    <ul>
+      <li><strong>Component padding</strong> on a button: <code>padding: .5em 1em</code> grows when you bump the button font size to make a "large" variant.</li>
+      <li><strong>Border-radius on cards</strong>: <code>border-radius: .5em</code> stays proportional whether the card is heading-sized or body-sized.</li>
+      <li><strong>Inline icons sized to match adjacent text</strong>: <code>height: 1em; width: 1em</code> tracks the text exactly.</li>
+      <li><strong>Vertical rhythm</strong> in a single component: <code>margin-bottom: 1em</code> = "one line of space below".</li>
+    </ul>
+    <p>The trap with em: nesting compounds. A 1.5 em heading inside a 1.2 em parent inside a 1.1 em grandparent computes to 1.5 × 1.2 × 1.1 = 1.98 em — almost double. Use rem when you want to opt out of this compounding.</p>
+
+    <h3>Modern viewport-relative units — vw, vh, and the new dvh family</h3>
+    <p>Mobile browsers have a long-running headache: the URL bar appears and disappears as the user scrolls. The original <code>100vh</code> meant "full viewport height", but on mobile that height changes by ~50 px during scroll, causing layout thrash. The 2022+ solution shipped three new variants:</p>
+    <ul>
+      <li><code>svh</code> — small viewport height (URL bar visible). Always the smaller value.</li>
+      <li><code>lvh</code> — large viewport height (URL bar hidden). Always the larger value.</li>
+      <li><code>dvh</code> — dynamic viewport height. Updates as the URL bar moves. Use this for "fill the screen" containers.</li>
+    </ul>
+    <p>The corresponding width variants (svw, lvw, dvw) follow the same pattern. As of 2026 these are supported in every evergreen browser; for mobile-first hero sections, <code>min-height: 100dvh</code> is the modern replacement for <code>min-height: 100vh</code>.</p>
+
+    <h3>The container query unit (cqw, cqh) — viewport-relative for components</h3>
+    <p>CSS Container Queries (2023) introduced a new family of units that resolve against the nearest container, not the viewport:</p>
+    <ul>
+      <li><code>cqw / cqh</code> — 1% of container width / height.</li>
+      <li><code>cqi / cqb</code> — 1% of container inline / block size (writing-direction-aware).</li>
+      <li><code>cqmin / cqmax</code> — smaller / larger of cqi and cqb.</li>
+    </ul>
+    <p>Use case: a card component where font-size scales with the card's width, regardless of where the card lands. <code>font-size: clamp(1rem, 4cqi, 1.5rem)</code> caps the responsive growth.</p>
+
+    <h3>Common px / rem / em mistakes</h3>
+    <ul>
+      <li><strong>Setting <code>html { font-size: 10px }</code> instead of <code>62.5%</code>.</strong> Breaks the user's accessibility font-size preference.</li>
+      <li><strong>Using rem for media query breakpoints when paired with a px root and unaware of <code>min-width</code> resolution.</strong> Modern browsers do the right thing; older Safari versions had bugs. Em-based breakpoints are still safer.</li>
+      <li><strong>Mixing rem and px without a system.</strong> If half your spacing is rem and half is px, refactoring becomes a manual scan of every file.</li>
+      <li><strong>Using vw for body font size.</strong> Text becomes ~12 px on phones and ~30 px on TVs. Use <code>clamp()</code> with both rem and vw bounds.</li>
+      <li><strong>Using <code>height: 100vh</code> on mobile heroes.</strong> The URL bar makes that taller than the screen. Use <code>100dvh</code>.</li>
+      <li><strong>Forgetting that <code>min-width</code> media queries match in computed pixels.</strong> If you write <code>@media (min-width: 48rem)</code> and a user has a 20 px root, the breakpoint hits at 960 px, not 768 px — desired behaviour, but surprising.</li>
+    </ul>
+
+    <h3>Build pipeline integrations — automating the conversion</h3>
+    <table class="ref-table">
+      <thead><tr><th>Stack</th><th>How to handle conversion</th></tr></thead>
+      <tbody>
+        <tr><td>Tailwind CSS</td><td>Default spacing scale is rem-based; <code>w-4</code> = 1 rem.</td></tr>
+        <tr><td>PostCSS</td><td><code>postcss-pxtorem</code> rewrites all px to rem at build time.</td></tr>
+        <tr><td>SCSS / Less</td><td><code>@function px-to-rem($px) { @return ($px / 16) * 1rem; }</code></td></tr>
+        <tr><td>Figma → code</td><td>Locofy, Builder.io, and StyleX exporters emit rem.</td></tr>
+        <tr><td>shadcn/ui, Radix, Material UI</td><td>Default to rem-based tokens.</td></tr>
+      </tbody>
+    </table>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://drafts.csswg.org/css-values/#lengths" rel="noopener" target="_blank">CSS Values and Units Module Level 4 — Lengths</a></li>
+        <li><a href="https://www.w3.org/TR/WCAG21/#resize-text" rel="noopener" target="_blank">WCAG 2.1 — Success Criterion 1.4.4 Resize Text</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/length" rel="noopener" target="_blank">MDN — &lt;length&gt; CSS data type</a></li>
+        <li><a href="https://web.dev/articles/viewport-units" rel="noopener" target="_blank">web.dev — The new viewport units (svh, lvh, dvh)</a></li>
+        <li><a href="https://every-layout.dev/" rel="noopener" target="_blank">Every Layout — em vs rem in component design</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the formula to convert px to rem?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The formula is <code>rem = pixels / root-font-size</code>. By default browsers render the root element (<code>html</code>) at 16px, so 16px equals 1rem, 24px equals 1.5rem, and 32px equals 2rem. If a design system sets <code>html { font-size: 10px }</code>, the math becomes simpler — 10px equals 1rem and each 10px step is 1rem — but that approach can break user accessibility settings, so most teams stick with the 16px default and do conversion in their build tooling or with a tool like this.</div></div>
@@ -236,7 +359,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const COMMON_SIZES=[10,12,14,16,18,20,24,28,32,40,48,64,80,96];
