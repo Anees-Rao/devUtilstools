@@ -209,6 +209,7 @@
         </a>
       </div>
     </div>
+    <a href="/guides">Guides</a>
     <a href="about">About</a>
     <a href="privacy">Privacy</a>
   </div>
@@ -751,11 +752,14 @@ sha256sum -c sha256sums.txt   # checks all files listed
   </section>
   <section class="all-tools-section" aria-label="Browse all FreeDevTool developer tools">
     <h2>Browse all 50 free developer tools</h2>
-    <p class="atc-sub">All tools are free, run entirely in your browser, and require no signup.</p>
+    <p class="atc-sub">All tools run in your browser, no signup required, nothing sent to a server.</p>
     <div class="all-tools-grid">
-      <div class="atc-col">
-        <h3>Encoding &amp; Conversion</h3>
-        <ul>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">b64</div>
+          <div class="atc-cat-title"><h3>Encoding &amp; Conversion</h3><span class="atc-cat-count">11 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/base64-encoder">Base64 Encoder / Decoder</a></li>
           <li><a href="/base64-image">Image to Base64</a></li>
           <li><a href="/byte-converter">Byte Converter (KB / MB / GB)</a></li>
@@ -769,9 +773,12 @@ sha256sum -c sha256sums.txt   # checks all files listed
           <li><a href="/yaml-to-json">YAML to JSON Converter</a></li>
         </ul>
       </div>
-      <div class="atc-col">
-        <h3>Formatting &amp; Generators</h3>
-        <ul>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">{ }</div>
+          <div class="atc-cat-title"><h3>Formatting &amp; Generators</h3><span class="atc-cat-count">13 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/color-name">Color Name from Hex</a></li>
           <li><a href="/color-picker">Color Palette Picker</a></li>
           <li><a href="/css-box-shadow">CSS Box Shadow</a></li>
@@ -787,9 +794,12 @@ sha256sum -c sha256sums.txt   # checks all files listed
           <li><a href="/xml-formatter">XML Formatter</a></li>
         </ul>
       </div>
-      <div class="atc-col">
-        <h3>Minifiers &amp; DevOps</h3>
-        <ul>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">JS</div>
+          <div class="atc-cat-title"><h3>Minifiers &amp; DevOps</h3><span class="atc-cat-count">6 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/chmod-calculator">chmod Calculator</a></li>
           <li><a href="/cron-parser">Cron Expression Parser</a></li>
           <li><a href="/css-minifier">CSS Minifier</a></li>
@@ -797,16 +807,24 @@ sha256sum -c sha256sums.txt   # checks all files listed
           <li><a href="/js-minifier">JavaScript Minifier</a></li>
           <li><a href="/http-status">HTTP Status Codes</a></li>
         </ul>
-        <h3 style="margin-top:18px">Security &amp; Hashing</h3>
-        <ul>
+      </div>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">#</div>
+          <div class="atc-cat-title"><h3>Security &amp; Hashing</h3><span class="atc-cat-count">3 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/hash-generator">Hash Generator (MD5, SHA)</a></li>
           <li><a href="/jwt-decoder">JWT Decoder</a></li>
           <li><a href="/jwt-generator">JWT Generator</a></li>
         </ul>
       </div>
-      <div class="atc-col">
-        <h3>Code &amp; Text</h3>
-        <ul>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">.*</div>
+          <div class="atc-cat-title"><h3>Code &amp; Text</h3><span class="atc-cat-count">8 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/ai-token-counter">AI Token Counter</a></li>
           <li><a href="/char-counter">Character &amp; Word Counter</a></li>
           <li><a href="/git-cheatsheet">Git Commands Cheatsheet</a></li>
@@ -817,21 +835,34 @@ sha256sum -c sha256sums.txt   # checks all files listed
           <li><a href="/wcag-contrast">WCAG Contrast Checker</a></li>
         </ul>
       </div>
-      <div class="atc-col">
-        <h3>Network &amp; APIs</h3>
-        <ul>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">IP</div>
+          <div class="atc-cat-title"><h3>Network &amp; APIs</h3><span class="atc-cat-count">3 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/dns-lookup">DNS Lookup</a></li>
           <li><a href="/http-request-builder">HTTP Request Builder</a></li>
           <li><a href="/ip-lookup">IP Address Lookup</a></li>
         </ul>
-        <h3 style="margin-top:18px">Time &amp; Dates</h3>
-        <ul>
+      </div>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">⏱</div>
+          <div class="atc-cat-title"><h3>Time &amp; Dates</h3><span class="atc-cat-count">3 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/relative-time">Relative Time Calculator</a></li>
           <li><a href="/timestamp-diff">Timestamp Diff</a></li>
           <li><a href="/unix-timestamp-converter">Unix Timestamp Converter</a></li>
         </ul>
-        <h3 style="margin-top:18px">SEO &amp; Meta</h3>
-        <ul>
+      </div>
+      <div class="atc-cat">
+        <div class="atc-cat-head">
+          <div class="atc-cat-icon">SEO</div>
+          <div class="atc-cat-title"><h3>SEO &amp; Meta</h3><span class="atc-cat-count">3 tools</span></div>
+        </div>
+        <ul class="atc-list">
           <li><a href="/meta-tag-generator">Meta Tag Generator</a></li>
           <li><a href="/og-preview">Open Graph Preview</a></li>
           <li><a href="/slug-generator">URL Slug Generator</a></li>
