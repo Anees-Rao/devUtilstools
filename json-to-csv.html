@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON to CSV Converter Online — Convert JSON to CSV Free | FreeDevTool</title>
-  <meta name="description" content="Convert JSON data to CSV format instantly. Handles arrays of objects, nested JSON, and custom delimiters. Download as CSV file for Excel or Google Sheets. Free, no signup.">
+  <title>JSON to CSV Converter Online — Excel-Ready Download Free | FreeDevTool</title>
+  <meta name="description" content="Free JSON to CSV converter. Flatten nested JSON, custom delimiters, RFC 4180 quoting, UTF-8 BOM for Excel. Download as .csv. Runs in browser, no signup.">
+  <meta name="keywords" content="json to csv, json csv converter, convert json to spreadsheet, json to excel, nested json flatten, RFC 4180, json to xlsx, json array csv">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/json-to-csv">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,9 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="JSON to CSV Converter — Excel-Ready | FreeDevTool">
+  <meta name="twitter:description" content="Convert JSON arrays to CSV. Flatten nested objects. UTF-8 BOM for Excel. Runs in browser, no signup.">
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="JSON to CSV Converter — Free Online Tool">
@@ -114,7 +116,7 @@
 
   <div class="tool-header">
     
-<div class="tool-badge">Data Tool</div><h1>JSON to CSV Converter</h1><p class="tool-description">Convert JSON arrays of objects to CSV format instantly. This free online tool extracts column headers from JSON keys, flattens nested objects using dot notation, and generates a downloadable CSV file ready for Excel, Google Sheets, or data analysis. Handles large datasets client-side — your data never leaves your browser. Supports custom delimiters and handles edge cases like commas and quotes in values per RFC 4180.</p></div>
+<div class="tool-badge">Data Tool</div><h1>JSON to CSV Converter Online — Excel-Ready</h1><p class="tool-description">Convert JSON arrays of objects to CSV format. Auto-extracts column headers from JSON keys, flattens nested objects with <strong>dot notation</strong>, escapes commas/quotes/newlines per <a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener" style="color:var(--accent)">RFC 4180</a>, optionally prepends UTF-8 BOM for Excel compatibility. Custom delimiters (comma, tab, semicolon). Handles large datasets entirely client-side — sensitive customer data never leaves your browser.</p><span class="last-updated">Last updated: May 2026</span></div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">json-to-csv.tool</span></div>
     <div class="tool-body">
@@ -137,6 +139,268 @@
       <div class="stats-row" id="stats" style="display:none"></div>
     </div>
   </div>
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What is CSV and why convert JSON to it?</h2>
+      <p><strong>CSV (Comma-Separated Values)</strong> is the lingua franca of tabular data. Defined informally for decades and standardized in <a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener">RFC 4180</a> (2005), CSV is a flat-text format where each line is a row and each row contains comma-separated values. It opens natively in Excel, Google Sheets, Numbers, every analytics tool, and every database import wizard. Its simplicity is its superpower — you can read a CSV in any text editor.</p>
+      <p>JSON is hierarchical (nested objects, arrays, mixed types); CSV is flat (rows × columns of strings). Converting between them is one of the most common data tasks in 2026:</p>
+      <ul>
+        <li><strong>API responses → spreadsheets</strong> — fetch from a JSON API, hand a CSV to your finance team.</li>
+        <li><strong>Database exports → analysis</strong> — most databases export to JSON; analysts want CSV.</li>
+        <li><strong>Bulk imports</strong> — migrating 10,000 records into a new system that only accepts CSV uploads.</li>
+        <li><strong>Reporting</strong> — JSON event logs → CSV for stakeholders to filter in Excel.</li>
+        <li><strong>Data science prep</strong> — Pandas, R, and BigQuery all happily ingest CSV; nested JSON requires preprocessing.</li>
+      </ul>
+      <p>The conversion is conceptually simple — extract the keys, write headers, write each object as a row — but the devil is in the details: nested objects, mixed schemas, commas inside values, Unicode, and Excel's many CSV quirks.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>The CSV format — RFC 4180 in plain English</h2>
+      <p>The "informal" CSV spec is full of dialects, but RFC 4180 codifies the most-compatible rules. Follow these and your CSV will work in 99% of consumers:</p>
+
+      <ul>
+        <li><strong>Each record on its own line</strong>, terminated by CRLF (<code>\r\n</code>). Lone <code>\n</code> works in most modern parsers but RFC says CRLF.</li>
+        <li><strong>Fields separated by commas</strong>. (Some "CSV" files actually use semicolons, tabs, or pipes — those are TSV/SSV, not strict CSV.)</li>
+        <li><strong>Optional header line</strong> as the first record.</li>
+        <li><strong>Fields containing commas, double-quotes, or line breaks must be quoted</strong> with double quotes. <code>Smith, John</code> → <code>"Smith, John"</code>.</li>
+        <li><strong>Double-quotes inside quoted fields must be escaped by doubling them.</strong> <code>She said "hi"</code> → <code>"She said ""hi"""</code>.</li>
+        <li><strong>No trailing comma</strong> at end of row (some parsers tolerate it; many don't).</li>
+        <li><strong>UTF-8 is the modern encoding.</strong> But Microsoft Excel on Windows defaults to system encoding (Windows-1252) unless you prepend a UTF-8 BOM.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Flattening nested JSON — three approaches</h2>
+      <p>The hard problem in JSON→CSV is what to do with nested objects and arrays. CSV is flat; JSON isn't. Three common strategies:</p>
+
+      <h3>1. Dot-notation flattening (default for this tool)</h3>
+      <p>Walk the JSON tree, joining keys with dots. <code>{user: {name: "Alice", address: {city: "NYC"}}}</code> becomes columns <code>user.name</code> and <code>user.address.city</code>. Works for moderately nested data; column names get unwieldy past 3 levels deep.</p>
+
+      <h3>2. Stringify-arrays</h3>
+      <p>For arrays, serialize the entire array as a JSON string in a single cell: <code>{tags: ["a","b","c"]}</code> → <code>tags</code> column with value <code>["a","b","c"]</code>. Loses tabular nature but preserves data.</p>
+
+      <h3>3. Cartesian-product expansion (one-to-many)</h3>
+      <p>For arrays of objects, emit one row per array item. <code>{user: "Alice", orders: [{id: 1}, {id: 2}]}</code> becomes 2 rows, both with <code>user=Alice</code>, but different <code>orders.id</code> values. Useful for joining order line items to orders.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Strategy</th><th>Best for</th><th>Trade-off</th></tr></thead>
+        <tbody>
+          <tr><td>Dot notation</td><td>Nested objects (configs, profile fields)</td><td>Long column names; lossy on arrays</td></tr>
+          <tr><td>Stringify arrays</td><td>Mixed nested data, machine-only consumers</td><td>Cell contains JSON, not human-readable</td></tr>
+          <tr><td>Cartesian expansion</td><td>One-to-many relationships (orders → line items)</td><td>Repeats parent data on every row</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>The Excel CSV gotchas — what trips everyone up</h2>
+
+      <h3>1. UTF-8 without BOM = corrupted accents</h3>
+      <p>Open a UTF-8 CSV in Microsoft Excel on Windows: accented characters like <code>é</code> show up as <code>Ã©</code>. The fix is a 3-byte BOM (<code>0xEF 0xBB 0xBF</code>) at the start of the file. Mac Excel and Google Sheets handle UTF-8 natively; Windows Excel needs the BOM. <strong>Most online JSON-to-CSV tools forget this.</strong> This one prepends the BOM by default.</p>
+
+      <h3>2. Date columns lose precision</h3>
+      <p>Dates that look like <code>2026-05-02</code> get auto-converted by Excel to its native serial number. Dates with leading zeros (<code>"01-02-2026"</code>) might be reformatted as <code>"1/2/2026"</code>. <strong>Workaround:</strong> prepend dates with a tab character (<code>\t2026-05-02</code>) or wrap in <code>="2026-05-02"</code> formula syntax to force string interpretation.</p>
+
+      <h3>3. Number formatting</h3>
+      <p>Long numbers like phone numbers or credit card numbers get scientific-notation'd in Excel. <code>4117234567890</code> → <code>4.11723E+12</code>. Same workaround: <code>="4117234567890"</code> in the cell forces string.</p>
+
+      <h3>4. Locale-specific delimiter conflicts</h3>
+      <p>European Excel installs default to <strong>semicolon</strong> as the CSV delimiter (because comma is the decimal separator in those locales). A US-format CSV with commas will appear as a single mangled column. <strong>Workaround:</strong> use the SEP indicator: prepend the file with <code>sep=,\n</code> on the first line, and Excel will respect it regardless of locale.</p>
+
+      <h3>5. Leading equals sign</h3>
+      <p>Excel treats values starting with <code>=</code>, <code>+</code>, <code>-</code>, <code>@</code> as formulas — including dangerous ones. A CSV cell containing <code>=cmd|'/c calc'!A1</code> can launch the Calculator app on Windows when the user opens the file. This is <strong>CSV injection</strong>, a real attack vector. <strong>Workaround:</strong> prefix any string starting with these chars with a single tick: <code>'=username</code>.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>JSON to CSV in 8 programming languages</h2>
+
+      <h3>JavaScript / Node.js</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Vanilla JS for simple cases
+function jsonToCsv(arr) {
+  const headers = [...new Set(arr.flatMap(o =&gt; Object.keys(o)))];
+  const rows = arr.map(o =&gt;
+    headers.map(h =&gt; JSON.stringify(o[h] ?? '')).join(',')
+  );
+  return [headers.join(','), ...rows].join('\n');
+}
+
+// Or use a library: csv-stringify, papaparse, json-2-csv
+import { stringify } from 'csv-stringify/sync';
+const csv = stringify(arr, { header: true });
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import csv, json
+
+with open('data.json') as f:
+    data = json.load(f)
+
+# Auto-detect headers from first object
+fieldnames = list(data[0].keys()) if data else []
+
+with open('out.csv', 'w', newline='', encoding='utf-8-sig') as f:  # 'utf-8-sig' adds BOM
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(data)
+
+# Pandas approach for nested data
+import pandas as pd
+df = pd.json_normalize(data)  # auto-flattens dot notation
+df.to_csv('out.csv', index=False, encoding='utf-8-sig')
+</code></pre>
+      </div>
+
+      <h3>jq (command-line JSON processor)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">jq</div>
+<pre><code># Convert array of objects to CSV
+jq -r '(.[0] | keys_unsorted) as $keys | $keys, map([.[ $keys[] ]])[] | @csv' data.json
+
+# Custom column selection
+jq -r '.[] | [.name, .age, .email] | @csv' data.json
+
+# With headers
+echo '"name","age","email"'; jq -r '.[] | [.name,.age,.email] | @csv' data.json
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import (
+    "encoding/csv"
+    "encoding/json"
+    "os"
+)
+
+var data []map[string]interface{}
+json.Unmarshal(jsonBytes, &amp;data)
+
+f, _ := os.Create("out.csv")
+defer f.Close()
+f.WriteString("\xEF\xBB\xBF")  // UTF-8 BOM for Excel
+w := csv.NewWriter(f)
+defer w.Flush()
+
+// Write headers
+headers := []string{"name", "age", "email"}
+w.Write(headers)
+
+// Write rows
+for _, item := range data {
+    row := []string{
+        fmt.Sprint(item["name"]),
+        fmt.Sprint(item["age"]),
+        fmt.Sprint(item["email"]),
+    }
+    w.Write(row)
+}
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>$data = json_decode(file_get_contents('data.json'), true);
+
+$fp = fopen('out.csv', 'w');
+fwrite($fp, "\xEF\xBB\xBF");  // UTF-8 BOM
+
+// Headers
+fputcsv($fp, array_keys($data[0]));
+
+// Rows
+foreach ($data as $row) {
+    fputcsv($fp, $row);
+}
+fclose($fp);
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'json'
+require 'csv'
+
+data = JSON.parse(File.read('data.json'))
+
+CSV.open('out.csv', 'w', write_headers: true,
+         headers: data.first.keys, encoding: 'bom|utf-8') do |csv|
+  data.each { |row| csv &lt;&lt; row.values }
+end
+</code></pre>
+      </div>
+
+      <h3>Bash / awk</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># With jq + miller (if installed)
+jq -r 'map([.name, .age, .email] | @csv)[]' data.json &gt; out.csv
+
+# Excel-friendly: prepend BOM
+printf '\xEF\xBB\xBF' &gt; out.csv
+jq -r '(map(keys_unsorted) | add | unique) as $k |
+       ($k | @csv), (.[] | [.[$k[]]] | @csv)' data.json &gt;&gt; out.csv
+</code></pre>
+      </div>
+
+      <h3>Excel / Power Query (no code)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">excel</div>
+<pre><code># Excel 365 / 2019+:
+# Data tab → Get Data → From File → From JSON
+# → Select your .json file
+# → Power Query opens with auto-flattened columns
+# → Click "Close & Load" — JSON is now a sheet
+
+# This handles nested objects via Power Query's transformations,
+# without manually flattening</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Common JSON-to-CSV mistakes</h2>
+      <ul>
+        <li><strong>Forgetting the BOM for Excel.</strong> The #1 reported issue. Always prepend <code>\xEF\xBB\xBF</code> for Windows Excel users.</li>
+        <li><strong>Not escaping commas/quotes inside cells.</strong> A field <code>Hello, world</code> without quoting splits into 2 cells. Always use a real CSV writer, not string concatenation.</li>
+        <li><strong>Mixed schema across array.</strong> Object 1 has <code>{a, b}</code>, object 2 has <code>{a, c}</code>. Naive flattening uses object 1's keys and drops <code>c</code>. Compute headers as the union of all keys.</li>
+        <li><strong>Date / number coercion in Excel.</strong> Phone numbers as scientific notation. Dates reformatted. Pre-quote with <code>=</code>-syntax or tab prefix.</li>
+        <li><strong>Treating <code>null</code> and <code>""</code> the same.</strong> CSV has no null. Pick a convention: empty cell, <code>NULL</code> string, or distinguish via separate flag column.</li>
+        <li><strong>Nested arrays serialized inconsistently.</strong> Sometimes <code>JSON.stringify</code>, sometimes <code>;</code>-separated. Pick one.</li>
+        <li><strong>CSV injection.</strong> A user-supplied field starting with <code>=</code> can execute formulas in Excel. Prefix with <code>'</code> for safety.</li>
+        <li><strong>Wrong line endings.</strong> Mixed <code>\n</code> and <code>\r\n</code> across rows. Use the platform's CSV writer to pick consistently.</li>
+        <li><strong>Forgotten encoding.</strong> Windows-1252 vs UTF-8 vs ISO-8859-1. Always use UTF-8 with BOM for cross-platform compatibility.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Best practices</h2>
+      <ul>
+        <li><strong>Always emit UTF-8 with BOM</strong> when the file might open in Excel.</li>
+        <li><strong>Use a real CSV library</strong>, not string concatenation. The escaping rules are subtle.</li>
+        <li><strong>Compute headers from the union of all keys</strong>, not just the first object's keys. Mixed schemas are common in real data.</li>
+        <li><strong>Document your nested-data strategy.</strong> Dot notation? Stringify arrays? Cartesian expansion? Pick one and document so consumers know what to expect.</li>
+        <li><strong>Quote dates and IDs.</strong> Excel auto-converts otherwise. Wrap in <code>="..."</code> formula syntax for hard preservation.</li>
+        <li><strong>Sanitize formula triggers.</strong> Prefix any string starting with <code>=</code>, <code>+</code>, <code>-</code>, <code>@</code> with a tick to prevent CSV injection.</li>
+        <li><strong>For huge datasets, stream don't accumulate.</strong> Build CSV row-by-row to avoid loading everything into memory.</li>
+        <li><strong>Test the round-trip.</strong> Convert JSON → CSV → JSON and verify equivalence. Catches escaping and encoding bugs early.</li>
+        <li><strong>Consider Parquet or NDJSON for large datasets.</strong> CSV's flat schema and lack of types make it a poor archive format. CSV for human consumption; binary formats for machines.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the JSON to CSV converter</h2>
@@ -173,7 +437,7 @@
     <a class="related-card" href="text-diff"><div class="related-icon">±</div><div class="related-card-info"><div class="related-card-name">Text Diff Checker</div><div class="related-card-desc">Compare two texts side by side</div></div></a>
   </div></section>
 </div>
-<footer><div>&copy; 2026 FreeDevTool — JSON to CSV Converter</div><div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div></footer>
+<footer><div>&copy; 2026 FreeDevTool — JSON to CSV Converter</div><div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div></footer>
 <script>
 let csvData='';
 function flatten(obj,prefix=''){const out={};for(const[k,v]of Object.entries(obj)){const key=prefix?prefix+'.'+k:k;if(v&&typeof v==='object'&&!Array.isArray(v))Object.assign(out,flatten(v,key));else out[key]=v}return out}

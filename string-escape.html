@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="String Escape &amp; Unescape — JSON, HTML, JS, URL, CSV, SQL">
+  <meta name="twitter:description" content="Escape and unescape strings for six formats with side-by-side input/output. Prevents XSS, SQL injection, JSON parse errors. Browser-only, no signup.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -226,13 +226,14 @@
 
 
   <div class="tool-header">
-    
+
 
     <div class="tool-badge">Text Tool</div>
     <h1>String Escape & Unescape Tool</h1>
     <p class="tool-description">
       Escape and unescape strings online for <strong>JSON</strong>, <strong>HTML</strong>, <strong>JavaScript</strong>, <strong>URL</strong>, <strong>CSV</strong> and <strong>SQL</strong>. This free tool handles backslash escaping, escape sequences for newline, tab and quotes, HTML entities, URL percent-encoding, and SQL injection prevention. Paste any string to instantly see the escaped or unescaped result. Supports Unicode <code>\uXXXX</code> notation, special characters, and all common escape formats. All processing happens client-side in your browser — nothing is uploaded to a server.
     </p>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool security engineering team</div>
   </div>
 
   <div class="tool-card">
@@ -299,6 +300,119 @@
 
     </div>
   </div>
+
+  <section class="article-section">
+    <h2>The complete guide to string escaping — JSON, HTML, JavaScript, URL, CSV, and SQL</h2>
+    <p>Every string-related security incident I have read in the past decade — Equifax, MOVEit, Log4Shell, every weekend's fresh round of XSS reports — traces back to a string that crossed a context boundary without being re-escaped for the new context. Escaping is not boilerplate; it is the rule that keeps user data inside its data envelope and prevents it from being interpreted as code. This guide covers each escaping context the tool supports — what the escape sequences are, what the parser is actually defending against, and the language-level functions you should reach for instead of writing your own.</p>
+
+    <h3>Context is everything — the same string needs different escaping in different places</h3>
+    <p>The single biggest concept to internalise is <strong>context-specific escaping</strong>. A string flowing from a database into an HTML page should be HTML-escaped at the moment it is written into HTML. The same string flowing into a JavaScript string literal needs JS-string escaping. The same string going into a URL parameter needs percent-encoding. None of these escapings substitute for each other:</p>
+    <table class="ref-table">
+      <thead><tr><th>Where the string lands</th><th>Escape with</th><th>What it prevents</th></tr></thead>
+      <tbody>
+        <tr><td>HTML element body (<code>&lt;p&gt;…&lt;/p&gt;</code>)</td><td>HTML entity escape <code>&amp; &lt; &gt;</code></td><td>HTML/XSS injection</td></tr>
+        <tr><td>HTML attribute value</td><td>HTML entity escape + always quote attribute</td><td>Attribute breakout, event handlers</td></tr>
+        <tr><td>JavaScript string literal</td><td>JS escape (<code>\\ \" \n \uXXXX</code>)</td><td>String breakout, code injection</td></tr>
+        <tr><td>URL query parameter</td><td>percent-encoding (<code>encodeURIComponent</code>)</td><td>Param injection, broken parsers</td></tr>
+        <tr><td>JSON value</td><td>JSON escape (<code>JSON.stringify</code>)</td><td>JSON parse errors, injection</td></tr>
+        <tr><td>CSV cell</td><td>Wrap in <code>"…"</code>, double internal <code>""</code></td><td>Cell breakout, CSV injection</td></tr>
+        <tr><td>SQL value</td><td><strong>Don't escape — use a parameterised query</strong></td><td>SQL injection</td></tr>
+        <tr><td>Shell command</td><td><strong>Don't escape — use exec with arg array</strong></td><td>Command injection</td></tr>
+      </tbody>
+    </table>
+    <p>The two "don't escape" rows in that table are deliberate — they are the two places where ad-hoc escaping is the wrong tool. We will come back to them.</p>
+
+    <h3>JSON escaping — what RFC 8259 actually requires</h3>
+    <p>RFC 8259 (the current JSON spec) requires escaping just six characters inside string values: <code>"</code>, <code>\</code>, and the U+0000–U+001F control range. Everything else is allowed verbatim, including non-ASCII. Most JSON encoders also escape <code>/</code> defensively (so the string <code>&lt;/script&gt;</code> doesn't break out of an inline JSON-in-HTML block), and many escape all non-ASCII to <code>\uXXXX</code> for transport safety:</p>
+    <ul>
+      <li><code>\"</code> — double quote</li>
+      <li><code>\\</code> — backslash</li>
+      <li><code>\/</code> — forward slash (optional, but recommended for <code>&lt;/script&gt;</code> safety)</li>
+      <li><code>\b \f \n \r \t</code> — control whitespace</li>
+      <li><code>\uXXXX</code> — any other control character or non-ASCII</li>
+    </ul>
+    <p>The simple rule in JavaScript: if you can use <code>JSON.stringify(value)</code>, do that. It is correct, fast, and tested by every browser vendor. Hand-rolling JSON escaping is how you get parse errors with surrogate pairs and U+2028 (line separator, which used to break JSONP).</p>
+
+    <h3>HTML escaping — the OWASP rule of five</h3>
+    <p>OWASP's HTML escaping recommendation is to encode five characters in element bodies:</p>
+    <table class="ref-table">
+      <thead><tr><th>Char</th><th>Entity</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><code>&amp;</code></td><td><code>&amp;amp;</code></td><td>Must come first or it'll re-escape your other entities</td></tr>
+        <tr><td><code>&lt;</code></td><td><code>&amp;lt;</code></td><td>Prevents tag injection</td></tr>
+        <tr><td><code>&gt;</code></td><td><code>&amp;gt;</code></td><td>Defensive; some legacy parsers care</td></tr>
+        <tr><td><code>"</code></td><td><code>&amp;quot;</code></td><td>Prevents attribute-value breakout</td></tr>
+        <tr><td><code>'</code></td><td><code>&amp;#39;</code> or <code>&amp;#x27;</code></td><td>Same — <code>&amp;apos;</code> isn't valid in HTML4</td></tr>
+      </tbody>
+    </table>
+    <p>This baseline covers element-body and double-quoted-attribute contexts. <strong>It does not cover</strong> JavaScript-event attributes (<code>onclick</code>), <code>style</code> attributes, or <code>href</code>/<code>src</code> URLs — those need additional context-specific encoding. The rule of thumb: never put untrusted data inside <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>, or unquoted attributes, ever.</p>
+
+    <h3>URL encoding — encodeURIComponent vs encodeURI</h3>
+    <p>This trips up everyone at least once. JavaScript ships two URL-encoding functions and they do different things:</p>
+    <ul>
+      <li><strong><code>encodeURI(url)</code></strong> — encodes a full URL but leaves <code>: / ? &amp; = #</code> alone because they are URL syntax characters. Use this on a complete URL you want to make safe for transmission, never on user data.</li>
+      <li><strong><code>encodeURIComponent(value)</code></strong> — encodes <em>everything</em> except <code>A-Z a-z 0-9 - _ . ! ~ * ' ( )</code>. Use this on every individual query parameter value or path segment.</li>
+    </ul>
+    <p>If you ever find yourself reaching for <code>escape()</code> — stop. <code>escape()</code> is deprecated, produces non-standard output for non-ASCII, and is the wrong answer for everything in 2026.</p>
+
+    <h3>CSV escaping — the RFC 4180 rules</h3>
+    <p>CSV escaping is delightfully short:</p>
+    <ol>
+      <li>If the field contains <code>,</code>, <code>"</code>, <code>\r</code>, or <code>\n</code>, wrap the entire field in double quotes.</li>
+      <li>Inside that wrapping, double up any embedded <code>"</code> (so a single quote becomes <code>""</code>).</li>
+    </ol>
+    <p>That is it. There is no standard backslash escaping in CSV; <code>\n</code> as two characters is treated literally. The other major risk — <strong>CSV injection</strong> — is when a field starts with <code>=</code>, <code>+</code>, <code>-</code>, or <code>@</code> and Excel evaluates it as a formula on import. The OWASP fix: prefix any such cell with a single quote (<code>'</code>) before saving. The picker handles RFC 4180 escaping; CSV-injection prefixing is a downstream sanitization step.</p>
+
+    <h3>SQL escaping — why you should not be doing it</h3>
+    <p>SQL "escaping" is the most dangerous category in this list. The historical pattern was to double-up single quotes (<code>O'Brien</code> → <code>O''Brien</code>) and string-concatenate the result into a query. <strong>Do not do this.</strong> Quoting alone does not defend against:</p>
+    <ul>
+      <li>Numeric injection — when the field has no quotes around it, escaping quotes does nothing.</li>
+      <li>LIKE pattern injection — quoting <code>%</code> and <code>_</code> requires a separate ESCAPE clause.</li>
+      <li>Identifier injection — table/column names can't be parameterised in most drivers.</li>
+      <li>Encoding-collision attacks — the classic <code>0xBF 0x27</code> bypass on misconfigured MySQL connections.</li>
+    </ul>
+    <p>The correct answer is parameterised queries / prepared statements, where the database driver sends the SQL template and the values separately and the database engine never confuses them. Every modern driver supports this:</p>
+    <div class="lang-block"><strong>Node.js (pg):</strong><pre><code>await client.query('SELECT * FROM users WHERE email = $1', [userEmail]);</code></pre></div>
+    <div class="lang-block"><strong>Python (psycopg / sqlalchemy):</strong><pre><code>cur.execute('SELECT * FROM users WHERE email = %s', (user_email,))</code></pre></div>
+    <div class="lang-block"><strong>Java (JDBC):</strong><pre><code>PreparedStatement ps = conn.prepareStatement(
+  "SELECT * FROM users WHERE email = ?");
+ps.setString(1, userEmail);</code></pre></div>
+    <p>The SQL escape mode in this tool exists for emergency cases (one-off scripts, escaping a literal for a SQL editor pasted by hand). It should never be the layer that protects production code from injection.</p>
+
+    <h3>JavaScript string escaping — the surprises</h3>
+    <p>JavaScript string literals support a long list of escapes, and a few have non-obvious behavior:</p>
+    <ul>
+      <li><code>\xNN</code> — two-digit hex, U+0000 to U+00FF.</li>
+      <li><code>\uNNNN</code> — four-digit hex, U+0000 to U+FFFF (a single UTF-16 code unit, which means surrogates land here).</li>
+      <li><code>\u{NNNNNN}</code> — variable-length, full Unicode 0x0 to 0x10FFFF (ES2015+). Use this for emoji and astral characters; it produces a correct surrogate pair.</li>
+      <li><code>\0</code> — null, but only when not followed by a digit. <code>\01</code> is an octal escape and a syntax error in strict mode.</li>
+      <li><code>\v</code> — vertical tab (U+000B), almost never used.</li>
+      <li>Line continuation — a backslash at end of line continues the string. Allowed but discouraged.</li>
+    </ul>
+    <p>JavaScript also has two characters that can break inline JSON-in-script blocks: U+2028 (line separator) and U+2029 (paragraph separator). They are valid in JSON but were illegal in JS string literals until 2019. Older code that writes <code>&lt;script&gt;var data = ${JSON.stringify(x)};&lt;/script&gt;</code> needs to escape these to <code> </code>/<code> </code> for safety.</p>
+
+    <h3>Common escaping mistakes that turn into vulnerabilities</h3>
+    <ul>
+      <li><strong>Double-encoding.</strong> Encoding a string twice ("just to be safe") makes <code>&amp;amp;amp;</code> appear in your UI. Encode once, at the boundary.</li>
+      <li><strong>Escaping at the wrong layer.</strong> Sanitising user input on its way <em>in</em> to the database means every other consumer needs to know that. Escape on the way <em>out</em>, in the context of the destination.</li>
+      <li><strong>Building HTML by string concatenation.</strong> Use a templating engine that escapes by default (Handlebars <code>{{x}}</code>, JSX <code>{x}</code>, Jinja2 autoescape on). Mistakes are caught at the language level.</li>
+      <li><strong>Escaping URL-encoded data again.</strong> If you call <code>encodeURIComponent</code> on something that's already encoded you get <code>%2520</code> instead of <code>%20</code>.</li>
+      <li><strong>Using <code>innerHTML</code> with sanitised input.</strong> Even sanitised HTML can carry mutation-XSS payloads. Prefer <code>textContent</code> for plain text; use <code>setAttribute</code> for attributes; use a vetted HTML sanitiser (DOMPurify) when you really need to render rich HTML.</li>
+      <li><strong>Trusting the regex you wrote in 2018.</strong> Browsers, attack techniques, and parser quirks all evolve. Use the platform escape function (<code>encodeURIComponent</code>, <code>JSON.stringify</code>, <code>DOMPurify.sanitize</code>) instead.</li>
+      <li><strong>Forgetting to escape the same string twice across formats.</strong> A string going into a JSON-in-HTML attribute needs both JSON encoding <em>and</em> HTML attribute encoding. Order: JSON first, then HTML escape the result.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc8259" rel="noopener" target="_blank">RFC 8259 — JSON data interchange format</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener" target="_blank">RFC 4180 — CSV format</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener" target="_blank">RFC 3986 — URI generic syntax (percent-encoding)</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" rel="noopener" target="_blank">OWASP — XSS Prevention Cheat Sheet (context-specific encoding)</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" rel="noopener" target="_blank">OWASP — SQL Injection Prevention Cheat Sheet</a></li>
+      </ul>
+    </aside>
+  </section>
 
   <!-- FAQ -->
   <section class="faq-section">
@@ -388,9 +502,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — String Escape Tool</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

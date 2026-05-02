@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Number Base Converter — Binary, Hex, Octal, Decimal Free">
+  <meta name="twitter:description" content="Convert between binary, octal, decimal, hexadecimal, and any base 2–36 with BigInt precision. Bit length, grouped nibbles, two's complement helpers.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -373,13 +373,14 @@
 
 
   <div class="tool-header">
-    
+
 
     <div class="tool-badge">Math Tool</div>
     <h1>Number Base Converter</h1>
     <p class="tool-description">
       Convert between binary, decimal, hexadecimal, and octal number systems instantly. This free online number base converter supports radix conversion for any base from 2 to 36, with BigInt precision for arbitrarily large numbers. Explore positional notation across base-2, base-8, base-10, and base-16 numeral systems with grouped nibbles, bit-length display, and real-time input validation. All conversions happen client-side in your browser.
     </p>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool systems engineering team</div>
   </div>
 
   <div class="tool-card">
@@ -461,6 +462,112 @@
 
     </div>
   </div>
+
+  <section class="article-section">
+    <h2>Number bases explained — binary, octal, hex, decimal, and the math behind radix conversion</h2>
+    <p>If you have ever stared at <code>0xDEADBEEF</code> in a stack trace or typed <code>chmod 755</code> without thinking about it, you are already using positional number systems. This guide unpacks why programmers care about base-2, base-8, and base-16 — what each one buys you, how the conversion math actually works, what "two's complement" means in practice, and the language-specific syntax you need so the same number reads the same in JavaScript, Python, Go, Rust, and C.</p>
+
+    <h3>Positional notation — the one rule behind every base</h3>
+    <p>A number written in any base is a sum of digits multiplied by powers of that base. The decimal number 214 is <code>2×10² + 1×10¹ + 4×10⁰</code>. Take the same idea and swap 10 for any other base:</p>
+    <ul>
+      <li><strong>Binary 11010110</strong> = <code>1×2⁷ + 1×2⁶ + 0×2⁵ + 1×2⁴ + 0×2³ + 1×2² + 1×2¹ + 0×2⁰</code> = 128 + 64 + 16 + 4 + 2 = <strong>214</strong>.</li>
+      <li><strong>Octal 326</strong> = <code>3×8² + 2×8¹ + 6×8⁰</code> = 192 + 16 + 6 = <strong>214</strong>.</li>
+      <li><strong>Hexadecimal D6</strong> = <code>13×16¹ + 6×16⁰</code> = 208 + 6 = <strong>214</strong>.</li>
+    </ul>
+    <p>Notice that 214 has eight binary digits, three octal digits, three decimal digits, and two hex digits. Higher bases are denser — that is why programmers prefer hex over binary for byte-level work.</p>
+
+    <h3>Why each base matters</h3>
+    <table class="ref-table">
+      <thead><tr><th>Base</th><th>Digits</th><th>Where you see it</th></tr></thead>
+      <tbody>
+        <tr><td>Binary (2)</td><td>0, 1</td><td>Bit flags, hardware registers, network masks, low-level protocols.</td></tr>
+        <tr><td>Octal (8)</td><td>0–7</td><td>Unix file permissions (<code>chmod 755</code>), legacy PDP-11 systems, some C string escapes (<code>\137</code>).</td></tr>
+        <tr><td>Decimal (10)</td><td>0–9</td><td>Human-readable numbers, financial values, anything user-facing.</td></tr>
+        <tr><td>Hexadecimal (16)</td><td>0–9, A–F</td><td>Memory addresses, RGB color (<code>#FF5733</code>), MAC addresses, JWT signatures, hashes, byte dumps.</td></tr>
+        <tr><td>Base-32 / Base-36</td><td>0–9, A–V or A–Z</td><td>Crockford base32 in ULIDs, base36 in short-link IDs.</td></tr>
+        <tr><td>Base-58</td><td>Bitcoin alphabet (no 0, O, I, l)</td><td>Bitcoin addresses, Solana keys.</td></tr>
+        <tr><td>Base-64</td><td>A–Z, a–z, 0–9, +, /</td><td>Embedding binary in text (data URIs, basic auth, JWT body).</td></tr>
+      </tbody>
+    </table>
+    <p>Octal feels archaic, but every Unix admin uses it daily — <code>chmod 644 file</code> sets permissions to <code>110 100 100</code> in binary (rw- r-- r--).</p>
+
+    <h3>Two's complement — how computers represent negatives</h3>
+    <p>Computers store integers as fixed-width bit patterns. The trick to representing negative numbers is <strong>two's complement</strong>: the most-significant bit's place-value is negated. In an 8-bit signed integer, the leftmost bit's value is −128 instead of +128:</p>
+    <table class="ref-table">
+      <thead><tr><th>Binary (8 bits)</th><th>Unsigned</th><th>Signed (two's complement)</th></tr></thead>
+      <tbody>
+        <tr><td>00000000</td><td>0</td><td>0</td></tr>
+        <tr><td>00000001</td><td>1</td><td>1</td></tr>
+        <tr><td>01111111</td><td>127</td><td>127</td></tr>
+        <tr><td>10000000</td><td>128</td><td><strong>−128</strong></td></tr>
+        <tr><td>11111111</td><td>255</td><td><strong>−1</strong></td></tr>
+      </tbody>
+    </table>
+    <p>To negate a two's-complement number: invert every bit, then add 1. So +5 = <code>00000101</code>, invert → <code>11111010</code>, +1 → <code>11111011</code> = −5. The reason this encoding won is that addition and subtraction work the same circuit regardless of sign — no special case for negatives.</p>
+
+    <h3>Bitwise operators — what each one is for</h3>
+    <table class="ref-table">
+      <thead><tr><th>Operator</th><th>Effect</th><th>Use it for</th></tr></thead>
+      <tbody>
+        <tr><td><code>&amp;</code> AND</td><td>1 only when both bits are 1</td><td>Mask: keep specific bits, drop the rest. <code>x &amp; 0xFF</code> = low 8 bits.</td></tr>
+        <tr><td><code>|</code> OR</td><td>1 when either bit is 1</td><td>Set bits: <code>flags | READ</code> turns on READ.</td></tr>
+        <tr><td><code>^</code> XOR</td><td>1 when bits differ</td><td>Toggle bits, simple cipher round, parity check.</td></tr>
+        <tr><td><code>~</code> NOT</td><td>Flip every bit</td><td>Bitmask building: <code>~0xFF</code> clears low byte.</td></tr>
+        <tr><td><code>&lt;&lt;</code> shift left</td><td>Multiply by 2 per shift</td><td>Build a single-bit mask: <code>1 &lt;&lt; 7</code> = bit 7.</td></tr>
+        <tr><td><code>&gt;&gt;</code> shift right (arithmetic)</td><td>Divide by 2; preserves sign bit</td><td>Sign-aware integer division by powers of 2.</td></tr>
+        <tr><td><code>&gt;&gt;&gt;</code> shift right (logical, JS)</td><td>Divide by 2; fills with 0</td><td>Treating the value as unsigned.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Bit width and overflow — the trap that bites every junior dev</h3>
+    <p>The same number can fit in 8, 16, 32, or 64 bits, with different limits at each width. The four widths you will see most:</p>
+    <table class="ref-table">
+      <thead><tr><th>Type</th><th>Bits</th><th>Unsigned range</th><th>Signed range</th></tr></thead>
+      <tbody>
+        <tr><td>byte / uint8</td><td>8</td><td>0 to 255</td><td>−128 to 127</td></tr>
+        <tr><td>short / int16</td><td>16</td><td>0 to 65 535</td><td>−32 768 to 32 767</td></tr>
+        <tr><td>int / int32</td><td>32</td><td>0 to 4 294 967 295</td><td>−2 147 483 648 to 2 147 483 647</td></tr>
+        <tr><td>long / int64</td><td>64</td><td>0 to 18.4 × 10¹⁸</td><td>−9.22 × 10¹⁸ to 9.22 × 10¹⁸</td></tr>
+      </tbody>
+    </table>
+    <p>The classic int32 overflow: <code>Math.pow(2, 31) - 1</code> in 32-bit signed wraps to −2 147 483 648 if you add 1. JavaScript number conversions to int32 (<code>x | 0</code>) hit this, and so does every <code>SELECT count(*)</code> on a table with billions of rows in a 32-bit-id schema. Use 64-bit types for anything that can grow.</p>
+
+    <h3>Number-base literals across 8 languages</h3>
+    <table class="ref-table">
+      <thead><tr><th>Language</th><th>Binary</th><th>Octal</th><th>Hex</th><th>Underscores</th></tr></thead>
+      <tbody>
+        <tr><td>JavaScript / TypeScript</td><td><code>0b1101</code></td><td><code>0o755</code></td><td><code>0xDEAD</code></td><td>Yes (<code>1_000_000</code>)</td></tr>
+        <tr><td>Python 3</td><td><code>0b1101</code></td><td><code>0o755</code></td><td><code>0xDEAD</code></td><td>Yes</td></tr>
+        <tr><td>Go</td><td><code>0b1101</code></td><td><code>0o755</code></td><td><code>0xDEAD</code></td><td>Yes (Go 1.13+)</td></tr>
+        <tr><td>Rust</td><td><code>0b1101</code></td><td><code>0o755</code></td><td><code>0xDEAD</code></td><td>Yes</td></tr>
+        <tr><td>Java 7+</td><td><code>0b1101</code></td><td><code>0755</code> (no o)</td><td><code>0xDEAD</code></td><td>Yes</td></tr>
+        <tr><td>C / C++14+</td><td><code>0b1101</code></td><td><code>0755</code></td><td><code>0xDEAD</code></td><td>Yes (C++14: <code>1'000'000</code>)</td></tr>
+        <tr><td>Ruby</td><td><code>0b1101</code></td><td><code>0755</code> or <code>0o755</code></td><td><code>0xDEAD</code></td><td>Yes</td></tr>
+        <tr><td>SQL (Postgres)</td><td><code>B'1101'</code></td><td>—</td><td><code>x'DEAD'</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>The bare-leading-zero octal in C, C++, Java, Ruby (<code>0755</code>) is a historical hazard. <code>parseInt("08")</code> in old JavaScript returned 0 because of it; ES5 fixed that, but the lesson is to write <code>0o</code> explicitly.</p>
+
+    <h3>Common base-conversion mistakes</h3>
+    <ul>
+      <li><strong>Reading hex as decimal.</strong> <code>0x10</code> is <strong>16</strong>, not 10. Browser DevTools' "Memory" panel shows offsets in hex; mismatching it with decimal byte counts is a classic off-by-six bug.</li>
+      <li><strong>Forgetting that JavaScript bitwise ops truncate to int32.</strong> <code>0xFFFFFFFF | 0</code> is −1, not 4 294 967 295. For 64-bit arithmetic, use <code>BigInt</code>.</li>
+      <li><strong>Using <code>parseInt(str)</code> without a radix.</strong> Some older runtimes guess the base from a leading <code>0</code> or <code>0x</code>. Always pass the radix: <code>parseInt(str, 10)</code>, <code>parseInt(str, 16)</code>.</li>
+      <li><strong>Confusing chmod octal with permission bits.</strong> <code>chmod 755</code> = octal 755 = binary <code>111 101 101</code> = rwx r-x r-x. Do <em>not</em> write <code>chmod 0x755</code>.</li>
+      <li><strong>Mixing endian-ness.</strong> Network protocols are big-endian; x86 / ARM little-endian. When dumping a struct as hex bytes, the order on disk is the reverse of how you'd write the integer.</li>
+      <li><strong>Treating base-64 like a base.</strong> Base-64 is a binary-to-text encoding, not a positional numeral system. Padding (<code>=</code>) and 6-bit grouping have no analog in base-2/8/10/16.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://en.cppreference.com/w/cpp/language/integer_literal" rel="noopener" target="_blank">cppreference — Integer literals (binary, octal, hex)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#numeric_literals" rel="noopener" target="_blank">MDN — JavaScript numeric literals</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc4648" rel="noopener" target="_blank">RFC 4648 — base16, base32, base64 encodings</a></li>
+        <li><a href="https://man7.org/linux/man-pages/man1/chmod.1.html" rel="noopener" target="_blank">Linux chmod manpage — octal permission bits</a></li>
+      </ul>
+    </aside>
+  </section>
 
   <!-- FAQ -->
   <section class="faq-section">
@@ -550,9 +657,10 @@
 <footer>
   <div>&copy; 2026 FreeDevTool — Number Base Converter</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

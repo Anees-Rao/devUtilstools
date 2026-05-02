@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Entity Encoder / Decoder Online — Special Characters Tool | FreeDevTool</title>
-  <meta name="description" content="Encode special characters to HTML entities or decode HTML entities back to text. Prevent XSS attacks with proper HTML encoding. Free tool, no signup.">
+  <title>HTML Entity Encoder &amp; Decoder Online — XSS-Safe Free | FreeDevTool</title>
+  <meta name="description" content="Free HTML entity encoder &amp; decoder. Convert &amp;lt; &amp;gt; &amp;amp; &amp;quot; for XSS-safe display. Named &amp; numeric entities, Unicode support. Runs in browser.">
+  <meta name="keywords" content="html entity encoder, html entity decoder, html escape, html unescape, xss prevention, special characters html, named entities, numeric entities">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/html-entity">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="HTML Entity Encoder &amp; Decoder — XSS-Safe | FreeDevTool">
+  <meta name="twitter:description" content="Encode/decode HTML entities for XSS-safe display. Named, numeric, hex entities. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -144,13 +149,12 @@
 
 
   <div class="tool-header">
-    
-
     <div class="tool-badge">Encoding Tool</div>
-    <h1>HTML Entity Encoder / Decoder</h1>
+    <h1>HTML Entity Encoder &amp; Decoder Online</h1>
     <p class="tool-description">
-      Encode special characters to HTML entities or decode HTML entities back to readable text. This free online tool converts reserved HTML characters like <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, and <code>&quot;</code> to their entity equivalents, helping prevent Cross-Site Scripting (XSS) attacks. Supports both named entities (<code>&amp;amp;</code>) and numeric entities (<code>&amp;#38;</code>). All processing happens in your browser — nothing is sent to a server.
+      Encode special characters to HTML entities or decode entities back to readable text. Converts reserved HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&quot;</code>, <code>'</code>) to their entity equivalents — essential for safely displaying user-generated content and preventing <strong>Cross-Site Scripting (XSS)</strong> attacks (<a href="https://owasp.org/Top10/A03_2021-Injection/" rel="noopener" style="color:var(--accent)">OWASP Top 10</a>). Supports named entities (<code>&amp;amp;</code>), decimal numeric (<code>&amp;#38;</code>), hex numeric (<code>&amp;#x26;</code>), and full Unicode escape. Runs in your browser; even sensitive payloads stay local.
     </p>
+    <span class="last-updated">Last updated: May 2026</span>
   </div>
 
   <div class="tool-card">
@@ -219,6 +223,285 @@
     </div>
   </div>
 
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What are HTML entities and why do they matter?</h2>
+      <p>An <strong>HTML entity</strong> is a special sequence of characters that represents a reserved or non-printable character in HTML markup. They start with an ampersand (<code>&amp;</code>) and end with a semicolon (<code>;</code>). The entity <code>&amp;lt;</code> renders as <code>&lt;</code>, <code>&amp;amp;</code> renders as <code>&amp;</code>, <code>&amp;copy;</code> renders as <code>©</code>. Defined originally in <a href="https://www.w3.org/TR/html401/sgml/entities.html" rel="noopener">HTML 4.01</a> and extended in HTML5 to over 2,000 named entities, they exist for two reasons: <strong>escaping reserved characters</strong> (so the browser doesn't think your text is markup) and <strong>typing characters that aren't on your keyboard</strong> (em dashes, math symbols, currency).</p>
+      <p>The five mandatory escapes — the ones that XSS-prevention guides drill into every web developer:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Char</th><th>Named entity</th><th>Numeric (decimal)</th><th>Numeric (hex)</th><th>Why escape?</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;</code></td><td><code>&amp;lt;</code></td><td><code>&amp;#60;</code></td><td><code>&amp;#x3C;</code></td><td>Starts a tag — the #1 XSS vector</td></tr>
+          <tr><td><code>&gt;</code></td><td><code>&amp;gt;</code></td><td><code>&amp;#62;</code></td><td><code>&amp;#x3E;</code></td><td>Ends a tag</td></tr>
+          <tr><td><code>&amp;</code></td><td><code>&amp;amp;</code></td><td><code>&amp;#38;</code></td><td><code>&amp;#x26;</code></td><td>Starts an entity — escape to literal</td></tr>
+          <tr><td><code>&quot;</code></td><td><code>&amp;quot;</code></td><td><code>&amp;#34;</code></td><td><code>&amp;#x22;</code></td><td>Closes attribute values</td></tr>
+          <tr><td><code>&apos;</code> (apostrophe)</td><td><code>&amp;apos;</code> (HTML5)</td><td><code>&amp;#39;</code></td><td><code>&amp;#x27;</code></td><td>Closes single-quoted attributes</td></tr>
+        </tbody>
+      </table>
+
+      <p>If your application takes user input and renders it inside HTML without escaping these five characters, you have an <strong>XSS vulnerability</strong>. Every modern web framework escapes by default; raw string concatenation or "trust-us" templating bypasses that protection. This is why <code>innerHTML</code> with user data is dangerous and <code>textContent</code> is safe.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Named vs numeric vs hex — three ways to encode the same character</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Form</th><th>Example</th><th>Pros</th><th>Cons</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Named entity</strong></td><td><code>&amp;copy;</code></td><td>Readable, memorable</td><td>~2,000 names; not all parsers support all of them</td></tr>
+          <tr><td><strong>Decimal numeric</strong></td><td><code>&amp;#169;</code></td><td>Universal — every char has a decimal code point</td><td>Less readable than named</td></tr>
+          <tr><td><strong>Hex numeric</strong></td><td><code>&amp;#xA9;</code></td><td>Matches Unicode references (U+00A9)</td><td>Slightly less common; same support as decimal</td></tr>
+        </tbody>
+      </table>
+
+      <p>For the five mandatory escapes, named entities are universally supported and most readable. For uncommon symbols (em dash, em space, math operators, arrows), numeric entities are safer because every parser recognizes them. <strong>Always include the trailing semicolon</strong> — most browsers tolerate missing semicolons in HTML5, but XML and strict parsers reject the entity entirely.</p>
+
+      <h3>HTML5's named-entity gotchas</h3>
+      <ul>
+        <li><code>&amp;apos;</code> only became official in HTML5. It works in modern browsers but breaks in XHTML 1.0 — use <code>&amp;#39;</code> if XHTML compatibility matters.</li>
+        <li>Some "obvious" names don't exist. There's no <code>&amp;asterisk;</code> or <code>&amp;dollar;</code> — those are plain ASCII. Don't over-escape.</li>
+        <li>Case matters. <code>&amp;Auml;</code> = Ä, <code>&amp;auml;</code> = ä — different characters.</li>
+      </ul>
+    </section>
+
+    <section class="article-section">
+      <h2>Useful named entities by category</h2>
+
+      <h3>Currency &amp; math</h3>
+      <table class="ref-table">
+        <thead><tr><th>Symbol</th><th>Named</th><th>Numeric</th></tr></thead>
+        <tbody>
+          <tr><td>©</td><td><code>&amp;copy;</code></td><td><code>&amp;#169;</code></td></tr>
+          <tr><td>®</td><td><code>&amp;reg;</code></td><td><code>&amp;#174;</code></td></tr>
+          <tr><td>™</td><td><code>&amp;trade;</code></td><td><code>&amp;#8482;</code></td></tr>
+          <tr><td>€</td><td><code>&amp;euro;</code></td><td><code>&amp;#8364;</code></td></tr>
+          <tr><td>£</td><td><code>&amp;pound;</code></td><td><code>&amp;#163;</code></td></tr>
+          <tr><td>¥</td><td><code>&amp;yen;</code></td><td><code>&amp;#165;</code></td></tr>
+          <tr><td>×</td><td><code>&amp;times;</code></td><td><code>&amp;#215;</code></td></tr>
+          <tr><td>÷</td><td><code>&amp;divide;</code></td><td><code>&amp;#247;</code></td></tr>
+          <tr><td>±</td><td><code>&amp;plusmn;</code></td><td><code>&amp;#177;</code></td></tr>
+          <tr><td>°</td><td><code>&amp;deg;</code></td><td><code>&amp;#176;</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Punctuation &amp; whitespace</h3>
+      <table class="ref-table">
+        <thead><tr><th>Symbol</th><th>Named</th><th>Numeric</th></tr></thead>
+        <tbody>
+          <tr><td>(non-breaking space)</td><td><code>&amp;nbsp;</code></td><td><code>&amp;#160;</code></td></tr>
+          <tr><td>—</td><td><code>&amp;mdash;</code></td><td><code>&amp;#8212;</code></td></tr>
+          <tr><td>–</td><td><code>&amp;ndash;</code></td><td><code>&amp;#8211;</code></td></tr>
+          <tr><td>…</td><td><code>&amp;hellip;</code></td><td><code>&amp;#8230;</code></td></tr>
+          <tr><td>"</td><td><code>&amp;ldquo;</code></td><td><code>&amp;#8220;</code></td></tr>
+          <tr><td>"</td><td><code>&amp;rdquo;</code></td><td><code>&amp;#8221;</code></td></tr>
+          <tr><td>'</td><td><code>&amp;lsquo;</code></td><td><code>&amp;#8216;</code></td></tr>
+          <tr><td>'</td><td><code>&amp;rsquo;</code></td><td><code>&amp;#8217;</code></td></tr>
+          <tr><td>«</td><td><code>&amp;laquo;</code></td><td><code>&amp;#171;</code></td></tr>
+          <tr><td>»</td><td><code>&amp;raquo;</code></td><td><code>&amp;#187;</code></td></tr>
+          <tr><td>·</td><td><code>&amp;middot;</code></td><td><code>&amp;#183;</code></td></tr>
+          <tr><td>•</td><td><code>&amp;bull;</code></td><td><code>&amp;#8226;</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Arrows</h3>
+      <table class="ref-table">
+        <thead><tr><th>Symbol</th><th>Named</th><th>Numeric</th></tr></thead>
+        <tbody>
+          <tr><td>←</td><td><code>&amp;larr;</code></td><td><code>&amp;#8592;</code></td></tr>
+          <tr><td>→</td><td><code>&amp;rarr;</code></td><td><code>&amp;#8594;</code></td></tr>
+          <tr><td>↑</td><td><code>&amp;uarr;</code></td><td><code>&amp;#8593;</code></td></tr>
+          <tr><td>↓</td><td><code>&amp;darr;</code></td><td><code>&amp;#8595;</code></td></tr>
+          <tr><td>⇐</td><td><code>&amp;lArr;</code></td><td><code>&amp;#8656;</code></td></tr>
+          <tr><td>⇒</td><td><code>&amp;rArr;</code></td><td><code>&amp;#8658;</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>HTML entity encoding for XSS prevention — the critical rules</h2>
+      <p><strong>XSS (Cross-Site Scripting)</strong> happens when user-supplied content is rendered as HTML/JavaScript instead of as text. The fix: encode user input before placing it in an HTML context. But "an HTML context" is plural — different contexts need different encoding.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Context</th><th>Example</th><th>Required encoding</th></tr></thead>
+        <tbody>
+          <tr><td>HTML body / text node</td><td><code>&lt;p&gt;USER&lt;/p&gt;</code></td><td>Escape <code>&lt; &gt; &amp;</code></td></tr>
+          <tr><td>HTML attribute (quoted)</td><td><code>&lt;a title="USER"&gt;</code></td><td>Escape <code>&lt; &gt; &amp; "</code></td></tr>
+          <tr><td>HTML attribute (unquoted)</td><td><code>&lt;a title=USER&gt;</code></td><td>Encode every non-alphanumeric (or quote the attribute)</td></tr>
+          <tr><td>JavaScript context</td><td><code>&lt;script&gt;var x = "USER";&lt;/script&gt;</code></td><td>JavaScript escape (<code>\x3C</code>), NOT HTML escape</td></tr>
+          <tr><td>CSS context</td><td><code>&lt;style&gt;.a { content: "USER" }&lt;/style&gt;</code></td><td>CSS escape (<code>\3C</code>), NOT HTML escape</td></tr>
+          <tr><td>URL parameter</td><td><code>&lt;a href="?q=USER"&gt;</code></td><td>URL encode (<code>%3C</code>), NOT HTML escape</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>The classic mistake:</strong> HTML-escaping content that ends up inside JavaScript. <code>&amp;lt;</code> becomes a literal in JS — the <code>&lt;</code> is never recovered. Use the right escape for the destination context, not the source.</p>
+
+      <div class="article-aside">
+        <strong>Defense in depth:</strong> use a Content Security Policy (CSP) header that bans inline scripts (<code>script-src 'self'</code>). Even if escaping fails, CSP blocks the attack.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>HTML escaping in 8 programming languages</h2>
+
+      <h3>JavaScript</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Modern: use textContent (no encoding bugs possible)
+el.textContent = userInput;          // Safe ✓
+
+// If you MUST build HTML strings, escape manually
+function escapeHtml(s) {
+  return s.replace(/[&amp;&lt;&gt;"']/g, c =&gt; ({
+    '&amp;': '&amp;amp;', '&lt;': '&amp;lt;', '&gt;': '&amp;gt;',
+    '"': '&amp;quot;', "'": '&amp;#39;'
+  }[c]));
+}
+
+// To DECODE entities (use a textarea — the browser does it)
+function decodeHtml(s) {
+  const ta = document.createElement('textarea');
+  ta.innerHTML = s;
+  return ta.value;
+}
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code>import html
+
+html.escape("&lt;script&gt;alert(1)&lt;/script&gt;")
+# '&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;'
+
+html.escape("It's &amp; \"quoted\"", quote=True)
+# 'It&amp;#x27;s &amp;amp; &amp;quot;quoted&amp;quot;'
+
+# Decode
+html.unescape("&amp;lt;p&amp;gt;Hello&amp;lt;/p&amp;gt;")  # '&lt;p&gt;Hello&lt;/p&gt;'
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// Mandatory: htmlspecialchars (escapes 5 reserved chars)
+echo htmlspecialchars($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+// htmlentities — encodes ALL applicable entities (rarely what you want)
+echo htmlentities($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+// Decode
+echo html_entity_decode($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>// Apache Commons Text
+import org.apache.commons.text.StringEscapeUtils;
+
+String safe = StringEscapeUtils.escapeHtml4(userInput);
+String back = StringEscapeUtils.unescapeHtml4(safe);
+
+// OWASP Java Encoder (recommended for XSS prevention)
+import org.owasp.encoder.Encode;
+String safe = Encode.forHtml(userInput);
+String safeAttr = Encode.forHtmlAttribute(userInput);
+String safeJs = Encode.forJavaScript(userInput);  // different escape!
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>import "html"
+
+escaped := html.EscapeString("&lt;script&gt;")
+// "&amp;lt;script&amp;gt;"
+
+unescaped := html.UnescapeString("&amp;lt;p&amp;gt;hi&amp;lt;/p&amp;gt;")
+// "&lt;p&gt;hi&lt;/p&gt;"
+
+// In Go templates, html/template auto-escapes by default — use it:
+import "html/template"
+t := template.Must(template.New("x").Parse(`&lt;p&gt;{{.}}&lt;/p&gt;`))
+t.Execute(os.Stdout, "&lt;script&gt;")  // automatically escaped
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>require 'cgi'
+
+CGI.escapeHTML("&lt;script&gt;alert(1)&lt;/script&gt;")
+# "&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;"
+
+CGI.unescapeHTML("&amp;lt;p&amp;gt;hi&amp;lt;/p&amp;gt;")
+# "&lt;p&gt;hi&lt;/p&gt;"
+
+# In Rails ERB, the &lt;%= %&gt; syntax auto-escapes
+&lt;%= user.name %&gt;        # auto-escaped, safe
+&lt;%= raw user.name %&gt;    # NOT escaped — only when you've already trusted the input
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>use html_escape::{encode_text, decode_html_entities};
+
+let safe = encode_text("&lt;script&gt;");
+// "&amp;lt;script&amp;gt;"
+
+let back = decode_html_entities("&amp;lt;p&amp;gt;");
+// "&lt;p&gt;"
+
+// Or use Askama / Tera templates — they auto-escape
+</code></pre>
+      </div>
+
+      <h3>Bash (recode / sed / xmlstarlet)</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># GNU recode
+echo '&lt;p&gt;Hello &amp; world&lt;/p&gt;' | recode html..ascii
+# "&amp;lt;p&amp;gt;Hello &amp;amp; world&amp;lt;/p&amp;gt;"
+
+# Plain sed (5 mandatory chars)
+sed -e 's/&amp;/\&amp;amp;/g' -e 's/&lt;/\&amp;lt;/g' -e 's/&gt;/\&amp;gt;/g' \
+    -e 's/"/\&amp;quot;/g' -e "s/'/\&amp;#39;/g"
+
+# Decode with xmlstarlet
+echo '&amp;lt;p&amp;gt;hi&amp;lt;/p&amp;gt;' | xmlstarlet unesc
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>HTML entity best practices</h2>
+      <ul>
+        <li><strong>Always use auto-escaping templating engines.</strong> Jinja2, ERB, Thymeleaf, html/template (Go), React's JSX — all escape by default. Manual escaping is bug-prone.</li>
+        <li><strong>Use <code>textContent</code> in JavaScript</strong>, not <code>innerHTML</code>, when inserting user data. Eliminates the encoding question entirely.</li>
+        <li><strong>Never trust input from anywhere.</strong> Database content, third-party APIs, your own admin panel — all can be sources of XSS payloads.</li>
+        <li><strong>Encode at the boundary, not the storage.</strong> Store raw user input; encode only when rendering. Lets you change templates and re-render correctly.</li>
+        <li><strong>Pick the right encoder for the context.</strong> HTML escape, JS escape, URL encode, CSS escape — they're all different. OWASP's library handles them all.</li>
+        <li><strong>Layer defenses with CSP.</strong> Even if XSS slips through, a tight Content Security Policy blocks inline-script execution.</li>
+        <li><strong>Sanitize, don't escape, when allowing some HTML.</strong> If users paste rich content, use <a href="https://github.com/cure53/DOMPurify" rel="noopener">DOMPurify</a> (JS) or Bleach (Python) to strip dangerous tags. Don't try to write a regex sanitizer.</li>
+        <li><strong>Don't HTML-escape data going into JSON.</strong> JSON has different rules — use <code>JSON.stringify</code> or your language's JSON library.</li>
+      </ul>
+    </section>
+
+  </article>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the HTML entity encoder</h2>
@@ -279,7 +562,7 @@
 
 <footer>
   <div>&copy; 2026 FreeDevTool — HTML Entity Encoder / Decoder</div>
-  <div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 
 <script>

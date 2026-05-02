@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="UUID Generator Online — RFC 4122 v4 / v7 Free">
+  <meta name="twitter:description" content="Generate cryptographically random UUIDs (v4) or time-ordered UUIDs (v7). Bulk generation up to 100, copy or download. Browser-only, RFC 4122 compliant.">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -218,13 +218,14 @@
 
 
   <div class="tool-header">
-    
+
 
     <div class="tool-badge">Generator</div>
     <h1>UUID Generator Online</h1>
     <p class="tool-description">
       Generate cryptographically random v4 UUIDs instantly with this free online UUID generator. Bulk generate up to 100 UUIDs at once, copy individually or all together with one click, and download as a text file. Options include uppercase formatting, hyphen removal, and wrapping in curly braces for GUID-style output. This tool uses your browser's native <code style="font-family:var(--mono);font-size:13px;background:var(--bg3);padding:1px 5px;border-radius:3px">crypto.randomUUID()</code> API — the gold standard for cryptographically secure random ID generation. All UUIDs are generated entirely in your browser. Nothing is sent to a server. Works offline, no signup required.
     </p>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool backend engineering team</div>
   </div>
 
   <div class="tool-card">
@@ -274,6 +275,122 @@
 
     </div>
   </div>
+
+  <section class="article-section">
+    <h2>UUIDs explained — RFC 4122, RFC 9562, and which version to use in 2026</h2>
+    <p>UUIDs are the connective tissue of modern distributed systems. Every Stripe charge, every Auth0 session, every Slack message, every S3 multipart upload — they all carry a 128-bit identifier that was generated independently on whatever node happened to handle the request. That independence is the entire point: no central registry, no ID server, no race condition, no merge conflict. This guide walks through the full UUID specification family — RFC 4122 (the original 2005 standard) and RFC 9562 (its 2024 successor that introduced UUIDv7), the seven defined versions and what each is actually for, the index-fragmentation trap that hits every team eventually, and the language-by-language code you need to generate them safely.</p>
+
+    <h3>What a UUID actually is — anatomy of 128 bits</h3>
+    <p>A UUID is 128 bits, written as 32 hexadecimal characters split by hyphens into the canonical form <code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx</code>. The bytes are not random freeform — two specific positions encode the version and variant:</p>
+    <ul>
+      <li><strong>Position 13 (the "M" character)</strong> — the version digit. <code>4</code> means random (v4), <code>7</code> means time-ordered (v7), <code>1</code> means timestamp+MAC, etc.</li>
+      <li><strong>Position 17 (the "N" character)</strong> — the variant. The high bits are <code>10</code> (binary), so the hex is one of <code>8</code>, <code>9</code>, <code>a</code>, <code>b</code>. This identifies the UUID as RFC 4122/9562 (the "Leach-Salz" variant) versus older Microsoft/NCS variants.</li>
+    </ul>
+    <p>Because the version and variant nibbles eat 6 bits, a v4 UUID has <strong>122 random bits</strong>, not 128. The collision math you might have seen — "you'd need to generate 2.71 quintillion UUIDs to have a 50% chance of one collision" — is based on those 122 bits applied to the standard birthday-paradox formula <code>n ≈ 1.177 × √(2^122)</code>.</p>
+
+    <h3>The seven UUID versions, when to use each</h3>
+    <table class="ref-table">
+      <thead><tr><th>Version</th><th>Mechanism</th><th>Sortable?</th><th>Privacy concern</th><th>Use it for</th></tr></thead>
+      <tbody>
+        <tr><td>v1</td><td>60-bit timestamp + 14-bit clock seq + 48-bit MAC</td><td>Yes</td><td>Leaks server MAC and time</td><td>Legacy systems only — avoid in new code.</td></tr>
+        <tr><td>v2</td><td>DCE Security (POSIX UID/GID)</td><td>Partially</td><td>Same as v1 plus user info</td><td>Defined but essentially unused. Skip.</td></tr>
+        <tr><td>v3</td><td>MD5(namespace + name)</td><td>No</td><td>Deterministic</td><td>Content-addressed IDs where MD5 is OK. Use v5 instead.</td></tr>
+        <tr><td>v4</td><td>122 random bits</td><td>No</td><td>None</td><td>Default for the past 20 years. Still fine for primary keys at small-to-medium scale.</td></tr>
+        <tr><td>v5</td><td>SHA-1(namespace + name)</td><td>No</td><td>Deterministic</td><td>Stable IDs derived from a name (DNS, URL, OID).</td></tr>
+        <tr><td>v6</td><td>v1 with the timestamp bytes reordered for sortability</td><td>Yes</td><td>Same as v1 (MAC leak)</td><td>Migration path off v1. Most teams jump to v7 instead.</td></tr>
+        <tr><td>v7</td><td>48-bit Unix-millis timestamp + 74 random bits</td><td>Yes</td><td>Reveals creation time only</td><td><strong>The new default</strong> for primary keys, log IDs, anywhere you want both uniqueness and time-locality.</td></tr>
+      </tbody>
+    </table>
+    <p>If you are starting a new project in 2026, default to <strong>v7</strong>. If you are stuck on a runtime that does not yet implement v7 (older language stdlibs), v4 is still safe — just be aware of the index-fragmentation cost at scale.</p>
+
+    <h3>The index-fragmentation problem — why v4 hurts at scale</h3>
+    <p>Databases store primary-key indexes as B-trees (or B+ trees). When IDs arrive in roughly sorted order — autoincrement integers, ULIDs, UUIDv7 — every new row inserts at the tail of the index, the page stays full, and the cache hit rate is high. When IDs are random — UUIDv4 — every insert lands in a different B-tree page. Pages split, rewrites cascade, and the tail of the working set blows out of memory. Real-world impact:</p>
+    <ul>
+      <li><strong>Postgres:</strong> v4 vs sequential ID inserts can be 2–3× slower at scale because of WAL volume and buffer cache thrashing.</li>
+      <li><strong>MySQL/InnoDB:</strong> primary key drives the clustered index. Random inserts cause page splits and bloat the on-disk size by 30–60%.</li>
+      <li><strong>SQL Server:</strong> same pattern; <code>NEWSEQUENTIALID()</code> exists exactly because random GUIDs hurt.</li>
+    </ul>
+    <p>The fixes, in order of preference: (1) UUIDv7, which preserves uniqueness while putting the high-order bits in time order; (2) ULID — same idea, different encoding; (3) store v4 UUIDs as native <code>BINARY(16)</code>/<code>uuid</code> columns rather than <code>VARCHAR(36)</code>, halving size; (4) on MySQL, use <code>UUID_TO_BIN(uuid, 1)</code> which reorders v1 bytes for B-tree locality.</p>
+
+    <h3>Generating UUIDs safely in 8 languages</h3>
+    <p>Always use a cryptographically secure RNG. <code>Math.random()</code>, <code>java.util.Random</code>, and <code>rand()</code> in C are <strong>not</strong> safe — they have predictable internal state and can collide.</p>
+    <div class="lang-block"><strong>JavaScript (browser, Node 14.17+):</strong><pre><code>// v4 — built in
+const id = crypto.randomUUID();
+
+// v7 — implement with crypto.getRandomValues
+function uuidv7() {
+  const ts = BigInt(Date.now());
+  const rand = crypto.getRandomValues(new Uint8Array(10));
+  const b = new Uint8Array(16);
+  // 48-bit timestamp
+  for (let i = 0; i &lt; 6; i++) b[i] = Number((ts &gt;&gt; BigInt(40 - i*8)) &amp; 0xffn);
+  b.set(rand, 6);
+  b[6] = (b[6] &amp; 0x0f) | 0x70;   // version 7
+  b[8] = (b[8] &amp; 0x3f) | 0x80;   // variant 10
+  const h = [...b].map(x =&gt; x.toString(16).padStart(2,'0')).join('');
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+}</code></pre></div>
+    <div class="lang-block"><strong>Python 3.6+ (v4) and 3.13+ (v7):</strong><pre><code>import uuid
+uuid.uuid4()              # v4
+uuid.uuid7()              # v7 (Python 3.13+; on older, use the `uuid7` PyPI package)
+uuid.uuid5(uuid.NAMESPACE_URL, "https://example.com/users/42")  # v5</code></pre></div>
+    <div class="lang-block"><strong>Go (google/uuid):</strong><pre><code>import "github.com/google/uuid"
+id4 := uuid.New()                     // v4
+id7, _ := uuid.NewV7()                // v7 (v1.6.0+)</code></pre></div>
+    <div class="lang-block"><strong>Java 17+:</strong><pre><code>import java.util.UUID;
+UUID id = UUID.randomUUID();          // v4
+// v7 — needs a library, e.g. com.github.f4b6a3:uuid-creator
+import com.github.f4b6a3.uuid.UuidCreator;
+UUID v7 = UuidCreator.getTimeOrderedEpoch();</code></pre></div>
+    <div class="lang-block"><strong>Rust (uuid crate):</strong><pre><code>use uuid::Uuid;
+let id = Uuid::new_v4();
+let v7 = Uuid::now_v7();   // requires the `v7` feature</code></pre></div>
+    <div class="lang-block"><strong>PHP 8 / Symfony UID:</strong><pre><code>use Symfony\Component\Uid\Uuid;
+$v4 = Uuid::v4();
+$v7 = Uuid::v7();</code></pre></div>
+    <div class="lang-block"><strong>Ruby:</strong><pre><code>require 'securerandom'
+SecureRandom.uuid                              # v4
+# v7 — needs a gem like `uuidx`
+require 'uuidx'
+Uuidx.v7</code></pre></div>
+    <div class="lang-block"><strong>PostgreSQL 13+:</strong><pre><code>SELECT gen_random_uuid();          -- v4 (built-in since 13)
+-- v7 — install pg_uuidv7 extension or upgrade to PG 18 which adds uuidv7()</code></pre></div>
+
+    <h3>Common UUID mistakes I see in code review</h3>
+    <ul>
+      <li><strong>Treating UUIDs as secrets.</strong> A UUID is an identifier, not a token. Anyone who sees it can use it to address the resource. Pair UUIDs with proper authentication.</li>
+      <li><strong>Storing UUIDs as <code>VARCHAR(36)</code>.</strong> 36 bytes for the string vs 16 bytes for native binary. Postgres has <code>uuid</code>, MySQL 8 has <code>BINARY(16)</code> with <code>UUID_TO_BIN()</code>, SQL Server has <code>uniqueidentifier</code>. Use them.</li>
+      <li><strong>Using v1 in 2026.</strong> The MAC-address bytes leak which physical machine generated the ID. v7 gives you the same time-ordering benefit without the leak.</li>
+      <li><strong>Validating UUIDs with the wrong regex.</strong> <code>/^[0-9a-f-]{36}$/</code> accepts garbage like <code>aaaa-aaaa-...</code>. The correct shape requires the specific positions and the variant nibble: <code>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-7][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i</code>.</li>
+      <li><strong>Generating v4 UUIDs with <code>Math.random()</code>.</strong> The classic <code>"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(...)</code> snippet from Stack Overflow uses <code>Math.random()</code>, which is not cryptographically secure. Use <code>crypto.randomUUID()</code> in any browser since 2021.</li>
+      <li><strong>Embedding UUIDs in user-facing URLs.</strong> Long, ugly, non-memorable. Keep UUIDs as the internal ID and expose a slug or short-hash for shareable links.</li>
+      <li><strong>Sorting v4 UUIDs and expecting time order.</strong> v4 is uniformly random; the result is meaningless ordering. Use v7 if you need this.</li>
+    </ul>
+
+    <h3>UUID vs ULID vs NanoID vs CUID2 — picking an ID format</h3>
+    <table class="ref-table">
+      <thead><tr><th>Format</th><th>Bits of randomness</th><th>Sortable?</th><th>Length</th><th>Standard?</th></tr></thead>
+      <tbody>
+        <tr><td>UUIDv4</td><td>122</td><td>No</td><td>36 chars (32 hex + 4 hyphens)</td><td>RFC 4122 / 9562</td></tr>
+        <tr><td>UUIDv7</td><td>74 + 48-bit time</td><td>Yes</td><td>36 chars</td><td>RFC 9562</td></tr>
+        <tr><td>ULID</td><td>80 + 48-bit time</td><td>Yes</td><td>26 chars (Crockford base32)</td><td>De-facto, no RFC</td></tr>
+        <tr><td>NanoID (default)</td><td>126 (21 chars × 6 bits)</td><td>No</td><td>21 chars</td><td>De-facto</td></tr>
+        <tr><td>CUID2</td><td>~256 (sha-3 derived)</td><td>No</td><td>24 chars (configurable)</td><td>De-facto</td></tr>
+      </tbody>
+    </table>
+    <p>Practical guide: use UUIDv7 if your stack and database support it. Use ULID if you want a shorter, more URL-friendly time-ordered ID. Use NanoID for short opaque IDs (8–12 chars) where 128 bits is overkill. Use UUIDv4 if interop with old systems matters more than performance.</p>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc9562" rel="noopener" target="_blank">RFC 9562 — Universally Unique IDentifiers (UUIDs), May 2024 (supersedes RFC 4122)</a></li>
+        <li><a href="https://datatracker.ietf.org/doc/html/rfc4122" rel="noopener" target="_blank">RFC 4122 — UUID URN namespace (the original 2005 spec)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" rel="noopener" target="_blank">MDN — crypto.randomUUID()</a></li>
+        <li><a href="https://www.postgresql.org/docs/current/uuid-ossp.html" rel="noopener" target="_blank">PostgreSQL — UUID functions reference</a></li>
+        <li><a href="https://github.com/ulid/spec" rel="noopener" target="_blank">ULID specification</a></li>
+      </ul>
+    </aside>
+  </section>
 
   <!-- How to use + mistakes -->
   <section class="use-cases">
@@ -404,9 +521,10 @@
 <footer>
   <div>© 2026 FreeDevTool — UUID Generator Online</div>
   <div class="footer-links">
-    <a href="/">All Tools</a>
-    <a href="privacy">Privacy Policy</a>
-    <a href="terms">Terms of Use</a>
+    <a href="/all-tools">All Tools</a>
+    <a href="/about">About</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/terms">Terms of Use</a>
   </div>
 </footer>
 

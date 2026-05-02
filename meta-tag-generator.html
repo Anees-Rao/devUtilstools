@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Meta Tag Generator — SEO &amp; Social Tags Free Tool">
+  <meta name="twitter:description" content="Generate SEO-optimized HTML meta tags with live Google SERP and Facebook/LinkedIn previews. Title, description, Open Graph, Twitter Cards, canonical, robots.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Meta Tag Generator for SEO — Create HTML Meta Tags Free">
@@ -141,7 +141,7 @@
     <span class="tool-badge">SEO</span>
     <h1>Meta Tag Generator</h1>
     <p>Generate SEO-optimized HTML meta tags with live Google SERP preview and social media card mockups. Covers title, description, Open Graph, Twitter Cards, canonical URLs and robots directives.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool SEO engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -221,6 +221,133 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>The complete guide to meta tags — SEO, Open Graph, Twitter Cards, and what Google actually reads in 2026</h2>
+    <p>Meta tags are the API your page exposes to search engines and social platforms. Every Google search result, every Slack unfurl, every iMessage link preview is a render of the meta tags in your <code>&lt;head&gt;</code>. Most of the SEO traffic you can win or lose without touching a line of body content lives in this section. This guide is the working reference: which tags to ship, what character limits Google enforces, how Open Graph differs from Twitter Cards, and which legacy tags to stop wasting bytes on.</p>
+
+    <h3>The minimum viable head — six tags every page needs</h3>
+    <p>If you ship only six meta tags, ship these:</p>
+    <ol>
+      <li><code>&lt;title&gt;</code> — the page title. 50–60 characters. The single biggest SEO lever.</li>
+      <li><code>&lt;meta name="description"&gt;</code> — 150–160 characters. Influences click-through rate, not ranking directly.</li>
+      <li><code>&lt;link rel="canonical"&gt;</code> — the URL Google should index. Solves duplicate content automatically.</li>
+      <li><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</code> — required for mobile-first indexing.</li>
+      <li><code>&lt;meta property="og:image"&gt;</code> — the preview image when shared. 1200 × 630 px.</li>
+      <li><code>&lt;meta name="twitter:card" content="summary_large_image"&gt;</code> — gates the large Twitter card.</li>
+    </ol>
+    <p>Everything else in the head is incremental polish. These six are the baseline.</p>
+
+    <h3>Google SERP rules — what Google actually shows</h3>
+    <p>Google rewrites titles 60%+ of the time, but the title you ship is still the strongest input. The current rules (May 2026):</p>
+    <table class="ref-table">
+      <thead><tr><th>Element</th><th>Pixel limit (desktop)</th><th>Approx. character cap</th><th>If you exceed</th></tr></thead>
+      <tbody>
+        <tr><td>Title</td><td>~580 px</td><td>50–60 chars</td><td>Truncated with ellipsis or rewritten by Google.</td></tr>
+        <tr><td>Description</td><td>~920 px</td><td>150–160 chars (920px desktop / 130 mobile)</td><td>Truncated; Google may pull from page body instead.</td></tr>
+        <tr><td>URL</td><td>~580 px</td><td>~75 chars after the domain</td><td>Path collapsed with breadcrumbs.</td></tr>
+      </tbody>
+    </table>
+    <p>Two writing rules that compound: put the primary keyword <strong>in the first 30 characters</strong> of the title, and write descriptions as a <strong>two-sentence pitch</strong>, not a keyword stuff. Google's 2025 spam updates penalize obvious keyword stuffing.</p>
+
+    <h3>Open Graph — the protocol Facebook, LinkedIn, Slack, Discord, and iMessage all read</h3>
+    <p>Open Graph was Facebook's invention but is now the de-facto standard for every link-preview surface that is not Twitter. The required tags:</p>
+    <table class="ref-table">
+      <thead><tr><th>Tag</th><th>Purpose</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>og:title</code></td><td>Card title</td><td>Can differ from <code>&lt;title&gt;</code> for SEO vs social split.</td></tr>
+        <tr><td><code>og:description</code></td><td>Card body text</td><td>~200 chars before truncation in most surfaces.</td></tr>
+        <tr><td><code>og:url</code></td><td>Canonical URL for the share</td><td>Set this even if you have <code>&lt;link rel="canonical"&gt;</code> — different consumers.</td></tr>
+        <tr><td><code>og:image</code></td><td>Preview image URL</td><td>1200 × 630 px ideal; minimum 600 × 315; under 5 MB.</td></tr>
+        <tr><td><code>og:image:alt</code></td><td>Image alt text</td><td>Accessibility win; LinkedIn surfaces it.</td></tr>
+        <tr><td><code>og:type</code></td><td><code>website</code> / <code>article</code> / <code>product</code></td><td>Affects Facebook crawler heuristics.</td></tr>
+        <tr><td><code>og:site_name</code></td><td>Brand name</td><td>Shown above the title on Facebook.</td></tr>
+        <tr><td><code>og:locale</code></td><td>e.g. <code>en_US</code></td><td>Useful for multilingual sites.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Twitter Cards — what X actually requires</h3>
+    <p>Twitter (now X) reads its own <code>twitter:</code> namespace and falls back to <code>og:</code> tags when those are missing. The minimum:</p>
+    <ul>
+      <li><code>twitter:card</code> — set to <code>summary_large_image</code> for the wide visual card. <code>summary</code> is the smaller default.</li>
+      <li><code>twitter:title</code> — falls back to <code>og:title</code>.</li>
+      <li><code>twitter:description</code> — falls back to <code>og:description</code>.</li>
+      <li><code>twitter:image</code> — falls back to <code>og:image</code>.</li>
+      <li><code>twitter:site</code> — your brand handle (optional but appears next to the card).</li>
+    </ul>
+    <p>The image rules differ from Open Graph: Twitter wants a <strong>2:1 aspect ratio</strong> (e.g. 1200 × 600) for large cards, and a <strong>1:1</strong> image (240 × 240 minimum) for summary. The picker outputs both; you can ship either size and X will scale.</p>
+
+    <h3>Canonical URLs — solving duplicate content</h3>
+    <p>If the same content lives at multiple URLs (with/without trailing slash, with tracking params, on a different domain), Google can split your link equity across them all. The <code>&lt;link rel="canonical"&gt;</code> tag tells Google which URL is the master copy. Rules:</p>
+    <ul>
+      <li>Use <strong>absolute URLs</strong>: <code>https://freedevtool.org/page</code>, not <code>/page</code>.</li>
+      <li>Self-referential canonicals are recommended — every page should canonicalize to itself.</li>
+      <li>Pagination: each paginated page should canonicalize to itself, not to page 1.</li>
+      <li>Tracking params: canonicalize away the tracking version. <code>?utm_source=…</code> URLs should canonicalize to the no-param URL.</li>
+      <li>Cross-domain: legal but uncommon — use only when syndicating content across multiple domains you own.</li>
+    </ul>
+
+    <h3>Robots and indexing controls</h3>
+    <p>The <code>robots</code> meta tag controls indexing at the page level. <code>robots.txt</code> blocks crawling; the meta tag blocks indexing. They are different — a URL blocked in robots.txt can still appear in search results without a snippet because Google never crawls it but trusts external links.</p>
+    <table class="ref-table">
+      <thead><tr><th>Directive</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>index, follow</code></td><td>Default. Index this page, follow its links.</td></tr>
+        <tr><td><code>noindex</code></td><td>Do not index. Use for staging, admin, search results pages.</td></tr>
+        <tr><td><code>nofollow</code></td><td>Do not pass link equity through any link on this page.</td></tr>
+        <tr><td><code>noarchive</code></td><td>No cached copy.</td></tr>
+        <tr><td><code>nosnippet</code></td><td>No description in SERP.</td></tr>
+        <tr><td><code>max-snippet:N</code></td><td>Cap snippet length.</td></tr>
+        <tr><td><code>max-image-preview:large|standard|none</code></td><td>Controls SERP thumbnail size.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Meta tags Google ignores in 2026 (stop shipping them)</h3>
+    <ul>
+      <li><strong><code>&lt;meta name="keywords"&gt;</code></strong> — Google has not used this since 2009. Bing also ignores it.</li>
+      <li><strong><code>&lt;meta name="author"&gt;</code></strong> — not a ranking signal. Use Schema.org Person/Article markup instead.</li>
+      <li><strong><code>&lt;meta name="generator"&gt;</code></strong> — adds bytes, no ranking value.</li>
+      <li><strong><code>&lt;meta name="revisit-after"&gt;</code></strong> — never used by any major engine.</li>
+      <li><strong><code>&lt;meta name="distribution"&gt;</code></strong> — same.</li>
+      <li><strong><code>&lt;meta name="rating"&gt;</code></strong> — only matters for SafeSearch context.</li>
+    </ul>
+
+    <h3>Structured data — beyond meta tags</h3>
+    <p>Meta tags handle the basics; structured data (Schema.org JSON-LD) unlocks rich results — review stars, FAQ accordions, breadcrumb trails, recipe cards. The high-value schemas in 2026:</p>
+    <ul>
+      <li><strong>BreadcrumbList</strong> — drives the breadcrumb shown in mobile SERP. Trivial to add.</li>
+      <li><strong>Article / NewsArticle</strong> — eligibility for Top Stories carousel.</li>
+      <li><strong>FAQPage</strong> — collapsible Q&amp;A directly in SERP. (Note: limited to authoritative domains since the 2023 rollout.)</li>
+      <li><strong>Product</strong> + <strong>AggregateRating</strong> — review stars and price.</li>
+      <li><strong>HowTo</strong> — step-by-step rich result.</li>
+      <li><strong>SoftwareApplication</strong> — for tool pages like this site.</li>
+      <li><strong>Organization</strong> — sitelinks search box, knowledge panel eligibility.</li>
+    </ul>
+
+    <h3>Common meta-tag mistakes</h3>
+    <ul>
+      <li><strong>Same title on every page.</strong> Each URL needs a unique, descriptive title. Templates like <code>{Page} | Site Name</code> work; <code>Site Name</code> on every page is a self-inflicted ranking hit.</li>
+      <li><strong>Description that just repeats the title.</strong> Wasted real estate; write a fresh sentence with a value proposition.</li>
+      <li><strong>Relative URL in canonical.</strong> Google requires absolute URLs; some validators will silently treat the tag as missing.</li>
+      <li><strong>OG image too small or wrong aspect.</strong> Below 600 × 315 px Facebook falls back to the no-card layout. Use 1200 × 630 to play safe across surfaces.</li>
+      <li><strong>Canonicalizing to a redirect.</strong> The canonical URL must return 200 OK. Canonicalizing to a 301/302 chain confuses Google.</li>
+      <li><strong>Missing viewport meta tag.</strong> Mobile-first indexing penalizes pages without it; mobile usability shows up as a Search Console issue.</li>
+      <li><strong>Conflicting robots signals.</strong> A page that is blocked in <code>robots.txt</code>, set to <code>noindex</code> in meta, and self-canonical to a different URL is a mess. Pick one strategy.</li>
+      <li><strong>Forgetting to escape quotes in OG content.</strong> A title containing <code>"</code> breaks the attribute parser. Use HTML entities or <code>&amp;quot;</code>.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://developers.google.com/search/docs/appearance/snippet" rel="noopener" target="_blank">Google Search — Title and snippet documentation</a></li>
+        <li><a href="https://developers.google.com/search/docs/crawling-indexing/special-tags" rel="noopener" target="_blank">Google Search — Special tags reference</a></li>
+        <li><a href="https://developers.google.com/search/docs/crawling-indexing/canonicalization" rel="noopener" target="_blank">Google Search — Canonical URLs</a></li>
+        <li><a href="https://ogp.me/" rel="noopener" target="_blank">The Open Graph protocol — official spec</a></li>
+        <li><a href="https://developer.x.com/en/docs/twitter-for-websites/cards/overview/abouts-cards" rel="noopener" target="_blank">X (Twitter) Cards — official documentation</a></li>
+        <li><a href="https://schema.org/docs/full.html" rel="noopener" target="_blank">Schema.org — full type hierarchy</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What are meta tags and why are they important for SEO?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Meta tags are HTML elements in the <code>&lt;head&gt;</code> section that provide metadata to search engines and social platforms. The <strong>title tag</strong> and <strong>meta description</strong> directly influence click-through rates from search results. Open Graph tags control social sharing appearance, while canonical URLs prevent duplicate content penalties. Well-optimized meta tags can significantly improve your organic traffic and social media engagement.</div></div>
@@ -239,7 +366,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

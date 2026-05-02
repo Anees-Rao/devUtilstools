@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Color Palette Generator &amp; Picker — Free CSS Color Tool">
+  <meta name="twitter:description" content="Generate harmonious color palettes, pick any color with hex/RGB/HSL/OKLCH output, and check WCAG AA/AAA contrast — all in your browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Color Palette Generator & Picker — Free Online CSS Color Tool">
@@ -133,11 +133,12 @@
     </a>
 
   <div class="tool-header">
-    
+
 
     <div class="tool-badge">Design Tool</div>
     <h1>Color Palette Generator &amp; Picker</h1>
     <p class="tool-description">Generate beautiful color palettes using color harmony rules — complementary, analogous, triadic, split-complementary, and monochromatic. Pick any color with hex, RGB, and HSL output ready for CSS, Tailwind, and design systems. Check WCAG accessibility contrast ratios for text readability. Built for designers and developers who need precise color codes. All processing runs in your browser.</p>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
   </div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">color-picker.tool</span></div>
@@ -171,6 +172,101 @@
       </div>
     </div>
   </div>
+  <section class="article-section">
+    <h2>The complete guide to color palette generation, color models, and WCAG contrast</h2>
+    <p>Color is the loudest signal in a user interface. Pick well and your product feels confident, accessible, and on-brand; pick badly and your buttons disappear, your charts mislead, and your sign-up form fails screen-reader audits. This guide walks through how the three CSS color models actually work, the math behind color-harmony rules, the WCAG 2.1 contrast formula in plain English, and how to pick palettes that work in light mode, dark mode, and on the wide-gamut displays that have shipped in every iPhone and MacBook since 2017.</p>
+
+    <h3>Hex, RGB, HSL, OKLCH — what each model is for</h3>
+    <p>CSS lets you write the same color in five different notations. They are not interchangeable in workflow even though they describe the same on-screen pixels. Use the right one for the job:</p>
+    <table class="ref-table">
+      <thead><tr><th>Notation</th><th>Example</th><th>Best for</th><th>Watch out for</th></tr></thead>
+      <tbody>
+        <tr><td>Hex</td><td><code>#00d084</code></td><td>Brand tokens, design hand-off, copy-paste from Figma</td><td>No alpha unless you use 8-digit hex (<code>#00d08480</code>); hard to tweak by eye.</td></tr>
+        <tr><td>RGB / RGBA</td><td><code>rgb(0 208 132 / .8)</code></td><td>Anywhere you need transparency</td><td>Adjusting "make this 10% lighter" requires math; not intuitive.</td></tr>
+        <tr><td>HSL / HSLA</td><td><code>hsl(158 100% 41%)</code></td><td>Generating tints, shades, and hover states</td><td>"Lightness 50%" of yellow is perceptually brighter than 50% of blue. HSL is mathematically uniform, not perceptually uniform.</td></tr>
+        <tr><td>OKLCH</td><td><code>oklch(72% .19 158)</code></td><td>Perceptually uniform palettes, accessible ramp generation</td><td>Universally supported in browsers since 2023, but Sketch/older tools may not import it.</td></tr>
+        <tr><td>color()</td><td><code>color(display-p3 0 .81 .52)</code></td><td>Wide-gamut output on P3 displays (modern iPhone/Mac)</td><td>Falls back unevenly on sRGB monitors; always provide an sRGB fallback.</td></tr>
+      </tbody>
+    </table>
+    <p>Here is the practical workflow most teams converge on: design tokens stored as <strong>hex</strong> for portability, runtime calculations done in <strong>HSL</strong> or <strong>OKLCH</strong>, and any color carrying transparency written in <strong>rgb()</strong>. The picker above outputs all three so you can paste whichever your codebase expects.</p>
+
+    <h3>Color harmony rules — the math behind "this just looks right"</h3>
+    <p>The reason complementary and triadic palettes feel balanced is not magic, it is geometry on the HSL hue wheel. Hue is a 360° circle: red sits at 0°, yellow at 60°, green at 120°, cyan at 180°, blue at 240°, magenta at 300°. Every harmony rule is a fixed rotation around that circle:</p>
+    <table class="ref-table">
+      <thead><tr><th>Harmony</th><th>Hue offsets</th><th>Mood</th><th>Use it for</th></tr></thead>
+      <tbody>
+        <tr><td>Complementary</td><td>0°, 180°</td><td>High contrast, energetic</td><td>Call-to-action buttons against a neutral background</td></tr>
+        <tr><td>Analogous</td><td>0°, ±30°</td><td>Calm, cohesive</td><td>Backgrounds, hero sections, brand systems that need warmth</td></tr>
+        <tr><td>Triadic</td><td>0°, 120°, 240°</td><td>Vibrant, balanced</td><td>Illustrations, chart palettes with three distinct series</td></tr>
+        <tr><td>Split-complementary</td><td>0°, 150°, 210°</td><td>Strong contrast, less tension</td><td>Marketing pages where complementary feels too aggressive</td></tr>
+        <tr><td>Tetradic (square)</td><td>0°, 90°, 180°, 270°</td><td>Rich, complex</td><td>Editorial illustration; one color must dominate or it gets noisy</td></tr>
+        <tr><td>Monochromatic</td><td>0° (vary L)</td><td>Refined, minimal</td><td>UI surface ramps, dark-mode backgrounds</td></tr>
+      </tbody>
+    </table>
+    <p>The picker generates these by taking your base hue and adding the offsets, then producing extra tints by holding hue/saturation constant and varying lightness. The result is a palette that is mathematically harmonious — you still have to decide which color dominates and which accents.</p>
+
+    <h3>WCAG 2.1 contrast — the formula in plain English</h3>
+    <p>Web Content Accessibility Guidelines (WCAG) 2.1 defines contrast as a ratio between the relative luminance of two colors. The math is fixed by W3C and looks like this:</p>
+    <ol>
+      <li>Convert each RGB channel from 0–255 to a 0–1 float, then linearize: if the float is ≤ 0.03928, divide by 12.92; otherwise raise <code>((v + 0.055) / 1.055)</code> to the 2.4 power.</li>
+      <li>Combine the three linearized channels with the luminance weights: <code>L = 0.2126·R + 0.7152·G + 0.0722·B</code>.</li>
+      <li>Add 0.05 to each color's luminance, then divide the larger by the smaller. That is your contrast ratio, between 1:1 and 21:1.</li>
+    </ol>
+    <p>The thresholds you need to hit:</p>
+    <table class="ref-table">
+      <thead><tr><th>Standard</th><th>Normal text (≤ 18pt)</th><th>Large text (≥ 18pt or 14pt bold)</th><th>UI components &amp; graphics</th></tr></thead>
+      <tbody>
+        <tr><td>WCAG AA</td><td>4.5:1</td><td>3:1</td><td>3:1</td></tr>
+        <tr><td>WCAG AAA</td><td>7:1</td><td>4.5:1</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>The contrast checker above runs this exact formula. AA is the legal floor in the EU (European Accessibility Act, June 2025), the US (ADA Title III, settled case law), Canada (AODA), and Australia (DDA). AAA is the goal for text-heavy products like documentation and news.</p>
+    <p><strong>Note on APCA:</strong> WCAG 3.0 introduces APCA (Accessible Perceptual Contrast Algorithm), which corrects the 2.1 formula's known weaknesses with bright yellows and dark navy. APCA is in candidate-recommendation status as of 2026; sites that ship to government regulators should still validate against 2.1 today and plan for 3.0 next.</p>
+
+    <h3>Design-system palettes — going from one color to a 50–900 ramp</h3>
+    <p>Tailwind, Material, Radix, and most modern design systems expose 9–11 shades per color (50, 100, 200 … 900, sometimes 950). The shades are not random — they follow a luminance ramp tuned so that 500 hits the brand color, 900 hits AA on white, and 50 hits AA on near-black. The reliable way to build one yourself:</p>
+    <ol>
+      <li>Pick your <strong>500</strong> (the brand color). Convert to OKLCH.</li>
+      <li>Hold chroma roughly constant. Reduce lightness in even steps for 600/700/800/900; increase it for 400/300/200/100/50.</li>
+      <li>Slightly drop chroma at the extremes (50, 900, 950) so they do not look fluorescent or muddy.</li>
+      <li>Verify each shade against your background pair: 700+ should clear AA on white; 100– should clear AA on a near-black surface.</li>
+    </ol>
+    <p>This is why OKLCH wins for design systems: equal lightness steps in OKLCH produce equal perceptual steps. Equal lightness steps in HSL do not — yellow at L=50 looks brighter than blue at L=50.</p>
+
+    <h3>Reading colors from images — the EyeDropper API</h3>
+    <p>Modern Chromium browsers (Chrome 95+, Edge 95+, Opera 81+) ship the <code>EyeDropper</code> API, which lets web apps sample any pixel on the screen, including outside the browser window. Firefox does not implement it as of 2026. The picker uses native <code>&lt;input type="color"&gt;</code> for cross-browser fallback. If you need cross-browser dropper behavior, render a canvas with the image and pick the pixel under the click using <code>getImageData</code>.</p>
+
+    <h3>Color blindness and accessible status indicators</h3>
+    <p>About 8% of men and 0.5% of women have some form of color vision deficiency. The big three patterns:</p>
+    <ul>
+      <li><strong>Deuteranopia (most common, ~6% of men):</strong> green appears tan/grey. Red and green look similar.</li>
+      <li><strong>Protanopia (~1%):</strong> red appears dim. Reds and dark greens collide.</li>
+      <li><strong>Tritanopia (rare, &lt;0.01%):</strong> blue–yellow confusion.</li>
+    </ul>
+    <p>Practical rules: never encode meaning in color alone — pair it with an icon, a label, or shape. Status traffic-lights (red/yellow/green) should add a check/exclamation/cross icon. Charts should use both color and texture or position. Test palettes through Sim Daltonism, Stark, or Chrome DevTools' "rendering → emulate vision deficiency" panel before shipping.</p>
+
+    <h3>Common color-picker mistakes I see in code review</h3>
+    <ul>
+      <li><strong>Hard-coding hex values inside components.</strong> Buttons, alerts, and charts should reference design tokens, not raw <code>#00d084</code>. When you rebrand, you change one variable, not 80 files.</li>
+      <li><strong>Using <code>opacity</code> instead of an <code>rgb()</code> alpha channel.</strong> <code>opacity: .5</code> fades the entire element, including text. <code>background: rgb(0 0 0 / .5)</code> fades only the background — the text stays readable.</li>
+      <li><strong>Treating dark mode as "invert everything."</strong> Inverting a light palette produces neon-on-black UIs that fail AA. Build a parallel ramp with its own contrast verification.</li>
+      <li><strong>Picking colors on a wide-gamut Mac display.</strong> P3 reds and greens look fine on your iMac and dull on every Windows monitor. Test in sRGB-only mode — DevTools → Rendering → Emulate CSS media feature: color-gamut: srgb.</li>
+      <li><strong>Forgetting hover/focus states need their own contrast.</strong> A button that hits 4.5:1 normally can drop to 3:1 on hover when it lightens. Run the contrast checker on every interactive state.</li>
+      <li><strong>Using pure black (<code>#000</code>) for body text.</strong> Pure black on pure white feels harsh and creates eye strain. <code>#1a1a1a</code> on <code>#fafafa</code> is gentler and still clears AAA.</li>
+    </ul>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://www.w3.org/TR/WCAG21/#contrast-minimum" rel="noopener" target="_blank">W3C — WCAG 2.1 Success Criterion 1.4.3 (Contrast Minimum)</a></li>
+        <li><a href="https://www.w3.org/WAI/WCAG21/Techniques/general/G18" rel="noopener" target="_blank">W3C — Technique G18: Ensuring contrast of 4.5:1</a></li>
+        <li><a href="https://drafts.csswg.org/css-color-4/" rel="noopener" target="_blank">CSS Color Module Level 4 (oklch, color(), wide-gamut)</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EyeDropper_API" rel="noopener" target="_blank">MDN — EyeDropper API reference</a></li>
+        <li><a href="https://www.myndex.com/APCA/" rel="noopener" target="_blank">APCA — Accessible Perceptual Contrast Algorithm (WCAG 3 candidate)</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <!-- How to use + mistakes -->
   <section class="use-cases">
     <h2>How to use the color palette generator</h2>
@@ -208,7 +304,7 @@
     <a class="related-card" href="base64-image"><div class="related-icon">img</div><div class="related-card-info"><div class="related-card-name">Base64 Image Encoder</div><div class="related-card-desc">Convert images to Base64 data URIs</div></div></a>
   </div></section>
 </div>
-<footer><div>&copy; 2026 FreeDevTool — Color Palette Generator</div><div class="footer-links"><a href="/">All Tools</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div></footer>
+<footer><div>&copy; 2026 FreeDevTool — Color Palette Generator</div><div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div></footer>
 <script>
 let harmony='complementary';
 function hexToHsl(hex){hex=hex.replace('#','');const r=parseInt(hex.slice(0,2),16)/255,g=parseInt(hex.slice(2,4),16)/255,b=parseInt(hex.slice(4,6),16)/255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h=0,s=0,l=(max+min)/2;if(max!==min){const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);if(max===r)h=((g-b)/d+(g<b?6:0))/6;else if(max===g)h=((b-r)/d+2)/6;else h=((r-g)/d+4)/6}return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)}}

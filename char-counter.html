@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Character Count Online — Free Text Length Counter | FreeDevTool</title>
-  <meta name="description" content="Count characters instantly — words, lines, sentences, bytes. Tweet, SMS and email limits, reading and speaking time. Free, private, works offline.">
+  <title>Character Counter Online — Words, Lines, Bytes, Tweet/SMS Limits Free | FreeDevTool</title>
+  <meta name="description" content="Free character counter. Count chars, words, lines, sentences, UTF-8 bytes. Tweet/SMS limits, reading time, word frequency. Runs in browser, no signup.">
+  <meta name="keywords" content="character counter, character count online, word count, twitter character count, sms character limit, text length counter, byte counter, reading time calculator">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/char-counter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +19,12 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="Character Counter — Words, Lines, Tweet/SMS Limits | FreeDevTool">
+  <meta name="twitter:description" content="Live count: chars, words, lines, bytes. Tweet/SMS limits, reading time. Runs in browser, no signup.">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="Character Count Online — Free Text Length Counter">
@@ -140,9 +145,9 @@
     </a>
 
     <span class="tool-badge">Text</span>
-    <h1>Character / String Length Counter</h1>
-    <p>Character count online, instantly — paste any text and watch live totals for characters (with and without spaces), words, lines, paragraphs, sentences, and raw UTF-8 bytes. Built-in progress bars show how close you are to the Twitter/X limit of 280, the SMS GSM-7 limit of 160, and the 78-character email subject sweet spot. Reading-time (200 wpm) and speaking-time (130 wpm) estimates help size blog posts, scripts, and podcast outlines. The top five most-frequent words, average word length, and longest word help spot filler and repetition. All processing happens in your browser — no upload.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <h1>Character &amp; String Length Counter Online</h1>
+    <p>Character count, instantly — paste any text and watch live totals for characters (with and without spaces), words, lines, paragraphs, sentences, and raw UTF-8 bytes. Built-in progress bars show how close you are to the <strong>Twitter/X 280-char limit</strong>, the <strong>SMS GSM-7 160-char limit</strong>, and the 78-character email subject sweet spot. Reading-time (200 wpm) and speaking-time (130 wpm) estimates help size blog posts, scripts, and podcast outlines. Top five most-frequent words, average word length, and longest word help spot filler and repetition. Runs in your browser — no upload.</p>
+    <span class="last-updated">Last updated: May 2026</span>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -163,6 +168,247 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <!-- =============================================================
+       LONG-FORM ARTICLE — comprehensive guide for E-E-A-T + ranking.
+       ============================================================= -->
+
+  <article>
+
+    <section class="article-section">
+      <h2>What does "character count" actually mean?</h2>
+      <p>"Character count" sounds simple — count the letters — but it's deceptively complex once you account for Unicode, emoji, and platform-specific quirks. The same 30-letter sentence can register as 30, 60, or even 90 "characters" depending on whether you measure code points, UTF-16 code units, UTF-8 bytes, or graphemes (visible character clusters). Picking the right metric depends on where the text is going.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Metric</th><th>What it counts</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Code points (Unicode chars)</strong></td><td>Each Unicode character, regardless of byte size</td><td>Most "human" character counts — Word, Google Docs, blog editors</td></tr>
+          <tr><td><strong>UTF-16 code units</strong></td><td>JavaScript's <code>.length</code> — counts each 16-bit unit</td><td>Default in JavaScript, Java, .NET. Emoji often count as 2.</td></tr>
+          <tr><td><strong>UTF-8 bytes</strong></td><td>Bytes when stored in UTF-8</td><td>Database column sizing, SMS billing, network payloads</td></tr>
+          <tr><td><strong>Graphemes (visible chars)</strong></td><td>What humans see as "one character"</td><td>Cursor positioning, deletion behavior, what users intuitively expect</td></tr>
+          <tr><td><strong>Words</strong></td><td>Sequences separated by whitespace</td><td>Reading time, content sizing, Word/Docs counts</td></tr>
+        </tbody>
+      </table>
+
+      <p>Take the family emoji 👨‍👩‍👧‍👦. To a human, it's <strong>one character</strong>. JavaScript's <code>"👨‍👩‍👧‍👦".length</code> returns <strong>11</strong> (UTF-16 code units). Stored as UTF-8, it's <strong>25 bytes</strong>. Twitter counts it as <strong>2 weighted units</strong>. All five answers are technically correct — just for different questions.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Platform-specific character limits in 2026</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Platform</th><th>Limit</th><th>Counting rules</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Twitter / X</strong></td><td>280 (Free) / 25,000 (Premium)</td><td>BMP chars = 1, CJK + emoji = 2. URLs always 23 (t.co shortener).</td></tr>
+          <tr><td><strong>SMS (GSM-7)</strong></td><td>160 single / 153 per segment when concatenated</td><td>Latin alphabet only. Extended chars (€, [, ], ~) consume 2 slots.</td></tr>
+          <tr><td><strong>SMS (UCS-2)</strong></td><td>70 single / 67 per segment when concatenated</td><td>Triggered by any non-GSM-7 char (emoji, Cyrillic, Arabic, Chinese)</td></tr>
+          <tr><td><strong>Email subject (RFC 5322)</strong></td><td>998 hard / ~78 recommended</td><td>78 chars before wrapping; mobile previews truncate ~50.</td></tr>
+          <tr><td><strong>Email body line</strong></td><td>998 hard / 78 recommended</td><td>RFC 5322 §2.1.1. Many MTAs reject &gt; 998.</td></tr>
+          <tr><td><strong>HTML <code>&lt;title&gt;</code></strong></td><td>~60 chars visible in SERPs</td><td>Google truncates around 580 pixels (≈55–60 chars on desktop)</td></tr>
+          <tr><td><strong>Meta description</strong></td><td>~155 chars mobile / 160 desktop</td><td>Truncated with "…" beyond.</td></tr>
+          <tr><td><strong>Open Graph title</strong></td><td>60 visible / 70 truncate</td><td>Facebook, LinkedIn, Slack previews</td></tr>
+          <tr><td><strong>Open Graph description</strong></td><td>200 visible / 297 truncate</td><td>Slack collapses to 1 line; Facebook expands.</td></tr>
+          <tr><td><strong>YouTube title</strong></td><td>100 char limit / 70 visible</td><td>Mobile truncates around 50.</td></tr>
+          <tr><td><strong>YouTube description</strong></td><td>5,000 chars total / first 157 visible "above the fold"</td><td>Use the first 157 wisely — that's the SERP snippet too.</td></tr>
+          <tr><td><strong>Instagram caption</strong></td><td>2,200 chars</td><td>Truncated with "...more" after 125 chars.</td></tr>
+          <tr><td><strong>LinkedIn post</strong></td><td>3,000 chars</td><td>Truncated after 210 chars on feed; click "see more" to expand.</td></tr>
+          <tr><td><strong>Reddit title</strong></td><td>300 chars</td><td>Most subreddits enforce shorter custom limits.</td></tr>
+          <tr><td><strong>HN title</strong></td><td>80 chars</td><td>Hard limit. Concise wins.</td></tr>
+          <tr><td><strong>Slack message</strong></td><td>40,000 chars</td><td>Effectively unlimited; mobile collapses long messages.</td></tr>
+          <tr><td><strong>WhatsApp message</strong></td><td>65,536 chars</td><td>Effectively unlimited.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="article-section">
+      <h2>Tweet character counting — the surprising rules</h2>
+      <p>Twitter/X's "280 character" limit isn't 280 raw characters. It's 280 <strong>weighted units</strong> after Unicode NFC normalization, with two important rules:</p>
+      <ul>
+        <li><strong>Most characters = 1 weight</strong>. Latin letters, digits, common punctuation, currency symbols, even emoji modifiers like skin tones.</li>
+        <li><strong>CJK characters = 2 weight</strong>. Chinese, Japanese, Korean characters in specific Unicode blocks count double. This is intentional — they convey more information per glyph.</li>
+        <li><strong>URLs = 23 weight always</strong>. Twitter wraps every URL in its <code>t.co</code> shortener, so <code>https://example.com/an/extremely/long/url?with=params</code> still costs only 23 units. This is why URL placement strategy matters.</li>
+        <li><strong>Mentions and hashtags = standard char count</strong>. <code>@username</code> is 9 chars — no discount.</li>
+      </ul>
+
+      <div class="article-aside">
+        <strong>Tweet hack:</strong> writing in CJK is a 2× character cost in the counter, but a ~3–4× content-density gain in actual semantic information. For multilingual brands, mixing scripts can pack more meaning into 280.
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>SMS character counting — GSM-7, UCS-2, and the segment break</h2>
+      <p>SMS is even trickier than tweets. The 160-character limit comes from a 1980s decision: 7 bits per character × 140 bytes per SMS = 160 chars per single message.</p>
+
+      <h3>GSM-7 (default for Latin-alphabet languages)</h3>
+      <p>The standard SMS encoding fits exactly 160 chars in one SMS. But it has a <strong>quirky character set</strong> — only 128 chars from a specific Latin/Greek table. Common symbols like <code>€</code>, <code>[</code>, <code>]</code>, <code>{</code>, <code>}</code>, <code>~</code>, <code>\</code>, <code>|</code> aren't in the basic set; they live in the <strong>extended table</strong> and consume <strong>2 slots each</strong>. So a message with 80 letters + 5 Euro signs = 80 + 10 = 90 effective chars.</p>
+
+      <h3>UCS-2 (when GSM-7 isn't enough)</h3>
+      <p>Any character outside the GSM-7 table (a single emoji, a Cyrillic letter, a Chinese char, an em dash) automatically switches the entire message to UCS-2 — 2 bytes per char — capping single messages at <strong>70 chars</strong>. One emoji can drop your limit from 160 to 70 in a single message.</p>
+
+      <h3>Concatenated messages</h3>
+      <p>Long messages get split into segments with a 6-byte User Data Header (UDH). Each segment fits 153 GSM-7 chars or 67 UCS-2 chars. The receiver's phone reassembles them. <strong>Billing is per segment</strong> — sending a 200-char SMS = 2 segments = 2× the cost.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Reading and speaking time math</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Activity</th><th>Average rate</th><th>Use case</th></tr></thead>
+        <tbody>
+          <tr><td>Silent reading (adult, English prose)</td><td>200–250 wpm</td><td>Blog posts, articles. Use 200 wpm for skim-friendly content.</td></tr>
+          <tr><td>Silent reading (technical content)</td><td>50–125 wpm</td><td>Code-heavy or jargon-dense docs. Slower because comprehension matters.</td></tr>
+          <tr><td>Speaking (conversational)</td><td>120–150 wpm</td><td>Conversation, presentations</td></tr>
+          <tr><td>Speaking (broadcast / podcast)</td><td>140–160 wpm</td><td>Pro speakers; what most podcasts trend toward</td></tr>
+          <tr><td>Speaking (news anchor)</td><td>150–170 wpm</td><td>Faster than conversational; trained pace</td></tr>
+          <tr><td>Speaking (auctioneer)</td><td>250+ wpm</td><td>The extreme; not useful for content estimation</td></tr>
+        </tbody>
+      </table>
+
+      <p>Practical estimates: <strong>3-minute blog post = ~600 words. 5-minute podcast monologue = ~700 words. 10-minute conference talk = ~1,300 words spoken at relaxed pace.</strong> Use these to size content before writing.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Counting characters in 8 programming languages</h2>
+
+      <h3>JavaScript</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">javascript</div>
+<pre><code>// Naive — counts UTF-16 code units, NOT graphemes
+"hello".length;          // 5  ✓
+"👨‍👩‍👧‍👦".length;          // 11 ✗ (one family, 11 code units)
+
+// Correct grapheme count (modern browsers)
+[...new Intl.Segmenter().segment("👨‍👩‍👧‍👦")].length;  // 1  ✓
+
+// UTF-8 byte count
+new TextEncoder().encode("café").length;  // 5 (é = 2 bytes)
+
+// Word count
+text.trim().split(/\s+/).filter(Boolean).length;
+</code></pre>
+      </div>
+
+      <h3>Python</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">python</div>
+<pre><code># Code-point count (Python 3 default — usually what you want)
+len("café")          # 4  ✓
+
+# UTF-8 byte count
+len("café".encode("utf-8"))  # 5
+
+# Grapheme count (uses regex package, not stdlib)
+import regex
+len(regex.findall(r'\X', "👨‍👩‍👧‍👦"))  # 1
+
+# Word count
+len(text.split())
+</code></pre>
+      </div>
+
+      <h3>PHP</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">php</div>
+<pre><code>// strlen() returns BYTES (not chars) — common bug for UTF-8
+strlen("café");          // 5  ✗ (counts bytes)
+
+// mb_strlen — code-point count
+mb_strlen("café", "UTF-8");  // 4  ✓
+
+// Word count
+str_word_count($text);
+</code></pre>
+      </div>
+
+      <h3>Go</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">go</div>
+<pre><code>// len() returns BYTES on strings
+len("café")              // 5  (bytes)
+
+// Rune count (code points)
+import "unicode/utf8"
+utf8.RuneCountInString("café")  // 4  ✓
+
+// Range over runes
+for _, r := range s { ... }
+</code></pre>
+      </div>
+
+      <h3>Rust</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">rust</div>
+<pre><code>// .len() returns bytes
+"café".len();                        // 5
+
+// .chars().count() — code points
+"café".chars().count();              // 4 ✓
+
+// Grapheme count via unicode-segmentation crate
+use unicode_segmentation::UnicodeSegmentation;
+"👨‍👩‍👧‍👦".graphemes(true).count();    // 1
+</code></pre>
+      </div>
+
+      <h3>Java</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">java</div>
+<pre><code>// .length() returns UTF-16 code units
+"café".length();              // 4
+"👨‍👩‍👧‍👦".length();              // 11
+
+// Code-point count
+"👨‍👩‍👧‍👦".codePointCount(0, "👨‍👩‍👧‍👦".length());  // 7
+
+// UTF-8 byte count
+"café".getBytes(StandardCharsets.UTF_8).length;  // 5
+</code></pre>
+      </div>
+
+      <h3>Ruby</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">ruby</div>
+<pre><code>"café".length              # 4 (chars in default encoding)
+"café".bytesize            # 5 (bytes)
+"café".chars.length        # 4
+
+# Grapheme cluster count (Ruby 2.5+)
+"👨‍👩‍👧‍👦".grapheme_clusters.length  # 1
+</code></pre>
+      </div>
+
+      <h3>Bash</h3>
+      <div class="lang-block">
+        <div class="lang-block-header">bash</div>
+<pre><code># wc — word/char/byte/line count
+echo "hello world" | wc -c    # bytes (12 — includes newline!)
+echo -n "hello world" | wc -c # bytes (11)
+echo -n "hello world" | wc -m # chars (locale-aware)
+echo "hello world" | wc -w    # words (2)
+echo -e "line1\nline2" | wc -l # lines (2)
+
+# String length in bash
+str="café"
+echo "${#str}"                # 4 (chars)
+</code></pre>
+      </div>
+    </section>
+
+    <section class="article-section">
+      <h2>Character counter best practices</h2>
+      <ul>
+        <li><strong>Pick the right metric for the destination.</strong> Twitter wants weighted units; SMS wants encoded bytes; databases want UTF-8 bytes; humans want graphemes.</li>
+        <li><strong>For UTF-8 columns, size by bytes.</strong> A "VARCHAR(255)" can hold 255 ASCII chars or 63 emoji. Plan accordingly.</li>
+        <li><strong>Test with real-world content.</strong> Your average user has at least one accented character or emoji somewhere. Lorem ipsum doesn't catch encoding bugs.</li>
+        <li><strong>Beware of <code>String.length</code> in JavaScript and Java.</strong> Both count UTF-16 code units, not characters. Use <code>Intl.Segmenter</code> or grapheme libraries for user-facing counts.</li>
+        <li><strong>Strip URLs before counting tweets.</strong> They cost a fixed 23 units regardless of length — your "real" content has more room than the raw count suggests.</li>
+        <li><strong>Reading-time estimates are rough.</strong> Use 200 wpm as a default; show "5-min read" not "4 min 47 sec." Precision implies false confidence.</li>
+        <li><strong>For SMS, test with a single emoji.</strong> One emoji drops your limit from 160 to 70. Marketing messages are often optimized for GSM-7 only.</li>
+        <li><strong>Display "X / 280" not just "X".</strong> Users want to see the limit too. Color the counter red as it approaches the limit.</li>
+      </ul>
+    </section>
+
+  </article>
 
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
@@ -185,8 +431,8 @@
   </section>
 </div>
 <footer>
-  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div>&copy; 2026 FreeDevTool — Character Counter</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const ta=document.getElementById('cc-text');

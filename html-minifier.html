@@ -18,8 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="FreeDevTool — Free Online Developer Tools">
-  <meta name="twitter:description" content="50+ free, fast, privacy-first developer tools. No signup, runs in browser.">
+  <meta name="twitter:title" content="HTML Minifier &amp; Beautifier Online — Free Tool">
+  <meta name="twitter:description" content="Minify or beautify HTML. Strip comments, collapse whitespace, preserve pre/script/style. See live byte-savings stats. Free, browser-only, no upload.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="HTML Minifier Online — Free Minify & Beautify Tool">
@@ -135,7 +135,7 @@
     <span class="tool-badge">HTML</span>
     <h1>HTML Minifier & Beautifier</h1>
     <p>Looking for a reliable HTML minifier online? Paste any HTML document below and this free tool will strip comments, collapse redundant whitespace, and shrink your markup without breaking layout. Switch to Beautify mode to re-indent minified or tangled source into clean, readable code with a 2-space indent. Content inside pre, textarea, script, and style tags is preserved byte-for-byte so code samples and inline scripts remain intact. Everything runs locally in your browser — no upload, no sign-up, no tracking. See live byte-savings stats the moment you minify so you know exactly how much you shaved off.</p>
-    <span style="font-size:11px;color:var(--text3);font-family:var(--mono);display:block;margin-top:8px">Last updated: March 2026</span>
+    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool web performance engineering team</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -168,6 +168,93 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <section class="article-section">
+    <h2>HTML minification, performance, and what to ship in 2026</h2>
+    <p>HTML is the only resource a browser is guaranteed to need before it can render anything. Every byte you save in HTML lands directly on Largest Contentful Paint (LCP), Time to First Byte (TTFB), and the network bill — there is no "skip this until later" option for the first HTML response the way there is for code-split JS or below-the-fold CSS. Minification is the cheapest performance win available, and yet most teams either skip it (because their bundler does it for them and they never check) or do it badly (with a tool that mangles inline scripts). This guide covers what minification actually does, how it interacts with gzip and Brotli, what it does and does not buy you on Core Web Vitals, and the gotchas that show up in production HTML.</p>
+
+    <h3>What HTML minification removes — line by line</h3>
+    <table class="ref-table">
+      <thead><tr><th>Operation</th><th>Typical bytes saved</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>Strip HTML comments</td><td>1–5%</td><td>Conditional comments (<code>&lt;!--[if IE]&gt;</code>) must be preserved.</td></tr>
+        <tr><td>Collapse whitespace between tags</td><td>5–15%</td><td>Whitespace between inline elements (links, spans) can be visible. Test before/after.</td></tr>
+        <tr><td>Collapse multiple spaces inside text</td><td>2–5%</td><td>Safe outside <code>&lt;pre&gt;</code> and <code>&lt;textarea&gt;</code>.</td></tr>
+        <tr><td>Trim attribute whitespace</td><td>&lt;1%</td><td>Safe.</td></tr>
+        <tr><td>Remove optional closing tags (<code>&lt;/li&gt;</code>, <code>&lt;/p&gt;</code>)</td><td>2–5%</td><td>HTML5-valid but often surprises tools later in the pipeline.</td></tr>
+        <tr><td>Remove optional <code>type</code> attributes (<code>type="text/javascript"</code>, <code>type="text/css"</code>)</td><td>&lt;1%</td><td>Safe; both are HTML5 defaults.</td></tr>
+        <tr><td>Collapse boolean attributes (<code>checked="checked"</code> → <code>checked</code>)</td><td>&lt;1%</td><td>Safe.</td></tr>
+      </tbody>
+    </table>
+    <p>Combined, minifying typical hand-written HTML cuts 15–35% of bytes. Server-rendered HTML from frameworks already strips most of this, so savings are smaller but still meaningful for SSR pages with developer comments and indentation.</p>
+
+    <h3>Minification vs gzip vs Brotli — they stack</h3>
+    <p>Minification removes <em>structural</em> redundancy (whitespace, comments). Gzip and Brotli remove <em>statistical</em> redundancy (repeated byte sequences). Both layers contribute, and removing one does not replace the other. Real numbers from a typical content-heavy HTML page:</p>
+    <table class="ref-table">
+      <thead><tr><th>Pipeline</th><th>Bytes</th><th>vs raw</th></tr></thead>
+      <tbody>
+        <tr><td>Raw HTML</td><td>120 KB</td><td>baseline</td></tr>
+        <tr><td>Minified</td><td>85 KB</td><td>−29%</td></tr>
+        <tr><td>Raw + gzip</td><td>22 KB</td><td>−82%</td></tr>
+        <tr><td>Minified + gzip</td><td>20 KB</td><td>−83%</td></tr>
+        <tr><td>Minified + Brotli</td><td>17 KB</td><td>−86%</td></tr>
+      </tbody>
+    </table>
+    <p>The marginal value of minification on top of gzip is small (1–3 KB on a 120 KB page) but real. The big win is on uncompressed responses, on connections without gzip support (rare in 2026), and on the parser-cost side: the browser's HTML parser still has to walk every byte before tokenization, and fewer bytes = less main-thread work.</p>
+
+    <h3>Core Web Vitals — what minification actually improves</h3>
+    <ul>
+      <li><strong>TTFB (Time to First Byte):</strong> tiny direct improvement — same network RTT, slightly less data. Indirect win if your origin can ship the response from cache faster.</li>
+      <li><strong>LCP (Largest Contentful Paint):</strong> meaningful win when LCP is gated on parsing the HTML to discover the LCP image. Smaller HTML = parser reaches the <code>&lt;img&gt;</code> sooner.</li>
+      <li><strong>FCP (First Contentful Paint):</strong> direct improvement from less HTML to download and parse before the browser can paint.</li>
+      <li><strong>INP (Interaction to Next Paint):</strong> smaller HTML reduces main-thread work during initial load, which makes early interactions less janky.</li>
+      <li><strong>CLS (Cumulative Layout Shift):</strong> no direct effect — CLS is a layout problem, not a payload problem.</li>
+    </ul>
+    <p>Google has confirmed that LCP, INP, and CLS are ranking signals via the Core Web Vitals report in Search Console. The gain from minifying HTML in isolation is typically 50–200 ms on LCP for content-heavy pages — small but cumulatively important when paired with image optimization, font subsetting, and JS code-splitting.</p>
+
+    <h3>What this minifier preserves (and why those decisions matter)</h3>
+    <ol>
+      <li><strong><code>&lt;pre&gt;</code> and <code>&lt;textarea&gt;</code>:</strong> whitespace is semantic. Code samples, ASCII art, and form pre-population all break if you collapse it.</li>
+      <li><strong><code>&lt;script&gt;</code> and <code>&lt;style&gt;</code>:</strong> the contents have their own grammar. JavaScript template literals and CSS calc() expressions can both contain whitespace that matters. Minify them with a real JS / CSS minifier if you want; HTML minification is the wrong layer.</li>
+      <li><strong>Conditional comments (<code>&lt;!--[if IE]&gt;</code>):</strong> still used by some legacy enterprise email rendering. Stripping them is dangerous when you do not control the consumer.</li>
+      <li><strong>Inline event handlers and inline JSON-in-script blocks:</strong> the tool does not touch any character inside attribute values or script blocks.</li>
+    </ol>
+
+    <h3>Common HTML-minification mistakes</h3>
+    <ul>
+      <li><strong>Minifying templates instead of output.</strong> Minifying a Jinja2 template with whitespace control inside <code>{%-</code> tags can corrupt rendering. Minify the rendered HTML, not the template source.</li>
+      <li><strong>Stripping conditional comments.</strong> Older email clients and some embedded browsers still parse them. If you are shipping email HTML or kiosk content, leave them in.</li>
+      <li><strong>Collapsing whitespace between inline elements without testing.</strong> <code>&lt;a&gt;A&lt;/a&gt; &lt;a&gt;B&lt;/a&gt;</code> renders with a space; <code>&lt;a&gt;A&lt;/a&gt;&lt;a&gt;B&lt;/a&gt;</code> does not. Diff the visual output before deploying.</li>
+      <li><strong>Forgetting to recompress.</strong> If you serve static HTML, regenerate the gzip / Brotli precompressed copies after minifying. CDNs that compress on the fly do this automatically.</li>
+      <li><strong>Minifying view-source for SEO content.</strong> Google cares about rendered text, not source bytes. Removing the <code>&lt;meta name="description"&gt;</code> "to save bytes" is a self-inflicted ranking hit.</li>
+      <li><strong>Treating a minifier as a security tool.</strong> Stripping comments does <em>not</em> remove framework version strings or sensitive HTML inside the page. Use a separate post-processing step for redaction.</li>
+    </ul>
+
+    <h3>HTML minification in modern build pipelines</h3>
+    <table class="ref-table">
+      <thead><tr><th>Stack</th><th>How HTML gets minified</th></tr></thead>
+      <tbody>
+        <tr><td>Next.js</td><td>Built-in via Terser HTML; controlled by <code>next.config.js</code>.</td></tr>
+        <tr><td>Astro</td><td>Built-in via <code>astro:compress</code>; on by default in production.</td></tr>
+        <tr><td>Eleventy</td><td>Add <code>html-minifier-terser</code> as a transform.</td></tr>
+        <tr><td>Hugo</td><td><code>hugo --minify</code> uses tdewolff/minify in Go.</td></tr>
+        <tr><td>Jekyll</td><td>Plugin <code>jekyll-minifier</code>.</td></tr>
+        <tr><td>Webpack / Vite</td><td>HTML is usually minified by <code>html-webpack-plugin</code> or <code>vite-plugin-html</code>, both wrapping <code>html-minifier-terser</code>.</td></tr>
+        <tr><td>Cloudflare / Fastly / Akamai</td><td>HTML auto-minify is a CDN setting — turn it on for marketing pages, leave it off for SSR app shells (it can race with hydration).</td></tr>
+      </tbody>
+    </table>
+
+    <aside class="article-aside">
+      <strong>Authoritative references:</strong>
+      <ul>
+        <li><a href="https://web.dev/articles/vitals" rel="noopener" target="_blank">web.dev — Core Web Vitals overview</a></li>
+        <li><a href="https://web.dev/articles/optimize-lcp" rel="noopener" target="_blank">web.dev — Optimize Largest Contentful Paint</a></li>
+        <li><a href="https://html.spec.whatwg.org/multipage/syntax.html#optional-tags" rel="noopener" target="_blank">WHATWG HTML — Optional tags reference</a></li>
+        <li><a href="https://github.com/terser/html-minifier-terser" rel="noopener" target="_blank">html-minifier-terser — the de-facto JS implementation</a></li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding" rel="noopener" target="_blank">MDN — Content-Encoding header (gzip / Brotli)</a></li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does an HTML minifier do?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">An HTML minifier reduces the file size of an HTML document by removing unnecessary characters without changing how the page renders. Typical operations include stripping HTML comments, collapsing multiple whitespace characters into a single space, removing whitespace between adjacent tags, and trimming leading/trailing whitespace inside attribute values. The result is smaller payloads, faster network transfer, and lower bandwidth bills on high-traffic sites. A good minifier also leaves anything semantically meaningful — like the contents of <code>&lt;pre&gt;</code> or <code>&lt;script&gt;</code> blocks — completely untouched.</div></div>
@@ -189,7 +276,7 @@
 </div>
 <footer>
   <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
-  <div class="footer-links"><a href="about">About</a><a href="privacy">Privacy Policy</a><a href="terms">Terms of Use</a></div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
 </footer>
 <script>
 const SAMPLE_HTML=`<!DOCTYPE html>
