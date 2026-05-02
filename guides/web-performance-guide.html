@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Performance Guide 2026 — Core Web Vitals, LCP, INP, CLS Optimization | FreeDevTool</title>
+  <meta name="description" content="Definitive 2026 guide to Core Web Vitals: LCP, INP (replaced FID March 2024), CLS, TTFB. Real optimization patterns for HTML, CSS, JS, images. SEO-aware performance work.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freedevtool.org/guides/web-performance-guide">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/style.css?v=20260429-back-button">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Web Performance Guide 2026 — FreeDevTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="Web Performance Guide 2026 — Core Web Vitals">
+  <meta name="twitter:description" content="LCP, INP, CLS, TTFB explained. Optimization patterns that actually move the needle on Search Console.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
+  <meta property="og:title" content="Web Performance Guide 2026 — Core Web Vitals Optimization">
+  <meta property="og:description" content="The complete optimization reference for LCP, INP, CLS, TTFB. Asset, font, image, and JS patterns.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freedevtool.org/guides/web-performance-guide">
+  <meta property="article:published_time" content="2026-05-02T00:00:00Z">
+  <meta property="article:modified_time" content="2026-05-02T00:00:00Z">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Web Performance Guide 2026 — Core Web Vitals Optimization",
+    "description": "Complete reference for LCP, INP, CLS, TTFB optimization with practical patterns for assets, fonts, images, JS, and HTML.",
+    "datePublished": "2026-05-02",
+    "dateModified": "2026-05-02",
+    "author": {"@type": "Organization", "name": "FreeDevTool Engineering", "url": "https://freedevtool.org/about"},
+    "publisher": {"@type": "Organization", "name": "FreeDevTool", "url": "https://freedevtool.org", "logo": {"@type": "ImageObject", "url": "https://freedevtool.org/og-image.svg"}},
+    "image": "https://freedevtool.org/og-image.svg",
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "https://freedevtool.org/guides/web-performance-guide"},
+    "keywords": "Core Web Vitals, LCP, INP, CLS, TTFB, web performance, page speed"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://freedevtool.org/"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://freedevtool.org/guides"},
+      {"@type": "ListItem", "position": 3, "name": "Web Performance Guide 2026", "item": "https://freedevtool.org/guides/web-performance-guide"}
+    ]
+  }
+  </script>
+  <style>
+    .guide-toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 28px 0; }
+    .guide-toc h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-family: var(--mono); margin: 0 0 10px; font-weight: 600; }
+    .guide-toc ol { margin: 0; padding-left: 22px; color: var(--text2); font-size: 14px; line-height: 1.8; }
+    .guide-toc a { color: var(--text2); text-decoration: none; }
+    .guide-toc a:hover { color: var(--accent); }
+    .guide-tool-cta { display: block; background: var(--accent-dim); border: 1px solid rgba(0,208,132,.2); border-radius: var(--radius); padding: 14px 18px; margin: 18px 0; color: var(--text); text-decoration: none; transition: border-color .2s; }
+    .guide-tool-cta:hover { border-color: var(--accent); }
+    .guide-tool-cta strong { color: var(--accent); display: block; margin-bottom: 2px; font-size: 13px; }
+    .guide-tool-cta span { color: var(--text2); font-size: 13px; }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
+  <div class="nav-links">
+    <a href="/all-tools">Tools</a>
+    <a href="/guides">Guides</a>
+    <a href="/about">About</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+  <a class="tool-back" href="/" aria-label="Back to home">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    Back
+  </a>
+
+  <article>
+    <header class="tool-header">
+      <span class="tool-badge">Engineering Guide</span>
+      <h1>Web Performance Optimization Guide 2026</h1>
+      <p class="tool-description">The complete optimization reference for Core Web Vitals: LCP, INP (which replaced FID in March 2024), CLS, and TTFB. Covers HTML, CSS, JavaScript, images, fonts, and the network-level work that moves Search Console scores. Written for engineers who need to ship faster sites, not just hit a Lighthouse number.</p>
+      <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool web performance team · ~6,000 words · 24-minute read</div>
+    </header>
+
+    <section class="article-section">
+      <div class="guide-toc">
+        <h3>Table of contents</h3>
+        <ol>
+          <li><a href="#why">Why Core Web Vitals matter</a></li>
+          <li><a href="#metrics">The four metrics — LCP, INP, CLS, TTFB</a></li>
+          <li><a href="#lcp">LCP optimization — the biggest lever</a></li>
+          <li><a href="#inp">INP optimization — the new metric</a></li>
+          <li><a href="#cls">CLS optimization — eliminate layout shift</a></li>
+          <li><a href="#assets">Asset optimization — HTML, CSS, JS</a></li>
+          <li><a href="#images">Image and font optimization</a></li>
+          <li><a href="#network">Network-level wins (CDN, caching, HTTP/3)</a></li>
+          <li><a href="#measure">Measuring real-user data</a></li>
+          <li><a href="#references">Authoritative references</a></li>
+        </ol>
+      </div>
+
+      <h2 id="why">1. Why Core Web Vitals matter</h2>
+
+      <p>In May 2021 Google rolled Core Web Vitals into Page Experience as a confirmed ranking signal. In March 2024 they replaced First Input Delay (FID) with Interaction to Next Paint (INP), giving us a stricter definition of responsiveness. The current trio — LCP, INP, CLS — feeds the Search Console "Core Web Vitals" report and the Page Experience signal that influences rankings.</p>
+
+      <p>Beyond rankings, the business case is well-documented:</p>
+      <ul>
+        <li>Google's own data: a 100ms LCP improvement correlated with 8% conversion lift in a 2017 retail study; subsequent studies have confirmed similar magnitudes.</li>
+        <li>Akamai found that a 100ms delay in load time can hurt conversion rates by 7%.</li>
+        <li>The BBC reported losing 10% of users for every additional second of load time.</li>
+      </ul>
+
+      <p>Site speed is one of the few engineering investments with provable revenue lift. The framework below is what actually moves the metrics.</p>
+
+      <h2 id="metrics">2. The four metrics — LCP, INP, CLS, TTFB</h2>
+
+      <table class="ref-table">
+        <thead><tr><th>Metric</th><th>Measures</th><th>Good</th><th>Needs work</th><th>Poor</th></tr></thead>
+        <tbody>
+          <tr><td><strong>LCP</strong> (Largest Contentful Paint)</td><td>Time until the largest element above the fold renders</td><td>≤ 2.5s</td><td>2.5–4s</td><td>&gt; 4s</td></tr>
+          <tr><td><strong>INP</strong> (Interaction to Next Paint)</td><td>Worst input latency across the page session</td><td>≤ 200ms</td><td>200–500ms</td><td>&gt; 500ms</td></tr>
+          <tr><td><strong>CLS</strong> (Cumulative Layout Shift)</td><td>Sum of unexpected layout shifts</td><td>≤ 0.1</td><td>0.1–0.25</td><td>&gt; 0.25</td></tr>
+          <tr><td><strong>TTFB</strong> (Time to First Byte)</td><td>Time from request to first response byte</td><td>≤ 0.8s</td><td>0.8–1.8s</td><td>&gt; 1.8s</td></tr>
+        </tbody>
+      </table>
+
+      <p>Google evaluates the 75th percentile of real-user data across the past 28 days. Synthetic Lighthouse scores are useful for development but Search Console uses field data from the Chrome User Experience Report (CrUX).</p>
+
+      <h2 id="lcp">3. LCP optimization — the biggest lever</h2>
+
+      <p>LCP is the metric that responds most to engineering work. The largest above-the-fold element is usually the hero image or the main headline. Make it appear faster.</p>
+
+      <ol>
+        <li><strong>Identify your LCP element.</strong> Chrome DevTools → Performance → Web Vitals overlay highlights it. Often it is a hero image or the H1.</li>
+        <li><strong>Preload the LCP image.</strong> <code>&lt;link rel="preload" as="image" href="/hero.webp" fetchpriority="high"&gt;</code> in the head. Browser starts the download before HTML parsing reaches the <code>&lt;img&gt;</code>.</li>
+        <li><strong>Use <code>fetchpriority="high"</code> on the hero image element.</strong> Tells the browser to prioritize this download over other assets.</li>
+        <li><strong>Avoid lazy-loading above-the-fold images.</strong> <code>loading="lazy"</code> on a hero image hurts LCP; only use it for below-fold images.</li>
+        <li><strong>Use modern formats.</strong> WebP or AVIF for photos; SVG for logos and icons. WebP averages 30% smaller than JPEG; AVIF averages 50% smaller.</li>
+        <li><strong>Serve responsive images.</strong> <code>&lt;img srcset&gt;</code> with multiple sizes lets the browser pick the right one for the viewport. Don't ship a 4K image to a phone.</li>
+        <li><strong>Inline critical CSS.</strong> The first 14KB of HTML response can include the CSS needed for the above-the-fold render. Defer the rest.</li>
+        <li><strong>Reduce server response time.</strong> If TTFB is &gt; 800ms, you have a backend problem to fix before any frontend optimization helps.</li>
+      </ol>
+
+      <a class="guide-tool-cta" href="/base64-image"><strong>Image to Base64 Encoder</strong><span>For tiny critical images (icons, logos under 2KB), inline them as data URIs to skip a request entirely.</span></a>
+
+      <h2 id="inp">4. INP optimization — the new metric</h2>
+
+      <p>INP (Interaction to Next Paint) replaced FID in March 2024. Where FID measured only the first input delay, INP measures the worst input delay across the entire page session — clicks, taps, key presses. It is a much more honest measure of perceived responsiveness.</p>
+
+      <p>The 200ms threshold for "good" is strict. Most pages with heavy JavaScript fail it. Optimization patterns:</p>
+
+      <ol>
+        <li><strong>Break up long tasks.</strong> Any JavaScript task &gt; 50ms blocks the main thread and contributes to bad INP. Split with <code>scheduler.yield()</code> (Chrome 129+) or fall back to <code>setTimeout(..., 0)</code> / <code>requestIdleCallback</code>.</li>
+        <li><strong>Use <code>content-visibility: auto</code></strong> on off-screen sections to skip rendering work until they scroll into view.</li>
+        <li><strong>Defer non-critical JavaScript.</strong> Analytics, A/B testing scripts, social embeds — load them after the page is interactive. Use <code>&lt;script defer&gt;</code> or <code>&lt;script async&gt;</code>.</li>
+        <li><strong>Audit third-party scripts.</strong> Tag managers, ad scripts, chat widgets are typical INP killers. Each one runs JavaScript on every interaction.</li>
+        <li><strong>Use Web Workers for heavy computation.</strong> JSON parsing of large blobs, image processing, encryption — push off the main thread.</li>
+        <li><strong>Code-split your JavaScript.</strong> Don't ship the checkout-flow code on the homepage. Use dynamic imports.</li>
+        <li><strong>Memoize React components.</strong> <code>React.memo</code>, <code>useMemo</code>, <code>useCallback</code> prevent re-renders. Profile with React DevTools.</li>
+        <li><strong>Debounce input handlers.</strong> Search-as-you-type with no debounce fires a request on every keystroke. 250ms debounce keeps INP healthy.</li>
+      </ol>
+
+      <a class="guide-tool-cta" href="/js-minifier"><strong>JavaScript Minifier</strong><span>Smaller JS = less parse + compile time = better INP. Pair with the HTML and CSS minifiers below.</span></a>
+
+      <h2 id="cls">5. CLS optimization — eliminate layout shift</h2>
+
+      <p>Cumulative Layout Shift measures unexpected movement after initial render. Hero image without dimensions, web fonts that swap mid-render, late-loading ads — all cause CLS. The fixes are mostly about reserving space.</p>
+
+      <ol>
+        <li><strong>Set explicit width and height on every image.</strong> Either via <code>width</code> and <code>height</code> attributes or CSS <code>aspect-ratio</code>. Prevents the post-load reflow.</li>
+        <li><strong>Reserve space for ads, embeds, iframes.</strong> A <code>min-height</code> placeholder beats a "the ad will load and push everything down" experience.</li>
+        <li><strong>Use <code>font-display: optional</code> or <code>swap</code>.</strong> Pair with <code>size-adjust</code> to match fallback metrics. The <code>fontaine</code> library and CSS <code>@font-face</code> descriptors automate this.</li>
+        <li><strong>Don't insert content above existing content.</strong> Cookie banners, alerts, "you're in EU" prompts — stack them at the bottom or use overlays, not inserts that push the page down.</li>
+        <li><strong>Animate with <code>transform</code>, not layout properties.</strong> <code>transform: translate</code> and <code>opacity</code> are GPU-accelerated and don't trigger layout. Avoid animating <code>top</code>, <code>left</code>, <code>width</code>, <code>height</code>.</li>
+        <li><strong>Test in slow 3G mode.</strong> CLS often hides on a fast connection. DevTools → Network → Slow 4G + CPU 4× slowdown reveals real shifts.</li>
+      </ol>
+
+      <h2 id="assets">6. Asset optimization — HTML, CSS, JS</h2>
+
+      <p>Every byte you ship has to be downloaded, parsed, executed. Minification, compression, and code-splitting are the three levers.</p>
+
+      <h3>HTML</h3>
+      <ul>
+        <li><strong>Minify in production.</strong> 15–35% byte reduction on hand-written HTML. The <a href="/html-minifier">HTML Minifier</a> handles strip-comments + collapse-whitespace + boolean-attribute compression.</li>
+        <li><strong>Enable Brotli.</strong> Brotli compresses 15–25% better than gzip on text. Cloudflare, Fastly, Akamai, Vercel all have it; turn it on if it isn't already.</li>
+        <li><strong>Inline critical CSS.</strong> The first 14KB matters most.</li>
+      </ul>
+
+      <h3>CSS</h3>
+      <ul>
+        <li><strong>Minify and tree-shake unused CSS.</strong> The <a href="/css-minifier">CSS Minifier</a> handles compression. Tools like PurgeCSS or the built-in Tailwind JIT remove unused selectors.</li>
+        <li><strong>Use CSS custom properties for theming.</strong> One stylesheet, dark/light variants via custom property reassignment.</li>
+        <li><strong>Avoid <code>@import</code> in CSS.</strong> Each import adds a sequential request. Use bundler imports or HTTP/2 push.</li>
+      </ul>
+
+      <h3>JavaScript</h3>
+      <ul>
+        <li><strong>Minify with Terser, esbuild, or SWC.</strong> The <a href="/js-minifier">JS Minifier</a> for one-off scripts. For builds, configure your bundler (Vite, Webpack, Rollup) to minify.</li>
+        <li><strong>Code-split routes.</strong> Each route should be its own chunk so users only download what they need.</li>
+        <li><strong>Preload critical chunks, defer the rest.</strong></li>
+        <li><strong>Audit your bundle.</strong> <code>webpack-bundle-analyzer</code>, <code>vite-bundle-visualizer</code>, <code>source-map-explorer</code>. Unused dependencies are the easiest wins.</li>
+        <li><strong>Drop legacy polyfills.</strong> If you don't support IE11, you don't need most of <code>core-js</code>.</li>
+      </ul>
+
+      <h2 id="images">7. Image and font optimization</h2>
+
+      <h3>Images</h3>
+      <ul>
+        <li><strong>Use AVIF for photos when possible</strong> (~50% smaller than JPEG). Fall back to WebP, then JPEG.</li>
+        <li><strong>Use <code>&lt;picture&gt;</code> for format negotiation.</strong> <code>&lt;source type="image/avif"&gt;</code>, <code>&lt;source type="image/webp"&gt;</code>, <code>&lt;img&gt;</code> JPEG fallback.</li>
+        <li><strong>Responsive images via <code>srcset</code>.</strong> Generate 1×, 1.5×, 2× variants; let browser pick.</li>
+        <li><strong>Lazy-load below-fold images.</strong> <code>loading="lazy"</code> is browser-native; no library needed.</li>
+        <li><strong>Set explicit dimensions.</strong> Prevents CLS.</li>
+        <li><strong>Use a CDN with image transforms.</strong> Cloudflare Images, Cloudinary, Imgix, Vercel Image Optimization. Source-of-truth image; CDN serves transformed variants.</li>
+        <li><strong>Inline tiny critical images.</strong> Logos, sprite icons under 2KB benefit from inlining as data URIs (use the <a href="/base64-image">Image to Base64</a> tool).</li>
+      </ul>
+
+      <h3>Fonts</h3>
+      <ul>
+        <li><strong>Self-host or use the same CDN as your other assets.</strong> Cross-origin font requests block render until DNS + TLS + fetch complete.</li>
+        <li><strong>Use <code>font-display: optional</code> (best for CLS) or <code>swap</code> (best for visibility).</strong> Never <code>block</code>.</li>
+        <li><strong>Subset fonts to the characters you need.</strong> A 200KB font becomes 30KB after subsetting to Latin-only.</li>
+        <li><strong>Preload critical fonts.</strong> <code>&lt;link rel="preload" as="font" type="font/woff2" crossorigin&gt;</code>.</li>
+        <li><strong>Use system fonts for body copy when possible.</strong> Zero KB, instant render.</li>
+        <li><strong>Match fallback font metrics.</strong> CSS <code>size-adjust</code>, <code>ascent-override</code>, <code>descent-override</code>, <code>line-gap-override</code> on the fallback prevent the layout shift when the web font loads.</li>
+      </ul>
+
+      <h2 id="network">8. Network-level wins (CDN, caching, HTTP/3)</h2>
+
+      <ol>
+        <li><strong>Use a CDN.</strong> Cloudflare, Fastly, Akamai, Vercel, Netlify. Static assets served from edge locations cut TTFB by hundreds of ms.</li>
+        <li><strong>Enable HTTP/3.</strong> QUIC over UDP eliminates TCP head-of-line blocking. Cloudflare has HTTP/3 on by default; check your CDN.</li>
+        <li><strong>Set proper cache headers.</strong> Static assets: <code>Cache-Control: public, max-age=31536000, immutable</code>. HTML: short max-age + revalidate. API responses: depends on freshness needs.</li>
+        <li><strong>Use stale-while-revalidate</strong> for HTML so the user gets a fast response while the CDN refreshes in the background.</li>
+        <li><strong>Preconnect / DNS-prefetch third-party origins.</strong> <code>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</code> early in head.</li>
+        <li><strong>Audit what's blocking render.</strong> Synchronous third-party scripts, render-blocking CSS, fonts without <code>font-display</code>. DevTools → Network → Initiator column shows the chain.</li>
+        <li><strong>Use the <a href="/byte-converter">Byte Converter</a></strong> to sanity-check asset sizes — KB vs KiB matters when you compare against budget targets.</li>
+      </ol>
+
+      <h2 id="measure">9. Measuring real-user data</h2>
+
+      <p>Synthetic tests (Lighthouse, WebPageTest) are useful for development and regression. But Google ranks on field data from real users. The measurement stack you actually need:</p>
+
+      <ul>
+        <li><strong>Google Search Console — Core Web Vitals report.</strong> Free, authoritative. Shows what Google ranks on. Set this up first.</li>
+        <li><strong>Chrome User Experience Report (CrUX) dashboard.</strong> Free, public-domain field data from real Chrome users. <code>g.co/web-vitals</code> dashboard.</li>
+        <li><strong>web-vitals JavaScript library.</strong> <code>onLCP</code>, <code>onINP</code>, <code>onCLS</code> hooks. Send real-user metrics to your analytics. Tiny (~3KB).</li>
+        <li><strong>Real User Monitoring (RUM).</strong> Vercel Analytics, Cloudflare Web Analytics, Sentry, Datadog RUM, or roll your own using web-vitals → analytics endpoint.</li>
+        <li><strong>Lighthouse in CI.</strong> Catches regressions on every PR. Configure performance budgets that fail the build.</li>
+      </ul>
+
+      <h2 id="references">10. Authoritative references</h2>
+
+      <aside class="article-aside">
+        <strong>Primary sources:</strong>
+        <ul>
+          <li><a href="https://web.dev/articles/vitals" rel="noopener" target="_blank">web.dev — Core Web Vitals overview</a></li>
+          <li><a href="https://web.dev/articles/optimize-lcp" rel="noopener" target="_blank">web.dev — Optimize LCP</a></li>
+          <li><a href="https://web.dev/articles/inp" rel="noopener" target="_blank">web.dev — INP (Interaction to Next Paint)</a></li>
+          <li><a href="https://web.dev/articles/cls" rel="noopener" target="_blank">web.dev — Cumulative Layout Shift</a></li>
+          <li><a href="https://developers.google.com/search/docs/appearance/page-experience" rel="noopener" target="_blank">Google Search — Page Experience signal</a></li>
+        </ul>
+        <strong>Tooling:</strong>
+        <ul>
+          <li><a href="https://pagespeed.web.dev/" rel="noopener" target="_blank">PageSpeed Insights — Lighthouse + CrUX combined</a></li>
+          <li><a href="https://www.npmjs.com/package/web-vitals" rel="noopener" target="_blank">web-vitals npm package</a></li>
+          <li><a href="https://chromeuxreport.withgoogle.com/" rel="noopener" target="_blank">Chrome UX Report dashboard</a></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="all-tools-section" aria-label="Related tools">
+      <h2>Performance tools referenced in this guide</h2>
+      <p class="atc-sub">Optimization helpers, all browser-based.</p>
+      <div class="all-tools-grid">
+        <div class="atc-col">
+          <h3>Minifiers</h3>
+          <ul>
+            <li><a href="/html-minifier">HTML Minifier</a></li>
+            <li><a href="/css-minifier">CSS Minifier</a></li>
+            <li><a href="/js-minifier">JavaScript Minifier</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>Assets &amp; Images</h3>
+          <ul>
+            <li><a href="/base64-image">Image to Base64</a></li>
+            <li><a href="/byte-converter">Byte Converter (KB / MB / GB)</a></li>
+            <li><a href="/css-gradient">CSS Gradient (replace gradient images)</a></li>
+            <li><a href="/css-box-shadow">CSS Box Shadow</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>Code &amp; SEO</h3>
+          <ul>
+            <li><a href="/json-formatter">JSON Formatter</a></li>
+            <li><a href="/meta-tag-generator">Meta Tag Generator</a></li>
+            <li><a href="/og-preview">Open Graph Preview</a></li>
+            <li><a href="/slug-generator">URL Slug Generator</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>More Guides</h3>
+          <ul>
+            <li><a href="/guides/complete-uuid-guide">Complete UUID Guide</a></li>
+            <li><a href="/guides/web-accessibility-guide">WCAG 2.1 Implementation</a></li>
+            <li><a href="/guides/api-authentication-guide">API Authentication Patterns</a></li>
+            <li><a href="/all-tools">Browse all 50 tools</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer>
+  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/guides">Guides</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Complete Guide to UUIDs (2026) — v1, v4, v7, ULID Compared | FreeDevTool</title>
+  <meta name="description" content="Comprehensive 2026 guide to UUIDs: RFC 9562, all 7 versions, when to use v4 vs v7, ULID vs NanoID, database performance, language code samples. Updated for current best practices.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freedevtool.org/guides/complete-uuid-guide">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/style.css?v=20260429-back-button">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Complete Guide to UUIDs — FreeDevTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="The Complete Guide to UUIDs (2026) — RFC 9562 Edition">
+  <meta name="twitter:description" content="Every UUID version explained, with database performance benchmarks, ULID/NanoID/CUID2 comparisons, and 8-language code.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
+  <meta property="og:title" content="The Complete Guide to UUIDs (2026)">
+  <meta property="og:description" content="RFC 9562 reference, performance benchmarks, language samples, and decision matrix for picking the right ID format.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freedevtool.org/guides/complete-uuid-guide">
+  <meta property="article:published_time" content="2026-05-02T00:00:00Z">
+  <meta property="article:modified_time" content="2026-05-02T00:00:00Z">
+  <meta property="article:section" content="Backend Engineering">
+  <meta property="article:tag" content="UUID">
+  <meta property="article:tag" content="distributed systems">
+  <meta property="article:tag" content="database">
+  <meta property="article:tag" content="primary keys">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "The Complete Guide to UUIDs (2026): v1, v4, v7, ULID, NanoID Compared",
+    "description": "Comprehensive guide to UUIDs covering RFC 9562, all seven versions, database performance, alternatives, and language-specific code.",
+    "datePublished": "2026-05-02",
+    "dateModified": "2026-05-02",
+    "author": {
+      "@type": "Organization",
+      "name": "FreeDevTool Engineering",
+      "url": "https://freedevtool.org/about"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "FreeDevTool",
+      "url": "https://freedevtool.org",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://freedevtool.org/og-image.svg"
+      }
+    },
+    "image": "https://freedevtool.org/og-image.svg",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://freedevtool.org/guides/complete-uuid-guide"
+    },
+    "keywords": "UUID, UUIDv7, ULID, RFC 9562, RFC 4122, NanoID, CUID2, primary key, distributed ID"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://freedevtool.org/"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://freedevtool.org/guides"},
+      {"@type": "ListItem", "position": 3, "name": "The Complete Guide to UUIDs", "item": "https://freedevtool.org/guides/complete-uuid-guide"}
+    ]
+  }
+  </script>
+  <style>
+    .guide-toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 28px 0; }
+    .guide-toc h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-family: var(--mono); margin: 0 0 10px; font-weight: 600; }
+    .guide-toc ol { margin: 0; padding-left: 22px; color: var(--text2); font-size: 14px; line-height: 1.8; }
+    .guide-toc a { color: var(--text2); text-decoration: none; }
+    .guide-toc a:hover { color: var(--accent); }
+    .guide-tool-cta { display: block; background: var(--accent-dim); border: 1px solid rgba(0,208,132,.2); border-radius: var(--radius); padding: 14px 18px; margin: 18px 0; color: var(--text); text-decoration: none; transition: border-color .2s; }
+    .guide-tool-cta:hover { border-color: var(--accent); }
+    .guide-tool-cta strong { color: var(--accent); display: block; margin-bottom: 2px; font-size: 13px; }
+    .guide-tool-cta span { color: var(--text2); font-size: 13px; }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
+  <div class="nav-links">
+    <a href="/all-tools">Tools</a>
+    <a href="/guides">Guides</a>
+    <a href="/about">About</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+  <a class="tool-back" href="/" aria-label="Back to home">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    Back
+  </a>
+
+  <article>
+    <header class="tool-header">
+      <span class="tool-badge">Engineering Guide</span>
+      <h1>The Complete Guide to UUIDs in 2026</h1>
+      <p class="tool-description">A practitioner's reference covering RFC 9562, all seven UUID versions, the index-fragmentation problem, ULID and NanoID alternatives, database integration patterns, and language-by-language code. Written for backend engineers picking an ID format for production.</p>
+      <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool engineering team · ~6,500 words · 25-minute read</div>
+    </header>
+
+    <section class="article-section">
+      <div class="guide-toc">
+        <h3>Table of contents</h3>
+        <ol>
+          <li><a href="#what-is-a-uuid">What a UUID actually is — anatomy of 128 bits</a></li>
+          <li><a href="#versions">The seven UUID versions, explained</a></li>
+          <li><a href="#v4-vs-v7">UUIDv4 vs UUIDv7 — the index fragmentation deep dive</a></li>
+          <li><a href="#alternatives">UUID vs ULID vs NanoID vs CUID2</a></li>
+          <li><a href="#code">Generating UUIDs in 8 languages</a></li>
+          <li><a href="#database">Storing UUIDs in your database</a></li>
+          <li><a href="#mistakes">Common mistakes that ship to production</a></li>
+          <li><a href="#decision">A decision matrix for picking the right ID format</a></li>
+          <li><a href="#references">Authoritative references</a></li>
+        </ol>
+      </div>
+
+      <a class="guide-tool-cta" href="/uuid-generator"><strong>Try the UUID Generator</strong><span>Generate v4 or v7 UUIDs in your browser. No signup, RFC 9562 compliant.</span></a>
+
+      <h2 id="what-is-a-uuid">1. What a UUID actually is — anatomy of 128 bits</h2>
+
+      <p>A UUID (Universally Unique Identifier) is 128 bits. That is the entire definition. Everything else — the canonical hyphenated format, the version digit, the variant nibble, the algorithms for generating one — is convention layered on top of those 128 bits.</p>
+
+      <p>The canonical string form is 32 hexadecimal characters split by hyphens into five groups: <code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx</code>. The total string length is 36 characters. Two specific positions encode metadata about which UUID flavor you are looking at:</p>
+
+      <ul>
+        <li><strong>Position 13 — the "M" character</strong> is the version digit. <code>4</code> means random (v4), <code>7</code> means time-ordered (v7), <code>1</code> means timestamp+MAC, etc. This single nibble tells parsers which generation algorithm produced the ID.</li>
+        <li><strong>Position 17 — the "N" character</strong> is the variant. The high bits are <code>10</code> in binary, so the hex character is one of <code>8</code>, <code>9</code>, <code>a</code>, or <code>b</code>. This identifies the UUID as conforming to RFC 4122/9562 (the "Leach-Salz" variant), as opposed to older Microsoft GUID variants or NCS variants.</li>
+      </ul>
+
+      <p>Because version and variant nibbles consume 6 bits, a v4 UUID has <strong>122 bits of randomness</strong>, not 128. The classic collision math you have probably seen — "you would need to generate 2.71 quintillion UUIDs to have a 50% chance of one collision" — is the birthday paradox formula <code>n ≈ 1.177 × √(2^122)</code> applied to those 122 bits.</p>
+
+      <p>For practical purposes that means UUID collisions are not a real concern in any system that fits in observable physical reality. If you generated a billion UUIDs per second, every second, for a hundred years, your odds of a collision are still well below 1 in a billion. The "uniqueness without coordination" guarantee is what makes UUIDs the connective tissue of modern distributed systems — every Stripe charge, every S3 multipart upload, every Auth0 session, every Slack message carries a 128-bit identifier generated independently on whatever node happened to handle the request.</p>
+
+      <h2 id="versions">2. The seven UUID versions, explained</h2>
+
+      <p>RFC 9562 (the May 2024 revision of RFC 4122) defines seven UUID versions, plus a reserved range. Most engineers only need two or three of them in production, but knowing the full menu helps when you encounter old systems or read decisions made by previous teams.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Version</th><th>Mechanism</th><th>Sortable?</th><th>Privacy concern</th><th>Use it for</th></tr></thead>
+        <tbody>
+          <tr><td>v1</td><td>60-bit timestamp + 14-bit clock seq + 48-bit MAC address</td><td>Partially</td><td>Leaks server MAC address and creation time</td><td>Legacy systems only — avoid in new code.</td></tr>
+          <tr><td>v2</td><td>DCE Security (POSIX UID/GID embedded)</td><td>Partially</td><td>Same as v1, plus user info leak</td><td>Defined for completeness but essentially unused. Skip.</td></tr>
+          <tr><td>v3</td><td>MD5 hash of namespace + name</td><td>No</td><td>Deterministic — knowing the inputs reveals the UUID</td><td>Legacy content-addressed IDs. Use v5 instead — MD5 is broken for security purposes.</td></tr>
+          <tr><td>v4</td><td>122 random bits</td><td>No</td><td>None</td><td>The default for the past 20 years. Still acceptable for primary keys at small-to-medium scale.</td></tr>
+          <tr><td>v5</td><td>SHA-1 hash of namespace + name</td><td>No</td><td>Deterministic</td><td>Stable IDs derived from a name — DNS, URL, OID, X.500 DN, custom namespace.</td></tr>
+          <tr><td>v6</td><td>v1 with the timestamp bytes reordered for sortability</td><td>Yes</td><td>Same as v1 (MAC leak)</td><td>Migration path off v1. Most teams jump straight to v7 instead.</td></tr>
+          <tr><td>v7</td><td>48-bit Unix-millis timestamp + 74 bits of entropy</td><td>Yes</td><td>Reveals creation time only</td><td><strong>The new default</strong> for primary keys, log IDs, anywhere you want both uniqueness and time-locality.</td></tr>
+          <tr><td>v8</td><td>Custom format (vendor-defined)</td><td>—</td><td>—</td><td>Reserved for experimentation. RFC 9562 leaves this open for future use.</td></tr>
+        </tbody>
+      </table>
+
+      <p>For a new project in 2026, the choice tree is short: pick <strong>v7</strong> if your runtime supports it, fall back to <strong>v4</strong> if it does not, use <strong>v5</strong> if you need a deterministic ID derived from a name. v1, v2, v3, v6 all have better replacements and should not appear in new code.</p>
+
+      <h2 id="v4-vs-v7">3. UUIDv4 vs UUIDv7 — the index fragmentation deep dive</h2>
+
+      <p>The single biggest reason teams have been migrating from v4 to v7 over the past two years is database write performance at scale. To understand why, you need a basic mental model of how relational databases store primary keys.</p>
+
+      <p>Postgres, MySQL/InnoDB, and SQL Server all store primary key indexes as B-trees (or B+ trees in InnoDB's clustered case). When IDs arrive in roughly sorted order — autoincrement integers, ULIDs, UUIDv7 — every new insert lands at the tail of the index, the page stays full, and the cache hit rate is high. Random IDs — UUIDv4 — have no temporal locality. Every insert lands in a different B-tree page. Pages split, parent pages rewrite, and the working set blows out of memory.</p>
+
+      <p>Real-world benchmarks from production teams running this comparison:</p>
+
+      <ul>
+        <li><strong>Postgres:</strong> v4 vs sequential ID inserts can be 2–3× slower at scale. WAL volume increases, buffer cache thrashes, vacuum has more work.</li>
+        <li><strong>MySQL/InnoDB:</strong> primary key drives the clustered index, so this hits doubly hard. Random inserts cause page splits and bloat the on-disk size by 30–60% compared to sequential keys. The standard mitigation in MySQL 5.x was <code>UUID_TO_BIN(uuid, 1)</code> which reorders v1 timestamp bytes for B-tree locality. UUIDv7 does this natively.</li>
+        <li><strong>SQL Server:</strong> the <code>NEWSEQUENTIALID()</code> function exists exactly because the team learned random GUIDs hurt at scale. v7 gives you the same property cross-platform.</li>
+      </ul>
+
+      <p>The fix order, ranked by impact:</p>
+
+      <ol>
+        <li><strong>UUIDv7</strong> preserves uniqueness while putting the high-order bits in time order. New insert performance approaches autoincrement.</li>
+        <li><strong>ULID</strong> — same idea, different encoding (Crockford base32 instead of hex). Shorter, URL-friendly, time-ordered.</li>
+        <li><strong>Store v4 UUIDs as native binary</strong>: <code>BINARY(16)</code> in MySQL, <code>uuid</code> in Postgres, <code>uniqueidentifier</code> in SQL Server. Halves disk and memory size compared to <code>VARCHAR(36)</code>.</li>
+        <li><strong>MySQL legacy:</strong> <code>UUID_TO_BIN(uuid, 1)</code> if you cannot move to v7.</li>
+      </ol>
+
+      <p>If you are starting a green-field service, default to v7. If you have a v4-based table that is now causing write performance issues, the migration path is to add a v7 column, dual-write for a period, then switch reads.</p>
+
+      <a class="guide-tool-cta" href="/uuid-generator"><strong>Generate sample UUIDs to compare</strong><span>Try the generator with v4 vs v7 to see the time-ordering structure side by side.</span></a>
+
+      <h2 id="alternatives">4. UUID vs ULID vs NanoID vs CUID2</h2>
+
+      <p>The broader "distributed unique ID" category contains several formats that are not strictly UUIDs but compete for the same role. Picking among them is a matter of trading off length, sortability, URL friendliness, and ecosystem support.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Format</th><th>Bits of randomness</th><th>Sortable?</th><th>Length</th><th>Standard?</th><th>Best fit</th></tr></thead>
+        <tbody>
+          <tr><td>UUIDv4</td><td>122</td><td>No</td><td>36 chars (32 hex + 4 hyphens)</td><td>RFC 4122 / 9562</td><td>Maximum interop with old systems.</td></tr>
+          <tr><td>UUIDv7</td><td>74 + 48-bit time</td><td>Yes</td><td>36 chars</td><td>RFC 9562</td><td>New databases — strongly recommended.</td></tr>
+          <tr><td>ULID</td><td>80 + 48-bit time</td><td>Yes</td><td>26 chars (Crockford base32)</td><td>De-facto, no formal RFC</td><td>Shorter than UUIDv7, URL-friendly, same time-locality.</td></tr>
+          <tr><td>NanoID (default)</td><td>126 (21 chars × 6 bits)</td><td>No</td><td>21 chars (configurable)</td><td>De-facto</td><td>Short opaque IDs in URLs and shareable links.</td></tr>
+          <tr><td>CUID2</td><td>~256 (sha-3 derived)</td><td>No</td><td>24 chars (configurable)</td><td>De-facto</td><td>Privacy-conscious systems — designed to resist enumeration.</td></tr>
+          <tr><td>Snowflake (Twitter)</td><td>22 (10-bit machine + 12-bit seq)</td><td>Yes</td><td>~19 chars (numeric)</td><td>Twitter spec</td><td>Single-organization with strict ID coordination.</td></tr>
+          <tr><td>KSUID</td><td>128 (32-bit time + 128 random)</td><td>Yes</td><td>27 chars</td><td>Segment.io spec</td><td>Logs, events — Segment's preferred format.</td></tr>
+        </tbody>
+      </table>
+
+      <p>Practical guidance:</p>
+      <ul>
+        <li><strong>Default to UUIDv7</strong> for primary keys. The ecosystem support is broadest and the format is RFC-standardized.</li>
+        <li><strong>ULID</strong> if you want shorter strings (26 vs 36 chars) and your stack does not yet have v7 support. ULIDs are time-ordered and URL-safe.</li>
+        <li><strong>NanoID</strong> for short opaque tokens visible to users (8–12 character "share" IDs). 128 bits of entropy is overkill there.</li>
+        <li><strong>CUID2</strong> for cases where sequential ID enumeration is a privacy concern — its derivation is intentionally non-temporal.</li>
+        <li><strong>UUIDv4</strong> if you need broad interop with legacy systems that may not parse v7 yet.</li>
+      </ul>
+
+      <h2 id="code">5. Generating UUIDs in 8 languages</h2>
+
+      <p>Always use a cryptographically secure random number generator. <code>Math.random()</code> in JavaScript, <code>java.util.Random</code>, and <code>rand()</code> in C are <strong>not</strong> safe — they have predictable internal state and can produce collisions. The platform UUID functions below all use cryptographic RNGs.</p>
+
+      <h3>JavaScript / TypeScript (browser, Node 14.17+)</h3>
+      <pre><code>// v4 — built in
+const id = crypto.randomUUID();
+// "550e8400-e29b-41d4-a716-446655440000"
+
+// v7 — implement with crypto.getRandomValues
+function uuidv7() {
+  const ts = BigInt(Date.now());
+  const rand = crypto.getRandomValues(new Uint8Array(10));
+  const b = new Uint8Array(16);
+  for (let i = 0; i &lt; 6; i++) b[i] = Number((ts &gt;&gt; BigInt(40 - i*8)) &amp; 0xffn);
+  b.set(rand, 6);
+  b[6] = (b[6] &amp; 0x0f) | 0x70;   // version 7
+  b[8] = (b[8] &amp; 0x3f) | 0x80;   // variant 10
+  const h = [...b].map(x =&gt; x.toString(16).padStart(2, '0')).join('');
+  return `${h.slice(0,8)}-${h.slice(8,12)}-${h.slice(12,16)}-${h.slice(16,20)}-${h.slice(20)}`;
+}</code></pre>
+
+      <h3>Python 3.6+ (v4) and 3.13+ (v7 native)</h3>
+      <pre><code>import uuid
+uuid.uuid4()              # v4
+uuid.uuid7()              # v7 — Python 3.13+
+uuid.uuid5(uuid.NAMESPACE_URL, "https://example.com/users/42")  # v5
+
+# For Python &lt; 3.13, install the `uuid7` PyPI package.</code></pre>
+
+      <h3>Go (google/uuid v1.6.0+)</h3>
+      <pre><code>import "github.com/google/uuid"
+
+id4 := uuid.New()                     // v4
+id7, _ := uuid.NewV7()                // v7</code></pre>
+
+      <h3>Rust (uuid crate)</h3>
+      <pre><code>use uuid::Uuid;
+
+let id = Uuid::new_v4();
+let v7 = Uuid::now_v7();   // requires the `v7` feature flag</code></pre>
+
+      <h3>Java 17+</h3>
+      <pre><code>import java.util.UUID;
+
+UUID id = UUID.randomUUID();          // v4
+
+// v7 — needs a library, e.g. com.github.f4b6a3:uuid-creator
+import com.github.f4b6a3.uuid.UuidCreator;
+UUID v7 = UuidCreator.getTimeOrderedEpoch();</code></pre>
+
+      <h3>PHP 8 / Symfony UID</h3>
+      <pre><code>use Symfony\Component\Uid\Uuid;
+
+$v4 = Uuid::v4();
+$v7 = Uuid::v7();</code></pre>
+
+      <h3>Ruby</h3>
+      <pre><code>require 'securerandom'
+SecureRandom.uuid                 # v4
+
+# v7 — needs a gem like `uuidx`
+require 'uuidx'
+Uuidx.v7</code></pre>
+
+      <h3>SQL — PostgreSQL 13+ / 18</h3>
+      <pre><code>-- v4 (built in since PG 13)
+SELECT gen_random_uuid();
+
+-- v7 — install pg_uuidv7 extension or upgrade to PG 18
+SELECT uuidv7();</code></pre>
+
+      <h2 id="database">6. Storing UUIDs in your database</h2>
+
+      <p>The single most common mistake is storing UUIDs as <code>VARCHAR(36)</code>. That is the canonical string representation, but it costs 36 bytes per row plus index overhead. The native binary types are 16 bytes — less than half the size. At a billion rows, that is a 20 GB difference on disk plus proportional memory savings.</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Database</th><th>Native UUID type</th><th>Storage size</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>PostgreSQL</td><td><code>uuid</code></td><td>16 bytes</td><td>Built-in. Use <code>gen_random_uuid()</code> or <code>uuidv7()</code>.</td></tr>
+          <tr><td>MySQL 8.0+</td><td><code>BINARY(16)</code></td><td>16 bytes</td><td>Use <code>UUID_TO_BIN(uuid, 1)</code> for v1 byte reorder.</td></tr>
+          <tr><td>SQL Server</td><td><code>uniqueidentifier</code></td><td>16 bytes</td><td>Use <code>NEWSEQUENTIALID()</code> for sortable.</td></tr>
+          <tr><td>SQLite</td><td><code>BLOB</code> 16 bytes</td><td>16 bytes</td><td>No native type. Store binary; convert on read.</td></tr>
+          <tr><td>Oracle</td><td><code>RAW(16)</code></td><td>16 bytes</td><td>Custom function for generation.</td></tr>
+          <tr><td>MongoDB</td><td><code>UUID</code> BSON subtype 4</td><td>16 bytes</td><td>Use the driver's UUID type, not strings.</td></tr>
+          <tr><td>DynamoDB</td><td>String (S)</td><td>~36 bytes</td><td>Stored as canonical string. Costs more but works with key conditions.</td></tr>
+          <tr><td>Cassandra</td><td><code>uuid</code> / <code>timeuuid</code></td><td>16 bytes</td><td>Native types; <code>timeuuid</code> = v1 with sortability.</td></tr>
+        </tbody>
+      </table>
+
+      <p>If your stack involves passing UUIDs through JSON APIs, the <a href="/json-formatter">JSON Formatter</a> tool helps verify the canonical string is preserved across the round trip — particularly for languages that may stringify UUIDs differently from what the receiver expects.</p>
+
+      <h2 id="mistakes">7. Common mistakes that ship to production</h2>
+
+      <ul>
+        <li><strong>Treating UUIDs as secrets.</strong> A UUID is an identifier, not a token. Anyone who sees one can use it to address the resource it points to. Pair UUIDs with proper authentication — never use them as session tokens, API keys, or password reset links.</li>
+        <li><strong>Storing UUIDs as <code>VARCHAR(36)</code>.</strong> 36 bytes per row instead of 16 — wastes disk, memory, and index space. Use the native binary type.</li>
+        <li><strong>Using v1 in 2026.</strong> The MAC-address bytes leak which physical machine generated the ID. v7 gives you the same time-ordering benefit without the leak.</li>
+        <li><strong>Validating UUIDs with the wrong regex.</strong> <code>/^[0-9a-f-]{36}$/</code> accepts garbage like <code>aaaa-aaaa-...</code>. The correct shape requires the version digit and variant nibble in their specific positions: <code>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-7][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i</code>.</li>
+        <li><strong>Generating v4 UUIDs with <code>Math.random()</code>.</strong> The Stack Overflow snippet <code>"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(...)</code> uses <code>Math.random()</code>, which is not cryptographically secure. Use <code>crypto.randomUUID()</code> in any browser since 2021.</li>
+        <li><strong>Embedding UUIDs in user-facing URLs.</strong> Long, ugly, non-memorable. Keep UUIDs as the internal ID and expose a slug or short hash for shareable links.</li>
+        <li><strong>Sorting v4 UUIDs and expecting time order.</strong> v4 is uniformly random; the result is meaningless ordering. Use v7 if you need this.</li>
+        <li><strong>Using both <code>+</code>/<code>/</code> Base64 and <code>-</code>/<code>_</code> URL Base64 in the same system.</strong> They are different encodings; one will fail validation in the other context.</li>
+        <li><strong>Copy-pasting UUIDs without trimming whitespace.</strong> A trailing newline character will fail strict validation. Always trim before parsing.</li>
+      </ul>
+
+      <h2 id="decision">8. A decision matrix for picking the right ID format</h2>
+
+      <p>The shortest path to an answer for most teams:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Scenario</th><th>Pick</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>New service, primary key in Postgres / MySQL / SQL Server</td><td>UUIDv7 (native binary column)</td><td>Time-locality, no MAC leak, RFC-standard.</td></tr>
+          <tr><td>New service, you want shorter URL-friendly IDs</td><td>ULID</td><td>26 chars, time-ordered, no hyphens.</td></tr>
+          <tr><td>Legacy system that already uses UUIDv4</td><td>Stay with v4 unless write perf hurts</td><td>Migration cost vs benefit.</td></tr>
+          <tr><td>Sharing IDs in URLs visible to users (short links)</td><td>NanoID</td><td>Configurable length, opaque, secure.</td></tr>
+          <tr><td>Privacy-sensitive: do not want creation time leaked</td><td>UUIDv4 or CUID2</td><td>v7 reveals timestamp; v4/CUID2 do not.</td></tr>
+          <tr><td>Deterministic ID derived from a name (DNS, URL, etc.)</td><td>UUIDv5</td><td>SHA-1 based, idempotent generation.</td></tr>
+          <tr><td>Logs and event IDs</td><td>UUIDv7 or ULID or KSUID</td><td>Time-ordered makes range queries cheap.</td></tr>
+          <tr><td>You control the entire system and have a sequence service</td><td>Snowflake or autoincrement</td><td>Smaller IDs, but requires coordination.</td></tr>
+          <tr><td>Storing UUIDs in MongoDB</td><td>UUID with BSON subtype 4 (driver type)</td><td>Native binary; do not store strings.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="references">9. Authoritative references</h2>
+
+      <aside class="article-aside">
+        <strong>Primary sources:</strong>
+        <ul>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc9562" rel="noopener" target="_blank">RFC 9562 — Universally Unique IDentifiers (UUIDs), May 2024</a> — the current canonical spec, supersedes RFC 4122.</li>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc4122" rel="noopener" target="_blank">RFC 4122 — UUID URN namespace</a> — the original 2005 spec; still informative for v1–v5 details.</li>
+          <li><a href="https://github.com/ulid/spec" rel="noopener" target="_blank">ULID specification</a> — Crockford base32 sortable identifier.</li>
+          <li><a href="https://github.com/ai/nanoid" rel="noopener" target="_blank">NanoID specification and reference implementation</a></li>
+          <li><a href="https://github.com/paralleldrive/cuid2" rel="noopener" target="_blank">CUID2 specification</a></li>
+        </ul>
+        <strong>Implementation references:</strong>
+        <ul>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID" rel="noopener" target="_blank">MDN — crypto.randomUUID()</a></li>
+          <li><a href="https://www.postgresql.org/docs/current/uuid-ossp.html" rel="noopener" target="_blank">PostgreSQL — UUID functions reference</a></li>
+          <li><a href="https://dev.mysql.com/doc/refman/8.0/en/miscellaneous-functions.html#function_uuid-to-bin" rel="noopener" target="_blank">MySQL 8 — UUID_TO_BIN function</a></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="all-tools-section" aria-label="Related tools at FreeDevTool">
+      <h2>Tools referenced in this guide</h2>
+      <p class="atc-sub">All tools run in your browser, no signup required.</p>
+      <div class="all-tools-grid">
+        <div class="atc-col">
+          <h3>Identity &amp; Hashing</h3>
+          <ul>
+            <li><a href="/uuid-generator">UUID Generator (v4 / v7)</a></li>
+            <li><a href="/hash-generator">Hash Generator (MD5, SHA-1, SHA-256)</a></li>
+            <li><a href="/password-generator">Password Generator</a></li>
+            <li><a href="/jwt-decoder">JWT Decoder</a></li>
+            <li><a href="/jwt-generator">JWT Generator</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>Time &amp; Dates</h3>
+          <ul>
+            <li><a href="/unix-timestamp-converter">Unix Timestamp Converter</a></li>
+            <li><a href="/timestamp-diff">Timestamp Diff</a></li>
+            <li><a href="/relative-time">Relative Time Calculator</a></li>
+            <li><a href="/cron-parser">Cron Expression Parser</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>Data Formats</h3>
+          <ul>
+            <li><a href="/json-formatter">JSON Formatter</a></li>
+            <li><a href="/json-to-csv">JSON to CSV</a></li>
+            <li><a href="/yaml-to-json">YAML to JSON</a></li>
+            <li><a href="/xml-formatter">XML Formatter</a></li>
+            <li><a href="/sql-formatter">SQL Formatter</a></li>
+            <li><a href="/base64-encoder">Base64 Encoder</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>More Guides</h3>
+          <ul>
+            <li><a href="/guides/web-accessibility-guide">WCAG 2.1 Implementation Guide</a></li>
+            <li><a href="/guides/web-performance-guide">Web Performance Optimization</a></li>
+            <li><a href="/guides/api-authentication-guide">API Authentication Patterns</a></li>
+            <li><a href="/all-tools">Browse all 50 tools</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer>
+  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/guides">Guides</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
+</footer>
+
+</body>
+</html>

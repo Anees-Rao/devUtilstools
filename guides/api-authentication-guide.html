@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Authentication Guide 2026 — JWT, OAuth, API Keys, mTLS Compared | FreeDevTool</title>
+  <meta name="description" content="Practitioner's guide to API authentication: JWT vs sessions, OAuth 2.1 flows, API key rotation, mTLS, the alg=none and key-confusion attacks, and the patterns that secure production APIs.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://freedevtool.org/guides/api-authentication-guide">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/style.css?v=20260429-back-button">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="API Authentication Guide 2026 — FreeDevTool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
+  <meta name="twitter:title" content="API Authentication Guide 2026 — JWT, OAuth, mTLS">
+  <meta name="twitter:description" content="The complete reference for picking and implementing API auth: JWT, OAuth 2.1, API keys, mTLS, with the attacks and defenses you need to know.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
+  <meta property="og:title" content="API Authentication Guide 2026">
+  <meta property="og:description" content="JWT vs sessions, OAuth 2.1 flows, API key rotation, mTLS — production patterns and the attacks they prevent.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://freedevtool.org/guides/api-authentication-guide">
+  <meta property="article:published_time" content="2026-05-02T00:00:00Z">
+  <meta property="article:modified_time" content="2026-05-02T00:00:00Z">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "API Authentication Guide 2026 — JWT, OAuth, API Keys, mTLS",
+    "description": "Practitioner reference for API authentication patterns, attacks, and the secure defaults every production system should ship.",
+    "datePublished": "2026-05-02",
+    "dateModified": "2026-05-02",
+    "author": {"@type": "Organization", "name": "FreeDevTool Engineering", "url": "https://freedevtool.org/about"},
+    "publisher": {"@type": "Organization", "name": "FreeDevTool", "url": "https://freedevtool.org", "logo": {"@type": "ImageObject", "url": "https://freedevtool.org/og-image.svg"}},
+    "image": "https://freedevtool.org/og-image.svg",
+    "mainEntityOfPage": {"@type": "WebPage", "@id": "https://freedevtool.org/guides/api-authentication-guide"},
+    "keywords": "API authentication, JWT, OAuth 2.1, API keys, mTLS, security"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://freedevtool.org/"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://freedevtool.org/guides"},
+      {"@type": "ListItem", "position": 3, "name": "API Authentication Guide", "item": "https://freedevtool.org/guides/api-authentication-guide"}
+    ]
+  }
+  </script>
+  <style>
+    .guide-toc { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 28px 0; }
+    .guide-toc h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-family: var(--mono); margin: 0 0 10px; font-weight: 600; }
+    .guide-toc ol { margin: 0; padding-left: 22px; color: var(--text2); font-size: 14px; line-height: 1.8; }
+    .guide-toc a { color: var(--text2); text-decoration: none; }
+    .guide-toc a:hover { color: var(--accent); }
+    .guide-tool-cta { display: block; background: var(--accent-dim); border: 1px solid rgba(0,208,132,.2); border-radius: var(--radius); padding: 14px 18px; margin: 18px 0; color: var(--text); text-decoration: none; transition: border-color .2s; }
+    .guide-tool-cta:hover { border-color: var(--accent); }
+    .guide-tool-cta strong { color: var(--accent); display: block; margin-bottom: 2px; font-size: 13px; }
+    .guide-tool-cta span { color: var(--text2); font-size: 13px; }
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
+  <div class="nav-links">
+    <a href="/all-tools">Tools</a>
+    <a href="/guides">Guides</a>
+    <a href="/about">About</a>
+  </div>
+</nav>
+
+<div class="wrapper">
+  <a class="tool-back" href="/" aria-label="Back to home">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    Back
+  </a>
+
+  <article>
+    <header class="tool-header">
+      <span class="tool-badge">Engineering Guide</span>
+      <h1>API Authentication Guide 2026</h1>
+      <p class="tool-description">Practitioner's reference for API authentication: JWT vs server-side sessions, OAuth 2.1 flows, API key rotation patterns, mutual TLS, and the attacks (alg=none, key confusion, replay) that secure code defends against. Written for backend engineers picking auth for new services or hardening existing ones.</p>
+      <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool security engineering team · ~6,500 words · 26-minute read</div>
+    </header>
+
+    <section class="article-section">
+      <div class="guide-toc">
+        <h3>Table of contents</h3>
+        <ol>
+          <li><a href="#picking">Picking an auth scheme — decision matrix</a></li>
+          <li><a href="#jwt-vs-session">JWT vs server-side sessions</a></li>
+          <li><a href="#jwt">JWT — structure, algorithms, and the attacks</a></li>
+          <li><a href="#oauth">OAuth 2.1 — the four flows you need</a></li>
+          <li><a href="#api-keys">API keys — rotation and scoping</a></li>
+          <li><a href="#mtls">Mutual TLS — service-to-service auth</a></li>
+          <li><a href="#patterns">Production patterns — refresh tokens, idempotency, audit</a></li>
+          <li><a href="#mistakes">Common security mistakes</a></li>
+          <li><a href="#references">Authoritative references</a></li>
+        </ol>
+      </div>
+
+      <a class="guide-tool-cta" href="/jwt-decoder"><strong>JWT Decoder + JWT Generator</strong><span>Inspect any JWT or generate signed test tokens — both run client-side, never sending data to a server.</span></a>
+
+      <h2 id="picking">1. Picking an auth scheme — decision matrix</h2>
+
+      <p>Every API auth decision is a tradeoff between simplicity, scale, and trust boundaries. The shortest path:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Scenario</th><th>Use</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Single-org, server + browser SPA, single backend</td><td>HTTP-only session cookie + CSRF token</td><td>Simplest, server-controlled revocation, no token leak via XSS.</td></tr>
+          <tr><td>Mobile app + backend (single org)</td><td>JWT access token + opaque refresh token</td><td>Bearer token works on mobile; refresh allows rotation.</td></tr>
+          <tr><td>Third-party developers calling your API</td><td>OAuth 2.1 with PKCE</td><td>Standard delegated authorization; user controls scope.</td></tr>
+          <tr><td>Internal service-to-service</td><td>mTLS, or scoped service JWT</td><td>Mutual cryptographic identity; no shared secrets.</td></tr>
+          <tr><td>Public read API with rate limiting</td><td>API key in <code>Authorization</code> header</td><td>Simple, identifies caller for quota.</td></tr>
+          <tr><td>Microservices with central identity provider</td><td>OIDC (OAuth + OpenID Connect) ID tokens</td><td>Standard, vendor-neutral.</td></tr>
+          <tr><td>Edge / IoT with intermittent connectivity</td><td>Long-lived signed tokens with crypto attestation</td><td>Offline operation; verify on reconnect.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="jwt-vs-session">2. JWT vs server-side sessions</h2>
+
+      <p>The single most-debated choice. Each has clear tradeoffs:</p>
+
+      <table class="ref-table">
+        <thead><tr><th>Aspect</th><th>Server-side session</th><th>JWT</th></tr></thead>
+        <tbody>
+          <tr><td>Storage</td><td>Server (Redis, DB, memory)</td><td>Client (cookie, localStorage, header)</td></tr>
+          <tr><td>Revocation</td><td>Instant (delete from store)</td><td>Token lifetime ± blacklist required</td></tr>
+          <tr><td>Scaling</td><td>Needs shared session store</td><td>Stateless verification</td></tr>
+          <tr><td>Network round-trip</td><td>None (just verify signature/cookie)</td><td>None (just verify signature)</td></tr>
+          <tr><td>CSRF protection</td><td>Required (CSRF token + SameSite)</td><td>Not needed if not in cookie</td></tr>
+          <tr><td>XSS exposure</td><td>None (HttpOnly cookie)</td><td>Risk if stored in localStorage</td></tr>
+          <tr><td>Cross-origin / mobile</td><td>Awkward</td><td>Native fit</td></tr>
+          <tr><td>Token size</td><td>~30 byte cookie</td><td>500 byte – 4 KB header</td></tr>
+        </tbody>
+      </table>
+
+      <p>The 2026 consensus among security engineers:</p>
+      <ul>
+        <li><strong>Browser SPA + same-origin backend:</strong> use HttpOnly session cookies. Avoids the XSS-localStorage problem.</li>
+        <li><strong>Mobile apps, third-party APIs, multi-domain:</strong> use JWTs (or OAuth-issued JWTs).</li>
+        <li><strong>Hybrid:</strong> short-lived JWT access token (5–15 min) + opaque refresh token in a server-side store. Best of both — stateless during the access window, revocable via refresh-token deletion.</li>
+      </ul>
+
+      <h2 id="jwt">3. JWT — structure, algorithms, and the attacks</h2>
+
+      <p>A JSON Web Token (RFC 7519) is three Base64URL-encoded parts joined by dots: <code>header.payload.signature</code>. The payload is signed but <strong>not encrypted</strong> — anyone with the token can read its contents.</p>
+
+      <h3>Algorithm choice</h3>
+
+      <table class="ref-table">
+        <thead><tr><th>Algorithm</th><th>Type</th><th>Key</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td>HS256</td><td>HMAC + SHA-256</td><td>Shared secret (≥ 32 bytes)</td><td>Single service signs and verifies its own tokens.</td></tr>
+          <tr><td>RS256</td><td>RSA + SHA-256</td><td>2048-bit RSA private key</td><td>Issuer signs; multiple consumers verify with public key.</td></tr>
+          <tr><td>ES256</td><td>ECDSA P-256 + SHA-256</td><td>256-bit ECC key</td><td>Same as RS256 with smaller signatures, faster on mobile.</td></tr>
+          <tr><td>EdDSA / Ed25519</td><td>Edwards-curve DSA</td><td>256-bit Ed25519 key</td><td>Modern default for new asymmetric setups (RFC 8037).</td></tr>
+          <tr><td>none</td><td>Unsigned</td><td>None</td><td><strong>Never accept.</strong> Spec allows it; safe libraries reject by default.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>The classic JWT attacks — and defenses</h3>
+
+      <ol>
+        <li><strong>alg: none.</strong> Attacker resigns the token with <code>{"alg": "none"}</code> and an empty signature. Vulnerable libraries accept it because the spec technically allows it. <strong>Defense:</strong> hard-code an allow-list of algorithms; reject "none" explicitly.</li>
+        <li><strong>Algorithm confusion (RS256 → HS256).</strong> Server is configured for RS256 but accepts any algorithm. Attacker takes the public key (which is, well, public) and uses it as the HMAC secret with HS256. The signature now verifies because the library treats the public key as a shared secret. <strong>Defense:</strong> tie the algorithm to the key type — never let HS algorithms verify with an RSA public key.</li>
+        <li><strong>Key confusion via <code>jku</code>/<code>jwk</code> headers.</strong> Attacker sets a header pointing the server at an attacker-controlled JWKS URL. <strong>Defense:</strong> never trust <code>jku</code>/<code>jwk</code>/<code>x5u</code>/<code>kid</code> values from the token; resolve keys from a server-side allow-list.</li>
+        <li><strong>Long-lived tokens.</strong> Leaked tokens give permanent access if they never expire. <strong>Defense:</strong> short-lived access (5–60 min) + refresh tokens.</li>
+        <li><strong>Replay across services.</strong> Token signed for service A is replayed against service B (which trusts the same issuer). <strong>Defense:</strong> enforce <code>aud</code> (audience) claim validation.</li>
+        <li><strong>Information leakage.</strong> Sensitive PII in payload because "it's signed". JWTs are not encrypted. <strong>Defense:</strong> keep payload minimal; use JWE (encrypted JWT) for confidential data.</li>
+        <li><strong>Stale clock skew.</strong> <code>exp</code> validation fails because client and server clocks drift. <strong>Defense:</strong> allow ±30–60 seconds of clock skew tolerance in verification.</li>
+      </ol>
+
+      <a class="guide-tool-cta" href="/jwt-generator"><strong>Test JWTs locally without sending to a server</strong><span>Use the JWT Generator to create test tokens with any algorithm/claims, and the JWT Decoder to inspect them. Both run entirely in your browser via Web Crypto API.</span></a>
+
+      <h3>Verification done right (Node.js example)</h3>
+
+      <pre><code>const jwt = require('jsonwebtoken');
+const decoded = jwt.verify(token, secret, {
+  algorithms: ['HS256'],            // explicit allow-list — defends alg=none
+  issuer: 'https://issuer.example.com',
+  audience: 'my-service',
+  clockTolerance: 60                // ±60s for clock skew
+});</code></pre>
+
+      <h2 id="oauth">4. OAuth 2.1 — the four flows you need</h2>
+
+      <p>OAuth 2.1 (RFC 9700, draft as of 2026) consolidates the OAuth 2.0 best practices that emerged over a decade. It deprecates the implicit flow, requires PKCE for all public clients, and tightens redirect-URI matching.</p>
+
+      <h3>Authorization Code Flow with PKCE</h3>
+
+      <p>The default for most cases. Used by mobile apps, SPAs, server-rendered apps. PKCE (Proof Key for Code Exchange) prevents authorization-code interception attacks.</p>
+
+      <pre><code>1. Client generates a random code_verifier (43-128 chars).
+2. Client computes code_challenge = SHA256(code_verifier), Base64URL.
+3. Client redirects user to /authorize with code_challenge.
+4. User authenticates, authorizes scope.
+5. Authorization server returns code to redirect_uri.
+6. Client exchanges code + code_verifier for access token at /token.
+7. Authorization server verifies SHA256(code_verifier) == code_challenge.
+8. Returns access_token + refresh_token.</code></pre>
+
+      <h3>Client Credentials Flow</h3>
+
+      <p>For machine-to-machine where there is no user — service A calling service B. Client sends its own credentials directly to <code>/token</code> and gets a token scoped to its identity.</p>
+
+      <h3>Device Authorization Flow</h3>
+
+      <p>For devices without browsers — TVs, IoT, CLI tools. Server returns a code + URL; user opens URL on a phone, types the code, approves; original device polls until token issued.</p>
+
+      <h3>Refresh Token Flow</h3>
+
+      <p>Access tokens are short-lived (5–60 min). When they expire, the client exchanges its refresh token for a new access token. <strong>Implement refresh token rotation</strong>: each refresh issues a new refresh token; the old one becomes invalid. Detects token theft when a stolen refresh is used after the legitimate one.</p>
+
+      <h3>OpenID Connect (OIDC)</h3>
+
+      <p>OIDC layers identity on top of OAuth. The authorization endpoint returns an <code>id_token</code> (JWT) alongside the access token, identifying who the user is. Use OIDC when you need authentication, not just authorization. Most identity providers (Auth0, Okta, Azure AD, Google) speak OIDC.</p>
+
+      <h2 id="api-keys">5. API keys — rotation and scoping</h2>
+
+      <p>API keys are simpler than OAuth. They identify and authenticate the caller in one credential. Use them for:</p>
+      <ul>
+        <li>Server-to-server calls within a single organization.</li>
+        <li>Public read APIs that need rate limiting per caller.</li>
+        <li>Webhooks where the caller authenticates by including a shared secret.</li>
+      </ul>
+
+      <p>The patterns that make API keys safe:</p>
+
+      <ol>
+        <li><strong>Always over HTTPS.</strong> Keys in HTTP requests are visible to network observers.</li>
+        <li><strong>Send in <code>Authorization</code> header, not URL parameters.</strong> URL params leak into logs, browser history, Referer headers.</li>
+        <li><strong>Scope keys narrowly.</strong> Read-only vs read-write, per-resource, per-environment. Stripe's restricted keys are a model.</li>
+        <li><strong>Rotate regularly.</strong> Every 90 days minimum. Shorter for high-value keys.</li>
+        <li><strong>Support multiple active keys per principal.</strong> Lets you rotate without downtime.</li>
+        <li><strong>Hash keys at rest.</strong> Treat API keys like passwords — store SHA-256 of the key, not the key itself.</li>
+        <li><strong>Log key usage.</strong> Audit access patterns; alert on anomalies (geographic, traffic spike, new IP).</li>
+        <li><strong>Generate keys cryptographically.</strong> Use the <a href="/password-generator">Password Generator</a> for high-entropy keys, or <code>crypto.randomBytes(32)</code>. Pair with a prefix like <code>sk_live_</code> for visibility.</li>
+        <li><strong>Use a hash to identify keys without exposing them.</strong> Store first 8 chars + hash; show <code>sk_live_a1b2c3...</code> in dashboards.</li>
+      </ol>
+
+      <p>Use the <a href="/hash-generator">Hash Generator</a> to verify key hashes match expected values during debugging. Generate cryptographically random keys with the <a href="/password-generator">Password Generator</a> set to 32 characters with full charset.</p>
+
+      <h2 id="mtls">6. Mutual TLS — service-to-service auth</h2>
+
+      <p>mTLS (RFC 8705 for OAuth) extends the normal TLS handshake with client certificates. The server verifies the client's certificate against a trusted CA before accepting the connection. The result: cryptographic proof of client identity at the connection level, no shared secrets, no tokens to leak.</p>
+
+      <p>When mTLS makes sense:</p>
+      <ul>
+        <li>Internal microservices in a zero-trust network.</li>
+        <li>High-value B2B integrations (payments, healthcare).</li>
+        <li>Service mesh setups (Istio, Linkerd, Consul Connect handle mTLS automatically).</li>
+        <li>Compliance regimes that require strong mutual authentication.</li>
+      </ul>
+
+      <p>The challenge: certificate distribution and rotation. Most teams that adopt mTLS use a service mesh (Istio, Linkerd) or a private CA (HashiCorp Vault, AWS Private CA, cert-manager on Kubernetes) to automate cert lifecycle.</p>
+
+      <h2 id="patterns">7. Production patterns — refresh tokens, idempotency, audit</h2>
+
+      <h3>Refresh token rotation</h3>
+
+      <p>Pattern that catches token theft:</p>
+      <ol>
+        <li>Every refresh-token use issues a new refresh token AND invalidates the old one.</li>
+        <li>If anyone uses the old refresh token after rotation, treat as theft signal — invalidate the entire token family.</li>
+        <li>Store refresh tokens with a "family ID" so you can revoke all derivatives if one is compromised.</li>
+      </ol>
+
+      <h3>Idempotency keys</h3>
+
+      <p>For state-changing operations (POST), include an <code>Idempotency-Key</code> header (UUIDv4 or v7). Server stores the response keyed by this value. Retries with the same key return the cached response instead of double-charging. Stripe, Square, Adyen, Paddle, and modern payments APIs support this. Generate idempotency keys with the <a href="/uuid-generator">UUID Generator</a>.</p>
+
+      <h3>Audit logging</h3>
+
+      <p>For every authenticated request, log:</p>
+      <ul>
+        <li>Timestamp (use the <a href="/unix-timestamp-converter">Unix Timestamp Converter</a> for log analysis).</li>
+        <li>Caller identity (subject claim, API key prefix, mTLS DN).</li>
+        <li>Action and resource.</li>
+        <li>Success/failure.</li>
+        <li>Source IP, user agent.</li>
+        <li>Correlation ID (UUID for distributed trace).</li>
+      </ul>
+
+      <h3>Rate limiting</h3>
+
+      <p>Per-key, per-IP, per-user. Return <code>429 Too Many Requests</code> with <code>Retry-After</code> header. Use a sliding-window or token-bucket algorithm; fixed-window has burst issues.</p>
+
+      <h2 id="mistakes">8. Common security mistakes</h2>
+
+      <ul>
+        <li><strong>Storing JWTs in localStorage.</strong> Vulnerable to XSS. Use HttpOnly cookies for browsers; Authorization header for non-browser clients.</li>
+        <li><strong>Verifying JWT with <code>jwt.verify(token, secret)</code> only.</strong> Without algorithm allow-list, this opens alg=none. Always pass <code>algorithms: [...]</code>.</li>
+        <li><strong>Treating JWT logout as "delete the cookie".</strong> A copy of the token may exist in browser memory, in monitoring, in a logger. Real logout requires server-side blacklist or short expiry + refresh rotation.</li>
+        <li><strong>Hard-coding secrets in client code.</strong> Anyone with the secret can forge tokens. Use env vars on the server only.</li>
+        <li><strong>Using HS256 with a 12-character secret.</strong> Minimum security level requires the secret to be at least as long as the hash output (32 bytes for HS256).</li>
+        <li><strong>Skipping issuer/audience validation.</strong> Just calling <code>jwt.verify</code> without checking <code>iss</code> and <code>aud</code> opens cross-service replay.</li>
+        <li><strong>Accepting OAuth tokens without checking the issuer.</strong> Validate the JWKS URL against your allow-list.</li>
+        <li><strong>Putting passwords in the JWT payload.</strong> Even hashed. Use the subject claim and look up via DB instead.</li>
+        <li><strong>API keys in URL parameters.</strong> Logged everywhere. Always use Authorization header.</li>
+        <li><strong>Forgetting to rotate keys after employee departures.</strong> Treat API keys like passwords — rotate when someone with access leaves.</li>
+        <li><strong>OAuth client secret in mobile/SPA code.</strong> Public clients cannot keep secrets. Use PKCE and treat them as such.</li>
+        <li><strong>Trusting the <code>kid</code> header for key lookup.</strong> Resolve from a server-side map; never construct file paths or URLs from token-controlled values.</li>
+      </ul>
+
+      <h2 id="references">9. Authoritative references</h2>
+
+      <aside class="article-aside">
+        <strong>Primary specs:</strong>
+        <ul>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc7519" rel="noopener" target="_blank">RFC 7519 — JSON Web Token (JWT)</a></li>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc8725" rel="noopener" target="_blank">RFC 8725 — JWT Best Current Practices</a></li>
+          <li><a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1" rel="noopener" target="_blank">OAuth 2.1 (draft)</a></li>
+          <li><a href="https://openid.net/specs/openid-connect-core-1_0.html" rel="noopener" target="_blank">OpenID Connect Core 1.0</a></li>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc7636" rel="noopener" target="_blank">RFC 7636 — PKCE</a></li>
+          <li><a href="https://datatracker.ietf.org/doc/html/rfc8705" rel="noopener" target="_blank">RFC 8705 — OAuth Mutual TLS</a></li>
+        </ul>
+        <strong>Practitioner references:</strong>
+        <ul>
+          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html" rel="noopener" target="_blank">OWASP — JWT Security Cheat Sheet</a></li>
+          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" rel="noopener" target="_blank">OWASP — Authentication Cheat Sheet</a></li>
+          <li><a href="https://oauth.net/2.1/" rel="noopener" target="_blank">oauth.net — OAuth 2.1 reference</a></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="all-tools-section" aria-label="Related tools">
+      <h2>Auth tools referenced in this guide</h2>
+      <p class="atc-sub">Browser-based, never sends data to a server.</p>
+      <div class="all-tools-grid">
+        <div class="atc-col">
+          <h3>Tokens &amp; Keys</h3>
+          <ul>
+            <li><a href="/jwt-decoder">JWT Decoder</a></li>
+            <li><a href="/jwt-generator">JWT Generator</a></li>
+            <li><a href="/uuid-generator">UUID Generator</a></li>
+            <li><a href="/password-generator">Password Generator</a></li>
+            <li><a href="/hash-generator">Hash Generator</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>Encoding</h3>
+          <ul>
+            <li><a href="/base64-encoder">Base64 Encoder</a></li>
+            <li><a href="/url-encoder">URL Encoder</a></li>
+            <li><a href="/string-escape">String Escape</a></li>
+            <li><a href="/html-entity">HTML Entity Encoder</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>API &amp; Network</h3>
+          <ul>
+            <li><a href="/http-request-builder">HTTP Request Builder</a></li>
+            <li><a href="/http-status">HTTP Status Codes</a></li>
+            <li><a href="/dns-lookup">DNS Lookup</a></li>
+            <li><a href="/ip-lookup">IP Lookup</a></li>
+            <li><a href="/json-formatter">JSON Formatter</a></li>
+          </ul>
+        </div>
+        <div class="atc-col">
+          <h3>More Guides</h3>
+          <ul>
+            <li><a href="/guides/complete-uuid-guide">Complete UUID Guide</a></li>
+            <li><a href="/guides/web-accessibility-guide">WCAG 2.1 Implementation</a></li>
+            <li><a href="/guides/web-performance-guide">Web Performance Optimization</a></li>
+            <li><a href="/all-tools">Browse all 50 tools</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</div>
+
+<footer>
+  <div>&copy; 2026 FreeDevTool. Built for developers, by developers.</div>
+  <div class="footer-links"><a href="/all-tools">All Tools</a><a href="/guides">Guides</a><a href="/about">About</a><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Use</a></div>
+</footer>
+
+</body>
+</html>

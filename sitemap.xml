@@ -13,6 +13,36 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://freedevtool.org/guides</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://freedevtool.org/guides/complete-uuid-guide</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://freedevtool.org/guides/web-accessibility-guide</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://freedevtool.org/guides/web-performance-guide</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://freedevtool.org/guides/api-authentication-guide</loc>
+    <lastmod>2026-05-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://freedevtool.org/encoding-tools</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
