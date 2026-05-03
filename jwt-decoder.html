@@ -669,6 +669,43 @@ handler.ValidateToken(token, validation, out var validatedToken);
       </ul>
     </section>
 
+    <section class="article-section">
+      <h2 id="comparison">How this JWT decoder compares to popular alternatives</h2>
+      <p>"JWT decoder" is one of the most-searched developer-tool queries. The space is dominated by <strong>jwt.io</strong> (Auth0's reference tool, around since 2015), with several modern alternatives competing on different angles. Here's how this tool stacks up so you can pick the right fit for your workflow.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Capability</th><th>FreeDevTool /jwt-decoder</th><th>jwt.io</th><th>token.dev</th><th>jsonwebtoken.io</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Decode header + payload</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Auto-flag expired tokens (<code>exp</code> in past)</td><td>✅</td><td>✅</td><td>✅</td><td>⚠️ Partial</td></tr>
+          <tr><td>Verify HMAC signatures (HS256/384/512)</td><td>✅ Web Crypto API</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Verify RSA signatures (RS256/384/512)</td><td>Roadmap</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Verify ECDSA signatures (ES256/384/512)</td><td>Roadmap</td><td>✅</td><td>⚠️ Partial</td><td>⚠️ Partial</td></tr>
+          <tr><td>Generate / sign new tokens (paired tool)</td><td>✅ <a href="/jwt-generator">/jwt-generator</a></td><td>✅</td><td>✅</td><td>⚠️ Limited</td></tr>
+          <tr><td>Browser-only — token never leaves your tab</td><td>✅</td><td>✅</td><td>✅</td><td>⚠️ Unclear in TOS</td></tr>
+          <tr><td>Open-source / inspectable code</td><td>✅</td><td>✅ GitHub</td><td>⚠️ Closed</td><td>❌</td></tr>
+          <tr><td>Display ads on the tool page</td><td>❌ Ad-free</td><td>❌</td><td>❌</td><td>✅ Ads present</td></tr>
+          <tr><td>Paired with long-form RFC 7519 / 9562 implementation guide</td><td>✅ <a href="/guides/api-authentication-guide">26-min read</a></td><td>⚠️ Quick reference</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Part of a multi-tool dev catalog (Base64, hash, regex, JSON, …)</td><td>✅ 50 tools, 4 in-depth guides</td><td>❌ JWT only</td><td>❌ JWT only</td><td>❌ JWT only</td></tr>
+          <tr><td>Sign-up required to save / share</td><td>❌ No accounts</td><td>❌</td><td>❌</td><td>❌</td></tr>
+        </tbody>
+      </table>
+
+      <h3>When to pick which tool</h3>
+      <ul>
+        <li><strong>Pick FreeDevTool /jwt-decoder when:</strong> you want a single browser-based JWT decoder paired with a generator (test signing) and an in-depth implementation guide, and you're already using other tools in the FreeDevTool catalog (Base64, hash, regex, JSON formatter) and want a consistent zero-signup workflow.</li>
+        <li><strong>Pick jwt.io when:</strong> you specifically need RSA / ECDSA signature verification right now, or you want the brand-trust signal of using Auth0's reference tool when sharing debugging output with a teammate or vendor.</li>
+        <li><strong>Pick token.dev when:</strong> you want a modern, single-purpose JWT debugger with a clean UI focused only on the JWT use case.</li>
+      </ul>
+
+      <p>This is an honest comparison rather than a marketing claim. RSA / ECDSA verification is on the roadmap for FreeDevTool but isn't shipped today; for those algorithms, jwt.io remains the strongest choice. Where FreeDevTool genuinely differentiates is the <strong>tool + paired generator + 26-minute guide + 50-tool ecosystem</strong> combination — useful when JWT debugging is one task in a longer dev workflow, not a one-off lookup.</p>
+
+      <h3>Frequently linked competitor pages</h3>
+      <p>If you're researching JWT decoder alternatives, you're probably also looking at: <a href="https://jwt.io" rel="noopener" target="_blank">jwt.io</a>, <a href="https://token.dev" rel="noopener" target="_blank">token.dev</a>, <a href="https://www.jstoolset.com/jwt" rel="noopener" target="_blank">JsToolSet JWT decoder</a>. Each has trade-offs documented above.</p>
+    </section>
+
   </article>
 
   <!-- How to use + mistakes -->

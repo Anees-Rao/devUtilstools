@@ -651,6 +651,46 @@ if [[ "$input" =~ ^[0-9]+$ ]]; then echo "all digits"; fi
       </ul>
     </section>
 
+    <section class="article-section">
+      <h2 id="comparison">How this regex tester compares to popular alternatives</h2>
+      <p><a href="https://regex101.com" rel="noopener" target="_blank">regex101.com</a> has been the de-facto regex testing reference since 2011. Most other regex testers exist in its shadow. The 2026 differentiation is less about features and more about: which regex flavors you need, whether you want a paired explainer for patterns you didn't write, and whether you'd rather work in a single dev-tool catalog instead of jumping between specialized sites. Here's the honest comparison.</p>
+
+      <table class="ref-table">
+        <thead>
+          <tr><th>Capability</th><th>FreeDevTool /regex-tester</th><th>regex101.com</th><th>regexr.com</th><th>iHateRegex.io</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>JavaScript regex (ECMAScript)</td><td>✅ Native browser engine</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>PCRE / PCRE2 / Boost flavors</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Python regex flavor</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Java / Golang / Rust regex flavors</td><td>❌</td><td>✅</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Live match highlighting</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Capture groups breakdown</td><td>✅ With group index colors</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Substitution / replace mode</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td></tr>
+          <tr><td>Plain-English pattern explainer</td><td>✅ <a href="/regex-explainer">Dedicated /regex-explainer tool</a></td><td>✅ Built-in panel</td><td>✅ Built-in panel</td><td>⚠️ Visualization only</td></tr>
+          <tr><td>Catastrophic backtracking warnings</td><td>❌</td><td>✅ Performance tab</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Code generation (regex → Python / JS / etc.)</td><td>❌ Roadmap</td><td>✅</td><td>❌</td><td>❌</td></tr>
+          <tr><td>Save patterns without an account</td><td>✅ Browser localStorage</td><td>⚠️ Account suggested</td><td>⚠️ Account suggested</td><td>✅</td></tr>
+          <tr><td>Paired with long-form regex reference</td><td>✅ <a href="/regex-explainer">Regex Explainer</a> with 4,000-word guide</td><td>⚠️ Quick cheatsheet</td><td>⚠️ Cheatsheet</td><td>❌</td></tr>
+          <tr><td>Part of a broader 50-tool catalog</td><td>✅ Plus 4 in-depth guides</td><td>❌ Regex only</td><td>❌ Regex only</td><td>❌ Regex only</td></tr>
+          <tr><td>Paid / Pro tier exists</td><td>❌ Free only</td><td>✅ ~$5/mo</td><td>❌</td><td>❌</td></tr>
+        </tbody>
+      </table>
+
+      <h3>When to pick which tool</h3>
+      <ul>
+        <li><strong>Pick FreeDevTool /regex-tester when:</strong> you're testing JavaScript regex (the most common case in modern web work), you want a paired <a href="/regex-explainer">explainer tool</a> to understand someone else's pattern, you don't want to create an account, and you'd benefit from being part of a broader 50-tool catalog you already use.</li>
+        <li><strong>Pick regex101 when:</strong> you need PCRE / PCRE2 / Python / Java / Go regex flavors, deep optimization analysis (catastrophic-backtracking detection on the Performance tab), or one-click code generation in your target language. regex101 is the gold standard for those use cases — this guide isn't trying to replace it.</li>
+        <li><strong>Pick regexr.com when:</strong> you want a friendlier visual learning experience for JavaScript regex with side-by-side cheatsheet.</li>
+        <li><strong>Pick iHateRegex.io when:</strong> you want to find a pre-built pattern for a common case (email, phone, URL) without writing your own.</li>
+      </ul>
+
+      <p>This is an honest comparison, not a marketing pitch. If you're tuning a Python production regex with concern about backtracking, regex101's Performance tab is the right tool. Where FreeDevTool genuinely differentiates is the <strong>tester + paired explainer + 4,000-word reference + 50-tool ecosystem</strong> combination — useful when regex work is one task in a longer dev workflow, especially in JavaScript codebases.</p>
+
+      <h3>Frequently compared regex tools</h3>
+      <p>If you're researching regex tester alternatives, you're probably also looking at: <a href="https://regex101.com" rel="noopener" target="_blank">regex101.com</a>, <a href="https://regexr.com" rel="noopener" target="_blank">regexr.com</a>, <a href="https://ihateregex.io" rel="noopener" target="_blank">iHateRegex.io</a>, <a href="https://pythex.org" rel="noopener" target="_blank">pythex.org</a> (Python only), <a href="https://rubular.com" rel="noopener" target="_blank">rubular.com</a> (Ruby only). The regex101 dominance reflects 13 years of authority and a team focused entirely on regex; pick whichever specializes in your specific need.</p>
+    </section>
+
   </article>
 
   <!-- How to use + mistakes -->
