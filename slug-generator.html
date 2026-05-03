@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Slug Generator Online — SEO-Friendly Permalink Maker Free | FreeDevTool</title>
+  <title>URL Slug Generator — SEO-Friendly Slugs | FreeDevTool</title>
   <meta name="description" content="Free URL slug generator. Convert titles to clean kebab-case permalinks. Transliterates Cyrillic, Greek, accented Latin, CJK. SEO-optimized. Runs in browser.">
-  <meta name="keywords" content="url slug generator, slugify online, seo slug, kebab case generator, permalink generator, slugify javascript, transliteration slug, url path generator">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/slug-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="URL Slug Generator — SEO Permalink Maker Free | FreeDevTool">
+  <meta name="twitter:title" content="URL Slug Generator — SEO-Friendly Slugs Free">
   <meta name="twitter:description" content="Convert titles to clean URL slugs. 80+ language transliteration, SEO-friendly. Runs in browser, no signup.">
-  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -208,9 +203,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Text Tool</div>
-    <h1>URL Slug Generator Online — SEO Permalink Maker</h1>
+    <h1>URL Slug Generator</h1>
     <p class="tool-description">
-      Generate clean, SEO-friendly URL slugs from any title, product name, or string. This free slug generator produces lowercased, hyphen-separated permalinks perfect for blog URLs, REST API endpoints, file names, and content management systems. Transliterates Cyrillic (<code>Привет</code>), Greek (<code>Γειά</code>), accented Latin (<code>café</code>), and CJK characters into ASCII. Optional stop-word removal for shorter URLs. Custom max length (Google truncates around 75 chars in mobile SERPs). Runs entirely in your browser.
+      Convert titles into clean, SEO-friendly URL slugs — lowercase, hyphenated, ASCII-transliterated. Free, no signup, runs in your browser.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -291,6 +286,12 @@
         <li><strong>6. Truncate (optional).</strong> Cut to max length, then trim back to the previous word boundary so you don't end mid-word.</li>
       </ul>
 
+      <h3 id="transliteration">Slugify with transliteration — Cyrillic, Greek, and CJK</h3>
+      <p>The transliteration step is what makes a multilingual slug generator possible. Modern libraries ship with lookup tables for the major non-Latin scripts: <strong>Cyrillic</strong> (<code>Привет мир</code> → <code>privet-mir</code>) uses BGN/PCGN romanization, <strong>Greek</strong> (<code>Γειά σας</code> → <code>geia-sas</code>) follows ISO 843, and <strong>CJK</strong> Chinese characters use Pinyin (<code>北京</code> → <code>bei-jing</code>), Japanese uses Hepburn romaji, and Korean uses Revised Romanization. If you publish content in multiple languages, picking a Cyrillic-aware URL slug generator (or one that handles CJK and Greek correctly) is the difference between readable permalinks and percent-encoded URL noise.</p>
+
+      <h3>Slug generation with stop word removal</h3>
+      <p>Stop words like "the", "a", "and", "of", "to" rarely add meaning to a URL but inflate its length. A slug generator with stop word removal collapses <code>"The Complete Guide to React Hooks"</code> into <code>/complete-guide-react-hooks</code> instead of <code>/the-complete-guide-to-react-hooks</code>. The trade-off: aggressive stop-word stripping can produce slugs that read awkwardly out of context, so most teams keep stop words in the title and only strip them in the slug.</p>
+
       <h3>Worked example: "Café del Mar — Best Songs (2026 Update)!"</h3>
       <div class="lang-block">
         <div class="lang-block-header">pipeline</div>
@@ -337,7 +338,7 @@ Step 6 — Truncate(50):  "cafe-del-mar-best-songs-2026-update"   (already short
           </tr>
           <tr>
             <td>Use ASCII, not Unicode</td>
-            <td>URLs with raw Unicode become percent-encoded (<code>résumé</code> → <code>r%C3%A9sum%C3%A9</code>) — ugly in SERPs and shares.</td>
+            <td>URLs with raw Unicode become <a href="/url-encoder">percent-encoded</a> (<code>résumé</code> → <code>r%C3%A9sum%C3%A9</code>) — ugly in SERPs and shares.</td>
             <td><code>/resume-template</code></td>
             <td><code>/résumé-template</code></td>
           </tr>
@@ -510,18 +511,31 @@ echo "Café del Mar — Best Songs (2026)!" | \
         <li><strong>Changing slugs after publishing.</strong> Every change breaks inbound links. If you must change, set up a 301 redirect from the old slug. WordPress &amp; Ghost handle this automatically; custom systems often don't.</li>
         <li><strong>Auto-generating from user input without sanitization.</strong> An attacker submits a title with <code>../../etc/passwd</code> and your slug generator produces a path-traversal vulnerability. Always sanitize and reject obviously malicious patterns.</li>
         <li><strong>Including the date in every slug.</strong> <code>/2024/05/best-react-hooks</code> looks dated by 2025. Skip the date in the URL; use the page's published date as a separate field.</li>
-        <li><strong>Ignoring duplicates.</strong> Two posts titled "Hello World" produce the same slug. Append a counter, ID, or year: <code>/hello-world</code>, <code>/hello-world-2</code>, <code>/hello-world-2026</code>.</li>
-        <li><strong>Using underscores or camelCase.</strong> <code>/myCoolPost</code> is legal but indexes poorly. Stick to lowercase + hyphens.</li>
+        <li><strong>Ignoring duplicates.</strong> Two posts titled "Hello World" produce the same slug. Append a counter, a short <a href="/uuid-generator">UUID</a> suffix, or year: <code>/hello-world</code>, <code>/hello-world-2</code>, <code>/hello-world-2026</code>.</li>
+        <li><strong>Using underscores or camelCase.</strong> <code>/myCoolPost</code> is legal but indexes poorly. Stick to <a href="/case-converter">lowercase</a> + hyphens.</li>
         <li><strong>Slugs longer than 80 chars.</strong> Mobile SERPs truncate around 50 visible chars. Aim for 3–5 words; trim aggressively.</li>
         <li><strong>Mixing slug styles across the site.</strong> <code>/about-us</code>, <code>/contact_us</code>, <code>/Help</code> all in one site. Pick one style; redirect old patterns with 301.</li>
-        <li><strong>URL parameters instead of slugs.</strong> <code>/page?id=42</code> is technically indexable but vastly worse for SEO than <code>/best-react-hooks-2026</code>.</li>
+        <li><strong>URL parameters instead of slugs.</strong> <code>/page?id=42</code> is technically indexable but vastly worse for SEO than <code>/best-react-hooks-2026</code>. If you must use parameters, <a href="/url-encoder">URL-encode</a> them properly to avoid breaking the path.</li>
         <li><strong>Including session tokens or trackers in URLs.</strong> <code>/blog/post?utm_source=email</code> creates duplicate URLs in Google's index. Use canonicals or strip params at the CDN.</li>
         <li><strong>Forgetting to re-validate after CMS migrations.</strong> Importing 5,000 posts from WordPress to Hugo? Slug generators may produce different output. Audit randomly sampled URLs before going live.</li>
       </ul>
     </section>
 
     <section class="article-section">
-      <h2>Slug generation best practices</h2>
+      <h2>WordPress slug rules — defaults, overrides, and gotchas</h2>
+      <p>WordPress remains the most-used CMS on the web, so its slug rules are worth knowing even if you build elsewhere. WordPress generates a slug from the post title via the <code>sanitize_title()</code> function: lowercase, replace spaces with hyphens, strip punctuation, and run a Latin-script transliteration (<code>café</code> → <code>cafe</code>, but <strong>not</strong> Cyrillic or CJK out-of-the-box — those get percent-encoded unless you install a plugin like Babble or Polylang). The result is stored in the <code>post_name</code> column.</p>
+      <p>Authors can override the auto-generated slug from the post-editor sidebar — and should, when the auto-version is bloated with stop words or runs too long. WordPress handles slug collisions automatically by appending <code>-2</code>, <code>-3</code>, etc. The platform also auto-creates 301 redirects from old to new slugs when you change a published post's slug, which is one of the few CMSes that does this correctly out of the box. Ghost handles it similarly; Strapi, Contentful, and most headless CMSes leave 301s as your responsibility.</p>
+
+      <h3>Slug for multilingual websites — hreflang and per-language paths</h3>
+      <p>If you ship a multilingual site, slug per language is the standard pattern: <code>/en/best-react-hooks</code>, <code>/es/mejores-hooks-react</code>, <code>/fr/meilleurs-hooks-react</code>. Generate each language's slug from the localized title, not from a single English source. Pair the slugs with <code>&lt;link rel="alternate" hreflang="..."&gt;</code> tags in the page head so search engines understand they're language variants of the same content rather than duplicates. Don't auto-translate slugs from English — translate the title first, then slugify.</p>
+
+      <h3>301 redirect best practice when slugs change</h3>
+      <p>The single most damaging slug mistake is silently changing a published URL without a redirect. Every external link, every Google index entry, every social share now 404s. The fix is always the same: when changing a slug, set up a permanent (<code>301</code>) redirect from the old path to the new path. Most CMSes have a redirect-manager plugin or built-in feature. If you control the server, add the rule to <code>.htaccess</code>, Cloudflare's <code>_redirects</code> file, or Nginx's <code>rewrite</code> directives.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>URL slug best practices for 2026</h2>
+      <p>The fundamentals haven't changed since Google's 2008 URL-structure guidance, but a few practices have firmed up over the past five years — particularly around 301 redirects when changing slugs, multilingual sites with hreflang, and avoiding tracking parameters that fragment indexing. The list below captures what still matters for ranking and what's become non-negotiable.</p>
       <ul>
         <li><strong>Generate slugs once, lock them.</strong> Auto-generate from the title at create time. Let the user edit explicitly. Don't silently regenerate when titles change.</li>
         <li><strong>Limit to 3–5 words / 50–60 characters.</strong> Mobile SERP truncation; clickable preview length; user attention span.</li>
