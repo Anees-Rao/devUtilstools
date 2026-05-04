@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hash Generator Online — MD5, SHA-1, SHA-256, SHA-512 Free | FreeDevTool</title>
-  <meta name="description" content="Free hash generator. Compute MD5, SHA-1, SHA-256, SHA-512 instantly via Web Crypto API. Verify file checksums, compare hashes. Runs in browser, no signup.">
-  <meta name="keywords" content="hash generator, md5 hash, sha256 hash, sha512 hash, sha-1 hash generator, file checksum, hash compare, online hash tool, web crypto API">
+  <title>Hash Generator — MD5, SHA-256, SHA-512 | FreeDevTool</title>
+  <meta name="description" content="Free MD5, SHA-1, SHA-256, SHA-512 hash generator. Verify file checksums, compare hashes. Runs in browser via Web Crypto API, no upload, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/hash-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +18,7 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="Hash Generator — MD5, SHA-1, SHA-256, SHA-512 Free | FreeDevTool">
+  <meta name="twitter:title" content="Hash Generator — MD5, SHA-256, SHA-512 Free">
   <meta name="twitter:description" content="Compute MD5, SHA-1, SHA-256, SHA-512 hashes for text or files. Web Crypto API, runs in browser, no uploads.">
 
   <!-- Google Analytics 4 -->
@@ -229,9 +228,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Security Tool</div>
-    <h1>Hash Generator Online — MD5, SHA-1, SHA-256, SHA-512</h1>
+    <h1>Hash Generator</h1>
     <p class="tool-description">
-      Generate cryptographic hashes from text or files using MD5, SHA-1, SHA-256, and SHA-512 algorithms instantly. This free hash generator uses the browser-native <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" rel="noopener" style="color:var(--accent)">Web Crypto API</a> to compute hashes directly on your machine — no data is ever sent to a server. Compare hashes side by side, verify file checksums against published values, and pick the right algorithm for your use case (integrity vs collision resistance vs performance). Works offline, no signup required.
+      Compute MD5, SHA-1, SHA-256, and SHA-512 hashes for text or files using the browser-native <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" rel="noopener" style="color:var(--accent)">Web Crypto API</a>. Verify checksums, compare hashes side-by-side. Nothing uploads — runs offline, no signup.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -444,12 +443,16 @@
       </table>
 
       <div class="article-aside">
-        <strong>The hash generator on this page is for integrity verification, file checksums, content addressing, and signature inputs — NOT for password storage.</strong> Use your language's <code>argon2id</code> or <code>bcrypt</code> library on the server side.
+        <strong>The hash generator on this page is for integrity verification, file checksums, content addressing, and signature inputs — NOT for password storage.</strong> Use your language's <code>argon2id</code> or <code>bcrypt</code> library on the server side. Need a strong random password to hash? Use the <a href="/password-generator">password generator</a> first.
       </div>
+
+      <h3>Why bcrypt and Argon2id replace SHA-256 for passwords</h3>
+      <p>SHA-256 was designed for speed — exactly the wrong property for password storage. Modern GPUs evaluate ~7 billion SHA-256 hashes per second, so an 8-character password leaks in hours. <strong>Argon2id</strong> (Password Hashing Competition winner, 2015) and <strong>bcrypt</strong> deliberately throttle to milliseconds per hash and consume gigabytes of RAM, defeating GPU and ASIC parallelism. Both algorithms add unique per-user salts automatically — never roll your own salting on top of SHA-256. For tokens that need to look like a hash but originate from a session, see the <a href="/jwt-generator">JWT generator</a> for signed tokens, and the <a href="/uuid-generator">UUID generator</a> for unique non-secret identifiers.</p>
     </section>
 
     <section class="article-section">
       <h2>Hashing in 8 programming languages</h2>
+      <p>Same SHA-256 input, same output — every language. Below are minimal, copy-paste snippets for each runtime. Pair these with the <a href="/base64-encoder">Base64 encoder</a> when you need to encode raw digest bytes for HTTP headers or JSON payloads.</p>
 
       <h3>JavaScript / Browser (Web Crypto API)</h3>
       <div class="lang-block">
@@ -618,10 +621,16 @@ sha256sum -c sha256sums.txt   # checks all files listed
 
       <h3>Password reset tokens, deduplication, partition keys</h3>
       <p>Hashing user emails for partition keys (privacy-preserving sharding); hashing image bytes to deduplicate uploads; hashing reset tokens for storage so a database leak doesn't expose live tokens. SHA-256 is the safe default.</p>
+
+      <h3>SHA-256 file checksum verification on Linux, macOS, and Windows</h3>
+      <p>Every major OS ships a built-in SHA-256 verifier — no third-party tool needed. On <strong>Linux</strong>, <code>sha256sum file.iso</code> outputs the digest; pair with <code>sha256sum -c SHA256SUMS</code> to verify against a published manifest. On <strong>macOS</strong>, <code>shasum -a 256 file.iso</code> behaves identically. On <strong>Windows</strong>, <code>certutil -hashfile file.iso SHA256</code> works in any cmd or PowerShell session, or use <code>Get-FileHash -Algorithm SHA256 file.iso</code> in PowerShell 5+. Drop the file onto the "File Hash" tab above to compute the hash directly in the browser — useful when you don't trust the local CLI environment or want to compare against a clipboard value. For binary-safe encoding of the result, pipe through the <a href="/base64-encoder">Base64 encoder</a>.</p>
+
+      <h3>MD5 vs SHA-256 collision resistance — when each fails</h3>
+      <p>MD5 collisions are produced in seconds on a laptop (Wang's 2004 attack); SHA-1 fell to Google's SHAttered attack in 2017 with ~6,500 GPU-years of compute, now reproducible far cheaper. SHA-256 has no known practical collision attacks in 2026 — the best published cryptanalysis attacks reduced rounds, not the full 64-round function. If your threat model includes attacker-controlled inputs (signatures, certificates, supply-chain artifacts), SHA-256 or BLAKE3 is the floor. For pure deduplication or cache keys with no adversary, even MD5 is acceptable and faster.</p>
     </section>
 
     <section class="article-section">
-      <h2>Hash function best practices</h2>
+      <h2>Hash function best practices for 2026</h2>
       <ul>
         <li><strong>Use SHA-256 unless you have a specific reason not to.</strong> It's the modern default, hardware-accelerated on every CPU since 2013 (Intel SHA Extensions), and supported in every Web Crypto API browser.</li>
         <li><strong>Never use MD5 or SHA-1 for security-critical work.</strong> Both have practical collision attacks. Fine for cache keys, ETags, and non-adversarial integrity checks.</li>

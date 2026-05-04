@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Color Palette Generator &amp; Picker Online — CSS Color Codes Free | FreeDevTool</title>
-  <meta name="description" content="Generate beautiful color palettes and pick colors with hex, RGB, HSL codes. WCAG contrast checker, complementary colors, and CSS-ready output. Free color tool for designers and developers.">
+  <title>Color Palette Generator &amp; Picker | FreeDevTool</title>
+  <meta name="description" content="Generate color palettes with hex, RGB, HSL, OKLCH codes. Pick colors, check WCAG AA/AAA contrast. CSS-ready output for designers and developers. Free.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/color-picker">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="Color Palette Generator &amp; Picker — Free CSS Color Tool">
+  <meta name="twitter:title" content="Color Palette Generator &amp; Picker — Free">
   <meta name="twitter:description" content="Generate harmonious color palettes, pick any color with hex/RGB/HSL/OKLCH output, and check WCAG AA/AAA contrast — all in your browser.">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -138,7 +138,7 @@
 
     <div class="tool-badge">Design Tool</div>
     <h1>Color Palette Generator &amp; Picker</h1>
-    <p class="tool-description">Generate beautiful color palettes using color harmony rules — complementary, analogous, triadic, split-complementary, and monochromatic. Pick any color with hex, RGB, and HSL output ready for CSS, Tailwind, and design systems. Check WCAG accessibility contrast ratios for text readability. Built for designers and developers who need precise color codes. All processing runs in your browser.</p>
+    <p class="tool-description">Pick a base color, generate complementary, analogous, triadic, split, and monochromatic palettes with hex/RGB/HSL/OKLCH output, and check WCAG AA/AAA contrast — all in your browser, no signup.</p>
     <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
   </div>
   <div class="tool-card">
@@ -174,8 +174,8 @@
     </div>
   </div>
   <section class="article-section">
-    <h2>The complete guide to color palette generation, color models, and WCAG contrast</h2>
-    <p>Color is the loudest signal in a user interface. Pick well and your product feels confident, accessible, and on-brand; pick badly and your buttons disappear, your charts mislead, and your sign-up form fails screen-reader audits. This guide walks through how the three CSS color models actually work, the math behind color-harmony rules, the WCAG 2.1 contrast formula in plain English, and how to pick palettes that work in light mode, dark mode, and on the wide-gamut displays that have shipped in every iPhone and MacBook since 2017.</p>
+    <h2>Color palette generation, CSS color models, and WCAG contrast — the 2026 guide</h2>
+    <p>Color is the loudest signal in a user interface. Pick well and your product feels confident, accessible, and on-brand; pick badly and your buttons disappear, your charts mislead, and your sign-up form fails screen-reader audits. This guide walks through how the five CSS color models actually work, the math behind color-harmony rules, the WCAG 2.1 contrast formula in plain English, and how to pick palettes that work in light mode, dark mode, and on the wide-gamut displays that have shipped in every iPhone and MacBook since 2017. Need the raw conversion? Use the <a href="/hex-to-rgb">hex to RGB converter</a> alongside this picker.</p>
 
     <h3>Hex, RGB, HSL, OKLCH — what each model is for</h3>
     <p>CSS lets you write the same color in five different notations. They are not interchangeable in workflow even though they describe the same on-screen pixels. Use the right one for the job:</p>
@@ -221,7 +221,7 @@
         <tr><td>WCAG AAA</td><td>7:1</td><td>4.5:1</td><td>—</td></tr>
       </tbody>
     </table>
-    <p>The contrast checker above runs this exact formula. AA is the legal floor in the EU (European Accessibility Act, June 2025), the US (ADA Title III, settled case law), Canada (AODA), and Australia (DDA). AAA is the goal for text-heavy products like documentation and news.</p>
+    <p>The contrast checker above runs this exact formula. AA is the legal floor in the EU (European Accessibility Act, June 2025), the US (ADA Title III, settled case law), Canada (AODA), and Australia (DDA). AAA is the goal for text-heavy products like documentation and news. For dedicated workflow, the standalone <a href="/wcag-contrast">WCAG contrast checker</a> tests pairs in bulk.</p>
     <p><strong>Note on APCA:</strong> WCAG 3.0 introduces APCA (Accessible Perceptual Contrast Algorithm), which corrects the 2.1 formula's known weaknesses with bright yellows and dark navy. APCA is in candidate-recommendation status as of 2026; sites that ship to government regulators should still validate against 2.1 today and plan for 3.0 next.</p>
 
     <h3>Design-system palettes — going from one color to a 50–900 ramp</h3>
@@ -233,6 +233,12 @@
       <li>Verify each shade against your background pair: 700+ should clear AA on white; 100– should clear AA on a near-black surface.</li>
     </ol>
     <p>This is why OKLCH wins for design systems: equal lightness steps in OKLCH produce equal perceptual steps. Equal lightness steps in HSL do not — yellow at L=50 looks brighter than blue at L=50.</p>
+
+    <h3>Tailwind CSS color palette and Figma variable export</h3>
+    <p>Most modern teams target two destinations from one palette: <strong>Tailwind <code>theme.extend.colors</code></strong> in code, and <strong>Figma color variables</strong> in design. The pattern that survives both: name semantically (<code>brand-500</code>, <code>danger-700</code>, <code>surface-50</code>) instead of by hue (<code>green-500</code>, <code>red-700</code>). When marketing pivots from green to teal, you change one HSL/OKLCH value and every consumer updates — no rename across components or Figma libraries. Export the swatches above as a JSON token block, paste into <code>tailwind.config.js</code> under <code>theme.extend.colors</code>, and import the same JSON into Figma via the <em>Figma Variables</em> import dialog or any Token Studio plugin. After exporting, run the result through the <a href="/css-minifier">CSS minifier</a> to see the gzipped weight of your color layer.</p>
+
+    <h3>OKLCH vs HSL — perceptual uniformity in palette ramps</h3>
+    <p>HSL is mathematically uniform but perceptually broken: a 10% lightness increase looks far brighter on yellow than on blue because HSL ignores the human eye's luminance response. OKLCH (perceptual lightness, chroma, hue, defined in <em>CSS Color Module Level 4</em>) corrects this — equal lightness steps in OKLCH produce equal <em>perceived</em> steps. Practical rule for design-system ramps in 2026: define the 500 shade in your brand color, convert to OKLCH, then walk lightness in even 7–9% steps for 600 → 900 and the inverse for 400 → 50, holding chroma roughly constant. Ramps built this way pass WCAG AA at the 700+ shade on white surfaces and at the 100– shade on dark surfaces without manual tweaking.</p>
 
     <h3>Reading colors from images — the EyeDropper API</h3>
     <p>Modern Chromium browsers (Chrome 95+, Edge 95+, Opera 81+) ship the <code>EyeDropper</code> API, which lets web apps sample any pixel on the screen, including outside the browser window. Firefox does not implement it as of 2026. The picker uses native <code>&lt;input type="color"&gt;</code> for cross-browser fallback. If you need cross-browser dropper behavior, render a canvas with the image and pick the pixel under the click using <code>getImageData</code>.</p>
