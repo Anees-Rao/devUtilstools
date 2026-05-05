@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNS Lookup Tool Online — A, MX, TXT, CNAME Records Free | FreeDevTool</title>
-  <meta name="description" content="Free DNS lookup. Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. SPF/DKIM/DMARC inspection. Browser-based, no signup.">
-  <meta name="keywords" content="dns lookup, dns query online, mx record lookup, txt record check, dns over https, doh, spf check, dkim verify, dmarc lookup, nameserver check">
+  <title>DNS Lookup — A, MX, TXT, CNAME Records | FreeDevTool</title>
+  <meta name="description" content="Free DNS lookup. Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. Inspect SPF, DKIM, DMARC. Browser-based, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/dns-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="DNS Lookup Tool — A/MX/TXT/CNAME Free | FreeDevTool">
+  <meta name="twitter:title" content="DNS Lookup — A, MX, TXT, CNAME Records">
   <meta name="twitter:description" content="Query DNS records via Cloudflare DoH. SPF/DKIM/DMARC inspection. Runs in browser, no signup, no logs.">
-  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
   <meta property="og:title" content="DNS Lookup Tool — Free Online DNS Query Tool">
@@ -146,8 +141,8 @@
     </a>
 
     <span class="tool-badge">Network</span>
-    <h1>DNS Lookup Tool Online — Query A, MX, TXT, CNAME Records</h1>
-    <p>This DNS lookup tool queries authoritative records for any domain directly from your browser using <a href="https://www.cloudflare.com/learning/dns/dns-over-tls/" rel="noopener" style="color:var(--accent)">Cloudflare DNS-over-HTTPS</a>. Inspect <strong>A, AAAA, CNAME, MX, TXT, NS, SOA, CAA</strong> records without installing <code>dig</code> or <code>nslookup</code>. Every query runs client-side; lookups travel encrypted to <code>1.1.1.1</code> and back — never our servers. Use it for debugging propagation, verifying <strong>SPF / DKIM / DMARC</strong>, checking mail routing, auditing CAA policies, and confirming nameserver delegation during migrations.</p>
+    <h1>DNS Lookup Tool</h1>
+    <p>Query A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records via <a href="https://www.cloudflare.com/learning/dns/dns-over-tls/" rel="noopener" style="color:var(--accent)">Cloudflare DNS-over-HTTPS</a>. Inspect SPF, DKIM, DMARC. Browser-only — encrypted to <code>1.1.1.1</code>, never touches our servers.</p>
     <span class="last-updated">Last updated: April 2026</span>
   </section>
   <div class="tool-card">
@@ -425,10 +420,21 @@ curl -s -H 'accept: application/dns-json' \
 
       <h3>6. CAA records blocking certificate issuance</h3>
       <p>If your CAA records list <code>letsencrypt.org</code> only, but you try to issue a cert via DigiCert, the CA must refuse. <strong>Fix:</strong> review CAA records before switching CA providers; add the new CA's identifier first.</p>
+
+      <h3>MX record lookup and DKIM selector check — a 60-second deliverability audit</h3>
+      <p>Once a sender complaint lands ("Gmail keeps rejecting our mail"), run this five-step lookup right here:</p>
+      <ol>
+        <li>Query <strong>MX</strong> for the sending domain — confirm the records point to your actual mail provider, not a stale Postini or G Suite legacy entry.</li>
+        <li>Query <strong>TXT</strong> at the apex — find the <code>v=spf1</code> record. Count <code>include:</code> hops (limit is 10, hard fail past 10).</li>
+        <li>Query <strong>TXT</strong> at <code>selector._domainkey.example.com</code> using the selector your provider configured (Mailchimp uses <code>k1</code>, SendGrid uses <code>s1</code>/<code>s2</code>, Google uses <code>google</code>).</li>
+        <li>Query <strong>TXT</strong> at <code>_dmarc.example.com</code> — verify there's a single record with a valid policy.</li>
+        <li>If all four pass and Gmail still rejects, the problem is reputation or content — not DNS.</li>
+      </ol>
+      <p>For testing the underlying transport (TLS handshake, IP geolocation, reverse DNS), the <a href="/ip-lookup">IP lookup tool</a> and the <a href="/http-status">HTTP status checker</a> cover the next layer down.</p>
     </section>
 
     <section class="article-section">
-      <h2>DNS best practices for production domains</h2>
+      <h2>DNS best practices for 2026 production domains</h2>
       <ul>
         <li><strong>Use multiple authoritative DNS providers.</strong> A single provider is a single point of failure (Dyn 2016, Route53 2019 outages). Set up secondary DNS at a second provider for redundancy.</li>
         <li><strong>Enable DNSSEC.</strong> Cryptographically signs your DNS responses, preventing cache-poisoning attacks. Most providers enable it with one click.</li>

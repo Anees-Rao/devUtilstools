@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Encoder & Decoder Online — Free Percent-Encoding Tool | FreeDevTool</title>
-  <meta name="description" content="Free URL encoder & decoder. Supports encodeURIComponent, encodeURI, percent-encoding (RFC 3986), UTF-8 and Unicode. No signup, runs in your browser.">
-  <meta name="keywords" content="url encoder, url decoder, percent encoding, encodeURIComponent, encodeURI, urlencode online, url decode online, query string encoder, RFC 3986, URL escape">
+  <title>URL Encoder & Decoder — Percent Encoding | FreeDevTool</title>
+  <meta name="description" content="Free URL encoder and decoder. encodeURIComponent, encodeURI, percent-encoding (RFC 3986), UTF-8/Unicode. Runs in browser, no signup.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://freedevtool.org/url-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +18,7 @@
   <meta property="og:image:alt" content="URL Encoder & Decoder — FreeDevTool">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="URL Encoder & Decoder Online — Free | FreeDevTool">
+  <meta name="twitter:title" content="URL Encoder & Decoder — Percent Encoding">
   <meta name="twitter:description" content="Encode/decode URLs with encodeURIComponent or encodeURI. Free, runs in browser, no signup.">
 
   <!-- Google Analytics 4 -->
@@ -351,9 +350,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Encoding Tool</div>
-    <h1>URL Encoder / Decoder Online</h1>
+    <h1>URL Encoder &amp; Decoder</h1>
     <p class="tool-description">
-      Encode or decode URLs and query strings using standard percent-encoding (<a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener" style="color:var(--accent)">RFC 3986</a>). This free URL encoder supports <code>encodeURIComponent</code>, <code>encodeURI</code>, and form-style (<code>+</code> for spaces) modes, handles UTF-8 and Unicode characters, and shows a live URL breakdown when decoding. Paste any URL or text to instantly see the encoded or decoded result — everything runs in your browser, nothing is uploaded to a server.
+      Encode and decode URLs with percent-encoding (<a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener" style="color:var(--accent)">RFC 3986</a>). Supports <code>encodeURIComponent</code>, <code>encodeURI</code>, form-style <code>+</code>-for-space, UTF-8 and Unicode. Runs in your browser — no upload, no signup.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -724,7 +723,10 @@ encoded=$(printf '%s' "hello world" | jq -sRr @uri)
       <p>Cookies cannot contain raw spaces, semicolons, or commas. Browsers do not encode cookie values automatically — your application must encode before <code>document.cookie =</code> and decode after reading. Most cookie libraries handle this for you.</p>
 
       <h3>HTTP headers and OAuth signatures</h3>
-      <p>Some HTTP headers (notably OAuth 1.0 <code>Authorization</code> headers and certain custom headers) require RFC 3986 percent-encoding. OAuth specifically forbids the <code>+</code>-for-space variant — using the wrong encoder breaks signature verification with cryptic 401 errors.</p>
+      <p>Some HTTP headers (notably OAuth 1.0 <code>Authorization</code> headers and certain custom headers) require RFC 3986 percent-encoding. OAuth specifically forbids the <code>+</code>-for-space variant — using the wrong encoder breaks signature verification with cryptic 401 errors. When testing API requests with encoded query strings, the <a href="/http-request-builder">HTTP request builder</a> shows the wire format your server will actually receive.</p>
+
+      <h3>URL encoding for SEO-friendly slugs</h3>
+      <p>The cleanest URL is one that needs no encoding at all. Lower-case ASCII letters, digits, and hyphens (the <em>unreserved set</em>) pass through every parser unchanged and look identical in browser address bars, social-card previews, and email clients. Building URLs from user input? Pass titles through the <a href="/slug-generator">URL slug generator</a> first to strip diacritics, transliterate Cyrillic/Greek/CJK to ASCII, and produce hyphenated lower-case output that bypasses encoding entirely.</p>
     </section>
 
     <section class="article-section">
@@ -788,7 +790,72 @@ encoded=$(printf '%s' "hello world" | jq -sRr @uri)
     </section>
 
     <section class="article-section">
-      <h2>URL encoding and SEO — best practices</h2>
+      <h2>URL encoding bugs in popular frameworks (2026)</h2>
+      <p>Most production URL-encoding bugs aren't in your code — they're in the framework's defaults differing from yours. The cheat sheet:</p>
+      <table class="ref-table">
+        <thead><tr><th>Framework / Library</th><th>Encoding default</th><th>Common gotcha</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Next.js (router)</strong></td><td>RFC 3986</td><td>Dynamic routes <code>[slug]</code> auto-decode <code>%2F</code> to <code>/</code> — strict-routing config needed if your slug must contain a literal slash.</td></tr>
+          <tr><td><strong>Express.js</strong></td><td><code>req.query</code> uses <code>qs</code> (form-decoded)</td><td><code>+</code> in query is decoded as space. Use <code>req.url</code> + <code>URL</code> constructor for RFC 3986.</td></tr>
+          <tr><td><strong>Flask / Django</strong></td><td>Werkzeug / Django uses form-encoding</td><td><code>request.GET</code> turns <code>+</code> into space silently. Use <code>urllib.parse.unquote</code> with <code>plus=False</code> for path segments.</td></tr>
+          <tr><td><strong>Java Spring</strong></td><td>RFC 3986 in <code>UriComponentsBuilder</code></td><td><code>HttpServletRequest.getParameter</code> form-decodes; mixing the two on the same request leaks raw <code>+</code> to logs.</td></tr>
+          <tr><td><strong>cURL <code>--data-urlencode</code></strong></td><td>Form-encoding</td><td>Encodes <code>+</code> as <code>%2B</code> by default — opposite of what most JS encoders do. Verify with <code>--trace-ascii</code>.</td></tr>
+          <tr><td><strong>fetch() / Axios</strong></td><td>browser uses RFC 3986 for URL strings</td><td>If you build the body as a string yourself, no encoding happens — pass <code>URLSearchParams</code> or <code>FormData</code> instead.</td></tr>
+        </tbody>
+      </table>
+      <p>To inspect what your client actually puts on the wire, paste the URL into the decoder above, then build the same request through the <a href="/http-request-builder">HTTP request builder</a> — you'll see the raw query string before any framework-side reinterpretation.</p>
+
+      <h3>encodeURIComponent vs URLSearchParams in JavaScript</h3>
+      <p>Two ways to build a query string in 2026, and only one of them handles <code>+</code> correctly without manual escaping. <code>encodeURIComponent('a b')</code> returns <code>'a%20b'</code> (space → <code>%20</code>), while <code>new URLSearchParams({q: 'a b'}).toString()</code> returns <code>'q=a+b'</code> (space → <code>+</code>). Both are valid for the query string, but the receiving server has to know which to expect — most APIs accept either. <strong>Use <code>URLSearchParams</code> for full query objects</strong> (it handles arrays, repeated keys, and special chars correctly) and <strong>use <code>encodeURIComponent</code> for individual segments</strong> you concatenate by hand. Never use <code>encodeURI</code> on a value — it leaves reserved characters like <code>?</code>, <code>&amp;</code>, <code>=</code> untouched, which corrupts the surrounding URL.</p>
+
+      <h3>Decoding a URL with international characters (Cyrillic, CJK, emoji)</h3>
+      <p>Non-ASCII characters in URLs become long percent-encoded sequences. <code>'москва'</code> encodes to <code>%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0</code> (each Cyrillic letter is 2 UTF-8 bytes → 6 hex chars). <code>'東京'</code> encodes to <code>%E6%9D%B1%E4%BA%AC</code> (each CJK char is 3 bytes → 9 hex chars). Emoji are 4 bytes (<code>%F0%9F%8C%8D</code> = 🌍). The decoder above renders all of these back to the original glyphs; <code>decodeURIComponent</code> handles the UTF-8 reassembly automatically. For URL paths that need to look readable, transliterate non-Latin scripts to ASCII first using the <a href="/slug-generator">slug generator</a> rather than letting the encoder turn every char into a 9-byte hex string.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>Best URL encoder online for 2026 — what to look for</h2>
+      <p>"URL encoder" is one of the most generic queries in dev tooling — there are hundreds of them, and they don't all behave the same way. The differences that actually matter when you pick one:</p>
+      <table class="ref-table">
+        <thead>
+          <tr><th>Tool</th><th>Mode</th><th>UTF-8 / Unicode</th><th>Both encode &amp; decode</th><th>Logs your input</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>This tool (FreeDevTool)</strong></td><td>Browser-only</td><td><span class="yes">Yes</span> — handles Cyrillic/CJK/emoji</td><td><span class="yes">Yes</span>, with auto-detect</td><td><span class="no">No</span> — no requests on encode/decode</td></tr>
+          <tr><td><strong>urlencoder.org</strong></td><td>Server-side</td><td>Yes</td><td>Yes</td><td>Server-side processing — input transits to their host</td></tr>
+          <tr><td><strong>urldecoder.org</strong></td><td>Server-side</td><td>Yes</td><td>Decode only on landing page</td><td>Server-side processing</td></tr>
+          <tr><td><strong>Postman / Insomnia</strong></td><td>Desktop app</td><td>Yes</td><td>Auto-encodes query params</td><td>Account-bound — workspaces sync to cloud</td></tr>
+          <tr><td><strong>cURL <code>--data-urlencode</code></strong></td><td>CLI</td><td>Yes</td><td>Encode only</td><td>Local</td></tr>
+          <tr><td><strong>Browser DevTools console (<code>encodeURIComponent</code>)</strong></td><td>Browser-only</td><td>Yes</td><td>Manual <code>decodeURIComponent</code></td><td>Local</td></tr>
+        </tbody>
+      </table>
+      <p>The single test that separates good encoders from broken ones: paste <code>café</code> and verify the output is <code>caf%C3%A9</code> (UTF-8 bytes, RFC 3986) — <strong>not</strong> <code>caf%E9</code> (Latin-1, the 1990s default that breaks every modern API). If the encoder above your input does not produce <code>%C3%A9</code> for that test, do not use it for anything that touches a 2026 backend.</p>
+
+      <h3>How do I URL encode a string online without uploading it?</h3>
+      <p>Two signals confirm a URL encoder is fully client-side: <strong>(1)</strong> the page works with your network disconnected — try it now: turn off wifi, paste a string, click encode, see the result; <strong>(2)</strong> opening DevTools → Network shows zero requests when you encode or decode. The encoder above passes both. The encoding logic is a few lines of JavaScript wrapping <code>encodeURIComponent</code>, <code>encodeURI</code>, and <code>decodeURIComponent</code> — view-source any time. For sensitive payloads (auth tokens in query params, internal API URLs), prefer a tool like this one over server-side encoders that accept your input as a POST body.</p>
+
+      <h3>What's the difference between URL encode, decode, escape, and unescape?</h3>
+      <p>Four near-synonyms that mean different things in different ecosystems:</p>
+      <ul>
+        <li><strong>URL encode (= percent-encode = RFC 3986)</strong> — the standard. Spaces become <code>%20</code>, non-ASCII becomes UTF-8 percent-triplets. JavaScript's <code>encodeURIComponent</code>, Python's <code>urllib.parse.quote</code>.</li>
+        <li><strong>URL decode</strong> — the inverse of encode. Reads <code>%XX</code> sequences as bytes, reassembles UTF-8 codepoints. JavaScript's <code>decodeURIComponent</code>, Python's <code>urllib.parse.unquote</code>.</li>
+        <li><strong><code>escape()</code> / <code>unescape()</code></strong> — JavaScript built-ins, deprecated since 1999. They use Latin-1 for codepoints < 256 and a non-standard <code>%uXXXX</code> for higher codepoints. <strong>Don't use them.</strong> They corrupt UTF-8 and produce output no other language can decode.</li>
+        <li><strong>HTML entity encode</strong> — a different problem. <code>&amp;</code> → <code>&amp;amp;</code>. Applies inside HTML markup, not URLs. Pages mixing the two layers up produce <code>%26amp%3B</code>-style nightmares (URL-encoded HTML entity).</li>
+      </ul>
+      <p>The encoder above does the first two. For the fourth, use the <a href="/html-entity">HTML entity encoder</a> — different tool, different layer, never mix them.</p>
+
+      <h3>URL encoder alternative to urlencoder.org and meyerweb.com</h3>
+      <p>The two long-running web URL encoders are urlencoder.org (server-side) and meyerweb.com/eric/tools/dencoder/ (a 2002 Eric Meyer page using a JavaScript prompt-and-replace). Both still work; reasons to prefer this tool in 2026:</p>
+      <ol>
+        <li><strong>Modern UTF-8 by default.</strong> Eric Meyer's tool predates broad UTF-8 adoption and uses <code>escape()</code> in places — it produces <code>%uXXXX</code> for non-ASCII, which no current API decodes.</li>
+        <li><strong>Both directions in one page.</strong> urlencoder.org splits encode and decode into separate pages with separate ads. This page auto-detects which direction your input needs.</li>
+        <li><strong>No ads, no tracking pixels.</strong> Both alternatives load multiple ad-network and analytics scripts. This page loads only Google Analytics 4 (you can block it) and the Web Crypto API.</li>
+        <li><strong>Side-by-side breakdown when decoding.</strong> Decoding a URL with mixed query parameters reveals each component as a row, not a single decoded blob — easier to find which parameter has the bug.</li>
+      </ol>
+      <p>For workflows that need encoding + structural URL inspection, also try the <a href="/http-request-builder">HTTP request builder</a> (which encodes query params automatically and shows the resulting wire format) and the <a href="/slug-generator">slug generator</a> (when the input is a page title and the output should be a clean URL with no encoding at all).</p>
+    </section>
+
+    <section class="article-section">
+      <h2>URL encoding and SEO — best practices for 2026</h2>
       <p>Google can index URLs with percent-encoded characters, but heavily encoded URLs hurt click-through rate and shareability. The cleanest URLs are the ones that don't need encoding at all.</p>
       <ul>
         <li><strong>Use hyphens, not spaces, in slugs.</strong> <code>/my-blog-post</code> is far better than <code>/my%20blog%20post</code> — easier to read, no truncation in social previews, no fragility around encoding/decoding.</li>

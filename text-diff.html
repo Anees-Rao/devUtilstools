@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Diff Checker Online — Compare Two Texts Side-by-Side Free | FreeDevTool</title>
-  <meta name="description" content="Free text diff checker. Side-by-side comparison, line-by-line highlighting, additions/deletions. Works for code, JSON, configs. Runs in browser, no signup.">
-  <meta name="keywords" content="text diff, diff checker online, compare texts, file compare, json diff, code diff, side by side diff, git diff alternative, line diff">
+  <title>Diff Checker Online — Compare Two Texts | FreeDevTool</title>
+  <meta name="description" content="Free online diff checker. Compare two texts side-by-side with line-by-line highlighting. Works for code, JSON, configs. Runs in browser, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/text-diff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +20,6 @@
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
   <meta name="twitter:title" content="Text Diff Checker — Compare Two Texts | FreeDevTool">
   <meta name="twitter:description" content="Side-by-side diff for code, JSON, configs. Line-by-line highlighting. Runs in browser, no signup.">
-  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -174,9 +169,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Developer Tool</div>
-    <h1>Text Diff Checker — Compare Two Texts Side-by-Side</h1>
+    <h1>Diff Checker — Compare Two Texts Online</h1>
     <p class="tool-description">
-      Compare two texts side by side and instantly find every difference. This free diff checker highlights additions, deletions, and unchanged lines using a line-by-line comparison algorithm (similar to <code>git diff</code> and Unix <code>diff</code>). Works with any text format — code (JavaScript, Python, Go), data formats (JSON, XML, YAML), configuration files, or plain text. All processing runs in your browser; even comparing files with secrets, credentials, or PII never reaches a server.
+      Compare two texts side-by-side and find every difference instantly. Highlights additions, deletions, and unchanged lines (same algorithm as <code>git diff</code>). Works for code, JSON, XML, YAML, configs, and plain text. Runs in your browser — credentials and PII never leave your device.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -256,6 +251,12 @@
     </section>
 
     <section class="article-section">
+      <h2>Online diff compare — when to use a browser tool vs CLI</h2>
+      <p>Browser-based diff is fastest for one-off comparisons: paste two snippets, scan the highlighted output, copy the merged result. CLI <code>diff</code> wins when you're already in a terminal, scripting batch comparisons, or working with files too large to paste. The tool above handles the browser case; for the CLI, <code>diff -u old.txt new.txt</code> produces a unified diff that GitHub, Phabricator, and every code-review platform understand. Quick comparison alongside related tasks: format the inputs first with the <a href="/json-formatter">JSON formatter</a> or <a href="/sql-formatter">SQL formatter</a> so whitespace differences don't drown out the real changes.</p>
+
+      <h3>Git diff vs online diff compare — a practical workflow</h3>
+      <p>Use <code>git diff branch1..branch2 -- path/to/file</code> when both versions are committed. Use this online diff when one or both versions live outside Git: a teammate's Slack paste, a production config you SSH'd into, an AI-generated patch you haven't applied yet. The display semantics match — additions in green, deletions in red, unchanged lines neutral — so muscle memory from <code>git diff</code> transfers directly. For comparing minified JS or compressed JSON, run each side through the <a href="/js-minifier">JS minifier</a>'s <em>beautify</em> mode first.</p>
+
       <h2>Common diff use cases</h2>
       <ul>
         <li><strong>Code review</strong> — comparing two versions of a file before merging a PR. The most common use, and what most diff tools optimize for.</li>
@@ -391,7 +392,7 @@ fmt.Println(dmp.DiffPrettyText(diffs))
     </section>
 
     <section class="article-section">
-      <h2>Diff best practices</h2>
+      <h2>Diff best practices for 2026</h2>
       <ul>
         <li><strong>Keep PRs small.</strong> A 50-line diff is reviewed in 10 minutes; a 500-line diff in days. Break big changes into stacked PRs.</li>
         <li><strong>Format before commit.</strong> Save formatting changes for separate commits so logic diffs aren't drowned in whitespace noise.</li>

@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Generator Online — Free, No Watermark, No Signup | FreeDevTool</title>
-  <meta name="description" content="Free QR code generator. Create QR codes for URLs, WiFi, vCards, email, SMS. PNG &amp; SVG download. Custom error correction. No signup, no watermark, runs in browser.">
-  <meta name="keywords" content="qr code generator, qr code online, free qr code maker, qr code no signup, wifi qr code, vcard qr, qr code with logo, qr svg, qr png download">
+  <title>QR Code Generator — WiFi, vCard, URL | FreeDevTool</title>
+  <meta name="description" content="Free QR code generator for URLs, WiFi, vCards, email, SMS. PNG &amp; SVG download, custom error correction. Runs in browser, no signup, no watermark.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/qr-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="QR Code Generator Online — Free, No Watermark | FreeDevTool">
+  <meta name="twitter:title" content="QR Code Generator — WiFi, vCard, URL">
   <meta name="twitter:description" content="Generate QR codes for URLs, WiFi, vCards. PNG/SVG download, custom error correction. Runs in browser, no signup.">
-  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
@@ -154,9 +149,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Utility Tool</div>
-    <h1>QR Code Generator Online — Free, No Watermark</h1>
+    <h1>QR Code Generator</h1>
     <p class="tool-description">
-      Generate QR codes instantly for <strong>URLs</strong>, plain text, <strong>WiFi credentials</strong>, email addresses, phone numbers, and <strong>vCards</strong>. Download as high-resolution PNG or scalable SVG. Adjustable error-correction level (L, M, Q, H) — higher correction lets QR codes survive partial damage or logo overlays. Static QR codes generated directly in your browser using the <a href="https://www.iso.org/standard/62021.html" rel="noopener" style="color:var(--accent)">ISO/IEC 18004</a> standard. No signup, no watermark, no tracking — your data never leaves your device.
+      Generate QR codes for URLs, text, WiFi, vCards, email, SMS, and geolocation. Download as PNG or SVG, pick error-correction L/M/Q/H. Built on <a href="https://www.iso.org/standard/62021.html" rel="noopener" style="color:var(--accent)">ISO/IEC 18004</a>. No signup, no watermark, no tracking — runs in your browser.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -481,7 +476,13 @@ curl 'https://api.qrserver.com/v1/create-qr-code/?data=https://example.com&amp;s
     </section>
 
     <section class="article-section">
-      <h2>QR code best practices for production use</h2>
+      <h3>WiFi QR code generator — share network access without typing</h3>
+      <p>The fastest WiFi QR use case: print a small card and tape it inside a meeting room or guest reception. The format is <code>WIFI:T:WPA;S:NetworkName;P:Password;;</code> — Android's camera, iOS Camera (since iOS 11), and most modern Linux scanners auto-prompt to join. Special characters in the password (<code>;</code>, <code>,</code>, <code>:</code>, <code>"</code>, <code>\</code>) must be backslash-escaped per the WiFi-Alliance spec; the WiFi tab above does this automatically. For home networks with rotating guest passwords, regenerate the QR weekly — it's a one-button update vs. typing a 16-character WPA passphrase on a phone keyboard.</p>
+
+      <h3>vCard QR code for business cards and signatures</h3>
+      <p>A vCard QR encodes name, title, org, phone, email, and URL into a single scan-and-save action. Pair the vCard with a unique-per-person <a href="/uuid-generator">UUID</a> in a hidden NOTE field if you want server-side scan attribution. Generate any unique IDs you embed using the linked UUID generator so collisions are mathematically impossible.</p>
+
+      <h2>QR code best practices for 2026 production use</h2>
       <ul>
         <li><strong>Test on real phones, multiple OSes.</strong> Print preview and dev-tool scanners are forgiving; real phone cameras under fluorescent lighting fail with low contrast or compression artifacts. Always test before mass-printing.</li>
         <li><strong>Use SVG for the web, PNG for print.</strong> SVG scales infinitely, has tiny file size, and renders crisply at any DPI. PNG only when the rendering platform forces raster (some print drivers, certain CMS systems).</li>

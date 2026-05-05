@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Regex Tester Online — Test &amp; Debug Regular Expressions Free | FreeDevTool</title>
-  <meta name="description" content="Free regex tester &amp; debugger. Real-time matching, capture groups, all JS flags (g/i/m/s/u). PCRE-compatible patterns. Runs in browser, no signup.">
-  <meta name="keywords" content="regex tester, regular expression tester, regex debugger, regex online, regex101 alternative, regex match highlighter, JavaScript regex">
+  <title>JS Regex Tester — Regular Expression Debugger | FreeDevTool</title>
+  <meta name="description" content="Free JavaScript regex tester. Live highlighting, capture groups, flags (g/i/m/s/u), and PCRE notes. Runs in browser, no signup, no upload.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/regex-tester">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,7 +18,7 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="Regex Tester Online — Test &amp; Debug Regular Expressions | FreeDevTool">
+  <meta name="twitter:title" content="JS Regex Tester — Regular Expression Debugger">
   <meta name="twitter:description" content="Test and debug regex patterns with live highlighting, capture groups & flag toggles. Free, runs in browser, no signup.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -176,9 +175,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Developer Tool</div>
-    <h1>Regex Tester Online — Test Regular Expressions</h1>
+    <h1>JavaScript Regex Tester</h1>
     <p class="tool-description">
-      Test and debug regular expressions in real time with instant match highlighting, capture group extraction, and detailed match information. This free regex tester uses JavaScript's native RegExp engine (ECMAScript 2018+) and supports all flags: global (<code>g</code>), case-insensitive (<code>i</code>), multiline (<code>m</code>), dotAll (<code>s</code>), unicode (<code>u</code>), and sticky (<code>y</code>). Paste your pattern and test string to see matches highlighted instantly with capture group details. All processing happens client-side — nothing is sent to a server.
+      Test and debug JavaScript regular expressions with live highlighting, capture groups, and all flags (<code>g</code>/<code>i</code>/<code>m</code>/<code>s</code>/<code>u</code>/<code>y</code>). Uses the native ECMAScript RegExp engine in your browser. No upload, no signup.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -421,7 +420,13 @@
 
     <section class="article-section">
       <h2>Common regex patterns — copy-paste ready</h2>
-      <p>Battle-tested patterns for the most-asked validation tasks. Adjust the strictness for your use case — these are pragmatic, not RFC-perfect.</p>
+      <p>Battle-tested patterns for the most-asked validation tasks. Adjust the strictness for your use case — these are pragmatic, not RFC-perfect. Once you have a slug-style pattern dialed in, the <a href="/slug-generator">URL slug generator</a> applies the same rules end-to-end, and the <a href="/regex-explainer">regex explainer</a> turns any pattern into plain-English documentation for your team.</p>
+
+      <h3>JS regular expression tester — what makes JavaScript regex different</h3>
+      <p>JavaScript's <code>RegExp</code> is a backtracking NFA engine with a few quirks that trip up developers porting patterns from PHP, Python, or Perl. The <code>g</code> (global) flag is <em>stateful</em> — calling <code>.exec()</code> in a loop advances <code>lastIndex</code>, so reusing a global regex across functions can skip matches. Lookbehind <code>(?&lt;=...)</code> shipped in ES2018 but Safari only added it in 16.4 (March 2023) — patterns that need to support older iOS still need workarounds. <code>matchAll()</code> (ES2020) is the modern way to iterate every match without managing <code>lastIndex</code> yourself. Unicode property escapes (<code>\p{Letter}</code>, <code>\p{Emoji}</code>) require the <code>u</code> flag and unlock proper non-Latin matching. The tester above runs your patterns through this exact engine — if it matches here, it matches in production browsers.</p>
+
+      <h3>Regex101 alternative without ads or signup</h3>
+      <p>Regex101 dominates this category but logs your patterns server-side, requires an account to save snippets, and shows ads on free tier. This page does the same job — pattern + flags + test string + capture-group inspection — entirely client-side. No upload, no telemetry on your patterns, no rate limits. If you want a plain-English breakdown of what your pattern matches token-by-token, paste it into the <a href="/regex-explainer">regex explainer</a> next door.</p>
 
       <table class="ref-table">
         <thead><tr><th>Use case</th><th>Pattern</th><th>Notes</th></tr></thead>
@@ -639,7 +644,7 @@ if [[ "$input" =~ ^[0-9]+$ ]]; then echo "all digits"; fi
     </section>
 
     <section class="article-section">
-      <h2>Regex best practices</h2>
+      <h2>Regex best practices for 2026</h2>
       <ul>
         <li><strong>Don't validate emails with regex alone.</strong> The full RFC 5322 grammar is &gt; 6,000 characters of regex. Use a simple sanity check (<code>.+@.+\..+</code>) and verify by sending a confirmation link.</li>
         <li><strong>Comment complex patterns.</strong> JavaScript: prefix lines with <code>//</code> and concat. Python and PCRE: use the <code>x</code> flag for verbose mode with embedded comments.</li>

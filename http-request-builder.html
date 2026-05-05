@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTTP Request Builder — Free Online cURL Generator | FreeDevTool</title>
-  <meta name="description" content="Build HTTP requests visually and generate cURL, fetch, axios, Python requests, and Node fetch code. Test endpoints live with headers and body. Free.">
+  <title>HTTP Request Builder — cURL & fetch | FreeDevTool</title>
+  <meta name="description" content="Build HTTP requests visually. Generate cURL, fetch, axios, Python requests, and Node fetch code. Send live, view response. Browser-only, free.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/http-request-builder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -160,7 +160,7 @@
 
     <span class="tool-badge">Network</span>
     <h1>HTTP Request Builder</h1>
-    <p>This HTTP request builder lets you compose a full HTTP call — method, URL, headers, query parameters, and body — through a visual UI, then instantly generates the equivalent code as a cURL command, browser <code>fetch()</code>, axios, Python <code>requests</code>, and Node fetch. You can also fire the request live from your browser to inspect the status, response headers, and body (subject to CORS). It's ideal for drafting API calls, reproducing bug reports, sharing reproducible curl snippets with teammates, and bootstrapping HTTP client code in multiple languages without leaving the tab.</p>
+    <p>Compose HTTP calls visually — method, URL, headers, query, body — and copy the equivalent <code>curl</code>, <code>fetch</code>, <code>axios</code>, Python <code>requests</code>, or Node code. Send live to inspect status, headers, and body (subject to CORS). Runs in your browser.</p>
     <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool API engineering team</div>
   </section>
   <div class="tool-card">
@@ -279,7 +279,8 @@
       <li><strong>302 vs 307 vs 308:</strong> 302 historically allowed clients to change POST→GET on redirect; 307/308 explicitly preserve the method. Use 308 for permanent redirects of POST endpoints.</li>
     </ul>
 
-    <h3>Authentication schemes — what to use where</h3>
+    <h3>Authentication schemes — JWT, OAuth, API key, HMAC, mTLS</h3>
+    <p>Picking auth correctly the first time saves a rewrite later. For browser-facing APIs, Bearer JWTs (issued via OAuth 2.0 PKCE) are the modern default — short-lived access tokens with refresh tokens stored in <code>HttpOnly</code> cookies. For server-to-server, API keys with rotation or HMAC request-signing are simpler. To inspect or mint a Bearer token while you're testing here, the <a href="/jwt-decoder">JWT decoder</a> shows the payload claims and the <a href="/jwt-generator">JWT generator</a> mints signed test tokens with HS256/RS256/ES256.</p>
     <table class="ref-table">
       <thead><tr><th>Scheme</th><th>Header</th><th>Use for</th></tr></thead>
       <tbody>
