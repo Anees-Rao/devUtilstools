@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Base64 Encoder & Decoder Online — Free Text & File Tool | FreeDevTool</title>
-  <meta name="description" content="Free Base64 encoder &amp; decoder. Standard &amp; URL-safe modes, text + file support, RFC 4648 compliant. Runs in your browser, no signup, no uploads.">
-  <meta name="keywords" content="base64 encoder, base64 decoder, base64 online, encode base64, decode base64, RFC 4648, URL-safe base64, data URI generator, base64 to image">
+  <title>Base64 Encoder & Decoder — Text & File | FreeDevTool</title>
+  <meta name="description" content="Free Base64 encoder and decoder. Standard &amp; URL-safe modes, text + file (image, PDF) support, RFC 4648 compliant. Runs in browser, no upload.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/base64-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -552,6 +551,21 @@ data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg'&gt;...&lt;/sv
     </section>
 
     <section class="article-section">
+      <h2>Encode Base64 online — common queries answered</h2>
+      <p>Variations of "encode base64" all route to the same workflow: paste text or drop a file, copy the encoded string. The most common targeted use cases users land on this page for:</p>
+
+      <h3>Base64 encode an image (PNG, JPG, SVG, WebP)</h3>
+      <p>Drop any image file onto the upload zone above and the encoder reads it locally with <code>FileReader</code>, produces the standard Base64 string, and (optionally) wraps it in a <code>data:image/png;base64,</code> URI ready for inline use. The encoding happens in-browser — your image bytes never leave the device, which matters for screenshots that contain sensitive UI or unreleased designs. For the <em>resulting</em> data URI, embed it directly in CSS <code>background-image: url(data:image/png;base64,…)</code> or in HTML <code>&lt;img src="data:image/png;base64,…"&gt;</code>. Avoid this pattern for images larger than ~10 KB — Base64 inflates payload by ~33%, and inline images can't be cached separately by the browser.</p>
+
+      <h3>Base64 encoders — Standard (RFC 4648 §4) vs URL-safe (RFC 4648 §5)</h3>
+      <p>Two valid Base64 alphabets, and the choice matters: <strong>Standard</strong> uses <code>+</code> and <code>/</code> as the 63rd and 64th characters and pads with <code>=</code>; <strong>URL-safe</strong> swaps to <code>-</code> and <code>_</code> and often drops padding. Use Standard for HTTP body content, email MIME, and database <code>BLOB</code> columns. Use URL-safe in JWT segments, URL path/query parameters, and file names — anywhere a literal <code>+</code> or <code>/</code> would be reinterpreted by a parser. The toggle above switches between both alphabets without re-encoding the source bytes.</p>
+
+      <h3>Base64encoder vs base64encode — naming, not behavior</h3>
+      <p>The unified search query "base64encoder" (no space) and the imperative "base64 encode" map to the same intent. Some services brand themselves as "Base64Encoder", others as "Base64 encoder online", but the underlying operation is RFC 4648 §4. The encoder above accepts text or files, runs locally, and produces output identical to <code>base64</code> on macOS/Linux, <code>certutil -encode</code> on Windows, and <code>btoa()</code> in the browser console (for ASCII strings only — <code>btoa</code> chokes on Unicode without a UTF-8 pre-encode pass). For the inverse, paste any Base64 string in and switch to Decode mode.</p>
+
+      <h3>Decode Base64 to text or download as binary file</h3>
+      <p>The decoder accepts both alphabets and auto-detects which one it received. Plain text decodes to text; binary content (an image, PDF, ZIP) is restored to bytes and offered as a download with the correct MIME type when the input is a <code>data:</code> URI. Pair the decoder with the <a href="/hash-generator">hash generator</a> when you need to verify a Base64-encoded checksum (e.g. SRI integrity hashes are <code>sha384-{base64-encoded-sha384}</code>). To embed Base64 in URLs without the trailing <code>=</code> padding causing 404s in some routers, switch to URL-safe mode.</p>
+
       <h2>Base64 best practices</h2>
       <ul>
         <li><strong>Don't confuse Base64 with encryption.</strong> Base64 is reversible without a key. If you need confidentiality, use AES-GCM or libsodium and Base64 the ciphertext if you need to embed it as text.</li>

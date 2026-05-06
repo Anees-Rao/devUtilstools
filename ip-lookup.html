@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IP Address Lookup &amp; Subnet Calculator Online — IPv4/IPv6 Free | FreeDevTool</title>
-  <meta name="description" content="Free IP &amp; subnet calculator. IPv4/IPv6 validation, CIDR notation, network/broadcast addresses, host ranges, RFC 1918 detection. Runs offline in browser.">
-  <meta name="keywords" content="ip lookup, ip address calculator, subnet calculator, cidr calculator, ipv4 ipv6 validator, network broadcast address, RFC 1918, private ip range">
+  <title>IP Lookup &amp; Subnet Calculator — IPv4/IPv6 | FreeDevTool</title>
+  <meta name="description" content="Free IP &amp; subnet calculator. Validate IPv4/IPv6, calculate CIDR, network/broadcast addresses, host ranges, RFC 1918. Runs offline in browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/ip-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +18,8 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="IP Lookup &amp; Subnet Calculator — IPv4/IPv6 Free | FreeDevTool">
+  <meta name="twitter:title" content="IP Lookup &amp; Subnet Calculator — IPv4/IPv6">
   <meta name="twitter:description" content="Validate IP addresses, calculate subnets &amp; CIDR. IPv4 + IPv6, RFC 1918 detection. Runs offline, no API calls.">
-  <meta property="og:image" content="https://freedevtool.org/og-image.svg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
@@ -304,9 +299,9 @@
 
   <div class="tool-header">
     <div class="tool-badge">Network Tool</div>
-    <h1>IP Address Lookup &amp; Subnet Calculator</h1>
+    <h1>IP Lookup &amp; Subnet Calculator</h1>
     <p class="tool-description">
-      Validate and analyze any <strong>IPv4</strong> or <strong>IPv6</strong> address instantly. See binary, decimal, and hex representations, classify addresses as public or private (<a href="https://datatracker.ietf.org/doc/html/rfc1918" rel="noopener" style="color:var(--accent)">RFC 1918</a>), and calculate subnet details using CIDR notation. Computes network addresses, broadcast addresses, subnet masks, wildcard masks, and usable host ranges entirely in your browser — no external API calls, no IP geolocation lookups, no logs. Supports IPv4 ↔ IPv6 conversion, IP subnet calculation, and private/reserved-range identification. Works offline.
+      Validate IPv4/IPv6, calculate CIDR subnets, find network/broadcast addresses and host ranges. Detects <a href="https://datatracker.ietf.org/doc/html/rfc1918" rel="noopener" style="color:var(--accent)">RFC 1918</a> private ranges. Runs offline in your browser — no external API, no IP geolocation, no logs.
     </p>
     <span class="last-updated">Last updated: April 2026</span>
   </div>
@@ -678,7 +673,52 @@ CREATE INDEX idx_subnet ON subnets USING gist (cidr inet_ops);
     </section>
 
     <section class="article-section">
-      <h2>IP address best practices</h2>
+      <h2>Best subnet calculator and IP lookup tool for 2026 — what to compare</h2>
+      <p>"Subnet calculator" search results are a sea of ad-heavy 2003-era pages. The columns that actually matter when picking one in 2026:</p>
+      <table class="ref-table">
+        <thead>
+          <tr><th>Tool</th><th>IPv4</th><th>IPv6</th><th>Browser-only</th><th>Logs your IP</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>This tool (FreeDevTool)</strong></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td><span class="no">No</span> — no API call on calculation</td><td>RFC 1918 / CGNAT / link-local detection</td></tr>
+          <tr><td><strong>subnetcalc.de</strong></td><td>Yes</td><td>Limited</td><td>Yes</td><td>No</td><td>Old UI, no IPv6 prefix decomposition</td></tr>
+          <tr><td><strong>iplocation.net / what-is-my-ip-address.com</strong></td><td>Lookup only</td><td>Yes</td><td>Server-side</td><td>Yes — every visit is geolocated and logged</td><td>Geolocation focus, not subnet math</td></tr>
+          <tr><td><strong>ipcalc CLI</strong> (<code>apt install ipcalc</code>)</td><td>Yes</td><td><span class="yes">Yes</span> (sipcalc fork)</td><td>Local CLI</td><td>Local</td><td>The classic. No IPv6 in some distros' default ipcalc.</td></tr>
+          <tr><td><strong>Cisco / Juniper IOS</strong> <code>show ip interface</code></td><td>Yes</td><td>Yes</td><td>On device</td><td>Audit log on device</td><td>Authoritative for actual configured interfaces, not for what-if math</td></tr>
+        </tbody>
+      </table>
+      <p>The single test that catches broken calculators: enter <code>10.0.0.5/30</code>. The correct output is network <code>10.0.0.4</code>, broadcast <code>10.0.0.7</code>, usable hosts <code>10.0.0.5–10.0.0.6</code> (2 hosts, not 4). Any tool returning hosts <code>10.0.0.4</code> or <code>10.0.0.7</code> is including the network/broadcast addresses incorrectly — walk away.</p>
+
+      <h3>How do I find the network address and broadcast for a CIDR block?</h3>
+      <p>Three steps, deterministic, work for every IPv4 prefix:</p>
+      <ol>
+        <li><strong>Convert the IP and the subnet mask to binary.</strong> For <code>192.168.1.137/26</code>, the address is <code>11000000.10101000.00000001.10001001</code> and the mask (26 leading 1s) is <code>11111111.11111111.11111111.11000000</code>.</li>
+        <li><strong>AND them bit-by-bit</strong> to get the network address. Result: <code>11000000.10101000.00000001.10000000</code> = <code>192.168.1.128</code>.</li>
+        <li><strong>OR the network with the inverted mask</strong> (the wildcard) to get the broadcast. Wildcard is <code>00000000.00000000.00000000.00111111</code>; OR gives <code>192.168.1.191</code>.</li>
+      </ol>
+      <p>Usable host range is <code>network + 1</code> through <code>broadcast - 1</code>: <code>192.168.1.129–192.168.1.190</code> (62 hosts). The calculator above shows all four values plus the binary breakdown; for a one-line scripted version, Python's <code>ipaddress.ip_network('192.168.1.137/26', strict=False)</code> returns the same.</p>
+
+      <h3>What's the difference between IP lookup, geolocation, and reverse DNS?</h3>
+      <p>Three different operations frequently confused:</p>
+      <ul>
+        <li><strong>IP lookup (this tool).</strong> Validates the address syntactically and classifies it (IPv4/IPv6, public/private, RFC 1918/CGNAT/link-local). No network call needed.</li>
+        <li><strong>IP geolocation.</strong> Maps an IP to an approximate physical location using a database (MaxMind, IP2Location). Accuracy is country-level usually, city-level sometimes. <em>Always</em> involves a server-side database query — never trust a "geolocation" tool that runs purely in the browser.</li>
+        <li><strong>Reverse DNS (PTR record).</strong> Looks up the hostname registered for an IP address in DNS. Use the <a href="/dns-lookup">DNS lookup tool</a> with type <code>PTR</code> for the proper query (<code>137.1.168.192.in-addr.arpa</code> for the example above).</li>
+      </ul>
+      <p>This tool covers the first only. For PTR/MX/CAA records on the resolved hostname use the <a href="/dns-lookup">DNS lookup tool</a>; for HTTP-level checks on the IP's services use the <a href="/http-status">HTTP status checker</a>.</p>
+
+      <h3>Subnet calculator alternative to subnet-calculator.com — why people switch</h3>
+      <p>The first-page Google results for "subnet calculator" are dominated by sites built between 2003 and 2010 — they work, but they ship with ads, no IPv6, no copy buttons, and poor mobile layout. Three reasons to prefer this page:</p>
+      <ol>
+        <li><strong>Full IPv6 support.</strong> Most legacy calculators stopped at IPv4. This page handles <code>2001:db8::/32</code>-style prefixes with the same UI.</li>
+        <li><strong>RFC 1918 / CGNAT / link-local awareness.</strong> Pasting <code>100.64.0.5</code> tells you immediately it's CGNAT (operator-assigned, not your home network) — most calculators just return network math without classification.</li>
+        <li><strong>No third-party scripts.</strong> Open the page, disconnect from the network, calculations still work. Ad-heavy alternatives 404 on the calculation when you block their tag managers.</li>
+      </ol>
+      <p>For workflows that combine subnet math with packet inspection or DNS resolution, pair this tool with the <a href="/dns-lookup">DNS lookup</a> and the <a href="/http-status">HTTP status checker</a>. Going the other direction — embedding an IPv4 inside a URL or query string for testing — pipe the result through the <a href="/url-encoder">URL encoder</a>.</p>
+    </section>
+
+    <section class="article-section">
+      <h2>IP address best practices for 2026</h2>
       <ul>
         <li><strong>Use modern CIDR notation</strong> (<code>192.168.1.0/24</code>) everywhere — it's clearer than separate IP + subnet mask.</li>
         <li><strong>Plan IPv4 ranges with overlap-avoidance in mind.</strong> Don't use <code>192.168.1.0/24</code> in cloud VPCs (collides with home routers). Use <code>10.x.y.0/24</code> blocks.</li>

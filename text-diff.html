@@ -251,6 +251,21 @@
     </section>
 
     <section class="article-section">
+      <h2>Compare code online, find difference in code, string compare — same workflow, different phrasing</h2>
+      <p>Search variants for the same intent: "compare code online", "find difference in code", "string compare online", "online string compare", "js compare online", "online diff checker", "diff compare online". They all describe pasting two pieces of text into a tool and seeing what changed. The diff checker above handles all of them — code in any language, plain strings, JSON blobs, log lines, configuration files. Each H3 below addresses one specific phrasing.</p>
+
+      <h3>Compare code online — what makes a good code diff</h3>
+      <p>A good code diff is more than a line-by-line minus/plus. It also needs <strong>(1)</strong> whitespace-aware mode (toggle off "ignore whitespace" when indentation matters; toggle on for refactor reviews), <strong>(2)</strong> word-level highlighting within changed lines so a one-character rename doesn't paint the whole line red, <strong>(3)</strong> handling of long lines without forced wrap that distorts the diff. The tool above does all three. For comparing two files in different formats — e.g., one minified and one beautified version of the same JavaScript — run both sides through the <a href="/js-minifier">JS minifier</a>'s beautify mode first, then diff.</p>
+
+      <h3>Find difference in code — without copy-pasting into git</h3>
+      <p>Three scenarios where this is faster than <code>git diff</code>: <strong>(1)</strong> one of the two versions isn't in version control (a teammate's Slack paste, a production config you SSH'd into, an AI-generated patch); <strong>(2)</strong> the files are in different repos that don't share history; <strong>(3)</strong> you want to share the diff visually with someone who doesn't run a CLI. Paste both versions into the tool above, take a screenshot of the highlighted output, and share. For longer-term tracking, commit both versions to a scratch branch and use <code>git diff branch1..branch2</code>.</p>
+
+      <h3>String compare online — for non-code text comparison</h3>
+      <p>"String compare" usually means smaller payloads than full files: SQL query strings between two app versions, error messages between two log lines, two API responses to the same call. The diff above is identical for short strings — paste left and right, see character-level differences. For very short strings (under 100 chars) where you only care about exact equality, JavaScript's <code>===</code> in the browser console is faster; the diff tool's value is when you want to <em>see</em> what differs, not just whether they differ.</p>
+
+      <h3>JS compare online — for JavaScript snippets and JSON payloads</h3>
+      <p>"JS compare online" usually means one of two things: <strong>(1)</strong> compare two JavaScript source snippets (different versions of the same function, two implementations being benchmarked), or <strong>(2)</strong> compare two JSON payloads (API responses, config objects). The diff above handles both. For JSON specifically, beautify both sides through the <a href="/json-formatter">JSON formatter</a> first so structural differences don't get drowned out by formatting noise. For sorted-key comparison (where key order doesn't matter), pass each side through <code>jq -S '.'</code> at the CLI before pasting.</p>
+
       <h2>Online diff compare — when to use a browser tool vs CLI</h2>
       <p>Browser-based diff is fastest for one-off comparisons: paste two snippets, scan the highlighted output, copy the merged result. CLI <code>diff</code> wins when you're already in a terminal, scripting batch comparisons, or working with files too large to paste. The tool above handles the browser case; for the CLI, <code>diff -u old.txt new.txt</code> produces a unified diff that GitHub, Phabricator, and every code-review platform understand. Quick comparison alongside related tasks: format the inputs first with the <a href="/json-formatter">JSON formatter</a> or <a href="/sql-formatter">SQL formatter</a> so whitespace differences don't drown out the real changes.</p>
 

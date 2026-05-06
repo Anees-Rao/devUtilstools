@@ -86,13 +86,13 @@
   </url>
   <url>
     <loc>https://freedevtool.org/base64-encoder</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://freedevtool.org/unix-timestamp-converter</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -152,7 +152,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/json-formatter</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -176,7 +176,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/color-picker</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -218,7 +218,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/jwt-decoder</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -236,13 +236,13 @@
   </url>
   <url>
     <loc>https://freedevtool.org/regex-tester</loc>
-    <lastmod>2026-05-05</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://freedevtool.org/text-diff</loc>
-    <lastmod>2026-05-05</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -272,7 +272,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/css-minifier</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -284,7 +284,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/cron-parser</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -302,7 +302,7 @@
   </url>
   <url>
     <loc>https://freedevtool.org/ip-lookup</loc>
-    <lastmod>2026-05-02</lastmod>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -390,16 +390,5 @@
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
-  <url>
-    <loc>https://freedevtool.org/privacy</loc>
-    <lastmod>2026-05-02</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://freedevtool.org/terms</loc>
-    <lastmod>2026-05-02</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
+  <!-- /privacy and /terms intentionally excluded from sitemap; both serve <meta robots="noindex,follow"> -->
 </urlset>

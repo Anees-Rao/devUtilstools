@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JWT Decoder Online — Decode & Inspect JSON Web Tokens Free | FreeDevTool</title>
-  <meta name="description" content="Free JWT decoder. Inspect header, payload, expiration &amp; standard claims. Supports HS256, RS256, ES256. Runs in browser, tokens never leave your device.">
-  <meta name="keywords" content="jwt decoder, jwt token decoder, decode jwt online, jwt inspector, json web token, RFC 7519, jwt.io alternative, bearer token decoder">
+  <title>JWT Decoder — Inspect JSON Web Tokens | FreeDevTool</title>
+  <meta name="description" content="Free JWT decoder. Decode bearer tokens, inspect header/payload/expiry, validate signatures (HS256, RS256, ES256). Runs in browser, tokens stay local.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/jwt-decoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -656,6 +655,32 @@ handler.ValidateToken(token, validation, out var validatedToken);
     </section>
 
     <section class="article-section">
+      <h2>Decode JWT, parse JWT, decode bearer token — what people search for</h2>
+      <p>"Decode JWT", "jwt decode", "jwt token decode", "parse jwt", "parse jwt token", "json web token decode", "json web signature decode", "bearer token decode", "decode oauth token" — Google clusters these together because they're all the same intent: paste an encoded token, see the decoded header and payload, check expiry. The decoder above handles every form. Each section below answers one of the recurring sub-questions.</p>
+
+      <h3>Bearer token decode — what an Authorization header actually contains</h3>
+      <p>The HTTP header <code>Authorization: Bearer eyJhbGciOiJIUzI1NiIs…</code> carries a JWT in the value after <code>Bearer </code>. Strip the <code>Bearer </code> prefix and paste the rest into the decoder above; the three dot-separated segments expand into <strong>header</strong> (algorithm + key id), <strong>payload</strong> (claims like <code>sub</code>, <code>exp</code>, <code>scope</code>), and <strong>signature</strong> (verifiable only with the issuer's secret or public key). For inspecting the raw HTTP exchange that produced the token — refresh-token flow, error responses, token-rotation logic — pair the decoder with the <a href="/http-request-builder">HTTP request builder</a>.</p>
+
+      <h3>Decode OAuth token vs JWT — when they're the same and when they're not</h3>
+      <p>An OAuth 2.0 access token <em>can</em> be a JWT, but doesn't have to be. The OAuth spec is silent on token format — issuers choose whether to use opaque random strings (Auth0 by default in some flows, Stripe API keys, GitHub PATs) or self-contained JWTs (Auth0 with an audience claim, Okta, Cognito). If your token starts with <code>eyJ</code>, it's a Base64-encoded JWT — paste it above. If it's an opaque random string (<code>at_2NhwQDdHO…</code> style), it's not a JWT and decoding it client-side returns nothing useful — you must call the issuer's introspection endpoint. The decoder above shows clear "not a JWT" output for opaque tokens so you don't waste time searching for a hidden payload.</p>
+
+      <h3>JWT token validator — verifying signatures, audience, expiry</h3>
+      <p>Decoding shows you the contents; <strong>validation</strong> proves the token wasn't tampered with. The five checks every server should run on every request:</p>
+      <ol>
+        <li><strong>Signature.</strong> Verify with the issuer's public key (RS256, ES256) or shared secret (HS256). Never trust a token you couldn't verify.</li>
+        <li><strong><code>exp</code> (expiry).</strong> Reject tokens past their expiration. Allow ~30 seconds clock skew.</li>
+        <li><strong><code>iat</code> (issued at) and <code>nbf</code> (not before).</strong> Reject tokens issued in the future or not yet valid.</li>
+        <li><strong><code>aud</code> (audience).</strong> Reject tokens minted for a different service.</li>
+        <li><strong><code>iss</code> (issuer).</strong> Reject tokens from an issuer you don't trust.</li>
+      </ol>
+      <p>The decoder above runs all five client-side when you provide the public key or secret — useful for debugging "this token works locally but not in prod" issues. To generate test tokens with controlled <code>exp</code>/<code>aud</code>/<code>iss</code> claims, use the <a href="/jwt-generator">JWT generator</a>.</p>
+
+      <h3>JWT.io decode alternative — the same workflow without sending tokens off-device</h3>
+      <p>jwt.io's decoder runs in-browser too, but the URL pattern <code>jwt.io/#token=…</code> means your token sits in browser history (and any tracking pixels that read history). The decoder above never builds a URL with the token in it — paste in the textarea and decoding happens on the keystroke event, no navigation, no URL bar update. For quick spot-checks of a production token, this difference matters; for development tokens, either tool works. The deeper feature parity comparison is in the section below.</p>
+
+      <h3>JSON Web Signature (JWS) decode vs JSON Web Encryption (JWE)</h3>
+      <p>"JSON web signature decode" is a more precise way to say "JWT decode" for tokens that are signed but not encrypted (the typical case). A <strong>JWS</strong> has three Base64URL parts joined by dots; the payload is plaintext JSON anyone can read after Base64 decoding. A <strong>JWE</strong> has five parts and the payload is encrypted — you can see the header but the payload requires the recipient's private key to read. The decoder above handles JWS; for JWE tokens it surfaces the protected header and warns that payload decryption requires the receiver's key (which never belongs in a browser-side tool).</p>
+
       <h2>JWT best practices</h2>
       <ul>
         <li><strong>Set short <code>exp</code>.</strong> 5–15 minutes for access tokens. Use refresh tokens for longer sessions.</li>

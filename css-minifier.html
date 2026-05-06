@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Minifier &amp; Beautifier Online — Compress CSS Free | FreeDevTool</title>
-  <meta name="description" content="Free CSS minifier &amp; beautifier. Compress CSS for production, beautify minified styles. 25–60% size reduction. Boost LCP &amp; Core Web Vitals. Browser-based.">
-  <meta name="keywords" content="css minifier, css beautifier, compress css online, minify css, css compressor, optimize css, lcp optimization, web performance">
+  <title>CSS Minifier & Beautifier — Compress CSS | FreeDevTool</title>
+  <meta name="description" content="Free online CSS minifier and beautifier. Compress CSS for production, beautify minified styles. 25–60% size reduction. Browser-based, no signup.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/css-minifier">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -420,6 +419,21 @@ import csstidy
     </section>
 
     <section class="article-section">
+      <h2>Online CSS minify, CSS minifier online free — common queries answered</h2>
+      <p>Search variants: "online css minify", "css minifier online", "css minifier online free", "css online minifier", "online css minifier", "css minify online", "minification css online", "css minification test". They all describe the workflow above — paste CSS, get compressed CSS back. Each H3 below addresses a sub-intent users land on this page for.</p>
+
+      <h3>CSS minifier online free — what should "free" actually mean</h3>
+      <p>Most online CSS minifiers are free in the basic sense, but free with caveats: server-side minification (your CSS is uploaded), strict file-size limits, mandatory paid plans for source maps, ads/tracking pixels in the response. The minifier above is fully client-side — your CSS never leaves the browser, there's no file-size cap, source maps are generated locally on toggle, and no third-party trackers fire. View source any time and search for the minification function — it's pure JavaScript using <a href="https://github.com/clean-css/clean-css" rel="noopener" target="_blank">clean-css</a>-style transformations.</p>
+
+      <h3>CSS minification test — how to verify the output is byte-correct</h3>
+      <p>Two-step test: <strong>(1)</strong> minify your CSS here, save the output as <code>style.min.css</code>, replace the unminified file in your build, and load the page — visual diff should be zero. <strong>(2)</strong> Run both files through the W3C CSS validator; any new errors flag a minification bug. The minifier above preserves all selector specificity, all <code>@media</code> queries, all <code>@supports</code> blocks, all CSS-variable references, and all calc() expressions. The only intentional changes are: remove comments (unless prefixed with <code>/*!</code>), collapse whitespace, shorten color literals (<code>#ffffff</code> → <code>#fff</code>), drop trailing semicolons, and merge identical adjacent rules.</p>
+
+      <h3>Minify CSS online vs local minification — when each wins</h3>
+      <p>For a one-off paste-and-compress, the page above is fastest — no install, no config. For build pipelines, local minification through your bundler is the right answer because you get source maps, tree-shaking of unused selectors via PurgeCSS, and the minified file lands directly in your dist directory. Both approaches use the same transformations under the hood (clean-css, cssnano, lightningcss). The page is convenient when you've already got a CSS string you didn't author yourself — a third-party widget, an inline-style block from a CMS, an LLM-generated component — and want to compress before pasting into your stylesheet.</p>
+
+      <h3>CSS compressor for Core Web Vitals — LCP and TBT impact</h3>
+      <p>CSS file size affects two of the three Core Web Vitals. <strong>LCP (Largest Contentful Paint)</strong> drops ~10–30 ms per KB of render-blocking CSS removed; on slow 3G connections this scales to 100+ ms per KB. <strong>TBT (Total Blocking Time)</strong> drops because the parser spends less time in the CSSOM construction phase. The minifier above commonly produces 25–60% reductions on hand-authored CSS, less on framework-generated CSS that's already compact. Pair with the <a href="/js-minifier">JS minifier</a> for full-stack render-blocking-resource reduction; pair with the <a href="/html-minifier">HTML minifier</a> for the document itself.</p>
+
       <h2>CSS minification best practices for 2026</h2>
       <ul>
         <li><strong>Always ship minified CSS in production.</strong> Even if you're a small site — it's free performance, and <code>npm run build</code> handles it.</li>

@@ -843,6 +843,18 @@ encoded=$(printf '%s' "hello world" | jq -sRr @uri)
       </ul>
       <p>The encoder above does the first two. For the fourth, use the <a href="/html-entity">HTML entity encoder</a> — different tool, different layer, never mix them.</p>
 
+      <h3>Percent encoding in JavaScript — encodeURIComponent and decodeURIComponent</h3>
+      <p>Percent encoding in JavaScript is handled by three native functions: <code>encodeURIComponent()</code> for individual values, <code>encodeURI()</code> for full URLs, and <code>decodeURIComponent()</code> for the inverse. The encoder above wraps these directly — paste a value, get the percent-encoded string instantly. <code>encodeURIComponent('hello world&amp;test')</code> returns <code>'hello%20world%26test'</code>; only the unreserved set (<code>A-Z a-z 0-9 - _ . ~</code>) passes through untouched. To percent-encode a URL the way most APIs expect — full RFC 3986 with UTF-8 byte sequences — always reach for <code>encodeURIComponent</code>, never the deprecated <code>escape()</code>.</p>
+
+      <h3>HTML percent codes vs URL percent codes — they're not the same thing</h3>
+      <p>"HTML percent codes" usually means HTML numeric character references (<code>&amp;#37;</code> → <code>%</code>, <code>&amp;#38;</code> → <code>&amp;</code>). "URL percent codes" are RFC 3986 percent-encoding (<code>%25</code> → <code>%</code>, <code>%26</code> → <code>&amp;</code>). The numbers look similar but the syntax and the layer they apply to are different — HTML entities apply inside HTML markup, URL percent codes apply inside URLs. Mixing them produces values like <code>%26amp%3B</code> (URL-encoded HTML entity for ampersand) — a sign you've encoded the same character twice through two different schemes. The encoder above handles only the URL layer; for the HTML side use the <a href="/html-entity">HTML entity encoder</a>.</p>
+
+      <h3>urlencode in PHP, Python, and JavaScript — the differences that bite</h3>
+      <p><code>urlencode</code> is one name for three different operations across languages. In <strong>PHP</strong>, <code>urlencode($str)</code> form-encodes (spaces → <code>+</code>); <code>rawurlencode($str)</code> does RFC 3986 (spaces → <code>%20</code>). In <strong>Python</strong>, <code>urllib.parse.quote(str)</code> is RFC 3986; <code>urllib.parse.quote_plus(str)</code> is form-encoded. In <strong>JavaScript</strong>, <code>encodeURIComponent</code> is RFC 3986; there's no built-in form-encoder — use <code>URLSearchParams</code> for form-style. The encoder above uses RFC 3986 by default with a toggle for form-style — paste a string and switch modes to see the diff.</p>
+
+      <h3>Encode URL online with Unicode — the test that catches broken encoders</h3>
+      <p>Many older "encode URL online" tools still emit Latin-1 or non-standard <code>%uXXXX</code> sequences. Test any encoder with the string <code>café</code> — the correct RFC 3986 output is <code>caf%C3%A9</code> (UTF-8 bytes). If the tool returns <code>caf%E9</code> (Latin-1, the 1990s default) or <code>caf%u00E9</code> (deprecated <code>escape()</code> output), it will silently corrupt every emoji, every CJK character, every Cyrillic name in your data. The encoder above is verified UTF-8 — paste any Unicode and check the round-trip.</p>
+
       <h3>URL encoder alternative to urlencoder.org and meyerweb.com</h3>
       <p>The two long-running web URL encoders are urlencoder.org (server-side) and meyerweb.com/eric/tools/dencoder/ (a 2002 Eric Meyer page using a JavaScript prompt-and-replace). Both still work; reasons to prefer this tool in 2026:</p>
       <ol>

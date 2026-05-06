@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unix Timestamp Converter Online — Epoch to Date Free | FreeDevTool</title>
-  <meta name="description" content="Free Unix timestamp ⇄ date converter. Seconds &amp; milliseconds, UTC + local time, ISO 8601, relative time, live epoch clock. Runs in browser, no signup.">
-  <meta name="keywords" content="unix timestamp converter, epoch converter, timestamp to date, date to timestamp, ISO 8601 converter, milliseconds to date, current epoch time, posix time">
+  <title>Unix Timestamp Converter — Epoch to Date | FreeDevTool</title>
+  <meta name="description" content="Free Unix epoch / POSIX time converter. Timestamp ⇄ date in seconds &amp; ms, UTC + local, ISO 8601, relative time, live epoch clock. Runs in browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/unix-timestamp-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -644,6 +643,31 @@ date -v -7d +%s                # BSD
     </section>
 
     <section class="article-section">
+      <h2>Unix epoch online — common queries answered</h2>
+      <p>Variations: "unix epoch date", "unix epoch online", "epoch unix timestamp", "epoch timestamp to time", "epoch to timestamp", "posix time converter". They all describe the same operation: converting between a number-of-seconds-since-1970-01-01-UTC and a human-readable date. Each section below addresses one phrasing directly.</p>
+
+      <h3>Unix epoch date — what "the epoch" actually is</h3>
+      <p><strong>The Unix epoch</strong> is the moment <code>1970-01-01T00:00:00Z</code> — the zero point. Every Unix timestamp is the count of seconds (or milliseconds) elapsed since that instant in UTC. It's a numeric line, not a calendar — the same timestamp <em>1700000000</em> represents the same instant everywhere on Earth, but renders as different local clock times depending on the viewer's timezone. The converter above shows the UTC interpretation alongside your local time so you can spot timezone bugs immediately.</p>
+
+      <h3>Epoch unix timestamp now — the live clock</h3>
+      <p>The current epoch second updates every second at the top of the converter. Copy it for use in <code>iat</code>/<code>exp</code> claims of a JWT, in cache TTL calculations, or in audit-log rows. For the millisecond version (which JavaScript's <code>Date.now()</code> returns), append three zeros to the second value or click the "ms" toggle. To verify a JWT's expiry against now, paste the token into the <a href="/jwt-decoder">JWT decoder</a> and the relative-time of the <code>exp</code> claim renders alongside.</p>
+
+      <h3>Epoch to timestamp / timestamp to epoch — bidirectional conversion</h3>
+      <p>The two conversions are different operations sharing one workflow:</p>
+      <ul>
+        <li><strong>Epoch → date.</strong> Paste <code>1700000000</code> and the converter shows <code>2023-11-14T22:13:20Z</code> (UTC), the local-time equivalent, the relative time ("about 2 years ago"), the ISO 8601 representation, and the day of the week. Auto-detects whether the number is seconds (10 digits today) or milliseconds (13 digits).</li>
+        <li><strong>Date → epoch.</strong> Pick a date and time from the calendar widget; the seconds and milliseconds versions both render. Useful for SQL <code>WHERE created_at &gt; 1700000000</code> queries when your column stores epoch.</li>
+      </ul>
+
+      <h3>POSIX time converter — same thing as Unix epoch</h3>
+      <p>POSIX time and Unix time are the same thing. POSIX is the formal IEEE specification (POSIX.1) that codifies what most operating systems implemented as Unix time in the 1970s. The defining sentence: "Seconds Since the Epoch" — measured against UTC, with leap seconds intentionally <em>not</em> counted. This means POSIX time runs slightly slow during leap-second insertions (one second is replayed) and one timestamp can occasionally map to two real-world instants. The converter above ignores this for display purposes (which matches how JavaScript's <code>Date</code> object behaves); for second-precision astronomy or GPS work, use TAI time instead.</p>
+
+      <h3>ISO 8601 date format vs Unix timestamp — when to use each</h3>
+      <p>Same instant, two representations: <code>1700000000</code> (Unix) and <code>2023-11-14T22:13:20Z</code> (ISO 8601). Use <strong>Unix timestamps</strong> for: arithmetic (subtracting one from another gives elapsed seconds), efficient indexed range queries in databases, log files where bytes matter. Use <strong>ISO 8601</strong> for: human-readable timestamps in API responses, calendar systems, anywhere a non-developer reads the value. The converter above shows both side-by-side so you can pick the format your destination expects.</p>
+
+      <h3>Milliseconds to date — JavaScript Date.now() and equivalents</h3>
+      <p>JavaScript's <code>Date.now()</code> and Java's <code>System.currentTimeMillis()</code> return milliseconds since epoch (13 digits today), not seconds. Most other languages return seconds: Python's <code>time.time()</code>, Go's <code>time.Now().Unix()</code>, PostgreSQL's <code>EXTRACT(EPOCH FROM NOW())</code>. The converter auto-detects: 10-digit input is treated as seconds, 13-digit as milliseconds. To force one mode, use the toggle. The classic "off by 1000" bug happens when one service produces ms and another consumes seconds — the resulting date is roughly year 53,718.</p>
+
       <h2>Timestamp best practices</h2>
       <ul>
         <li><strong>Always store UTC.</strong> Convert to local time only when rendering to the user.</li>

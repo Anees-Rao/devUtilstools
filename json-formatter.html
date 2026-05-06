@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Formatter, Validator & Beautifier Online — Free | FreeDevTool</title>
-  <meta name="description" content="Free online JSON formatter, validator & beautifier. Pretty print nested JSON, fix syntax errors, minify, view stats. RFC 8259 compliant. Runs in browser, no signup.">
-  <meta name="keywords" content="json formatter, json validator, json beautifier, json pretty print, json minifier, json viewer online, json parser, jsonlint alternative, RFC 8259">
+  <title>JSON Formatter & Validator — Pretty Print | FreeDevTool</title>
+  <meta name="description" content="Free JSON formatter, validator and beautifier. Pretty-print nested JSON, fix syntax errors, minify, view stats. RFC 8259 compliant. Runs in browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/json-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -651,6 +650,24 @@ jq empty data.json
     </section>
 
     <section class="article-section">
+      <h2>JSON prettier, pretty JSON, prettier JSON — what users actually mean</h2>
+      <p>"JSON prettier", "pretty JSON", "prettier JSON", "json pretty" — Google sees these as a single intent: <em>take this JSON blob, indent it, and make it readable</em>. Some people confuse the noun-form with the JavaScript code formatter <a href="https://prettier.io/" rel="noopener" target="_blank">Prettier</a>; the two are unrelated. The tool above does what most "JSON prettier" searches actually want: paste JSON in, get indented JSON out, with brackets aligned, keys color-coded, and syntax errors highlighted at the offending line. No installation, no Node project, no <code>npx</code> command — open the page and paste.</p>
+
+      <h3>Pretty JSON output — 2 spaces, 4 spaces, or tabs?</h3>
+      <p>RFC 8259 doesn't specify whitespace, so any indentation is "pretty". The de-facto conventions: <strong>2 spaces</strong> in JavaScript and TypeScript codebases (matches Prettier's default), <strong>4 spaces</strong> in Python and Java (matches PEP 8 / Google Java style), <strong>tabs</strong> in older Go and shell-heavy projects. Pick one per repo — toggling between them creates noise in version-control diffs without changing any data. The formatter above defaults to 2 spaces with a toggle for 4 and tabs.</p>
+
+      <h3>JSON pretty print in JavaScript, Python, and PHP — one-liners</h3>
+      <p>Three native one-liners that match the formatter's output:</p>
+      <ul>
+        <li><strong>JavaScript:</strong> <code>JSON.stringify(obj, null, 2)</code> — the third argument is the indent count.</li>
+        <li><strong>Python:</strong> <code>json.dumps(obj, indent=2)</code> — same idea, different argument name.</li>
+        <li><strong>PHP:</strong> <code>json_encode($arr, JSON_PRETTY_PRINT)</code> — flag-based, fixed at 4 spaces.</li>
+      </ul>
+      <p>For larger automation — pretty-printing 1000+ files in CI, sorting keys, removing trailing commas — pair this tool's output with <code>jq '.'</code> at the CLI, or process the output through the <a href="/json-to-csv">JSON to CSV converter</a> if you need tabular data instead.</p>
+
+      <h3>Free JSON formatter without ads — what to look for</h3>
+      <p>Most "free formatter" search results route through ad-heavy pages that load 10+ third-party scripts before they format your JSON. Some POST your input to a backend for "validation" — meaning your JSON (which often contains tokens, IDs, internal field names) sits in their server logs forever. The formatter above is fully client-side: open DevTools → Network, paste JSON, click format — zero requests fire. It works offline. View source any time and search for <code>JSON.parse</code> to confirm the parser is the browser's native one, not a remote API.</p>
+
       <h2>JSON formatter and SEO best practices</h2>
       <ul>
         <li><strong>Use JSON-LD for structured data.</strong> Google's preferred format for rich-result eligibility (FAQPage, Product, Article, BreadcrumbList). Embed inside <code>&lt;script type="application/ld+json"&gt;</code>. Use our <a href="meta-tag-generator">meta tag generator</a> to scaffold the markup.</li>
