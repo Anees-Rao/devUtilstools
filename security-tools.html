@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Online Security &amp; Hashing Tools &mdash; JWT Decoder, Hash Generator | FreeDevTool</title>
-  <meta name="description" content="Free security and hashing tools — JWT decoder, MD5/SHA-1/SHA-256/SHA-512 hash generator, JWT generator, file checksum verification. Client-side, no signup.">
+  <title>Security &amp; Hashing — JWT, MD5, SHA-256 | FreeDevTool</title>
+  <meta name="description" content="Free security &amp; hashing tools — JWT decoder, JWT generator, MD5/SHA-1/SHA-256/SHA-512 hash generator, file checksum verification. Browser-only.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/security-tools">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
@@ -250,8 +250,8 @@
     </a>
 
     <span class="tool-badge">Security &amp; Hashing</span>
-    <h1>Security &amp; Hashing Tools</h1>
-    <p class="tool-description">Inspect, verify, and secure your data with free browser-based security and hashing tools built for developers. Decode and inspect JSON Web Tokens to debug authentication flows, validate claims, and check expiration status. Generate cryptographic hashes including MD5, SHA-1, SHA-256, and SHA-512 from text or files to verify data integrity, compare checksums, and detect tampering. Every operation runs entirely client-side &mdash; your tokens and sensitive data never leave your browser, ensuring complete privacy with zero server calls and no signup required.</p>
+    <h1>Security &amp; Hashing Tools — JWT, MD5, SHA-256</h1>
+    <p class="tool-description">3 free security &amp; hashing tools — JWT decoder (HS/RS/ES), JWT generator (HS256/RS256), MD5/SHA-1/SHA-256/SHA-512 hash generator. Browser-only Web Crypto, no upload, no signup.</p>
   </div>
 
   <p class="category-label">3 Security &amp; Hashing Tools</p>
@@ -283,6 +283,29 @@
 
   <!-- When to use which tool -->
   <section class="use-cases">
+    <h2>Best free security &amp; hashing tools for 2026</h2>
+    <p>The security tools cluster covers the two operations every backend / API developer reaches for daily: token inspection (JWT decode/generate) and integrity verification (cryptographic hashes). Both are operations where uploading your data to a third-party server would be a confidentiality violation — production JWTs contain PII, and hash inputs are often unreleased file builds. Every tool in this cluster runs the cryptographic operation in the browser via the Web Crypto API, the same NIST-validated implementation that powers HTTPS in Chrome, Firefox, and Safari. Source code never leaves the page.</p>
+
+    <h3>What's the difference between encoding, hashing, and signing?</h3>
+    <p>Three operations frequently confused, with security consequences when mixed up. <strong>Encoding</strong> (Base64, URL-encoding) is reversible and uses no key — anyone can decode. JWTs are encoded, not encrypted. <strong>Hashing</strong> (MD5, SHA-256, BLAKE3) is one-way — same input always produces same output, but you can't reverse the hash. Used for integrity (file checksums), fingerprinting, deduplication, and password storage (with salt + slow KDF). <strong>Signing</strong> (HMAC-SHA, RSA-PKCS, ECDSA) combines hashing with a key — produces a tag that proves "the holder of the secret key signed this message". JWTs are signed, not encrypted by default. Mixing these up is the #1 root cause of broken auth flows.</p>
+
+    <h3>How do I generate or decode a JWT online without uploading the token?</h3>
+    <p>Both <a href="/jwt-decoder">JWT Decoder</a> and <a href="/jwt-generator">JWT Generator</a> on this site run entirely client-side. Decoder uses native <code>atob</code> + <code>JSON.parse</code> on the Base64URL parts. Generator uses <code>crypto.subtle.sign('HMAC', key, data)</code> for HS-family algorithms or <code>crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, data)</code> for RS-family. The token, the secret, and the private key all stay in the browser tab. Verify by opening DevTools → Network tab and observing zero outgoing requests on decode / sign. <strong>Critical security warning:</strong> never paste a production signing secret into <em>any</em> online tool. Use HS256 generators only for local development tokens, dummy claims for unit tests, or short-lived debugging tokens with throwaway secrets.</p>
+
+    <h3>Security cluster — pick the right tool</h3>
+    <table class="ref-table">
+      <thead><tr><th>Need</th><th>Tool</th></tr></thead>
+      <tbody>
+        <tr><td>Inspect a JWT (claims, expiration, header)</td><td><a href="/jwt-decoder">JWT Decoder</a></td></tr>
+        <tr><td>Generate &amp; sign a JWT for testing</td><td><a href="/jwt-generator">JWT Generator</a></td></tr>
+        <tr><td>Compute MD5/SHA-1/SHA-256/SHA-512 hash of text or file</td><td><a href="/hash-generator">Hash Generator</a></td></tr>
+        <tr><td>Verify a published file checksum</td><td><a href="/hash-generator">Hash Generator</a> (compare mode)</td></tr>
+        <tr><td>Generate a strong random password</td><td><a href="/password-generator">Password Generator</a></td></tr>
+        <tr><td>Generate a UUID for <code>jti</code> claim</td><td><a href="/uuid-generator">UUID Generator</a></td></tr>
+      </tbody>
+    </table>
+    <p>For the deeper auth pattern story — OAuth2.1, OpenID Connect, refresh tokens, key rotation — read the <a href="/guides/api-authentication-guide">API Authentication Guide</a>.</p>
+
     <h2>Which security tool should you use?</h2>
     <p>Security tools here cover the everyday auth-and-integrity tasks: inspecting JWTs from your auth provider, generating hashes for file integrity or password storage research, and minting tokens for local testing. None of these are substitutes for a real auth library or KMS — they're for debugging, learning, and one-off checks. Everything runs locally; tokens and inputs never leave your browser.</p>
 

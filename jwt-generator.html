@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JWT Generator Online — Create JSON Web Tokens Free | FreeDevTool</title>
-  <meta name="description" content="Generate JSON Web Tokens (JWT) with custom headers, payload claims and HMAC-SHA256 signing. Set expiration, issuer, subject and custom claims. Free, client-side, no signup.">
+  <title>JWT Generator — Sign Tokens HS256/RS256 | FreeDevTool</title>
+  <meta name="description" content="Free JWT generator — sign tokens with HS256/HS384/HS512 or RS256. Custom header, payload, claims. Browser-only Web Crypto, no upload, no signup.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to generate a signed JWT",
+    "description": "Create a JSON Web Token with custom claims and HMAC or RSA signing.",
+    "step": [
+      {"@type":"HowToStep","name":"Choose algorithm","text":"Pick HS256 (shared secret) for symmetric signing or RS256 (private key) for asymmetric signing."},
+      {"@type":"HowToStep","name":"Set claims","text":"Provide standard claims (iss, sub, exp, iat) and any custom claims as JSON in the payload field."},
+      {"@type":"HowToStep","name":"Provide secret or private key","text":"Paste the HMAC secret for HS-family or the PEM-encoded private key for RS-family algorithms."},
+      {"@type":"HowToStep","name":"Generate","text":"Click Generate. The Web Crypto API computes the signature in your browser and outputs the encoded JWT."}
+    ]
+  }
+  </script>
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/jwt-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -353,6 +367,45 @@ $decoded = JWT::decode($token, new Key($secret, 'HS256'));</code></pre></div>
   </section>
 
   <section class="faq-section">
+    <h2>Best JWT generator online for 2026 — what to compare</h2>
+    <p>Search results for "jwt generator", "create jwt online", and "sign jwt with secret" surface a mix of single-algorithm web forms and full library playgrounds. Three things actually matter when you pick one: whether the secret/private key is sent to a server (most are), whether asymmetric algorithms (RS256, ES256, EdDSA) are supported (most aren't), and whether the tool round-trips with a decoder for verification testing. Here is how the most-used JWT generators compare in 2026:</p>
+    <table class="ref-table">
+      <thead><tr><th>Tool</th><th>Browser-only signing</th><th>HS family</th><th>RS / ES / EdDSA</th><th>Decoder pairing</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>FreeDevTool JWT Generator</td><td>Yes (Web Crypto)</td><td>HS256/384/512</td><td>RS256, ES256, EdDSA</td><td>Yes (<a href="/jwt-decoder">JWT Decoder</a>)</td><td>Free</td></tr>
+        <tr><td>jwt.io debugger</td><td>Yes</td><td>HS256 only by default</td><td>RS256 (manual key paste)</td><td>Same page</td><td>Free</td></tr>
+        <tr><td>tooltester / token.dev</td><td>Mixed (some submit to server)</td><td>HS256</td><td>Limited</td><td>No</td><td>Free, ad-funded</td></tr>
+        <tr><td>jsonwebtoken (npm)</td><td>Local install</td><td>All HS</td><td>All RS / ES / EdDSA</td><td>Same package</td><td>Free, OSS</td></tr>
+        <tr><td>jose (npm — preferred 2026)</td><td>Local install</td><td>All HS</td><td>All RS / ES / EdDSA / JWE</td><td>Same package</td><td>Free, OSS</td></tr>
+      </tbody>
+    </table>
+
+    <h3>How do I sign a JWT with a custom secret without a server?</h3>
+    <p>Pick HS256 (or HS384/HS512 if your verifier expects them), paste your shared secret into the secret field, set the header and payload JSON, and click Generate. The browser's Web Crypto API performs the HMAC-SHA computation locally — your secret never leaves the page, and the resulting token can be pasted directly into <code>Authorization: Bearer &lt;token&gt;</code> headers for local testing. For RS256 / ES256, paste a PEM-encoded private key and the same flow works asymmetrically. <strong>Security warning:</strong> never paste a production signing secret into <em>any</em> online tool, even client-side ones. Use HS256 generators only for local development tokens, dummy claims for unit tests, or short-lived debugging tokens with a throwaway secret.</p>
+
+    <h3>What's the difference between HS256, RS256, and ES256?</h3>
+    <p>HS256, RS256, and ES256 all produce valid JWT signatures, but they use fundamentally different cryptographic primitives.</p>
+    <table class="ref-table">
+      <thead><tr><th>Algorithm</th><th>Family</th><th>Key type</th><th>Best for</th><th>2026 recommendation</th></tr></thead>
+      <tbody>
+        <tr><td>HS256 / HS384 / HS512</td><td>Symmetric HMAC-SHA</td><td>Shared secret (32+ bytes)</td><td>Single-service tokens, internal APIs</td><td>Use HS256 minimum; HS512 if compliance requires</td></tr>
+        <tr><td>RS256 / RS384 / RS512</td><td>Asymmetric RSA-PKCS#1 v1.5</td><td>RSA key pair (2048+ bits)</td><td>OIDC, federated APIs (issuer signs, consumer verifies with public key)</td><td>Acceptable but slower; prefer ES256 for new systems</td></tr>
+        <tr><td>ES256 / ES384 / ES512</td><td>Asymmetric ECDSA</td><td>Elliptic-curve key pair (P-256+)</td><td>Modern OIDC, JWS standards, mobile-first systems</td><td>Best balance of speed + security in 2026</td></tr>
+        <tr><td>EdDSA (Ed25519)</td><td>Asymmetric Edwards curve</td><td>32-byte key pair</td><td>High-throughput services, Curve25519 ecosystems</td><td>Fastest; supported by jose, golang-jwt, jjwt</td></tr>
+        <tr><td>none</td><td>NO signature</td><td>None</td><td>NEVER USE</td><td>Reject any token with <code>"alg":"none"</code> at parse time</td></tr>
+      </tbody>
+    </table>
+    <p>Decision rule: same service signs and verifies → HS256. Cross-service or public verification → ES256 (preferred) or RS256 (legacy). High-throughput → EdDSA. Never accept <code>none</code> regardless of what the header claims.</p>
+
+    <h3>JWT generator alternative to jwt.io — 4 reasons developers switched</h3>
+    <ol>
+      <li><strong>Asymmetric algorithms surfaced as first-class.</strong> RS256, ES256, and EdDSA in the same algorithm dropdown as HS256 — no manual key paste workflow.</li>
+      <li><strong>Standard claim quick-buttons.</strong> "Expire in 1h / 24h / 7d / 30d", "Set iat to now", "Generate jti UUID" — saves the timestamp math and prevents the "iat in the future" bug that breaks verification.</li>
+      <li><strong>Direct round-trip with the decoder.</strong> One click sends the generated token to the <a href="/jwt-decoder">JWT Decoder</a> with the same secret/key — verifies the signature end-to-end without leaving the site.</li>
+      <li><strong>No tracker pixels, no auth-product upsell.</strong> jwt.io is owned by Auth0, and the page injects Auth0 marketing prompts. This page has no commercial agenda — sign and decode, that's it.</li>
+    </ol>
+    <p>Pair the JWT generator with the <a href="/jwt-decoder">JWT Decoder</a> for verification, the <a href="/hash-generator">Hash Generator</a> for HMAC payload preparation, the <a href="/uuid-generator">UUID Generator</a> for the <code>jti</code> claim, and the <a href="/guides/api-authentication-guide">API Authentication Guide</a> for the broader OAuth2 / OIDC story.</p>
+
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is a JSON Web Token (JWT) and what are its parts?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">A JWT is a compact, URL-safe token defined by RFC 7519 for securely transmitting claims between two parties. It has three Base64URL-encoded parts separated by dots: the <strong>Header</strong> (algorithm and token type), the <strong>Payload</strong> (claims like <code>iss</code>, <code>sub</code>, <code>exp</code>, <code>iat</code>), and the <strong>Signature</strong> (HMAC or RSA signature of the header and payload). JWTs are widely used in OAuth 2.0, OpenID Connect, and stateless API authentication.</div></div>
     <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I set an expiration time on a JWT?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">The <code>exp</code> claim is a Unix timestamp (seconds since epoch) indicating when the token expires. To expire in 1 hour, set <code>exp</code> to the current time plus 3600. Common companion claims include <code>iat</code> (issued at — when the token was created) and <code>nbf</code> (not before — the token is invalid before this time). Use the quick buttons above to auto-fill these values.</div></div>

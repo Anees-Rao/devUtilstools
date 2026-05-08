@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>9 Free Code &amp; Text Tools — Regex, Diff, Markdown, AI Tokens | FreeDevTool</title>
-  <meta name="description" content="9 free code &amp; text tools — regex tester, text diff, markdown preview, case converter, AI token counter for GPT &amp; Claude, escape/unescape. No signup.">
+  <title>Code &amp; Text Tools — Regex, Diff, Markdown | FreeDevTool</title>
+  <meta name="description" content="9 free code &amp; text tools — regex tester, text diff, markdown preview, case converter, AI token counter, string escape, char counter. Browser-only.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/text-tools">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
@@ -250,8 +250,8 @@
     </a>
 
     <span class="tool-badge">Code &amp; Text Tools</span>
-    <h1>Code &amp; Text Tools</h1>
-    <p class="tool-description">Work with text and code more efficiently using these free browser-based tools. Test and debug regular expressions with real-time pattern matching and capture group highlighting, compare two texts side by side with a visual diff checker, write and preview markdown with live HTML output, convert strings between camelCase, snake_case, kebab-case and other naming conventions, translate complex regex patterns into plain English, and escape or unescape strings for JSON, HTML, JavaScript and more &mdash; all running entirely client-side with no server calls and no signup required.</p>
+    <h1>Code &amp; Text Tools — 9 Free Browser Utilities</h1>
+    <p class="tool-description">9 free code &amp; text utilities — regex tester &amp; explainer, text diff checker, markdown preview, case converter, AI token counter (GPT-4 / Claude / Gemini), string escape, character counter. Browser-only.</p>
   </div>
 
   <p class="category-label">9 Code &amp; Text Tools</p>
@@ -327,6 +327,31 @@
 
   <!-- When to use which tool -->
   <section class="use-cases">
+    <h2>Best free code &amp; text tools for 2026</h2>
+    <p>Code &amp; text tools sit between writing and shipping — every diff before commit, every regex before prod, every markdown render before publish runs through one of these utilities. The 9 tools in this category cover the operations that show up dozens of times per day in real engineering workflows: regex pattern testing with live capture-group display, two-document diff with line-level granularity, AI-token counting for prompt budgeting (GPT-4o, Claude Sonnet, Gemini), and the escape/unescape variants needed when shuttling strings between JSON, HTML, JavaScript, and shell. All run client-side via the browser's native regex engine, native <code>JSON.stringify</code>, and tokenizer libraries shipped as static JS — no input is ever uploaded.</p>
+
+    <h3>What's the difference between regex testing and regex explaining?</h3>
+    <p>A <strong>regex tester</strong> takes a pattern and a sample string and shows whether the pattern matches, what each capture group caught, and the full vs first match. Use it when you have a pattern and want to confirm it does what you intended. A <strong>regex explainer</strong> takes a pattern alone and translates it into plain English ("matches one or more digits, then a hyphen, then 3-4 word characters"). Use it when reading someone else's regex or auditing a complex production pattern. Both tools live in this cluster — <a href="/regex-tester">Regex Tester</a> for the former, <a href="/regex-explainer">Regex Explainer</a> for the latter.</p>
+
+    <h3>How do I count GPT-4 or Claude tokens online without sending my prompt to an API?</h3>
+    <p>The <a href="/ai-token-counter">AI Token Counter</a> ships the same tokenizer libraries (cl100k_base for GPT-3.5/4, o200k_base for GPT-4o, Anthropic's tokenizer for Claude, Gemini SentencePiece) compiled to WebAssembly. Tokenization runs locally — your prompt text never reaches OpenAI, Anthropic, or Google servers. Verify with DevTools → Network tab: zero outgoing requests during count. This matters because production prompts often contain customer data or unreleased features; sending them to OpenAI's token counter API is the same data exposure as sending them to the model itself.</p>
+
+    <h3>Code &amp; text cluster — pick the right tool</h3>
+    <table class="ref-table">
+      <thead><tr><th>Need</th><th>Tool</th></tr></thead>
+      <tbody>
+        <tr><td>Test a regex pattern with live match preview</td><td><a href="/regex-tester">Regex Tester</a></td></tr>
+        <tr><td>Translate a regex into plain English</td><td><a href="/regex-explainer">Regex Explainer</a></td></tr>
+        <tr><td>Compare two text/code blocks line by line</td><td><a href="/text-diff">Text Diff Checker</a></td></tr>
+        <tr><td>Preview Markdown as HTML</td><td><a href="/markdown-preview">Markdown Preview</a></td></tr>
+        <tr><td>Convert camelCase ↔ snake_case ↔ kebab-case</td><td><a href="/case-converter">Case Converter</a></td></tr>
+        <tr><td>Count tokens for GPT-4 / Claude / Gemini prompts</td><td><a href="/ai-token-counter">AI Token Counter</a></td></tr>
+        <tr><td>Escape strings for JSON / HTML / JavaScript</td><td><a href="/string-escape">String Escape / Unescape</a></td></tr>
+        <tr><td>Count characters / words / SMS segments</td><td><a href="/char-counter">Character &amp; Word Counter</a></td></tr>
+        <tr><td>Color contrast check (accessibility)</td><td><a href="/wcag-contrast">WCAG Contrast Checker</a></td></tr>
+      </tbody>
+    </table>
+
     <h2>Which code &amp; text tool should you use?</h2>
     <p>Code and text tools cover the day-to-day grind: testing a regex you'll never remember, comparing two configs, escaping strings for JSON or HTML, counting tokens before sending a prompt to GPT or Claude. The right choice depends on the format you're wrestling with and whether you need deep analysis (regex explainer) or a quick transform (case converter).</p>
 
