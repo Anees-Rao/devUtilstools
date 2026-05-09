@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Formatter & Beautifier Online — Pretty Print SQL Queries Free | FreeDevTool</title>
-  <meta name="description" content="Free SQL formatter &amp; beautifier. Pretty print queries for MySQL, PostgreSQL, SQL Server, Oracle, SQLite. Customizable indent &amp; case. Runs in browser, no signup.">
-  <meta name="keywords" content="sql formatter, sql beautifier, sql pretty print, format sql online, sql minifier, sqlfluff alternative, MySQL formatter, PostgreSQL formatter">
+  <title>SQL Formatter — MySQL, PostgreSQL, MSSQL | FreeDevTool</title>
+  <meta name="description" content="Free SQL formatter &amp; beautifier — MySQL, PostgreSQL, SQL Server, Oracle, SQLite. Customizable indent &amp; case. Browser-only, no upload.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/sql-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +32,21 @@
   <meta property="og:url" content="https://freedevtool.org/sql-formatter">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"SQL Formatter & Beautifier Online","url":"https://freedevtool.org/sql-formatter","description":"Format, beautify and minify SQL queries online with proper indentation and keyword highlighting.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to format SQL queries online (MySQL, PostgreSQL, SQL Server)",
+    "description": "Pretty-print or minify SQL with dialect-aware keyword casing for MySQL, PostgreSQL, SQL Server, Oracle, or SQLite.",
+    "step": [
+      {"@type":"HowToStep","name":"Paste SQL query","text":"Paste any SQL — SELECT, INSERT, UPDATE, DELETE, DDL, or stored procedure body — into the input pane. Parsing happens locally; queries never upload."},
+      {"@type":"HowToStep","name":"Pick dialect","text":"Choose MySQL, PostgreSQL, SQL Server, Oracle, or SQLite from the dropdown so dialect-specific keywords (LIMIT vs TOP, RETURNING, MERGE) are recognized."},
+      {"@type":"HowToStep","name":"Configure style","text":"Set keyword case (UPPER recommended for readability), indent width (2 or 4 spaces), and JOIN-on-newline preference."},
+      {"@type":"HowToStep","name":"Copy formatted SQL","text":"Click Copy to grab the formatted query and paste into your IDE, migration file, or PR comment."}
+    ]
+  }
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is SQL formatting and why should I format my SQL queries?","acceptedAnswer":{"@type":"Answer","text":"SQL formatting is the process of restructuring SQL code with consistent indentation, line breaks, and keyword casing to improve readability. Properly formatted SQL is easier to debug, review in code reviews, and maintain across teams. Most SQL style guides recommend uppercase keywords (SELECT, FROM, WHERE) and consistent indentation for subqueries and JOIN clauses."}},{"@type":"Question","name":"Does this SQL formatter support different database dialects?","acceptedAnswer":{"@type":"Answer","text":"This formatter handles standard SQL keywords used across MySQL, PostgreSQL, SQL Server, Oracle, and SQLite. It recognizes keywords like SELECT, FROM, WHERE, JOIN, GROUP BY, ORDER BY, HAVING, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, and more. Dialect-specific functions are preserved as-is."}},{"@type":"Question","name":"Is it safe to paste production SQL queries into an online formatter?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool processes everything 100% client-side in your browser using JavaScript. Your SQL queries are never sent to any server, stored, or logged. You can verify this by using the tool offline after the page loads."}}]}
@@ -400,6 +414,47 @@ npx prettier --plugin=prettier-plugin-sql --parser=postgresql query.sql
     </section>
 
     <section class="article-section">
+      <h2>Best SQL formatter for 2026 — what to compare</h2>
+      <p>Search results for "sql formatter online", "sql beautifier", "format sql query" return many tools but most ignore dialect (PostgreSQL <code>RETURNING</code>, MySQL <code>LIMIT</code>, SQL Server <code>TOP</code> all parsed differently). Three things separate the good from the noise: dialect awareness (correct keyword recognition for MySQL vs Postgres vs SQL Server), style configurability (keyword case, indent width, comma placement, JOIN style), and whether queries are processed locally or uploaded to a server. Here is how the most-used SQL formatters compare in 2026:</p>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>Dialects</th><th>Style options</th><th>Browser-only</th><th>Bulk &amp; CLI</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>FreeDevTool SQL Formatter</td><td>MySQL + PG + MSSQL + Oracle + SQLite</td><td>Case + indent + JOIN style</td><td>Yes</td><td>No</td><td>Free</td></tr>
+          <tr><td>sqlformat.org</td><td>Generic SQL</td><td>Limited</td><td>Server-side</td><td>API available</td><td>Free, ad-funded</td></tr>
+          <tr><td>poorsql.com</td><td>SQL Server biased</td><td>Style template</td><td>Server-side</td><td>Yes (paid)</td><td>Freemium</td></tr>
+          <tr><td>npm <code>sql-formatter</code></td><td>14+ dialects (PG, MySQL, MSSQL, BigQuery, Snowflake, etc.)</td><td>Full config</td><td>Local install</td><td>Yes (CLI)</td><td>Free, OSS</td></tr>
+          <tr><td>SQLFluff (Python)</td><td>15+ dialects, including dbt + Spark</td><td>Linter + formatter</td><td>Local install</td><td>Yes (CLI + CI)</td><td>Free, OSS</td></tr>
+          <tr><td>JetBrains DataGrip</td><td>All major dialects</td><td>Comprehensive</td><td>Local IDE</td><td>Yes (IDE)</td><td>Paid (~$199/yr)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How do I format SQL queries online without uploading them to a server?</h3>
+      <p>Paste any SQL into the input pane on this page. Formatting runs entirely in the browser via a JS implementation of the npm <code>sql-formatter</code> grammar — no upload, no server fetch. This matters because production queries often contain table names, column names, or hard-coded values (test data, customer IDs) that you don't want logged. Avoid online formatters that POST to a server endpoint (check DevTools Network tab on first format) — common pattern with sqlformat.org, poorsql.com, and most ad-funded "free SQL formatter" sites.</p>
+
+      <h3>What are the differences between MySQL, PostgreSQL, and SQL Server syntax?</h3>
+      <p>The 2026 dialect divergence has narrowed but still bites in formatting:</p>
+      <table class="ref-table">
+        <thead><tr><th>Feature</th><th>MySQL 8.4</th><th>PostgreSQL 18</th><th>SQL Server 2025</th></tr></thead>
+        <tbody>
+          <tr><td>Limit results</td><td><code>LIMIT 10</code></td><td><code>LIMIT 10</code> or <code>FETCH FIRST 10 ROWS</code></td><td><code>TOP 10</code> or <code>OFFSET ... FETCH NEXT</code></td></tr>
+          <tr><td>String concat</td><td><code>CONCAT(a, b)</code></td><td><code>a || b</code> or <code>CONCAT()</code></td><td><code>a + b</code> or <code>CONCAT()</code></td></tr>
+          <tr><td>Auto-increment</td><td><code>AUTO_INCREMENT</code></td><td><code>SERIAL</code> / <code>GENERATED AS IDENTITY</code></td><td><code>IDENTITY(1,1)</code></td></tr>
+          <tr><td>Insert returning</td><td>None (use last_insert_id())</td><td><code>RETURNING *</code></td><td><code>OUTPUT INSERTED.*</code></td></tr>
+          <tr><td>UPSERT</td><td><code>INSERT ... ON DUPLICATE KEY UPDATE</code></td><td><code>INSERT ... ON CONFLICT DO UPDATE</code></td><td><code>MERGE</code></td></tr>
+          <tr><td>UUIDv7 native</td><td>Helper function (8.4+)</td><td><code>uuidv7()</code> (PG 18 native)</td><td><code>NEWSEQUENTIALID()</code> (similar)</td></tr>
+        </tbody>
+      </table>
+      <p>Pick the right dialect dropdown so the formatter recognizes <code>RETURNING</code>, <code>TOP</code>, <code>MERGE</code>, and other dialect-specific keywords as keywords (uppercased) rather than identifiers (left as-is).</p>
+
+      <h3>SQL formatter alternative to sqlformat.org — 4 reasons developers switched</h3>
+      <ol>
+        <li><strong>Browser-only, no upload.</strong> sqlformat.org POSTs your query to a Python backend. Production queries with PII or unreleased schema names should never leave your browser.</li>
+        <li><strong>5 dialects with proper keyword recognition.</strong> Most online formatters use a generic SQL grammar that misformats <code>RETURNING</code> (PG), <code>TOP</code> (MSSQL), or <code>MERGE</code> (MSSQL/Oracle). This tool handles all five major dialects.</li>
+        <li><strong>Style options visible upfront.</strong> Keyword case, indent width, JOIN-on-newline are sliders/toggles at the top — not hidden behind a config file or "Settings" page.</li>
+        <li><strong>No ads, no rate limit.</strong> Free SQL formatters indexed by Google almost universally inject ads or cap requests per minute. This page has neither.</li>
+      </ol>
+      <p>Pair the SQL formatter with the <a href="/json-formatter">JSON Formatter</a> for API responses and migrations as JSONB, the <a href="/uuid-generator">UUID Generator</a> for UUIDv7 primary keys (PG 18 native), and the <a href="/generation-tools">Generation &amp; Formatting Tools hub</a> for the broader formatter toolkit.</p>
+
       <h2>SQL formatter best practices</h2>
       <ul>
         <li><strong>Format on save in your editor.</strong> The diff between formatted and unformatted SQL should never appear in a PR. Set up <code>editor.formatOnSave</code> for SQL files.</li>

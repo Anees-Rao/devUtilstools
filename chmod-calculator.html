@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chmod Calculator Online — Linux Permissions, Octal &amp; Symbolic | FreeDevTool</title>
-  <meta name="description" content="Free chmod calculator. Convert between octal (755) &amp; symbolic (rwxr-xr-x) Unix permissions. Visual checkboxes, special bits (setuid, setgid, sticky). Browser-based.">
-  <meta name="keywords" content="chmod calculator, unix permissions, linux file permissions, chmod 755, octal permissions, symbolic permissions, chmod online, file mode calculator">
-
+  <title>Chmod Calculator — Linux Permissions Octal | FreeDevTool</title>
+  <meta name="description" content="Free chmod calculator — octal (755) ↔ symbolic (rwxr-xr-x) Unix permissions. Visual checkboxes, setuid/setgid/sticky bits. Browser-only.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/chmod-calculator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,6 +32,21 @@
   <meta property="og:url" content="https://freedevtool.org/chmod-calculator">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"Chmod Calculator Online","url":"https://freedevtool.org/chmod-calculator","description":"Calculate Unix file permissions with symbolic and octal notation conversion.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to calculate Linux chmod permissions in octal and symbolic",
+    "description": "Convert Unix file permissions between octal (e.g., 755) and symbolic (e.g., rwxr-xr-x) notation, including special bits (setuid, setgid, sticky).",
+    "step": [
+      {"@type":"HowToStep","name":"Toggle permission checkboxes","text":"Check the read (r), write (w), execute (x) boxes for owner, group, and others. The octal and symbolic notation update in real time."},
+      {"@type":"HowToStep","name":"Optionally set special bits","text":"Enable setuid (4000), setgid (2000), or sticky bit (1000) for advanced cases like shared upload directories or shared-execution binaries."},
+      {"@type":"HowToStep","name":"Read the chmod command","text":"The output displays the ready-to-paste command, e.g., chmod 755 file.sh or chmod u=rwx,g=rx,o=rx file.sh."},
+      {"@type":"HowToStep","name":"Apply on the server","text":"Paste the command into your terminal over SSH. Verify with ls -l filename — the output should match the symbolic notation shown."}
+    ]
+  }
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is chmod and how do Unix file permissions work?","acceptedAnswer":{"@type":"Answer","text":"chmod (change mode) is a Unix/Linux command that sets file and directory permissions. Permissions are grouped into three classes: Owner, Group, and Others. Each class can have Read (4), Write (2), and Execute (1) permissions. The values are added together to form an octal number — for example, 755 means Owner has rwx (7), Group has r-x (5), Others have r-x (5)."}},{"@type":"Question","name":"What does chmod 755 mean?","acceptedAnswer":{"@type":"Answer","text":"chmod 755 sets: Owner = rwx (read + write + execute = 7), Group = r-x (read + execute = 5), Others = r-x (read + execute = 5). This is the most common permission for web directories and executable scripts — the owner can modify files while everyone else can read and execute them."}},{"@type":"Question","name":"What is the difference between chmod symbolic and numeric mode?","acceptedAnswer":{"@type":"Answer","text":"Numeric (octal) mode uses three digits like 755 or 644 to set all permissions at once. Symbolic mode uses letters like u+x (add execute for user), g-w (remove write for group), o=r (set others to read-only). Symbolic mode is better for changing specific permissions without affecting others, while numeric mode is faster for setting exact permissions."}}]}
@@ -444,6 +457,44 @@ echo 'umask 022' &gt;&gt; ~/.bashrc
     </section>
 
     <section class="article-section">
+      <h2>Best chmod calculator for 2026 — what to compare</h2>
+      <p>Search results for "chmod calculator", "chmod 755 meaning", and "linux file permissions calculator" return a mix of static cheatsheets and interactive calculators. Three things separate the good from the noise: bidirectional conversion (octal ↔ symbolic both directions, not just one), special-bit support (setuid / setgid / sticky bit are missing from most), and whether the output is a copy-ready chmod command or just the permission string. Here is how the most-used chmod tools compare in 2026:</p>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>Bidirectional</th><th>Special bits (4/2/1)</th><th>Copy-ready command</th><th>Recursive flag preview</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>FreeDevTool Chmod Calculator</td><td>Octal ↔ symbolic ↔ checkboxes</td><td>setuid + setgid + sticky</td><td>Yes</td><td>Yes (-R hint)</td><td>Free</td></tr>
+          <tr><td>chmod-calculator.com</td><td>Checkbox → octal</td><td>setuid + setgid only</td><td>Yes</td><td>No</td><td>Free, ad-funded</td></tr>
+          <tr><td>chmodcommand.com</td><td>Checkbox → octal</td><td>None</td><td>Yes</td><td>No</td><td>Free, ad-heavy</td></tr>
+          <tr><td>permissions-calculator.org</td><td>Checkbox → octal/symbolic</td><td>None</td><td>Partial</td><td>No</td><td>Free</td></tr>
+          <tr><td><code>stat -c "%a"</code> (CLI)</td><td>Read existing only</td><td>Yes</td><td>N/A (read tool)</td><td>N/A</td><td>Built-in</td></tr>
+          <tr><td>VS Code Remote-SSH file properties</td><td>Tree view only</td><td>Limited</td><td>No</td><td>No</td><td>Free</td></tr>
+        </tbody>
+      </table>
+
+      <h3>What does chmod 755 mean and when should I use it?</h3>
+      <p><strong>chmod 755</strong> sets these permissions: owner = <code>rwx</code> (read + write + execute = 4+2+1=7), group = <code>r-x</code> (read + execute = 4+0+1=5), others = <code>r-x</code> (read + execute = 5). The mnemonic is "owner can do everything, everyone else can read and run". Use 755 for: <strong>executable scripts and binaries</strong> in <code>/usr/local/bin</code>, <strong>web-accessible directories</strong> in Apache/nginx (so the web server can read+enter them), and <strong>shared utility scripts</strong> on a multi-user server. NOT for: regular text/data files (use 644), private SSH keys (use 600), files with sensitive info (use 600 owner-only). Common companion: <code>chmod 644</code> for files inside a <code>755</code> directory — directory needs execute (to enter), files don't.</p>
+
+      <h3>What's the difference between chmod, chown, and chgrp?</h3>
+      <table class="ref-table">
+        <thead><tr><th>Command</th><th>Changes</th><th>Example</th><th>Permission needed</th></tr></thead>
+        <tbody>
+          <tr><td><code>chmod</code></td><td>Permission bits (rwx for u/g/o + special)</td><td><code>chmod 755 file.sh</code></td><td>Owner of file or root</td></tr>
+          <tr><td><code>chown</code></td><td>Owner (and optionally group)</td><td><code>chown alice file.txt</code></td><td>root only (most cases)</td></tr>
+          <tr><td><code>chgrp</code></td><td>Group only</td><td><code>chgrp developers file.txt</code></td><td>Owner if member of target group, or root</td></tr>
+          <tr><td><code>setfacl</code></td><td>Extended ACLs (per-user, per-group)</td><td><code>setfacl -m u:bob:rx file</code></td><td>Owner or root</td></tr>
+        </tbody>
+      </table>
+      <p>Decision rule: you want different permissions for different users beyond owner/group/others → <code>setfacl</code>. You want to give a different user ownership → <code>chown</code>. You want to change the file's group affiliation → <code>chgrp</code>. Everything else (changing read/write/execute on existing owner/group/others classes) → <code>chmod</code>.</p>
+
+      <h3>Chmod calculator alternative to chmod-calculator.com — 4 reasons developers switched</h3>
+      <ol>
+        <li><strong>Bidirectional input.</strong> Type <code>755</code>, paste <code>rwxr-xr-x</code>, or click checkboxes — all three update each other. Most calculators only accept one input direction.</li>
+        <li><strong>Special bits surfaced as first-class.</strong> setuid (4000), setgid (2000), and sticky bit (1000) are checkboxes here, not buried in an "advanced" tab. Critical for shared upload directories (sticky on <code>/tmp</code>) or wrapping a binary that needs root (setuid on <code>passwd</code>).</li>
+        <li><strong>Copy-ready chmod command with <code>-R</code> hint.</strong> Output is the full <code>chmod 755 file.sh</code> command, with a one-click toggle for recursive (<code>-R</code>). No mental concatenation required.</li>
+        <li><strong>No ads, no popups.</strong> Tools indexed for "chmod calculator" almost universally inject ads or third-party tracking. This page is browser-only and persists nothing.</li>
+      </ol>
+      <p>Pair the chmod calculator with the <a href="/cron-parser">Cron Expression Parser</a> for the other classic Linux DevOps cheat-sheet operation, the <a href="/git-cheatsheet">Git Cheatsheet</a> for Git permission edge cases (Git tracks executable bit only), and the <a href="/devops-tools">DevOps Tools hub</a> for the broader Linux/CI toolkit.</p>
+
       <h2>chmod best practices — and what NOT to do</h2>
       <ul>
         <li><strong>Never <code>chmod 777</code> in production.</strong> World-writable files are a major security hole. If a script "needs" 777 to work, the actual problem is wrong ownership (use <code>chown</code>) or wrong group membership.</li>

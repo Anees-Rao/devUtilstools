@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4 Free Network &amp; Time Tools — IP Lookup, DNS, Subnet | FreeDevTool</title>
-  <meta name="description" content="4 free network &amp; time tools — IP lookup with subnet/CIDR, DNS lookup via DoH, timestamp diff, relative time calculator. No signup.">
+  <title>Network &amp; Time Tools — IP, DNS, Subnet | FreeDevTool</title>
+  <meta name="description" content="4 free network &amp; time tools — IP lookup with subnet/CIDR, DNS lookup via DoH, Unix timestamp converter, timestamp diff. Browser-only.">
+
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/network-tools">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
@@ -250,8 +251,8 @@
     </a>
 
     <span class="tool-badge">Network &amp; Time</span>
-    <h1>Network &amp; Time Tools</h1>
-    <p class="tool-description">Analyze IP addresses, calculate subnets, and compare timestamps with these free browser-based network and time utilities. Look up and validate IPv4 and IPv6 addresses, compute subnet masks and CIDR ranges, classify private versus public IP addresses for network diagnostics, and calculate the exact difference between two timestamps or dates in years, months, days, hours, minutes, and seconds. Whether you&rsquo;re troubleshooting network configurations, planning IP address allocation, or measuring time durations between events &mdash; all tools run entirely client-side with no server calls and no signup required.</p>
+    <h1>Network &amp; Time Tools — 4 Free Browser Utilities</h1>
+    <p class="tool-description">4 free network and time utilities — IP lookup with IPv4/IPv6 + subnet/CIDR calculation, DNS lookup via DNS-over-HTTPS, Unix timestamp converter, timestamp difference calculator. Browser-only.</p>
   </div>
 
   <p class="category-label">4 Network &amp; Time Tools</p>
@@ -291,6 +292,29 @@
 
   <!-- When to use which tool -->
   <section class="use-cases">
+    <h2>Best free network &amp; time tools for 2026</h2>
+    <p>Network and time utilities sit at the boundary between application code and infrastructure: every cloud deploy, every API integration, every scheduled job needs IP/CIDR math, DNS resolution, timestamp arithmetic. The 4 tools in this category replace common Stack Overflow lookups ("what's the broadcast address for /26", "is this IP private", "what's the difference in days between these two dates") with one-tap browser-native operations. Network calls (IP lookup geolocation, DNS-over-HTTPS) use public APIs (Cloudflare DoH, ipify, ipapi.co) that don't require auth — the tool itself runs in your browser, with the underlying queries going to those public endpoints.</p>
+
+    <h3>What's the difference between IP lookup, DNS lookup, and reverse DNS?</h3>
+    <p>Three distinct operations that are routinely confused. <strong>IP lookup</strong> takes an IP address (yours or any public IP) and returns geolocation, ASN, ISP, and whether it's residential / business / datacenter / VPN. Used for fraud detection, geo-redirects, and "is this user from a known cloud range" checks. Backed by databases like MaxMind GeoIP2, ipinfo.io, and ipapi.co. <strong>DNS lookup</strong> takes a domain name and returns its A/AAAA/MX/TXT/CNAME records — the standard "what IP does this domain point to" query. Modern tools use DNS-over-HTTPS (DoH) to query Cloudflare 1.1.1.1 or Google 8.8.8.8 from the browser without exposing the query to your ISP. <strong>Reverse DNS</strong> (PTR record lookup) takes an IP and returns its registered hostname (used for email server validation and spam scoring). All three are different lookups against different infrastructure.</p>
+
+    <h3>How do I look up an IP, DNS record, or compute a subnet mask online without uploading data?</h3>
+    <p>The IP lookup pulls geolocation from public APIs (ipify, ipapi.co) — your local IP isn't uploaded, only the IP you explicitly query. DNS lookup uses DNS-over-HTTPS to Cloudflare (1.1.1.1) — encrypted from your browser, not visible to your ISP. Subnet calculation runs entirely in JavaScript using bitwise operations on the parsed CIDR — no network call. Timestamp conversion runs in the browser via native Date math. The only outbound calls are the explicit IP/DNS lookups against well-known public resolvers; everything else is client-side.</p>
+
+    <h3>Network &amp; time cluster — pick the right tool</h3>
+    <table class="ref-table">
+      <thead><tr><th>Need</th><th>Tool</th></tr></thead>
+      <tbody>
+        <tr><td>IP geolocation, ASN, subnet calculation</td><td><a href="/ip-lookup">IP Lookup &amp; Subnet Calculator</a></td></tr>
+        <tr><td>DNS A / AAAA / MX / TXT / CNAME records</td><td><a href="/dns-lookup">DNS Lookup (DoH)</a></td></tr>
+        <tr><td>Unix epoch ↔ readable date conversion</td><td><a href="/unix-timestamp-converter">Unix Timestamp Converter</a></td></tr>
+        <tr><td>Difference between two timestamps</td><td><a href="/timestamp-diff">Timestamp Diff Calculator</a></td></tr>
+        <tr><td>Relative time ("3 days ago", "in 2 hours")</td><td><a href="/relative-time">Relative Time Calculator</a></td></tr>
+        <tr><td>HTTP request building (curl-like)</td><td><a href="/http-request-builder">HTTP Request Builder</a></td></tr>
+        <tr><td>HTTP status code reference</td><td><a href="/http-status">HTTP Status Codes</a></td></tr>
+      </tbody>
+    </table>
+
     <h2>Which network &amp; time tool should you use?</h2>
     <p>Network tools answer the everyday questions that come up when wiring up infrastructure: is this IP private or public, what's in this subnet, what records does this domain have, how long ago was that timestamp. All four run client-side; DNS lookups go straight to Cloudflare's DoH endpoint without any server intermediary.</p>
 

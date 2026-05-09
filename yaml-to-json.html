@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YAML to JSON Converter Online — Bidirectional Free Tool | FreeDevTool</title>
-  <meta name="description" content="Free YAML ⇄ JSON converter. Validate YAML syntax, handle anchors, aliases, multi-doc streams. Docker Compose, k8s &amp; GitHub Actions friendly. Runs in browser.">
-  <meta name="keywords" content="yaml to json, json to yaml, yaml converter online, yaml validator, yml to json, k8s yaml, docker compose yaml, yaml parser online">
+  <title>YAML to JSON Converter — Bidirectional | FreeDevTool</title>
+  <meta name="description" content="Free YAML ⇄ JSON converter. YAML 1.2, anchors, aliases, multi-doc streams. Docker Compose, Kubernetes, GitHub Actions friendly. Browser-only.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/yaml-to-json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,6 +32,21 @@
   <meta property="og:url" content="https://freedevtool.org/yaml-to-json">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebApplication","name":"YAML to JSON Converter Online","url":"https://freedevtool.org/yaml-to-json","description":"Convert YAML to JSON and JSON to YAML online. Validate syntax, handle nested objects, arrays, anchors and aliases.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to convert YAML to JSON (or JSON to YAML)",
+    "description": "Bidirectionally convert between YAML 1.2 and JSON, with support for anchors, aliases, multi-doc streams, and Kubernetes/Docker Compose configs.",
+    "step": [
+      {"@type":"HowToStep","name":"Paste YAML or JSON","text":"Paste YAML in the left pane to convert to JSON, or paste JSON in the right pane to convert to YAML. Multi-document YAML streams (--- separated) are supported."},
+      {"@type":"HowToStep","name":"Click Convert","text":"Click YAML to JSON or JSON to YAML. Anchors (&), aliases (*), and merge keys (<<) are resolved automatically."},
+      {"@type":"HowToStep","name":"Validate output","text":"Syntax errors highlight with line numbers. The output pane shows the converted document; if a Kubernetes manifest contains an array of items, multi-doc YAML emerges in the JSON-to-YAML direction."},
+      {"@type":"HowToStep","name":"Copy and use","text":"Click Copy to grab the converted document. Paste into kubectl apply, docker-compose.yml, or your CI tool of choice."}
+    ]
+  }
   </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is YAML and how does it differ from JSON?","acceptedAnswer":{"@type":"Answer","text":"YAML (YAML Ain't Markup Language) is a human-readable data serialization format that uses indentation to represent hierarchy. Unlike JSON, YAML supports comments (#), does not require quotes around most strings, and uses dashes for arrays. JSON is stricter with mandatory double-quoted keys, commas, and curly braces, but has native browser support via JSON.parse() and is the dominant format for REST APIs and web configuration."}},{"@type":"Question","name":"Can I convert JSON back to YAML with this tool?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool supports bidirectional conversion. Paste YAML in the left pane and click YAML to JSON, or paste JSON in the right pane and click JSON to YAML. The Swap button lets you quickly exchange both panes."}},{"@type":"Question","name":"Does this tool handle YAML multi-line strings?","acceptedAnswer":{"@type":"Answer","text":"Yes. This converter supports YAML literal block scalars (|) that preserve newlines and folded block scalars (>) that join lines with spaces. It also handles block chomping indicators (|-, |+, >-, >+) for controlling trailing newlines."}}]}
@@ -511,6 +525,46 @@ yq -o=json . k8s.yml | jq '.spec.containers[].image'
     </section>
 
     <section class="article-section">
+      <h2>Best YAML to JSON converter for 2026 — what to compare</h2>
+      <p>Search results for "yaml to json", "yaml converter online", and "convert kubernetes yaml to json" return many tools but most fail on real-world YAML: they don't handle anchors and aliases (DRY config patterns universal in Helm and Docker Compose), multi-doc streams (<code>---</code> separators in <code>kubectl apply -f</code> bundles), or YAML 1.2-vs-1.1 differences (the famous Norway problem where <code>NO</code> becomes <code>false</code>). Here is how the most-used YAML/JSON converters compare in 2026:</p>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>Bidirectional</th><th>Anchors / aliases / multi-doc</th><th>YAML version</th><th>Browser-only</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>FreeDevTool YAML ⇄ JSON</td><td>Yes</td><td>All three supported</td><td>YAML 1.2 (no Norway problem)</td><td>Yes</td><td>Free</td></tr>
+          <tr><td>onlineyamltools.com</td><td>Yes</td><td>Anchors only</td><td>YAML 1.1</td><td>Server-side</td><td>Free, ad-funded</td></tr>
+          <tr><td>convertsimple.com/convert-yaml-to-json</td><td>One direction</td><td>Limited</td><td>YAML 1.1</td><td>Server-side</td><td>Free, ad-heavy</td></tr>
+          <tr><td><code>yq</code> CLI (Mike Farah)</td><td>Yes (both directions)</td><td>Full</td><td>YAML 1.2</td><td>Local install</td><td>Free, OSS</td></tr>
+          <tr><td>npm <code>js-yaml</code> + <code>JSON.stringify</code></td><td>Yes (programmatic)</td><td>Full</td><td>YAML 1.2</td><td>Local install</td><td>Free, OSS</td></tr>
+          <tr><td>Python <code>ruamel.yaml</code></td><td>Yes (programmatic)</td><td>Full + comments preserved</td><td>YAML 1.2</td><td>Local install</td><td>Free, OSS</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How do I convert a Kubernetes YAML manifest to JSON without uploading it?</h3>
+      <p>Paste the manifest into the YAML pane on this page. The browser-side <code>js-yaml</code> parser handles all Kubernetes-specific patterns: multi-document streams (a single <code>kubectl apply</code> file often has Deployment + Service + Ingress separated by <code>---</code>), Helm-rendered anchors and aliases, and CRDs with custom <code>!Tag</code> markers. Output is valid JSON ready for <code>kubectl apply -f -</code> with the <code>--server-side</code> flag, or for ingestion into Pulumi / CDK8s / Terraform <code>kubernetes_manifest</code> resources. <strong>Why client-side matters for k8s configs:</strong> production manifests routinely contain Service environment variables, ConfigMap references to internal hostnames, secret-sealed values, and ImagePullSecret credentials. Even a "test" manifest may leak real cluster topology. This page never uploads — verify in DevTools Network tab.</p>
+
+      <h3>What's the difference between YAML 1.1, YAML 1.2, and JSON?</h3>
+      <table class="ref-table">
+        <thead><tr><th>Feature</th><th>YAML 1.1 (2005)</th><th>YAML 1.2 (2009+)</th><th>JSON (2017 RFC 8259)</th></tr></thead>
+        <tbody>
+          <tr><td>Boolean coercion (Norway problem)</td><td><code>NO</code> / <code>OFF</code> → false</td><td>Only <code>true</code> / <code>false</code></td><td>Only <code>true</code> / <code>false</code></td></tr>
+          <tr><td>Numeric formats</td><td>Octal via <code>0o755</code> AND <code>0755</code></td><td>Octal only via <code>0o755</code></td><td>Decimal only</td></tr>
+          <tr><td>Strict superset of JSON</td><td>No</td><td>Yes (every JSON is valid YAML)</td><td>N/A</td></tr>
+          <tr><td>Comments</td><td>Yes (<code>#</code>)</td><td>Yes (<code>#</code>)</td><td>No</td></tr>
+          <tr><td>Anchors / aliases</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+          <tr><td>Multi-doc streams</td><td>Yes (<code>---</code>)</td><td>Yes (<code>---</code>)</td><td>No</td></tr>
+        </tbody>
+      </table>
+      <p>This converter uses a YAML 1.2 parser — which means <code>country: NO</code> stays as the string "NO" (not coerced to <code>false</code>). If you're maintaining legacy Ansible playbooks (still YAML 1.1 by default in Ansible 2.x), explicitly quote ambiguous values: <code>country: "NO"</code>. Most modern tools (Kubernetes, Docker Compose v3+, GitHub Actions) use YAML 1.2.</p>
+
+      <h3>YAML to JSON converter alternative to onlineyamltools.com — 4 reasons developers switched</h3>
+      <ol>
+        <li><strong>Browser-only, no server upload.</strong> onlineyamltools and convertsimple POST your YAML to a server. Production k8s manifests, Docker Compose configs, and GitHub Actions workflows often contain secrets — keep them in-browser.</li>
+        <li><strong>YAML 1.2 spec compliance, not 1.1 quirks.</strong> Avoids the Norway problem, octal-number ambiguity, and other YAML 1.1 footguns that bite real configs.</li>
+        <li><strong>Anchors, aliases, and multi-doc streams.</strong> Most online converters silently flatten anchors or drop documents past the first <code>---</code>. This tool round-trips Helm, Compose, and bundled k8s manifests correctly.</li>
+        <li><strong>No ads, no popups.</strong> Free YAML converters indexed by Google almost universally inject ads or rate-limit anonymous use. This page has neither.</li>
+      </ol>
+      <p>Pair the YAML to JSON converter with the <a href="/json-formatter">JSON Formatter</a> for pretty-printing the output, the <a href="/json-to-csv">JSON to CSV Converter</a> for spreadsheet exports, the <a href="/xml-formatter">XML Formatter</a> for legacy XML configs, and the <a href="/encoding-tools">Encoding Tools hub</a> for the broader transform toolkit.</p>
+
       <h2>YAML best practices</h2>
       <ul>
         <li><strong>Always quote string values that look like booleans, numbers, or dates.</strong> <code>country: "NO"</code>, <code>version: "1.0"</code>, <code>id: "01234"</code>.</li>

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SEO &amp; Meta Tag Tools &mdash; Free Open Graph, Meta Generator &amp; Slug Tools | FreeDevTool</title>
-  <meta name="description" content="Free SEO tools. Generate meta tags, preview Open Graph social cards, create URL slugs. Browser-based, no signup, privacy-first.">
+  <title>SEO &amp; Meta Tools — OG, Slug, Meta Tag | FreeDevTool</title>
+  <meta name="description" content="3 free SEO tools — meta tag generator, Open Graph preview, URL slug generator. Live SERP &amp; social card previews. Browser-only, no signup.">
+
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://freedevtool.org/seo-tools">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
@@ -250,8 +251,8 @@
     </a>
 
     <span class="tool-badge">SEO &amp; Meta Tools</span>
-    <h1>SEO &amp; Meta Tools</h1>
-    <p class="tool-description">Generate meta tags, preview social sharing cards, and create SEO-friendly URL slugs &mdash; all in your browser.</p>
+    <h1>SEO &amp; Meta Tools — 3 Free Browser Utilities</h1>
+    <p class="tool-description">3 free SEO utilities — meta tag generator (title, description, OG, Twitter Card), Open Graph preview with platform mockups, URL slug generator with transliteration. Browser-only, no signup.</p>
   </div>
 
   <p class="category-label">3 SEO &amp; Meta Tools</p>
@@ -282,6 +283,28 @@
 
   <!-- When to use which tool -->
   <section class="use-cases">
+    <h2>Best free SEO tools for 2026 — what every developer needs</h2>
+    <p>The SEO cluster covers the three operations every developer reaches for when shipping a public-facing page: getting the meta tags right (title, description, canonical, robots), making the social-share card look correct (Open Graph + Twitter Card mockups), and producing a clean URL slug (transliteration + stop-word removal). All three are mandatory for organic search visibility in 2026 — Google's E-E-A-T signals, X / LinkedIn / Facebook / WhatsApp share previews, and search engine indexing all depend on these metadata choices being right at publish time. Every tool runs entirely client-side; draft titles, descriptions, and unannounced URLs never leave the browser.</p>
+
+    <h3>What's the minimum SEO meta-tag setup every page needs in 2026?</h3>
+    <p>Six tags cover 99% of pages. <strong>One:</strong> <code>&lt;title&gt;</code> ≤60 characters (Bing strict limit) — strongest on-page SEO signal. <strong>Two:</strong> <code>&lt;meta name="description"&gt;</code> ≤155 characters — controls the SERP snippet. <strong>Three:</strong> <code>&lt;link rel="canonical"&gt;</code> — solves duplicate content across HTTP/HTTPS, www/non-www, trailing-slash variants. <strong>Four:</strong> <code>&lt;meta name="robots" content="index, follow"&gt;</code> — explicit indexing directive (or <code>noindex, follow</code> for ToS / Privacy pages). <strong>Five:</strong> Open Graph block — <code>og:title</code>, <code>og:description</code>, <code>og:image</code> (1200×630), <code>og:url</code>, <code>og:type</code>. <strong>Six:</strong> <code>&lt;meta name="twitter:card" content="summary_large_image"&gt;</code> — X falls back to OG tags for everything else. Skip: <code>&lt;meta name="keywords"&gt;</code> (Google ignored since 2009, treated as spam signal by some Bing scoring), <code>&lt;meta name="revisit-after"&gt;</code> (never honored by any crawler).</p>
+
+    <h3>How do I preview SEO and social tags before deploying?</h3>
+    <p>Three tools in this cluster handle preview before deploy. <strong>Meta Tag Generator</strong> shows live Google SERP rendering as you type, with character-count warnings at platform-specific limits. <strong>Open Graph Preview</strong> renders Facebook, X, and LinkedIn share cards from your input fields without server fetch — works on draft copy, unannounced launches, and offline. <strong>Slug Generator</strong> previews the kebab-case slug as you type the title, with transliteration applied to non-Latin characters. None of these require uploading the page or even having it live — they preview from form input only. After deploy, validate with Google Rich Results Test (rich-results.google.com), Facebook Sharing Debugger (developers.facebook.com/tools/debug), and X Card Validator (cards-dev.twitter.com/validator) to force cache refresh.</p>
+
+    <h3>SEO cluster — pick the right tool</h3>
+    <table class="ref-table">
+      <thead><tr><th>Need</th><th>Tool</th></tr></thead>
+      <tbody>
+        <tr><td>Generate complete head meta-tag block (SEO + OG + Twitter Card)</td><td><a href="/meta-tag-generator">Meta Tag Generator</a></td></tr>
+        <tr><td>Preview Facebook / X / LinkedIn share cards</td><td><a href="/og-preview">Open Graph Preview</a></td></tr>
+        <tr><td>Generate clean kebab-case URL slug from title</td><td><a href="/slug-generator">URL Slug Generator</a></td></tr>
+        <tr><td>Test JSON-LD schema markup (HowTo, Article, etc.)</td><td>Use <a href="/json-formatter">JSON Formatter</a> + Google Rich Results Test</td></tr>
+        <tr><td>Markdown-to-HTML preview for blog posts</td><td><a href="/markdown-preview">Markdown Preview</a></td></tr>
+        <tr><td>Pretty-print SEO sitemap.xml</td><td><a href="/xml-formatter">XML Formatter</a></td></tr>
+      </tbody>
+    </table>
+
     <h2>Which SEO tool should you use?</h2>
     <p>SEO basics start with three things rendering correctly: page-level meta tags (title, description, canonical), social-share previews (Open Graph + Twitter Card), and clean URLs. Get those right and Google has the signals it needs to rank you. These three tools cover all three checkpoints — generate, preview, validate, ship.</p>
 
