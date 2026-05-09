@@ -3,10 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>String Case Converter — camelCase, snake_case, kebab-case Free | FreeDevTool</title>
-  <meta name="description" content="Free string case converter. camelCase ↔ snake_case ↔ kebab-case ↔ PascalCase ↔ Title Case ↔ UPPER_SNAKE. Smart word splitting. Runs in browser.">
-  <meta name="keywords" content="case converter, camelcase converter, snake_case converter, kebab-case, pascalcase, title case, screaming snake case, naming convention converter">
+  <title>Case Converter — camelCase, snake_case, kebab | FreeDevTool</title>
+  <meta name="description" content="Free case converter — camelCase ↔ snake_case ↔ kebab-case ↔ PascalCase ↔ Title Case ↔ UPPER_SNAKE. Smart word splitting, browser-only.">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to convert text between camelCase, snake_case, kebab-case",
+    "description": "Convert any string between programming naming conventions with smart word splitting.",
+    "step": [
+      {"@type":"HowToStep","name":"Paste text","text":"Paste any text or identifier into the input field. Smart word splitter handles existing camelCase, snake_case, hyphens, spaces, and acronyms."},
+      {"@type":"HowToStep","name":"Pick target case","text":"Select the destination case: camelCase, PascalCase, snake_case, kebab-case, UPPER_SNAKE, Title Case, or dot.case."},
+      {"@type":"HowToStep","name":"Read converted output","text":"Output updates as you type. All cases compute simultaneously — pick whichever your codebase requires."},
+      {"@type":"HowToStep","name":"Copy result","text":"Click any output to copy. Use camelCase for JS variables, snake_case for Python/Ruby, kebab-case for URLs and CSS, PascalCase for classes."}
+    ]
+  }
+  </script>
   <link rel="canonical" href="https://freedevtool.org/case-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,7 +32,7 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="String Case Converter — camelCase, snake_case, kebab-case | FreeDevTool">
+  <meta name="twitter:title" content="Case Converter — camelCase, snake, kebab | FreeDevTool">
   <meta name="twitter:description" content="Convert between camelCase, snake_case, kebab-case, PascalCase &amp; more. Smart word splitting. Runs in browser.">
   <meta property="og:image" content="https://freedevtool.org/og-image.svg">
   <meta property="og:image:width" content="1200">
@@ -197,7 +210,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -533,6 +546,48 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     </section>
 
     <section class="article-section">
+      <h2>Best case converter for 2026 — what to compare</h2>
+      <p>Search results for "case converter online", "camelcase to snake_case", and "string case converter" return many tools but most fail on real-world identifiers: they don't handle acronyms (`XMLHttpRequest` should split as `xml http request`, not `xmlhttp request`), they break on already-cased input, or they don't surface all 6+ common cases simultaneously. Here is how the most-used case converters compare in 2026:</p>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>Acronym handling</th><th>Cases supported</th><th>Browser-only</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>FreeDevTool Case Converter</td><td>Smart split (XMLHttpRequest → xml http request)</td><td>camel, Pascal, snake, kebab, UPPER_SNAKE, Title, dot, path</td><td>Yes</td><td>Free</td></tr>
+          <tr><td>convertcase.net</td><td>Limited</td><td>UPPER, lower, Title, Sentence</td><td>Yes</td><td>Free, ad-funded</td></tr>
+          <tr><td>caseconverter.com</td><td>Limited</td><td>UPPER, lower, Title, Sentence, alternating</td><td>Yes</td><td>Free, ad-heavy</td></tr>
+          <tr><td>npm <code>change-case</code></td><td>Full (configurable)</td><td>All 10+</td><td>Local install</td><td>Free, OSS</td></tr>
+          <tr><td>npm <code>lodash</code> (camelCase, snakeCase)</td><td>Good</td><td>camel, snake, kebab, start, upper</td><td>Local install</td><td>Free, OSS</td></tr>
+          <tr><td>VS Code Multi-edit + extensions</td><td>Manual</td><td>All via "Change Case" extension</td><td>Local IDE</td><td>Free</td></tr>
+        </tbody>
+      </table>
+
+      <h3>How do I convert camelCase to snake_case online?</h3>
+      <p>Paste your camelCase identifier into the input field. The smart word splitter detects the case boundary on every uppercase letter — <code>userName</code> becomes <code>user name</code> internally, then re-joins as <code>user_name</code> for the snake_case output. The same operation happens automatically for all six other cases (kebab-case → <code>user-name</code>, PascalCase → <code>UserName</code>, UPPER_SNAKE → <code>USER_NAME</code>, Title Case → <code>User Name</code>, dot.case → <code>user.name</code>). Edge cases handled: consecutive capitals like <code>HTTPSConnection</code> split correctly as <code>https connection</code> (not <code>h t t p s connection</code>), digits stay attached to their preceding word (<code>htmlParserV2</code> → <code>html parser v2</code>), and pre-existing separators (spaces, hyphens, underscores, dots) all serve as word boundaries.</p>
+
+      <h3>What's the difference between camelCase, PascalCase, snake_case, and kebab-case?</h3>
+      <p>Five conventions that all encode the same words differently — pick by language, by context, or by team style guide:</p>
+      <table class="ref-table">
+        <thead><tr><th>Case</th><th>Example</th><th>Used in</th></tr></thead>
+        <tbody>
+          <tr><td>camelCase</td><td><code>userName</code></td><td>JavaScript / TypeScript variables, Java methods, Swift</td></tr>
+          <tr><td>PascalCase</td><td><code>UserName</code></td><td>Class names (most languages), C# methods, React components</td></tr>
+          <tr><td>snake_case</td><td><code>user_name</code></td><td>Python, Ruby, Rust, database column names</td></tr>
+          <tr><td>kebab-case</td><td><code>user-name</code></td><td>URLs, CSS classes, HTML attributes, npm packages</td></tr>
+          <tr><td>UPPER_SNAKE</td><td><code>USER_NAME</code></td><td>Constants in most languages, environment variables</td></tr>
+          <tr><td>Title Case</td><td><code>User Name</code></td><td>Headings, proper-noun rendering</td></tr>
+          <tr><td>dot.case</td><td><code>user.name</code></td><td>Some config systems, Java property files</td></tr>
+        </tbody>
+      </table>
+      <p>Decision rule: variable name → camelCase (JS) or snake_case (Python). Class name → PascalCase. URL slug → kebab-case (use the <a href="/slug-generator">URL Slug Generator</a> for SEO-friendly slugs). Constant → UPPER_SNAKE. Don't mix conventions within a single language; ESLint/Pylint enforce the language norm automatically.</p>
+
+      <h3>Case converter alternative to convertcase.net — 4 reasons developers switched</h3>
+      <ol>
+        <li><strong>Programming-aware, not just text-aware.</strong> convertcase.net handles UPPERCASE / lowercase / Title / aLtErNaTiNg cases — useful for prose, useless for code. This tool handles every programming naming convention out of the box.</li>
+        <li><strong>Smart acronym splitting.</strong> <code>XMLHttpRequest</code> → <code>xml http request</code> (correct) instead of <code>xmlhttp request</code> (wrong). Critical for refactoring legacy Java/C# codebases with classic acronym-heavy class names.</li>
+        <li><strong>All cases visible simultaneously.</strong> Paste once, see all 7 outputs side-by-side. Most tools force you to pick one target case per click — slows down "what should this snake_case become?" exploration.</li>
+        <li><strong>No ads, no popups.</strong> Tools indexed for "case converter" almost universally inject ads. This page is browser-only, ad-free, persists nothing.</li>
+      </ol>
+      <p>Pair the case converter with the <a href="/slug-generator">URL Slug Generator</a> for SEO-friendly kebab slugs, the <a href="/string-escape">String Escape Tool</a> for character-level transformations, the <a href="/regex-tester">Regex Tester</a> for pattern-based renames, and the <a href="/text-tools">Code &amp; Text Tools hub</a> for the broader text manipulation toolkit.</p>
+
       <h2>Case convention best practices</h2>
       <ul>
         <li><strong>Follow your ecosystem's conventions.</strong> PEP 8 for Python, Airbnb/Standard for JS, Effective Go for Go. Rebellions cost code-review time forever.</li>
@@ -555,7 +610,7 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     <div class="faq-item open">
       <div class="faq-q" onclick="toggleFaq(this)">
         What are the different naming conventions in programming?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         The most common naming conventions are <code>camelCase</code> (JavaScript, Java variables), <code>PascalCase</code> (classes, React components), <code>snake_case</code> (Python, Ruby), <code>UPPER_SNAKE_CASE</code> (constants), <code>kebab-case</code> (CSS, URLs, HTML attributes), <code>Title Case</code> (headings), <code>dot.case</code> (property paths, package names), and <code>path/case</code> (file paths, module imports). Each convention is favored by different languages and communities, and consistency within a project is key.
@@ -565,7 +620,7 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do I convert camelCase to snake_case?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         To convert <code>camelCase</code> to <code>snake_case</code>, insert an underscore before each uppercase letter and then lowercase the entire string. For example, <code>myVariableName</code> becomes <code>my_variable_name</code>. This tool automatically detects camelCase word boundaries — including consecutive uppercase letters like <code>parseHTMLString</code> which becomes <code>parse_html_string</code>. Just paste your text and the conversion happens instantly.
@@ -575,7 +630,7 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         When should I use kebab-case vs snake_case?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         Use <code>kebab-case</code> for CSS class names, HTML attributes, URL slugs, and CLI flags — it is the web standard convention. Use <code>snake_case</code> for Python variables and functions, Ruby identifiers, database column names, and file names in many systems. The choice depends on the language or technology you are working with. JavaScript and CSS favor <code>camelCase</code> and <code>kebab-case</code> respectively, while Python and databases prefer <code>snake_case</code>. Consistency within a project matters more than the specific convention chosen.
@@ -585,7 +640,7 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is PascalCase and where is it used?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         <code>PascalCase</code> (also called UpperCamelCase) capitalizes the first letter of every word with no separators — for example, <code>MyClassName</code> or <code>UserProfileSettings</code>. It is used for class names in most object-oriented languages (Java, C#, Python, TypeScript), React and Vue component names, TypeScript interfaces and type aliases, C# method names and properties, and namespace declarations. PascalCase signals that an identifier represents a type, class, or constructor rather than a variable or function.
@@ -595,7 +650,7 @@ echo "userProfileXMLParser" | sed -E 's/([A-Z]+)/_\1/g; s/^_//' | tr '[:upper:]'
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do programming languages differ in naming conventions?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         Different languages have established conventions: <strong>JavaScript</strong> uses <code>camelCase</code> for variables and functions, <code>PascalCase</code> for classes. <strong>Python</strong> uses <code>snake_case</code> for variables and functions, <code>PascalCase</code> for classes, and <code>UPPER_SNAKE_CASE</code> for constants. <strong>Java</strong> uses <code>camelCase</code> for methods, <code>PascalCase</code> for classes. <strong>CSS</strong> uses <code>kebab-case</code> for properties and class names. <strong>Go</strong> uses <code>camelCase</code> for private and <code>PascalCase</code> for exported identifiers. <strong>Ruby</strong> uses <code>snake_case</code> for methods and variables, <code>PascalCase</code> for classes. Following these conventions improves readability and team collaboration.

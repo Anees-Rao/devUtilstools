@@ -3,10 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown Editor &amp; Live Preview Online — Free GFM Editor | FreeDevTool</title>
-  <meta name="description" content="Free Markdown editor with live preview. GitHub Flavored Markdown (GFM): tables, code blocks, task lists, strikethrough. Convert MD to HTML. Browser-based.">
-  <meta name="keywords" content="markdown editor, markdown preview, markdown to html, github flavored markdown, gfm online, readme editor, markdown converter, online md editor">
+  <title>Markdown Editor &amp; Live Preview — GFM | FreeDevTool</title>
+  <meta name="description" content="Free Markdown editor with live preview — GFM tables, code blocks, task lists, strikethrough. Convert MD to HTML. Browser-only.">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to preview Markdown live and convert to HTML",
+    "description": "Edit Markdown with split-pane live preview, GitHub Flavored Markdown support, and one-click HTML export.",
+    "step": [
+      {"@type":"HowToStep","name":"Type or paste Markdown","text":"Write Markdown in the left pane. The right pane renders the HTML preview live as you type."},
+      {"@type":"HowToStep","name":"Use GFM features","text":"Tables (| col |), task lists (- [ ]), strikethrough (~~), fenced code blocks (```js), and autolinks all work out of the box."},
+      {"@type":"HowToStep","name":"Copy as HTML or Markdown","text":"Click Copy as HTML for paste into a CMS, or Copy as Markdown to save the source."},
+      {"@type":"HowToStep","name":"Download the file","text":"Download as .md (source) or .html (rendered) for use in static site generators (Hugo, Jekyll, Eleventy, Astro)."}
+    ]
+  }
+  </script>
   <link rel="canonical" href="https://freedevtool.org/markdown-preview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,7 +133,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -626,6 +639,48 @@ pandoc input.md --from=gfm --to=html --standalone -o output.html
     </section>
 
     <section class="article-section">
+      <h2>Best Markdown editor for 2026 — what to compare</h2>
+      <p>Search results for "markdown editor online", "markdown preview", and "md to html" return many tools but most fail on real-world use: they don't support GFM tables (the most-used GFM feature), they break on fenced code blocks with curly braces, they don't sanitize HTML in the rendered output (XSS risk), or they upload your draft content to a server. Here's how the most-used Markdown editors compare in 2026:</p>
+      <table class="ref-table">
+        <thead><tr><th>Tool</th><th>GFM (tables, tasks, strikethrough)</th><th>Live split preview</th><th>Browser-only</th><th>HTML export</th><th>Cost</th></tr></thead>
+        <tbody>
+          <tr><td>FreeDevTool Markdown Preview</td><td>Yes (CommonMark + GFM)</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Free</td></tr>
+          <tr><td>dillinger.io</td><td>Yes</td><td>Yes</td><td>Mostly browser, cloud-save server-side</td><td>Yes</td><td>Free, ad-funded</td></tr>
+          <tr><td>stackedit.io</td><td>Yes</td><td>Yes</td><td>Browser + cloud sync</td><td>Yes</td><td>Free + paid</td></tr>
+          <tr><td>markdownlivepreview.com</td><td>Limited</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Free</td></tr>
+          <tr><td>VS Code "Open Preview" (Ctrl+K V)</td><td>Yes</td><td>Yes</td><td>Local IDE</td><td>Via export extensions</td><td>Free</td></tr>
+          <tr><td>Obsidian / Typora (apps)</td><td>Yes</td><td>WYSIWYG</td><td>Local</td><td>Yes</td><td>Free / Paid</td></tr>
+        </tbody>
+      </table>
+
+      <h3>What's the difference between CommonMark, GFM, and MultiMarkdown?</h3>
+      <table class="ref-table">
+        <thead><tr><th>Feature</th><th>CommonMark</th><th>GitHub Flavored Markdown (GFM)</th><th>MultiMarkdown</th></tr></thead>
+        <tbody>
+          <tr><td>Standardized</td><td>Yes (2014, current 0.31)</td><td>Yes (superset of CommonMark)</td><td>de-facto only</td></tr>
+          <tr><td>Tables</td><td>No</td><td>Yes (pipe syntax)</td><td>Yes</td></tr>
+          <tr><td>Task lists</td><td>No</td><td>Yes (- [ ] / - [x])</td><td>Yes</td></tr>
+          <tr><td>Strikethrough</td><td>No</td><td>Yes (~~text~~)</td><td>Yes</td></tr>
+          <tr><td>Autolinks</td><td>Limited</td><td>Yes (URLs auto-detected)</td><td>Yes</td></tr>
+          <tr><td>Footnotes</td><td>No</td><td>No (rendered as text)</td><td>Yes</td></tr>
+          <tr><td>Math (LaTeX)</td><td>No</td><td>No (GitHub adds via MathJax)</td><td>Yes</td></tr>
+          <tr><td>Used by</td><td>Spec baseline</td><td>GitHub, GitLab, Discourse</td><td>Pandoc, academic writing</td></tr>
+        </tbody>
+      </table>
+      <p>Decision rule: writing for GitHub/GitLab/blog → use GFM. Writing for a tool that says "CommonMark" → stick to CommonMark. Writing academic papers with footnotes/math → MultiMarkdown via Pandoc. This editor renders GFM (and thus CommonMark) — the most widely-supported variant in 2026.</p>
+
+      <h3>How do I preview Markdown locally without uploading my draft?</h3>
+      <p>Three options. <strong>1) This page</strong>: paste Markdown in the left pane; the right pane renders live via a CommonMark+GFM JavaScript parser running in your browser. Source never leaves the page. <strong>2) VS Code</strong>: <code>Ctrl+K V</code> opens a side preview of the active .md file — works offline. <strong>3) CLI</strong>: <code>pandoc input.md -o output.html</code> or <code>npx markdown-to-html input.md</code>. For drafts containing internal product names, customer references, or unannounced features, browser-only / local-only is the only safe choice. Avoid online editors with cloud-sync (StackEdit, Dillinger save-to-cloud) for sensitive drafts.</p>
+
+      <h3>Markdown editor alternative to dillinger.io — 4 reasons writers switched</h3>
+      <ol>
+        <li><strong>No cloud-save risk.</strong> Dillinger and StackEdit offer Dropbox/Google Drive sync — convenient, but uploads your draft. This page is browser-only with no save service.</li>
+        <li><strong>Sanitized HTML output.</strong> Default rendering strips inline <code>&lt;script&gt;</code>, <code>&lt;iframe&gt;</code>, and dangerous attributes — safe to paste rendered output into a CMS without re-sanitization.</li>
+        <li><strong>GFM-correct rendering.</strong> Tables, task lists, fenced code blocks, autolinks, strikethrough all match GitHub's rendering exactly. Useful when previewing READMEs before commit.</li>
+        <li><strong>Both .md and .html download.</strong> One-click export for either source or rendered output, ready to drop into Hugo/Jekyll/Astro/Eleventy content directories.</li>
+      </ol>
+      <p>Pair the Markdown editor with the <a href="/word-to-markdown">Word to Markdown Converter</a> for migrating Word documents, the <a href="/html-entity">HTML Entity Encoder</a> for special characters in MD, the <a href="/char-counter">Character Counter</a> for hitting blog-platform limits, and the <a href="/text-tools">Code &amp; Text Tools hub</a> for the broader writing toolkit.</p>
+
       <h2>Markdown best practices</h2>
       <ul>
         <li><strong>Stick to GFM.</strong> It's understood by every platform you'll publish on.</li>
@@ -667,23 +722,23 @@ pandoc input.md --from=gfm --to=html --standalone -o output.html
   <section class="faq-section">
     <h2>Frequently Asked Questions</h2>
     <div class="faq-item open">
-      <div class="faq-q" onclick="toggleFaq(this)">What is GitHub Flavored Markdown (GFM)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-q" onclick="toggleFaq(this)">What is GitHub Flavored Markdown (GFM)?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">GFM is GitHub's extension of John Gruber's original Markdown spec. It adds support for <strong>tables</strong> (using pipe syntax), <strong>fenced code blocks</strong> (triple backticks with language hints), <strong>task lists</strong> (<code>- [x]</code> checkboxes), <strong>strikethrough</strong> (<code>~~text~~</code>), <strong>autolinked URLs</strong>, and emoji shortcodes. GFM is the most widely used Markdown flavor across developer tools, documentation platforms, and content management systems.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">How do I convert Markdown to clean HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-q" onclick="toggleFaq(this)">How do I convert Markdown to clean HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Type or paste your Markdown in the editor above and the HTML is generated in real time. Click "Copy HTML" to get the converted output. The generated HTML uses semantic elements (<code>&lt;h1&gt;</code>–<code>&lt;h6&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;table&gt;</code>, <code>&lt;blockquote&gt;</code>) that are SEO-friendly and accessible. For production use, popular libraries include <strong>marked.js</strong>, <strong>markdown-it</strong>, and <strong>remark</strong>.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between Markdown and HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-q" onclick="toggleFaq(this)">What is the difference between Markdown and HTML?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a"><strong>Markdown</strong> is a lightweight markup language designed for human readability — it uses symbols like <code>#</code> for headings and <code>**</code> for bold. <strong>HTML</strong> is the full markup language of the web with tags like <code>&lt;h1&gt;</code> and <code>&lt;strong&gt;</code>. Markdown compiles to HTML for browser rendering. Markdown is faster to write and read; HTML offers granular control over structure and styling.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">What is the Markdown syntax for tables?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-q" onclick="toggleFaq(this)">What is the Markdown syntax for tables?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Use pipes <code>|</code> and dashes <code>-</code>: <code>| Header | Header |</code> on the first line, <code>| --- | --- |</code> for the separator, then <code>| Cell | Cell |</code> for data rows. Align columns with colons: <code>:---</code> (left), <code>:---:</code> (center), <code>---:</code> (right). Tables are a GFM extension — they're not in the original Markdown specification by John Gruber.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Can I use Markdown for SEO-optimized content?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-q" onclick="toggleFaq(this)">Can I use Markdown for SEO-optimized content?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Markdown itself doesn't affect SEO — what matters is the <strong>HTML it produces</strong>. Use proper heading hierarchy (H1 → H2 → H3), add alt text to images (<code>![alt text](url)</code>), structure content with semantic elements, and ensure the generated HTML is clean. Many static site generators like <strong>Hugo</strong>, <strong>Jekyll</strong>, <strong>Next.js</strong>, and <strong>Astro</strong> convert Markdown to SEO-optimized HTML with metadata support.</div>
     </div>
   </section>

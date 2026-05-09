@@ -178,7 +178,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -260,7 +260,7 @@
         </div>
         <div style="align-self:flex-end">
           <button class="btn btn-primary" onclick="generate()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             Generate UUIDs
           </button>
         </div>
@@ -481,7 +481,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item open">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is a UUID?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         A UUID (Universally Unique Identifier), also called GUID (Globally Unique Identifier), is a 128-bit identifier formatted as 32 hex digits in 5 groups: <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code>. It is designed to be unique across distributed systems without a central coordinator. UUID is standardized in RFC 4122 and used in databases, APIs, file systems, and distributed architectures worldwide.
@@ -491,7 +491,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is the difference between UUID v1, v4, and v5?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         <strong>v1</strong> — timestamp + MAC address. Unique but reveals when and where it was generated, which is a privacy risk. <br><br>
@@ -504,7 +504,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         Are v4 UUIDs truly unique?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         Statistically, yes. A v4 UUID has 122 random bits. The probability of generating even a single collision requires producing approximately <strong>2.71 quintillion UUIDs</strong>. For any real-world application, collisions are not a practical concern. This tool uses <code>crypto.randomUUID()</code> — a cryptographically secure random number generator — not <code>Math.random()</code>.
@@ -514,7 +514,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         UUID vs GUID — what is the difference?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         They are the same format. GUID is Microsoft's term, used in Windows APIs, .NET, C#, and SQL Server. UUID is the RFC standard term, used in Linux, Java, Python, PostgreSQL, and most non-Microsoft ecosystems. Both are 128-bit identifiers in the same <code>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code> format.
@@ -524,7 +524,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         Should I use UUID as a database primary key?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         UUIDs are excellent primary keys for distributed systems where you need to generate IDs on the client or across multiple services. Main benefits: globally unique, no ID enumeration attacks, client-generated. Main concern: random v4 UUIDs cause <strong>index fragmentation</strong> in MySQL/PostgreSQL B-tree indexes, which can harm write performance at scale. Solution: use UUID v7 (time-ordered) or ULID for high-write workloads.
@@ -534,7 +534,7 @@ Uuidx.v7</code></pre></div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do I generate a UUID in JavaScript, Python, or Go?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         <strong>JavaScript (browser):</strong> <code>crypto.randomUUID()</code><br>

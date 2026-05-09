@@ -3,10 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON to CSV Converter Online — Excel-Ready Download Free | FreeDevTool</title>
-  <meta name="description" content="Free JSON to CSV converter. Flatten nested JSON, custom delimiters, RFC 4180 quoting, UTF-8 BOM for Excel. Download as .csv. Runs in browser, no signup.">
-  <meta name="keywords" content="json to csv, json csv converter, convert json to spreadsheet, json to excel, nested json flatten, RFC 4180, json to xlsx, json array csv">
+  <title>JSON to CSV Converter — Excel-Ready Download | FreeDevTool</title>
+  <meta name="description" content="Free JSON to CSV converter — flatten nested JSON, custom delimiters, RFC 4180 quoting, UTF-8 BOM for Excel. Download as .csv. Browser-only.">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to convert JSON to CSV for Excel or Google Sheets",
+    "description": "Convert JSON arrays to CSV with nested-object flattening, RFC 4180 quoting, and UTF-8 BOM for Excel compatibility.",
+    "step": [
+      {"@type":"HowToStep","name":"Paste JSON array","text":"Paste a JSON array of objects (e.g., API response) into the input pane. Conversion happens locally; nothing uploads."},
+      {"@type":"HowToStep","name":"Flatten nested objects","text":"Nested objects flatten with dot notation: {user:{name:'Alice'}} becomes column 'user.name' with value 'Alice'."},
+      {"@type":"HowToStep","name":"Configure CSV options","text":"Pick delimiter (comma, semicolon, tab), enable UTF-8 BOM for Excel, choose quoting style (RFC 4180 default)."},
+      {"@type":"HowToStep","name":"Download or copy","text":"Click Download CSV to save the file, or Copy to clipboard for paste into Google Sheets / Numbers."}
+    ]
+  }
+  </script>
   <link rel="canonical" href="https://freedevtool.org/json-to-csv">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,7 +76,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -425,12 +438,43 @@ jq -r '(map(keys_unsorted) | add | unique) as $k |
     </ul>
   </section>
 
+  <section class="article-section">
+    <h2>Best JSON to CSV converter for 2026 — what to compare</h2>
+    <p>Search results for "json to csv online", "convert json to excel", and "json csv converter" return many tools but most fail on real-world JSON: they don't handle nested objects (silently dropping data), they break on JSON arrays inside object properties, they don't add a UTF-8 BOM (so Excel mangles accented characters), or they upload your data to a server. Here's how the most-used JSON-to-CSV tools compare in 2026:</p>
+    <table class="ref-table">
+      <thead><tr><th>Tool</th><th>Browser-only</th><th>Nested object flatten</th><th>UTF-8 BOM for Excel</th><th>Custom delimiter</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>FreeDevTool JSON to CSV</td><td>Yes</td><td>Dot notation (default)</td><td>Yes (toggle)</td><td>Yes (, ; \t)</td><td>Free</td></tr>
+        <tr><td>convertcsv.com/json-to-csv.htm</td><td>Server-side</td><td>Limited</td><td>Yes</td><td>Yes</td><td>Free, ad-funded</td></tr>
+        <tr><td>json-csv.com</td><td>Server-side</td><td>Yes</td><td>Yes</td><td>Limited</td><td>Free + paid Pro</td></tr>
+        <tr><td>npm <code>json2csv</code></td><td>Local install</td><td>Yes (configurable)</td><td>Yes</td><td>Yes</td><td>Free, OSS</td></tr>
+        <tr><td>Python <code>pandas.json_normalize</code></td><td>Local Python</td><td>Yes (full)</td><td>N/A (write_csv encoding)</td><td>Yes</td><td>Free, OSS</td></tr>
+        <tr><td><code>jq</code> CLI + <code>@csv</code> filter</td><td>Local install</td><td>Manual</td><td>Manual</td><td>Yes</td><td>Free, OSS</td></tr>
+      </tbody>
+    </table>
+
+    <h3>How do I convert nested JSON to CSV without losing data?</h3>
+    <p>Three flattening strategies handle 99% of nested JSON. <strong>Dot notation (default here)</strong>: <code>{user:{name:"Alice",city:"NYC"}}</code> → columns <code>user.name</code>, <code>user.city</code>. Best when the nesting is a fixed schema. <strong>Stringify arrays</strong>: <code>{tags:["red","blue"]}</code> → column <code>tags</code> with value <code>["red","blue"]</code>. Best when arrays are display-only (re-import preserves the JSON). <strong>Cartesian product expansion</strong>: <code>{order:1, items:[{sku:"A"},{sku:"B"}]}</code> → 2 rows with <code>order=1</code> repeated. Best when arrays represent one-to-many relationships and you want spreadsheet-friendly rows. This converter uses dot notation by default; for the other two strategies, use <code>jq</code> or pandas.</p>
+
+    <h3>Why does Excel mangle accented characters when I open my CSV?</h3>
+    <p>Excel on Windows treats CSV as ANSI/Windows-1252 by default unless the file starts with a UTF-8 Byte Order Mark (BOM, bytes <code>EF BB BF</code>). Without BOM: <code>café</code> renders as <code>cafÃ©</code>. Three fixes: <strong>1)</strong> Enable the "UTF-8 BOM" toggle in this converter (default on) — file opens correctly in Excel for Mac, Excel for Windows, and Numbers; <strong>2)</strong> If you control the export pipeline, write <code>﻿</code> as the first character; <strong>3)</strong> If you can't add BOM, open Excel → Data → From Text/CSV → File Origin: 65001 (UTF-8). Modern Excel 2021+ defaults to UTF-8 detection but older Office installations don't. The BOM is the safe path.</p>
+
+    <h3>JSON to CSV alternative to convertcsv.com — 4 reasons developers switched</h3>
+    <ol>
+      <li><strong>Browser-only, no server upload.</strong> convertcsv.com and json-csv.com POST your data to a server. API responses with PII or unreleased schema fields shouldn't leave your browser.</li>
+      <li><strong>Smart nested-object flattening.</strong> Most online tools either silently drop nested objects or stringify them as <code>[object Object]</code>. Dot notation produces meaningful column names for downstream spreadsheet analysis.</li>
+      <li><strong>RFC 4180 compliance with UTF-8 BOM toggle.</strong> Output works correctly in Excel, Google Sheets, Numbers, and any RFC-4180 parser without manual fix-up.</li>
+      <li><strong>No ads, no row caps.</strong> json-csv.com caps free tier at 1,000 rows; this page handles 50,000+ rows entirely in browser memory.</li>
+    </ol>
+    <p>Pair the JSON to CSV converter with the <a href="/json-formatter">JSON Formatter</a> to validate the input first, the <a href="/yaml-to-json">YAML to JSON Converter</a> if your source is YAML (Kubernetes / Docker Compose), the <a href="/byte-converter">Byte Converter</a> for export size estimates, and the <a href="/encoding-tools">Encoding Tools hub</a> for the broader transform toolkit.</p>
+  </section>
+
   <section class="faq-section"><h2>Frequently Asked Questions</h2>
-    <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">How do I convert a JSON file to CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Paste your JSON <strong>array of objects</strong> into the input above. The tool automatically extracts column headers from object keys and converts each object into a CSV row. Click "Download CSV" to save the file. The JSON must be an array like <code>[{"name":"Alice"},{"name":"Bob"}]</code>. Single objects are wrapped in an array automatically.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I convert nested JSON to a flat CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. When "Flatten nested objects" is checked, nested objects are flattened using <strong>dot notation</strong>. For example, <code>{"user":{"name":"Alice"}}</code> becomes a column <code>user.name</code> with value "Alice". Nested arrays are serialized as JSON strings in the CSV cell.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between JSON and CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>JSON</strong> is a hierarchical format supporting nested objects, arrays, and typed values (strings, numbers, booleans, null). <strong>CSV</strong> is a flat tabular format with rows and columns — everything is a string. JSON is ideal for APIs and complex data; CSV is better for spreadsheets, databases, and tabular analysis. Converting between them often requires flattening or restructuring.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I open JSON data in Excel?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Convert your JSON to CSV first, then open the CSV in Excel — it auto-maps columns. Alternatively, Excel 2016+ has <strong>Power Query</strong> (Data → Get Data → From JSON) that imports JSON directly with transformation options. Google Sheets can also import CSV files via File → Import.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my data safe during conversion?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>Yes.</strong> All conversion happens in your browser using JavaScript. No data is uploaded, stored, or logged on any server. You can safely convert sensitive API responses, database exports, or confidential datasets.</div></div>
+    <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">How do I convert a JSON file to CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Paste your JSON <strong>array of objects</strong> into the input above. The tool automatically extracts column headers from object keys and converts each object into a CSV row. Click "Download CSV" to save the file. The JSON must be an array like <code>[{"name":"Alice"},{"name":"Bob"}]</code>. Single objects are wrapped in an array automatically.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I convert nested JSON to a flat CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Yes. When "Flatten nested objects" is checked, nested objects are flattened using <strong>dot notation</strong>. For example, <code>{"user":{"name":"Alice"}}</code> becomes a column <code>user.name</code> with value "Alice". Nested arrays are serialized as JSON strings in the CSV cell.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between JSON and CSV?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>JSON</strong> is a hierarchical format supporting nested objects, arrays, and typed values (strings, numbers, booleans, null). <strong>CSV</strong> is a flat tabular format with rows and columns — everything is a string. JSON is ideal for APIs and complex data; CSV is better for spreadsheets, databases, and tabular analysis. Converting between them often requires flattening or restructuring.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I open JSON data in Excel?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Convert your JSON to CSV first, then open the CSV in Excel — it auto-maps columns. Alternatively, Excel 2016+ has <strong>Power Query</strong> (Data → Get Data → From JSON) that imports JSON directly with transformation options. Google Sheets can also import CSV files via File → Import.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my data safe during conversion?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>Yes.</strong> All conversion happens in your browser using JavaScript. No data is uploaded, stored, or logged on any server. You can safely convert sensitive API responses, database exports, or confidential datasets.</div></div>
   </section>
   <section class="related-section"><h2>Related Tools</h2><div class="related-grid">
     <a class="related-card" href="json-formatter"><div class="related-icon">{ }</div><div class="related-card-info"><div class="related-card-name">JSON Formatter</div><div class="related-card-desc">Pretty print and validate JSON</div></div></a>

@@ -3,9 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Git Commands Cheatsheet — 60+ Commands Reference | FreeDevTool</title>
-  <meta name="description" content="Browse a searchable git commands cheatsheet with 60+ commands, real examples, and a 10-step learning path. Covers branching, rebasing, stashing, and more.">
+  <title>Git Cheatsheet — 60+ Commands &amp; Examples | FreeDevTool</title>
+  <meta name="description" content="Free git commands cheatsheet — 60+ commands, real examples, 10-step learning path. Branching, rebasing, stashing, conflict resolution.">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to use the git commands cheatsheet",
+    "description": "Quickly find any git command with live search, copy-ready examples, and a 10-step learning path for newcomers.",
+    "step": [
+      {"@type":"HowToStep","name":"Search by command or task","text":"Type the command (e.g., 'rebase') or task (e.g., 'undo last commit') in the search box. Results filter live."},
+      {"@type":"HowToStep","name":"Browse by category","text":"Or browse 11 categories: setup, basics, branching, merging, rebasing, stashing, history, undoing, remotes, tags, advanced."},
+      {"@type":"HowToStep","name":"Copy the example","text":"Click any command to copy its example to clipboard, ready to paste in terminal."},
+      {"@type":"HowToStep","name":"Follow the learning path","text":"New to git? Follow the 10-step path: init → add → commit → branch → checkout → merge → push → pull → log → reset."}
+    ]
+  }
+  </script>
   <link rel="canonical" href="https://freedevtool.org/git-cheatsheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,7 +102,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -356,13 +370,53 @@ coverage/
   </section>
 
   <section class="faq-section">
+    <h2>Best git cheatsheet for 2026 — what to compare</h2>
+    <p>Search results for "git cheatsheet", "git commands list", and "git commands pdf" return many static cheat-sheets but most are outdated (no <code>git switch</code> or <code>git restore</code> from 2.23+), incomplete (missing rebase --autosquash, sparse-checkout, worktree), or don't surface the modern recovery patterns (reflog, fsck) that pull you out of real git messes. Here's how the most-used git references compare in 2026:</p>
+    <table class="ref-table">
+      <thead><tr><th>Resource</th><th>Modern verbs (switch/restore)</th><th>Recovery patterns</th><th>Searchable</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>FreeDevTool Git Cheatsheet</td><td>Yes</td><td>reflog + fsck + cherry-pick recovery</td><td>Live filter</td><td>Free</td></tr>
+        <tr><td>GitHub git cheatsheet PDF</td><td>Limited</td><td>Basics only</td><td>No (PDF)</td><td>Free</td></tr>
+        <tr><td>Atlassian git cheatsheet</td><td>Yes</td><td>Limited</td><td>No</td><td>Free</td></tr>
+        <tr><td>git-scm.com Pro Git book</td><td>Yes</td><td>Full</td><td>No (browse)</td><td>Free, OSS</td></tr>
+        <tr><td>Oh My Git! (game)</td><td>Yes</td><td>Interactive</td><td>N/A</td><td>Free</td></tr>
+      </tbody>
+    </table>
+
+    <h3>What's the difference between git reset, git revert, and git restore in 2026?</h3>
+    <table class="ref-table">
+      <thead><tr><th>Command</th><th>Affects</th><th>Safe on shared branch?</th><th>Use case</th></tr></thead>
+      <tbody>
+        <tr><td><code>git reset --hard HEAD~1</code></td><td>Branch pointer + working tree + staging</td><td>❌ NEVER</td><td>Throw away local commits before push</td></tr>
+        <tr><td><code>git reset --soft HEAD~1</code></td><td>Branch pointer only</td><td>❌ NEVER</td><td>Keep changes staged, redo last commit</td></tr>
+        <tr><td><code>git reset --mixed HEAD~1</code></td><td>Branch pointer + staging</td><td>❌ NEVER</td><td>Default reset; unstage but keep changes</td></tr>
+        <tr><td><code>git revert HEAD</code></td><td>Creates new inverse commit</td><td>✅ YES</td><td>Undo a pushed commit on shared branch</td></tr>
+        <tr><td><code>git restore --staged file</code></td><td>Unstages a file (modern syntax)</td><td>✅ YES</td><td>Replace <code>git reset HEAD file</code></td></tr>
+        <tr><td><code>git restore file</code></td><td>Discards working tree changes</td><td>✅ YES</td><td>Replace <code>git checkout -- file</code></td></tr>
+        <tr><td><code>git switch branch</code></td><td>Move HEAD to branch</td><td>✅ YES</td><td>Replace <code>git checkout branch</code></td></tr>
+      </tbody>
+    </table>
+    <p>Decision rule: locally only → reset is fine. Pushed already → always revert. Modern syntax (since git 2.23, late 2019) prefers <code>switch</code> + <code>restore</code> over the overloaded <code>checkout</code>. Update muscle memory.</p>
+
+    <h3>How do I recover a deleted git branch or lost commit?</h3>
+    <p>Three recovery commands cover 95% of git accidents. <strong>One</strong>: <code>git reflog</code> shows every change to HEAD over the last 90 days, including deleted branches and reset commits. Find your lost commit's SHA, then <code>git checkout -b recovered-branch &lt;SHA&gt;</code>. <strong>Two</strong>: <code>git fsck --lost-found</code> walks the object database and surfaces dangling commits not reachable from any branch — useful when a commit was made then the branch was deleted before push. <strong>Three</strong>: <code>git cherry-pick &lt;SHA&gt;</code> applies a single commit from anywhere (including reflog SHAs) onto your current branch. As long as you haven't run <code>git gc --prune=now</code>, lost commits stay in the object database for ~14 days minimum (default <code>gc.pruneExpire</code>).</p>
+
+    <h3>Git cheatsheet alternative to GitHub PDF — 4 reasons developers switched</h3>
+    <ol>
+      <li><strong>Modern command verbs.</strong> Includes <code>git switch</code> and <code>git restore</code> (introduced 2019); most static PDFs still teach the overloaded <code>git checkout</code> for both branch-switching and file-restoring.</li>
+      <li><strong>Live search across 60+ commands.</strong> Type "rebase" or "stash" to filter instantly; PDFs require Ctrl+F across multiple pages.</li>
+      <li><strong>Recovery patterns surfaced.</strong> reflog, fsck, cherry-pick from SHA — the patterns you actually need when something goes wrong on Friday afternoon.</li>
+      <li><strong>10-step learning path for new users.</strong> Linear init → add → commit → branch → checkout → merge → push → pull → log → reset progression instead of overwhelming alphabet-soup reference.</li>
+    </ol>
+    <p>Pair the git cheatsheet with the <a href="/chmod-calculator">Chmod Calculator</a> for SSH-key permission errors (<code>chmod 600 ~/.ssh/id_rsa</code>), the <a href="/cron-parser">Cron Expression Parser</a> for scheduled git pulls, and the <a href="/devops-tools">DevOps Tools hub</a> for the broader CLI utility toolkit.</p>
+
     <h2>Frequently Asked Questions</h2>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between git reset and git revert?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>git reset</strong> rewrites history by moving the current branch pointer backward — the commits it moves past become unreachable (though recoverable via reflog for a while). <strong>git revert</strong> creates a new commit that applies the inverse of a previous commit's changes, leaving history intact. Use <code>revert</code> on shared branches where other people may have pulled the commits you want to undo; reset is only safe on private branches nobody else has seen.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">When should I use git rebase instead of merge?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Use <strong>rebase</strong> when you want a clean linear history on a feature branch before merging it into main — it replays your commits on top of the latest base, avoiding merge commits. Use <strong>merge</strong> when you want to preserve the exact parallel history of branches including the point they joined. The golden rule: <em>never rebase commits that exist outside your local repo and that other people may have based work on</em>. Rebase private work; merge public work.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I undo the last commit in git?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">If you haven't pushed yet: <code>git reset --soft HEAD~1</code> keeps your changes staged, <code>git reset --mixed HEAD~1</code> (the default) keeps them unstaged but in your working tree, and <code>git reset --hard HEAD~1</code> discards them entirely. If you've already pushed, don't reset — use <code>git revert HEAD</code> to create an inverse commit that's safe to push on shared branches. To fix just the commit message, <code>git commit --amend</code> opens your editor to edit the previous commit.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does git stash do?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">git stash saves your uncommitted changes (tracked files by default) onto a stack and reverts your working directory back to the state of HEAD. It's perfect when you need to quickly switch branches without committing half-finished work. Restore with <code>git stash pop</code> (applies the top stash and removes it from the stack) or <code>git stash apply</code> (applies without removing). Add untracked files with <code>git stash -u</code>, and name stashes with <code>git stash push -m "message"</code>.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I resolve a merge conflict?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">When git reports a conflict, it inserts markers into the affected files: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code> surrounding the conflicting regions. Open each conflicted file, edit it to the desired final state (removing all markers), then <code>git add</code> the file to mark the conflict resolved. When all conflicts are resolved, <code>git commit</code> completes the merge. To bail out, <code>git merge --abort</code> returns to the pre-merge state. For rebases, use <code>git rebase --continue</code> or <code>git rebase --abort</code>.</div></div>
-    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What's the safest way to rewrite history on a shared branch?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Don't. Seriously — if other people have pulled the branch, rewriting it forces them to untangle their local state, which is error-prone and frustrating. If you <em>must</em> force-push (for example, to remove leaked secrets), coordinate with your team first, use <code>git push --force-with-lease</code> (safer than <code>--force</code> because it fails if someone else pushed in the meantime), and make sure everyone re-clones or runs <code>git fetch && git reset --hard origin/branch</code> after. For routine history cleanup, squash locally before pushing.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What is the difference between git reset and git revert?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a"><strong>git reset</strong> rewrites history by moving the current branch pointer backward — the commits it moves past become unreachable (though recoverable via reflog for a while). <strong>git revert</strong> creates a new commit that applies the inverse of a previous commit's changes, leaving history intact. Use <code>revert</code> on shared branches where other people may have pulled the commits you want to undo; reset is only safe on private branches nobody else has seen.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">When should I use git rebase instead of merge?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Use <strong>rebase</strong> when you want a clean linear history on a feature branch before merging it into main — it replays your commits on top of the latest base, avoiding merge commits. Use <strong>merge</strong> when you want to preserve the exact parallel history of branches including the point they joined. The golden rule: <em>never rebase commits that exist outside your local repo and that other people may have based work on</em>. Rebase private work; merge public work.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I undo the last commit in git?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">If you haven't pushed yet: <code>git reset --soft HEAD~1</code> keeps your changes staged, <code>git reset --mixed HEAD~1</code> (the default) keeps them unstaged but in your working tree, and <code>git reset --hard HEAD~1</code> discards them entirely. If you've already pushed, don't reset — use <code>git revert HEAD</code> to create an inverse commit that's safe to push on shared branches. To fix just the commit message, <code>git commit --amend</code> opens your editor to edit the previous commit.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What does git stash do?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">git stash saves your uncommitted changes (tracked files by default) onto a stack and reverts your working directory back to the state of HEAD. It's perfect when you need to quickly switch branches without committing half-finished work. Restore with <code>git stash pop</code> (applies the top stash and removes it from the stack) or <code>git stash apply</code> (applies without removing). Add untracked files with <code>git stash -u</code>, and name stashes with <code>git stash push -m "message"</code>.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How do I resolve a merge conflict?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">When git reports a conflict, it inserts markers into the affected files: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt; branch-name</code> surrounding the conflicting regions. Open each conflicted file, edit it to the desired final state (removing all markers), then <code>git add</code> the file to mark the conflict resolved. When all conflicts are resolved, <code>git commit</code> completes the merge. To bail out, <code>git merge --abort</code> returns to the pre-merge state. For rebases, use <code>git rebase --continue</code> or <code>git rebase --abort</code>.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What's the safest way to rewrite history on a shared branch?<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div><div class="faq-a">Don't. Seriously — if other people have pulled the branch, rewriting it forces them to untangle their local state, which is error-prone and frustrating. If you <em>must</em> force-push (for example, to remove leaked secrets), coordinate with your team first, use <code>git push --force-with-lease</code> (safer than <code>--force</code> because it fails if someone else pushed in the meantime), and make sure everyone re-clones or runs <code>git fetch && git reset --hard origin/branch</code> after. For routine history cleanup, squash locally before pushing.</div></div>
   </section>
 
   <section class="related-section">

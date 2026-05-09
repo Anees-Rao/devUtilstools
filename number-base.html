@@ -3,9 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Number Base Converter Online — Binary, Hex, Octal, Decimal Free | FreeDevTool</title>
-  <meta name="description" content="Convert between binary, decimal, hexadecimal, and octal instantly. Supports any base from 2 to 36 with BigInt precision, bit-length display, and grouped nibbles. Free number base converter.">
+  <title>Number Base Converter — Binary, Hex, Octal | FreeDevTool</title>
+  <meta name="description" content="Free number base converter — binary, decimal, hex, octal, any base 2-36. BigInt precision, bit-length, grouped nibbles. Browser-only.">
   <meta name="robots" content="index, follow">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to convert numbers between binary, decimal, hex, and octal",
+    "description": "Convert any number between bases 2 through 36 with BigInt precision, bit-length display, and two's complement support.",
+    "step": [
+      {"@type":"HowToStep","name":"Enter the number","text":"Type the number in any of the input fields (binary, decimal, hex, or octal). All other bases update simultaneously."},
+      {"@type":"HowToStep","name":"Choose source base if non-standard","text":"For arbitrary bases (2-36), pick the source base from the dropdown — useful for base32 (Crockford), base36 (alphanumeric), or hex variants."},
+      {"@type":"HowToStep","name":"Read all conversions","text":"Binary, octal, decimal, hex (and your custom base) display side-by-side with bit-length and grouped-nibble formatting."},
+      {"@type":"HowToStep","name":"Copy the result","text":"Click any output to copy. Hex with 0x prefix, binary with 0b prefix, decimal as-is — match the format your code expects."}
+    ]
+  }
+  </script>
   <link rel="canonical" href="https://freedevtool.org/number-base">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -318,7 +332,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -442,11 +456,11 @@
 
       <div class="action-row">
         <button class="action-btn" onclick="swapEndian()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
           Swap Endianness
         </button>
         <button class="action-btn" onclick="clearAll()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           Clear All
         </button>
       </div>
@@ -572,12 +586,54 @@
 
   <!-- FAQ -->
   <section class="faq-section">
+    <h2>Best number base converter for 2026 — what to compare</h2>
+    <p>Search results for "binary to decimal", "hex converter", "number base converter" return many tools but most fail on real-world numbers: they cap at 32-bit (silently truncating large values), they don't handle two's complement for negative numbers, they only support binary/octal/decimal/hex (skipping base32, base36, base58 for crypto), or they don't display the bit-length / grouped-nibble formatting needed for low-level debugging. Here's how the most-used base converters compare in 2026:</p>
+    <table class="ref-table">
+      <thead><tr><th>Tool</th><th>BigInt (no precision loss)</th><th>Bases supported</th><th>Two's complement</th><th>Bit length display</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td>FreeDevTool Number Base</td><td>Yes</td><td>2 through 36</td><td>Yes</td><td>Yes (with grouping)</td><td>Free</td></tr>
+        <tr><td>rapidtables.com/convert/number</td><td>32-bit limit</td><td>Bin/Oct/Dec/Hex</td><td>No</td><td>No</td><td>Free, ad-funded</td></tr>
+        <tr><td>binaryhexconverter.com</td><td>Limited</td><td>Bin/Oct/Dec/Hex</td><td>No</td><td>No</td><td>Free, ad-heavy</td></tr>
+        <tr><td>Windows Calculator (Programmer mode)</td><td>64-bit</td><td>Bin/Oct/Dec/Hex</td><td>Yes</td><td>Yes</td><td>Built-in</td></tr>
+        <tr><td>JavaScript <code>parseInt(str, base)</code></td><td>53-bit float</td><td>2-36</td><td>Manual</td><td>Manual</td><td>Built-in</td></tr>
+        <tr><td>Python <code>int(str, base)</code></td><td>Arbitrary precision</td><td>2-36</td><td>Manual</td><td>Manual</td><td>Built-in</td></tr>
+      </tbody>
+    </table>
+
+    <h3>How do I convert binary to decimal (or hex to decimal) online?</h3>
+    <p>Type your binary number in the binary input field — decimal, octal, and hex update instantly. The converter uses JavaScript BigInt internally so a 200-bit binary number converts without precision loss (unlike <code>parseInt</code> which silently rounds past 53 bits). For binary like <code>11010110</code>: type or paste the digits, see decimal <code>214</code>, hex <code>0xD6</code>, octal <code>0o326</code> instantly. For hex with prefix: type <code>0xDEADBEEF</code> or just <code>DEADBEEF</code> — both parse. The bit-length indicator shows the minimum bits required (8 bits for <code>0xD6</code>, 32 bits for <code>0xDEADBEEF</code>) which matters for fixed-width register debugging.</p>
+
+    <h3>What's the difference between binary, octal, decimal, hex, and base64?</h3>
+    <table class="ref-table">
+      <thead><tr><th>Base</th><th>Digits used</th><th>Common use</th></tr></thead>
+      <tbody>
+        <tr><td>Binary (2)</td><td>0, 1</td><td>Bitwise ops, low-level memory representation</td></tr>
+        <tr><td>Octal (8)</td><td>0-7</td><td>Unix file permissions (chmod 755)</td></tr>
+        <tr><td>Decimal (10)</td><td>0-9</td><td>Default human notation</td></tr>
+        <tr><td>Hexadecimal (16)</td><td>0-9, a-f</td><td>Color codes (#FF0000), memory addresses, byte representation</td></tr>
+        <tr><td>Base32 (Crockford)</td><td>0-9, a-z minus i, l, o, u</td><td>ULID, AWS S3 ARN, human-typeable IDs</td></tr>
+        <tr><td>Base36</td><td>0-9, a-z</td><td>Compact alphanumeric IDs, short URL slugs</td></tr>
+        <tr><td>Base58 (Bitcoin)</td><td>1-9, A-Z, a-z minus 0/O/I/l</td><td>Bitcoin/Monero addresses, short IDs</td></tr>
+        <tr><td>Base64</td><td>A-Z, a-z, 0-9, +, /</td><td>Binary-to-text encoding (use <a href="/base64-encoder">Base64 Encoder</a>)</td></tr>
+      </tbody>
+    </table>
+    <p>Decision rule: bitwise debugging → binary. Linux file perms → octal. Color/memory/byte → hex. Database short IDs → base36. Crypto / Bitcoin → base58. Binary blob in JSON → base64 (different operation, see <a href="/base64-encoder">Base64 Encoder</a>).</p>
+
+    <h3>Number base converter alternative to rapidtables.com — 4 reasons developers switched</h3>
+    <ol>
+      <li><strong>BigInt support — no 32-bit truncation.</strong> rapidtables silently truncates numbers above 2^32. This converter handles arbitrary-precision integers (200+ bits) for debugging large hashes or hex memory dumps.</li>
+      <li><strong>Two's complement for negative numbers.</strong> Type <code>-1</code> and see the two's-complement bit pattern at any bit-width (8/16/32/64) — useful for embedded systems and bit-flag debugging.</li>
+      <li><strong>Bases 2 through 36, not just 4.</strong> base32 (Crockford), base36 (short IDs), and any custom radix work in addition to binary/octal/decimal/hex.</li>
+      <li><strong>No ads, no popups.</strong> rapidtables and binaryhexconverter both inject ads. This page is browser-only and ad-free.</li>
+    </ol>
+    <p>Pair the number base converter with the <a href="/hex-to-rgb">Hex to RGB Converter</a> for color work, the <a href="/chmod-calculator">Chmod Calculator</a> for octal Unix permissions, the <a href="/byte-converter">Byte Converter</a> for KB/MB/GB conversion, and the <a href="/encoding-tools">Encoding Tools hub</a> for the broader transform toolkit.</p>
+
     <h2>Frequently Asked Questions</h2>
 
     <div class="faq-item open">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do I convert binary to decimal?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         To convert binary to decimal, multiply each bit by 2 raised to the power of its position (starting from 0 on the right) and sum the results. For example, binary <code>1011</code> = (1 &times; 2&sup3;) + (0 &times; 2&sup2;) + (1 &times; 2&sup1;) + (1 &times; 2&sup0;) = 8 + 0 + 2 + 1 = <strong>11</strong> in decimal. This positional notation principle applies to all numeral systems — the digit value is multiplied by the base raised to its position index.
@@ -587,7 +643,7 @@
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is hexadecimal and why is it used in programming?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         Hexadecimal (base-16) uses digits <code>0–9</code> and letters <code>A–F</code>. Each hex digit maps to exactly 4 binary bits (a nibble), making it a compact way to represent binary data. For example, <code>0xFF</code> = <code>11111111</code> in binary = <code>255</code> in decimal. Programmers use hex for memory addresses, color codes, byte values, and bitwise operations because it is far more readable than long binary strings while maintaining a direct relationship with the underlying binary system.
@@ -597,7 +653,7 @@
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do I convert between octal and binary?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         Each octal digit corresponds to exactly 3 binary bits. To convert octal to binary, replace each digit with its 3-bit binary equivalent: 0=<code>000</code>, 1=<code>001</code>, 2=<code>010</code>, 3=<code>011</code>, 4=<code>100</code>, 5=<code>101</code>, 6=<code>110</code>, 7=<code>111</code>. For example, octal <code>357</code> = <code>011 101 111</code> in binary. To go from binary to octal, group binary digits into sets of 3 from the right and convert each group to its octal equivalent.
@@ -607,7 +663,7 @@
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What bases are commonly used in computer science?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         The most common bases are: <strong>Binary (base-2)</strong> — the fundamental language of computers, using 0s and 1s. <strong>Octal (base-8)</strong> — used in Unix file permissions and some legacy systems. <strong>Decimal (base-10)</strong> — the standard human numeral system. <strong>Hexadecimal (base-16)</strong> — widely used for memory addresses, color codes, and representing byte values compactly. Some systems also use base-36 (digits + entire alphabet) for compact ID encoding.
@@ -617,7 +673,7 @@
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is the difference between signed and unsigned binary numbers?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         <strong>Unsigned</strong> binary numbers represent only non-negative values — an 8-bit unsigned number ranges from 0 to 255. <strong>Signed</strong> binary uses the most significant bit (MSB) as a sign indicator. In two's complement (the most common signed representation), an 8-bit signed number ranges from &minus;128 to 127. The binary value <code>11111111</code> is 255 when unsigned, but &minus;1 in signed two's complement. Understanding this distinction is crucial for low-level programming and bitwise operations in languages like C and Rust.

@@ -187,7 +187,7 @@
   <a class="nav-logo" href="/" aria-label="FreeDevTool home"><svg class="logo-mark" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none"><rect x="1" y="1" width="22" height="22" rx="6" fill="currentColor" opacity=".12"/><path d="M9.5 8.5L6 12l3.5 3.5M14.5 8.5L18 12l-3.5 3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>FreeDevTool</a>
   <div class="nav-links">
     <div class="nav-dropdown" id="tools-dropdown">
-      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <a href="all-tools" onclick="event.preventDefault();this.parentElement.classList.toggle('open')" aria-haspopup="true">Tools <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="nav-dropdown-menu">
         <a href="encoding-tools">
           <div class="dd-icon">b64</div>
@@ -747,7 +747,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item open">
       <div class="faq-q" onclick="toggleFaq(this)">
         Is MD5 still safe to use in 2026?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         MD5 is <strong>cryptographically broken</strong> — practical collision attacks have been demonstrated since 2004. <strong>Do not use MD5</strong> for security purposes like password hashing, digital signatures, or certificate verification. MD5 is still acceptable for non-security uses: file checksums (detecting accidental corruption), cache keys, deduplication, and ETags. For any security-related use, switch to <strong>SHA-256</strong> or <strong>SHA-3</strong>.
@@ -757,7 +757,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is the difference between MD5, SHA-1, and SHA-256?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         <strong>MD5</strong> produces a 128-bit (32 hex character) hash — cryptographically broken since 2004. <strong>SHA-1</strong> produces 160-bit (40 hex character) hashes — broken since the SHAttered attack in 2017. <strong>SHA-256</strong> (SHA-2 family) produces 256-bit (64 hex character) hashes and remains secure for all purposes as of 2026. <strong>SHA-512</strong> provides 512-bit hashes (128 hex characters) and can be faster than SHA-256 on 64-bit systems.
@@ -767,7 +767,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         Can you reverse an MD5 or SHA-256 hash?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         No. Cryptographic hash functions are mathematically <strong>one-way</strong> — you cannot reverse them to get the original input. However, short or common inputs can be found via rainbow tables or brute-force attacks. This is why password hashing uses intentionally slow algorithms like <strong>bcrypt</strong> or <strong>Argon2id</strong> with unique salts, not raw MD5 or SHA-256.
@@ -777,7 +777,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         Should I use SHA-256 for password hashing?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         No. SHA-256 is too fast for passwords — an attacker can try billions of guesses per second on modern GPUs. Use purpose-built password hashing algorithms: <strong>Argon2id</strong> (recommended), <strong>bcrypt</strong>, or <strong>scrypt</strong>. These are intentionally slow, memory-hard, and include automatic salting to prevent rainbow table attacks. Argon2id is the current OWASP recommendation and the winner of the Password Hashing Competition.
@@ -787,7 +787,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         What is a hash collision?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         A collision occurs when two different inputs produce the identical hash output. For MD5 and SHA-1, researchers can deliberately craft colliding inputs (e.g., the SHAttered attack created two different PDFs with the same SHA-1 hash). This breaks digital signatures and certificate integrity. <strong>SHA-256 has no known practical collision attacks</strong> — it remains resistant to both collision and preimage attacks.
@@ -797,7 +797,7 @@ sha256sum -c sha256sums.txt   # checks all files listed
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
         How do I verify a file checksum?
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="faq-a">
         On <strong>Windows</strong>: <code>certutil -hashfile filename SHA256</code>. On <strong>macOS</strong>: <code>shasum -a 256 filename</code>. On <strong>Linux</strong>: <code>sha256sum filename</code>. Compare the output with the expected hash from the file publisher. If they match, the file hasn't been tampered with or corrupted during download. You can also use the "File Hash" tab above to compute the hash directly in your browser.
