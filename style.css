@@ -1154,7 +1154,7 @@ footer a:hover::after { width: 100%; }
 }
 @media (max-width: 420px) {
   .nav-links a { padding: 6px 7px; font-size: 12px; }
-  .nav-links a[href="privacy.html"] { display: none; }
+  .nav-links a[href="privacy"], .nav-links a[href="/privacy"] { display: none; }
 }
 
 /* ---- REDUCED MOTION ---- */
