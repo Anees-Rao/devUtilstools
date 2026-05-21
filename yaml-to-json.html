@@ -6,9 +6,13 @@
   <title>YAML to JSON Converter — Bidirectional | FreeDevTool</title>
   <meta name="description" content="Free YAML ⇄ JSON converter. YAML 1.2, anchors, aliases, multi-doc streams. Docker Compose, Kubernetes, GitHub Actions friendly. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/yaml-to-json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -146,7 +150,7 @@
     <span class="tool-badge">Conversion</span>
     <h1>YAML ⇄ JSON Converter Online</h1>
     <p>Convert between YAML and JSON in either direction with full <a href="https://yaml.org/spec/1.2.2/" rel="noopener" style="color:var(--accent)">YAML 1.2</a> support. Handles nested objects, arrays, multi-line strings, anchors (<code>&amp;name</code>) and aliases (<code>*name</code>), multi-document streams (<code>---</code>), and comments. Perfect for converting Docker Compose, Kubernetes manifests, GitHub Actions workflows, and Helm charts. All parsing runs in your browser — config files with secrets or hostnames never reach a server.</p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -185,6 +189,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a Kubernetes deployment broke because my YAML used a stray tab character that the YAML 1.2 parser silently treated as part of a multi-line string. The converter I had been using could not show me where the parse diverged. This one validates strictly against YAML 1.2, handles anchors and aliases, and shows exactly which line broke. Useful for Helm values, GitHub Actions workflows, and Docker Compose configs.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is YAML and why convert to JSON?</h2>
       <p><strong>YAML</strong> ("YAML Ain't Markup Language") is a human-friendly data serialization format defined in the <a href="https://yaml.org/spec/1.2.2/" rel="noopener">YAML 1.2.2 specification</a>. It is the dominant format for configuration files in the cloud-native ecosystem: Kubernetes manifests, Docker Compose, GitHub Actions workflows, GitLab CI, Ansible playbooks, Helm charts, OpenAPI / Swagger specs, AWS CloudFormation, and Cargo / Cabal config files. The reason: <strong>YAML is comment-friendly, indentation-based, and reads like English</strong>. JSON, while more strict and machine-friendly, is verbose for humans to write — every key needs quotes, no comments allowed, brackets everywhere.</p>

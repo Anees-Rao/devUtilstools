@@ -6,9 +6,13 @@
   <title>Timestamp Diff Calculator — Compare Dates &amp; Unix Times Online | FreeDevTool</title>
   <meta name="description" content="Calculate the difference between two Unix timestamps, dates or ISO 8601 values. Shows duration in days, hours, minutes and seconds. Free time difference calculator.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/timestamp-diff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -122,7 +126,7 @@
   <div class="tool-header">
 
 <div class="tool-badge">Time Tool</div><h1>Timestamp Diff Calculator</h1><p class="tool-description">Calculate the exact difference between two Unix timestamps, ISO 8601 dates, or human-readable date/time values. See results in days, hours, minutes, seconds, and milliseconds. Supports both 10-digit (seconds) and 13-digit (milliseconds) epoch timestamps. Perfect for debugging log files, measuring API response times, and calculating durations. All computation runs in your browser.</p>
-<div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool backend engineering team</div></div>
+<div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div></div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">timestamp-diff.tool</span></div>
     <div class="tool-body">
@@ -152,6 +156,7 @@
       </div>
     </div>
   </div>
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after building a customer SLA report that needed business-days-only calculations between two timestamps. Most date calculators online do calendar days or wall-clock hours; very few handle business days (skipping weekends and configurable holidays). This calculator does both &mdash; calendar duration AND business-day duration &mdash; with timezone-aware handling for cross-timezone events.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>Working with timestamps — Unix epoch, ISO 8601, and the time-zone traps that haunt every backend</h2>
     <p>Time is the single most error-prone primitive in software. Time zones, daylight saving, leap seconds, leap years, locale calendars, and the inconsistent way languages handle "now" all combine into a category of bugs that show up at 02:00 on the second Sunday in March and again on the first Sunday in November. This guide is the working reference for the two formats you actually need (Unix epoch and ISO 8601), the duration calculations that bite teams, and the language-by-language code that does it correctly.</p>

@@ -6,9 +6,13 @@
   <title>Cron Expression Parser & Validator | FreeDevTool</title>
   <meta name="description" content="Free cron expression parser, validator and evaluator. Human-readable descriptions, next run times, 5-field crontab syntax. Crontab Guru alternative.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/cron-parser">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -176,7 +180,7 @@
     <p class="tool-description">
       Parse, generate, and validate cron expressions with instant human-readable descriptions and next scheduled run times. This free online crontab tool supports standard 5-field Unix cron syntax used in Linux crontab, Kubernetes CronJobs, GitHub Actions, Jenkins, and CI/CD pipelines. Enter a cron expression or use presets to build your schedule. A powerful alternative to crontab.guru — all processing runs in your browser.
     </p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool DevOps engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -221,6 +225,7 @@
     </div>
   </div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because crontab.guru is dominant for a reason &mdash; it is good. But it is closed source, English-only, and runs from a server. This parser is open source, runs entirely in your browser, and produces the same explanations plus the next 10 fire times. Useful for verifying GitHub Actions cron schedules, Kubernetes CronJob expressions, and legacy Linux crontab entries &mdash; without phoning a server every time you check.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>The complete guide to cron expressions, scheduling syntax, and real-world gotchas</h2>
     <p>Cron is the oldest scheduler still in production. The first version shipped with Unix V7 in 1979, written by Brian Kernighan. Forty-seven years later, the same five-field syntax drives Kubernetes CronJobs, GitHub Actions, AWS EventBridge, Jenkins, Airflow, GitLab pipelines, Vercel cron, and every cloud function platform in production. Knowing how to read and write cron correctly is a baseline DevOps skill — and it is also the most common source of "why didn't my job run?" tickets. This guide walks through the syntax, the dialect differences (POSIX vs Quartz vs AWS vs Kubernetes), the timezone rules that bite teams, and the patterns I rely on after a decade of running cron-driven systems.</p>

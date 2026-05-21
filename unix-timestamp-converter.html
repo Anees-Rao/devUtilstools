@@ -6,9 +6,13 @@
   <title>Unix Timestamp Converter — Epoch to Date | FreeDevTool</title>
   <meta name="description" content="Free Unix epoch / POSIX time converter. Timestamp ⇄ date in seconds &amp; ms, UTC + local, ISO 8601, relative time, live epoch clock. Runs in browser.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/unix-timestamp-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -214,7 +218,7 @@
     <p class="tool-description">
       Convert between UNIX epoch timestamps and human-readable dates instantly. Paste any timestamp in <strong>seconds</strong> or <strong>milliseconds</strong> (auto-detected) and get UTC, local time, ISO 8601, relative time, and day of week. Reverse conversion: any date string → epoch timestamp. Live clock displays current epoch updating every second. Handles the upcoming <a href="https://en.wikipedia.org/wiki/Year_2038_problem" rel="noopener" style="color:var(--accent)">Y2038 problem</a> (32-bit timestamp overflow on 19 January 2038). All processing runs in your browser; works offline.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <!-- Live Clock -->
@@ -333,6 +337,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending 30 minutes debugging an API that returned timestamps in seconds while my client expected milliseconds. That off-by-1000x makes events look 50 years in the past or future. This converter shows both seconds and ms simultaneously, in your local timezone and UTC. Paste any number and the tool figures out the unit from the magnitude. Saves you from the &lsquo;is it 1718000000 or 1718000000000?&rsquo; moment every backend dev hits.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is a Unix timestamp?</h2>
       <p>A <strong>Unix timestamp</strong> (also called <strong>epoch time</strong>, <strong>POSIX time</strong>, or <strong>Unix time</strong>) is the number of seconds elapsed since <strong>00:00:00 UTC on Thursday, 1 January 1970</strong> — a moment known as the <strong>Unix epoch</strong>. It's the universal way computers store and exchange points in time. While humans read dates like "April 30, 2026 at 3:45 PM," computers store this same moment as <code>1746028800</code>: a single integer that's unambiguous, time-zone-free, locale-independent, and easy to sort.</p>

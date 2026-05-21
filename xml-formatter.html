@@ -6,9 +6,13 @@
   <title>XML Formatter &amp; Validator — SOAP, RSS, Atom | FreeDevTool</title>
   <meta name="description" content="Free XML formatter, validator &amp; minifier. SOAP, RSS, Atom, sitemap support. Native DOMParser validation. Browser-only, no upload.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/xml-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -147,7 +151,7 @@
     <span class="tool-badge">Formatting</span>
     <h1>XML Formatter, Validator &amp; Beautifier Online</h1>
     <p>Format, beautify, validate, and minify XML documents. Pretty-prints SOAP envelopes, RSS feeds, Atom feeds, sitemap.xml, configuration files, and any well-formed XML. Uses the browser's native <a href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser" rel="noopener" style="color:var(--accent)">DOMParser</a> for accurate <a href="https://www.w3.org/TR/xml/" rel="noopener" style="color:var(--accent)">XML 1.0</a> well-formedness validation. Your XML data — including ones with sensitive content — never leaves your machine.</p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -191,6 +195,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because debugging SOAP responses from legacy enterprise systems is bad enough without the XML formatter eating CDATA sections. Many online formatters either strip CDATA, escape inner content, or break on namespace declarations. This formatter respects XML 1.1, preserves CDATA, handles namespaces correctly, and validates as it goes. Useful for SOAP debugging, RSS feed inspection, and SVG path optimization.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is XML and why is it still everywhere?</h2>
       <p><strong>XML (eXtensible Markup Language)</strong> is a structured text format defined in <a href="https://www.w3.org/TR/xml/" rel="noopener">W3C XML 1.0</a>. Designed in 1998 to be both human-readable and machine-parseable, XML became the dominant data interchange format of the early 2000s. While JSON has overtaken it for new APIs, XML remains the backbone of mature ecosystems: SOAP web services, RSS &amp; Atom feeds, sitemaps, OpenDocument and Microsoft Office files (under the hood), Android resources (<code>AndroidManifest.xml</code>, layouts, strings), Java/Maven (<code>pom.xml</code>), Spring configuration, SVG vector graphics, MathML, EPUB e-books, RFID and HL7 healthcare data, and EDI commerce protocols.</p>

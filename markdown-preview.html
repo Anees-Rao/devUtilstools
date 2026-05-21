@@ -6,6 +6,9 @@
   <title>Markdown Editor &amp; Live Preview — GFM | FreeDevTool</title>
   <meta name="description" content="Free Markdown editor with live preview — GFM tables, code blocks, task lists, strikethrough. Convert MD to HTML. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/markdown-preview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -194,7 +198,7 @@
     <p class="tool-description">
       Write markdown and see a live rendered preview side by side. This free markdown editor supports <a href="https://github.github.com/gfm/" rel="noopener" style="color:var(--accent)">GitHub Flavored Markdown (GFM)</a>: tables, fenced code blocks with language syntax highlighting, task lists, strikethrough, autolinks. Convert markdown to clean, semantic HTML with one click. Perfect for writing README files, documentation, blog posts, and PR descriptions. All rendering happens in your browser — nothing is uploaded.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -276,6 +280,7 @@ Made with ♥ by [FreeDevTool](https://freedevtool.org)
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after pushing a README to GitHub and watching the bullet points render as flat text &mdash; because my local markdown preview accepted bullets without trailing spaces, but GitHub&rsquo;s stricter parser required them. This preview matches GitHub-flavored Markdown exactly: same task list rendering, same table parsing, same fenced code block behavior. What you see here is what GitHub will show &mdash; no surprises.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is Markdown and why has it conquered the developer world?</h2>
       <p><strong>Markdown</strong> is a lightweight markup language created by John Gruber and Aaron Swartz in 2004. The design goal was deceptively simple: a plain-text format that reads naturally as-is, and converts cleanly to HTML when needed. Two decades later, Markdown is the universal write-once-render-everywhere format for technical content — README files on every GitHub repo, posts on Reddit and Stack Overflow, documentation on Notion and Obsidian, blog posts on Substack, slides in Marp, papers in Pandoc, even chat messages in Slack and Discord.</p>

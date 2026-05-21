@@ -6,9 +6,13 @@
   <title>JavaScript Minifier &amp; Beautifier Online | FreeDevTool</title>
   <meta name="description" content="Free JavaScript minifier &amp; beautifier — 30–60% bundle size reduction, faster TTI, better INP. Mangling, dead code elimination. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/js-minifier">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -164,7 +168,7 @@
     <p class="tool-description">
       Minify JavaScript to reduce bundle size for production, or beautify minified JS for debugging. This free JS minifier strips whitespace, comments, and dead code to cut bundles by 30–60%. Smaller bundles improve <strong>Time to Interactive (TTI)</strong>, <strong>Total Blocking Time (TBT)</strong>, and <strong>Interaction to Next Paint (INP)</strong> — all <a href="https://web.dev/articles/vitals" rel="noopener" style="color:var(--accent)">Core Web Vitals</a> ranking factors in 2026. All processing runs in your browser; code never leaves your machine.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -215,6 +219,7 @@ greet('World');" oninput="process()" rows="8"></textarea>
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this for quick one-off minification &mdash; when you need to reduce a 50-line script before pasting into a constrained inline-script context, but spinning up esbuild or terser is overkill. This minifier does whitespace removal and basic shortening (not full AST-based minification &mdash; that is terser&rsquo;s territory). For production builds use a real build tool; for quick wins this is faster.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is JavaScript minification?</h2>
       <p><strong>JavaScript minification</strong> is the process of transforming your readable JS source into a functionally identical but byte-smaller version — by stripping whitespace, comments, renaming local variables to single letters, eliminating dead code, and applying compiler-like optimizations. A 200 KB hand-written file typically minifies to 60–90 KB. Combined with gzip/Brotli compression, a 200 KB source can ship as 18–25 KB over the wire.</p>

@@ -6,6 +6,9 @@
   <title>HTML Minifier &amp; Beautifier Online | FreeDevTool</title>
   <meta name="description" content="Free HTML minifier &amp; beautifier — strip comments, collapse whitespace, preserve pre/script/style. 10–40% smaller. Browser-only, no upload.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/html-minifier">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -150,7 +154,7 @@
     <span class="tool-badge">HTML</span>
     <h1>HTML Minifier & Beautifier</h1>
     <p>Looking for a reliable HTML minifier online? Paste any HTML document below and this free tool will strip comments, collapse redundant whitespace, and shrink your markup without breaking layout. Switch to Beautify mode to re-indent minified or tangled source into clean, readable code with a 2-space indent. Content inside pre, textarea, script, and style tags is preserved byte-for-byte so code samples and inline scripts remain intact. Everything runs locally in your browser — no upload, no sign-up, no tracking. See live byte-savings stats the moment you minify so you know exactly how much you shaved off.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool web performance engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -183,6 +187,7 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after watching an HTML minifier helpfully optimize an inline script that depended on whitespace inside a template literal. The minified version broke the page silently in production. This minifier offers safe-mode (preserves inline JS and CSS untouched) and aggressive-mode (everything goes). Aggressive savings are real (usually 15-20% smaller), but verify your output does not break inline scripts before shipping.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>HTML minification, performance, and what to ship in 2026</h2>
     <p>HTML is the only resource a browser is guaranteed to need before it can render anything. Every byte you save in HTML lands directly on Largest Contentful Paint (LCP), Time to First Byte (TTFB), and the network bill — there is no "skip this until later" option for the first HTML response the way there is for code-split JS or below-the-fold CSS. Minification is the cheapest performance win available, and yet most teams either skip it (because their bundler does it for them and they never check) or do it badly (with a tool that mangles inline scripts). This guide covers what minification actually does, how it interacts with gzip and Brotli, what it does and does not buy you on Core Web Vitals, and the gotchas that show up in production HTML.</p>

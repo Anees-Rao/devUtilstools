@@ -1,1 +1,8 @@
 .claude/
+
+# Strategy documents — kept outside repo at D:/devUtilstools-strategy-docs/
+# Never deploy these (contains competitor analysis, content roadmap, DR estimates)
+audit-reports/
+strategy-docs/
+*.audit.md
+.callouts.sh

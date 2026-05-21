@@ -6,6 +6,9 @@
   <title>HTTP Status Codes — 1xx to 5xx Reference | FreeDevTool</title>
   <meta name="description" content="Complete HTTP status codes reference — 1xx, 2xx, 3xx, 4xx, 5xx with examples and RFC 9110 explanations. Searchable, browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/http-status">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -156,7 +160,7 @@
     <span class="tool-badge">Reference</span>
     <h1>HTTP Status Codes Reference — Complete 1xx to 5xx List</h1>
     <p>Complete list of HTTP response status codes with descriptions, use cases, and real-world examples. Search by code number or keyword to find what you need for API development, debugging, and server configuration. Aligned with <a href="https://datatracker.ietf.org/doc/html/rfc9110" rel="noopener" style="color:var(--accent)">RFC 9110</a> (HTTP Semantics, 2022) — the current authoritative HTTP standard.</p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -183,6 +187,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because I genuinely cannot remember the difference between 401 and 403 without looking it up. (401 means &lsquo;I do not know who you are&rsquo;, 403 means &lsquo;I know who you are, you cannot have this&rsquo;.) Or 422 vs 400, or whether 204 returns a body. This reference is searchable, includes the common confusions explicitly, and links to the RFC for each. Useful when designing API contracts.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What are HTTP status codes?</h2>
       <p><strong>HTTP status codes</strong> are three-digit numerical responses servers send to clients to communicate the outcome of an HTTP request. They are the universal language of the web: <code>200 OK</code> means success, <code>404 Not Found</code> means the resource doesn't exist, <code>500 Internal Server Error</code> means something broke server-side. The current authoritative spec is <a href="https://datatracker.ietf.org/doc/html/rfc9110" rel="noopener">RFC 9110</a> ("HTTP Semantics", 2022), which consolidates and supersedes RFC 2616, RFC 7230–7235, and several others.</p>

@@ -20,9 +20,13 @@
   }
   </script>
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/meta-tag-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -156,7 +160,7 @@
     <span class="tool-badge">SEO</span>
     <h1>Meta Tag Generator</h1>
     <p>Generate SEO-optimized HTML meta tags with live Google SERP preview and social media card mockups. Covers title, description, Open Graph, Twitter Cards, canonical URLs and robots directives.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool SEO engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -236,6 +240,7 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a marketing person asked why our Slack link previews showed a broken icon while LinkedIn showed the right image. Turned out the meta-tag generator we used produced og:image but not the slightly different metadata Slack actually parses. This generator outputs the full stack &mdash; Open Graph (Facebook, LinkedIn, iMessage), Twitter Cards, Discord embeds, Slack unfurls &mdash; so your link looks right everywhere.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>The complete guide to meta tags — SEO, Open Graph, Twitter Cards, and what Google actually reads in 2026</h2>
     <p>Meta tags are the API your page exposes to search engines and social platforms. Every Google search result, every Slack unfurl, every iMessage link preview is a render of the meta tags in your <code>&lt;head&gt;</code>. Most of the SEO traffic you can win or lose without touching a line of body content lives in this section. This guide is the working reference: which tags to ship, what character limits Google enforces, how Open Graph differs from Twitter Cards, and which legacy tags to stop wasting bytes on.</p>

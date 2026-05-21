@@ -9,6 +9,7 @@
   <link rel="canonical" href="https://freedevtool.org/url-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -354,7 +355,7 @@
     <p class="tool-description">
       Encode and decode URLs with percent-encoding (<a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener" style="color:var(--accent)">RFC 3986</a>). Supports <code>encodeURIComponent</code>, <code>encodeURI</code>, form-style <code>+</code>-for-space, UTF-8 and Unicode. Runs in your browser — no upload, no signup.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -430,6 +431,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a coworker spent two hours debugging why their OAuth state parameter was not surviving a redirect. The problem: they used encodeURI() instead of encodeURIComponent() &mdash; the former preserves URL structure characters which broke the surrounding query string. Most online URL encoders only do one mode. This one shows all three: encodeURI, encodeURIComponent, and RFC 3986. Side by side so you can see the difference.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is URL encoding?</h2>
       <p><strong>URL encoding</strong> — also called <strong>percent-encoding</strong> — is the standard mechanism for representing characters in a Uniform Resource Locator (URL) that would otherwise be illegal, ambiguous, or unsafe. The rules are codified in <a href="https://datatracker.ietf.org/doc/html/rfc3986" rel="noopener">RFC 3986</a>, the specification that defines URI syntax for the modern web.</p>

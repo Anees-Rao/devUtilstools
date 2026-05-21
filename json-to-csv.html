@@ -6,6 +6,9 @@
   <title>JSON to CSV Converter — Excel-Ready Download | FreeDevTool</title>
   <meta name="description" content="Free JSON to CSV converter — flatten nested JSON, custom delimiters, RFC 4180 quoting, UTF-8 BOM for Excel. Download as .csv. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/json-to-csv">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -130,7 +134,7 @@
 
   <div class="tool-header">
     
-<div class="tool-badge">Data Tool</div><h1>JSON to CSV Converter Online — Excel-Ready</h1><p class="tool-description">Convert JSON arrays of objects to CSV format. Auto-extracts column headers from JSON keys, flattens nested objects with <strong>dot notation</strong>, escapes commas/quotes/newlines per <a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener" style="color:var(--accent)">RFC 4180</a>, optionally prepends UTF-8 BOM for Excel compatibility. Custom delimiters (comma, tab, semicolon). Handles large datasets entirely client-side — sensitive customer data never leaves your browser.</p><span class="last-updated">Last updated: May 2026</span></div>
+<div class="tool-badge">Data Tool</div><h1>JSON to CSV Converter Online — Excel-Ready</h1><p class="tool-description">Convert JSON arrays of objects to CSV format. Auto-extracts column headers from JSON keys, flattens nested objects with <strong>dot notation</strong>, escapes commas/quotes/newlines per <a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener" style="color:var(--accent)">RFC 4180</a>, optionally prepends UTF-8 BOM for Excel compatibility. Custom delimiters (comma, tab, semicolon). Handles large datasets entirely client-side — sensitive customer data never leaves your browser.</p><div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div></div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">json-to-csv.tool</span></div>
     <div class="tool-body">
@@ -159,6 +163,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after exporting customer data from a SaaS dashboard, opening the CSV in Excel, and watching it mangle every comma inside a quoted field. The free converters online were not handling RFC 4180 escaping properly. This converter handles nested JSON (with dot-notation flattening), arrays of arrays, quoted commas, embedded newlines &mdash; all correctly, all in browser. Excel-compatible by default.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is CSV and why convert JSON to it?</h2>
       <p><strong>CSV (Comma-Separated Values)</strong> is the lingua franca of tabular data. Defined informally for decades and standardized in <a href="https://datatracker.ietf.org/doc/html/rfc4180" rel="noopener">RFC 4180</a> (2005), CSV is a flat-text format where each line is a row and each row contains comma-separated values. It opens natively in Excel, Google Sheets, Numbers, every analytics tool, and every database import wizard. Its simplicity is its superpower — you can read a CSV in any text editor.</p>

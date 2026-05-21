@@ -6,9 +6,13 @@
   <title>Chmod Calculator — Linux Permissions Octal | FreeDevTool</title>
   <meta name="description" content="Free chmod calculator — octal (755) ↔ symbolic (rwxr-xr-x) Unix permissions. Visual checkboxes, setuid/setgid/sticky bits. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/chmod-calculator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -161,7 +165,7 @@
     <span class="tool-badge">DevOps</span>
     <h1>Chmod Calculator — Linux File Permissions Online</h1>
     <p>Calculate Unix and Linux file permissions visually. Toggle checkboxes or type an octal number (e.g. <code>755</code>, <code>644</code>) to instantly see symbolic notation (<code>rwxr-xr-x</code>), the matching <code>chmod</code> command, and a human-readable description. Includes <strong>special bits</strong>: setuid (<code>4xxx</code>), setgid (<code>2xxx</code>), and sticky bit (<code>1xxx</code>). Works for files and directories. All calculations run in your browser.</p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -216,6 +220,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a colleague chmod 777&rsquo;d a production /var/www directory to &lsquo;fix permissions&rsquo; and shipped a security incident. The visual chmod calculators online help with read/write/execute but most skip setuid, setgid, and the sticky bit &mdash; exactly the bits auditors flag and that cause security issues. This one shows all of them with explanations of what each combination actually does.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is chmod and how do Unix permissions work?</h2>
       <p><strong>chmod</strong> ("change mode") is a POSIX command for setting file and directory permissions on Unix-like systems — Linux, macOS, BSD, WSL, even modern containers. The permission model dates to 1971's Unix V1 and has barely changed since: every file has an <strong>owner</strong> (user), a <strong>group</strong>, and rules for <strong>everyone else</strong>, with three permission bits each (<strong>read</strong>, <strong>write</strong>, <strong>execute</strong>). That's nine bits — three classes × three rights — neatly encoded in three octal digits.</p>

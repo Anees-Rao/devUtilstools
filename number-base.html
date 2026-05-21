@@ -6,6 +6,9 @@
   <title>Number Base Converter — Binary, Hex, Octal | FreeDevTool</title>
   <meta name="description" content="Free number base converter — binary, decimal, hex, octal, any base 2-36. BigInt precision, bit-length, grouped nibbles. Browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/number-base">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -395,7 +399,7 @@
     <p class="tool-description">
       Convert between binary, decimal, hexadecimal, and octal number systems instantly. This free online number base converter supports radix conversion for any base from 2 to 36, with BigInt precision for arbitrarily large numbers. Explore positional notation across base-2, base-8, base-10, and base-16 numeral systems with grouped nibbles, bit-length display, and real-time input validation. All conversions happen client-side in your browser.
     </p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool systems engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -478,6 +482,7 @@
     </div>
   </div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after debugging an embedded firmware bug where a signed 8-bit register read as 254 instead of -2. The conversion tool I was using only did unsigned, so I could not see what value the device was actually reporting. This converter supports two&rsquo;s complement for negative numbers in binary and hex &mdash; the way actual hardware encodes signed integers. Critical for embedded, missing from most calculators.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>Number bases explained — binary, octal, hex, decimal, and the math behind radix conversion</h2>
     <p>If you have ever stared at <code>0xDEADBEEF</code> in a stack trace or typed <code>chmod 755</code> without thinking about it, you are already using positional number systems. This guide unpacks why programmers care about base-2, base-8, and base-16 — what each one buys you, how the conversion math actually works, what "two's complement" means in practice, and the language-specific syntax you need so the same number reads the same in JavaScript, Python, Go, Rust, and C.</p>

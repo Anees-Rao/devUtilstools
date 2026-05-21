@@ -6,9 +6,13 @@
   <title>QR Code Generator — WiFi, vCard, URL | FreeDevTool</title>
   <meta name="description" content="Free QR code generator for URLs, WiFi, vCards, email, SMS. PNG &amp; SVG download, custom error correction. Runs in browser, no signup, no watermark.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/qr-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -153,7 +157,7 @@
     <p class="tool-description">
       Generate QR codes for URLs, text, WiFi, vCards, email, SMS, and geolocation. Download as PNG or SVG, pick error-correction L/M/Q/H. Built on <a href="https://www.iso.org/standard/62021.html" rel="noopener" style="color:var(--accent)">ISO/IEC 18004</a>. No signup, no watermark, no tracking — runs in your browser.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -236,6 +240,12 @@
        ============================================================= -->
 
   <article>
+
+    <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>
+      <p style="margin:0 0 12px">I built this after generating a "free" QR code from a top-ranking generator and noticing the decoded URL was a redirect through a domain I didn't recognize. The site was silently tracking scan counts via a redirect URL — invisible to me, but every scan was pinging their analytics before sending the user where they expected to go. Some generators do this transparently; many don't. This generator produces clean QR codes that encode exactly what you typed. Decode it with any scanner and you'll see your URL, not a tracking redirect. No watermark, no premium tier.</p>
+      <p style="margin:0;font-size:13px;color:var(--text3)">— <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p>
+    </aside>
 
     <section class="article-section">
       <h2>What is a QR code and how does it work?</h2>

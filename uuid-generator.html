@@ -6,9 +6,13 @@
   <title>UUID Generator — UUIDv7, v4, RFC 9562 | FreeDevTool</title>
   <meta name="description" content="Free UUID generator — UUIDv7 (time-ordered), v4 (random), v1, v5. RFC 9562 / RFC 4122 compliant. Bulk generation, one-click copy, browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/uuid-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -241,7 +245,7 @@
     <p class="tool-description">
       Generate cryptographically random v4 UUIDs instantly with this free online UUID generator. Bulk generate up to 100 UUIDs at once, copy individually or all together with one click, and download as a text file. Options include uppercase formatting, hyphen removal, and wrapping in curly braces for GUID-style output. This tool uses your browser's native <code style="font-family:var(--mono);font-size:13px;background:var(--bg3);padding:1px 5px;border-radius:3px">crypto.randomUUID()</code> API — the gold standard for cryptographically secure random ID generation. All UUIDs are generated entirely in your browser. Nothing is sent to a server. Works offline, no signup required.
     </p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool backend engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -292,6 +296,7 @@
     </div>
   </div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because UUID v7 (RFC 9562, finalized 2024) is what every database should be using for primary keys, but most generators online still only do v4. UUIDv7 embeds a millisecond timestamp at the start of the ID &mdash; your database index stays sorted by insert order, eliminating the page-fragmentation problem v4 causes at scale. This generator does v1, v4, v6, and v7. Pick the right one for your use case.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>UUIDs explained — RFC 4122, RFC 9562, and which version to use in 2026</h2>
     <p>UUIDs are the connective tissue of modern distributed systems. Every Stripe charge, every Auth0 session, every Slack message, every S3 multipart upload — they all carry a 128-bit identifier that was generated independently on whatever node happened to handle the request. That independence is the entire point: no central registry, no ID server, no race condition, no merge conflict. This guide walks through the full UUID specification family — RFC 4122 (the original 2005 standard) and RFC 9562 (its 2024 successor that introduced UUIDv7), the seven defined versions and what each is actually for, the index-fragmentation trap that hits every team eventually, and the language-by-language code you need to generate them safely.</p>

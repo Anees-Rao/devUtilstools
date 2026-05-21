@@ -6,6 +6,9 @@
   <title>Character Counter — Words, Bytes, Tweet/SMS | FreeDevTool</title>
   <meta name="description" content="Free character counter — chars, words, lines, UTF-8 bytes, Tweet/SMS limits, reading time. Live as you type, browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/char-counter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -161,7 +165,7 @@
     <span class="tool-badge">Text</span>
     <h1>Character &amp; String Length Counter Online</h1>
     <p>Character count, instantly — paste any text and watch live totals for characters (with and without spaces), words, lines, paragraphs, sentences, and raw UTF-8 bytes. Built-in progress bars show how close you are to the <strong>Twitter/X 280-char limit</strong>, the <strong>SMS GSM-7 160-char limit</strong>, and the 78-character email subject sweet spot. Reading-time (200 wpm) and speaking-time (130 wpm) estimates help size blog posts, scripts, and podcast outlines. Top five most-frequent words, average word length, and longest word help spot filler and repetition. Runs in your browser — no upload.</p>
-    <span class="last-updated">Last updated: May 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -189,6 +193,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because counting characters sounds easy but is not. Emoji can be 1, 2, 3, or 4 codepoints depending on the variant &mdash; and JavaScript&rsquo;s string.length returns codepoints, not what users see. A name with combining marks counts as 5 codepoints but 4 grapheme clusters. This counter shows both: codepoints (what JS sees) and grapheme clusters (what users see). Critical for Twitter limits, SMS billing, and database column constraints.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What does "character count" actually mean?</h2>
       <p>"Character count" sounds simple — count the letters — but it's deceptively complex once you account for Unicode, emoji, and platform-specific quirks. The same 30-letter sentence can register as 30, 60, or even 90 "characters" depending on whether you measure code points, UTF-16 code units, UTF-8 bytes, or graphemes (visible character clusters). Picking the right metric depends on where the text is going.</p>

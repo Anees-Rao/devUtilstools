@@ -6,9 +6,13 @@
   <title>Color Palette Generator &amp; Picker | FreeDevTool</title>
   <meta name="description" content="Generate color palettes with hex, RGB, HSL, OKLCH codes. Pick colors, check WCAG AA/AAA contrast. CSS-ready output for designers and developers. Free.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/color-picker">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -139,7 +143,7 @@
     <div class="tool-badge">Design Tool</div>
     <h1>Color Palette Generator &amp; Picker</h1>
     <p class="tool-description">Pick a base color, generate complementary, analogous, triadic, split, and monochromatic palettes with hex/RGB/HSL/OKLCH output, and check WCAG AA/AAA contrast — all in your browser, no signup.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
   <div class="tool-card">
     <div class="tool-card-header"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div><span class="tool-card-title">color-picker.tool</span></div>
@@ -173,6 +177,7 @@
       </div>
     </div>
   </div>
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because designers kept generating beautiful palettes on coolors.co, then handing them off without checking WCAG contrast. Half the time the designer&rsquo;s purple-on-white passed AA in their head but failed real measurement. This picker scores every pair against AA and AAA contrast in real time. Generates HEX, RGB, HSL, OKLCH output so you can paste straight into CSS without conversion.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>Color palette generation, CSS color models, and WCAG contrast — the 2026 guide</h2>
     <p>Color is the loudest signal in a user interface. Pick well and your product feels confident, accessible, and on-brand; pick badly and your buttons disappear, your charts mislead, and your sign-up form fails screen-reader audits. This guide walks through how the five CSS color models actually work, the math behind color-harmony rules, the WCAG 2.1 contrast formula in plain English, and how to pick palettes that work in light mode, dark mode, and on the wide-gamut displays that have shipped in every iPhone and MacBook since 2017. Need the raw conversion? Use the <a href="/hex-to-rgb">hex to RGB converter</a> alongside this picker.</p>

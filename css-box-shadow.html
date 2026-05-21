@@ -6,9 +6,13 @@
   <title>CSS Box Shadow Generator — Free Visual Shadow Tool | FreeDevTool</title>
   <meta name="description" content="Generate CSS box-shadow code with live sliders for offset, blur, spread, color and inset. Multi-layer shadows, presets, copy-ready output. Free forever.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/css-box-shadow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -143,7 +147,7 @@
     <span class="tool-badge">CSS</span>
     <h1>CSS Box Shadow Generator</h1>
     <p>This CSS box shadow generator builds production-ready shadows with visual sliders for offset, blur, spread, color and the inset keyword. Stack unlimited shadow layers to create Material-style elevations, neumorphic surfaces, neon glows, or soft ambient lighting. Every change updates the live preview and rewrites the CSS in real time, so you can copy the finished declaration straight into your stylesheet. Pick a preset to start fast, or dial in custom values on both axes. All calculation runs in your browser — no sign-up, no tracking, works offline once the page is cached.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool design engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -188,6 +192,7 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending 40 minutes layering 6 box-shadows to match a Figma design someone considered &lsquo;just a button&rsquo;. Modern UI design has shifted from one-shadow flat buttons to multi-layer shadows that simulate realistic depth &mdash; a trend Vercel&rsquo;s button system kicked off. This generator handles multi-layer shadows with live preview and provides starter presets from real production design systems.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>Box-shadow in 2026 — anatomy, layered shadows, and the design-system patterns that ship</h2>
     <p>The <code>box-shadow</code> property is one of the oldest CSS3 features — yet good shadows still distinguish a polished interface from one that looks like a wireframe. This guide unpacks the syntax (each of the four numeric values does something specific), the physics-aware patterns Google's Material team and Apple's Human Interface team use to build elevation systems, the new <code>filter: drop-shadow()</code> alternative for irregular shapes, and the performance pitfalls that cause shadow-heavy pages to drop frames during scroll.</p>

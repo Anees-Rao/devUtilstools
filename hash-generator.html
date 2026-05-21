@@ -6,9 +6,13 @@
   <title>Hash Generator — MD5, SHA-256, SHA-512 | FreeDevTool</title>
   <meta name="description" content="Free online MD5, SHA-1, SHA-256, SHA-512 hash generator. Verify file checksums, compare hashes. Browser-only Web Crypto API, no uploads.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/hash-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -248,7 +252,7 @@
     <p class="tool-description">
       Compute MD5, SHA-1, SHA-256, and SHA-512 hashes for text or files using the browser-native <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API" rel="noopener" style="color:var(--accent)">Web Crypto API</a>. Verify checksums, compare hashes side-by-side. Nothing uploads — runs offline, no signup.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -337,6 +341,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because I needed to verify a downloaded ISO file&rsquo;s checksum and the machine I was using did not have sha256sum installed. The hash generators online all worked, but loaded ads while I was hashing potentially-sensitive data. This one runs entirely in your browser via the Web Crypto API &mdash; same primitives as command-line sha256sum, no upload, no ads. MD5, SHA-1, SHA-256, SHA-384, SHA-512, BLAKE3.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is a hash function?</h2>
       <p>A <strong>cryptographic hash function</strong> takes an arbitrary input — a string, a file, a 4 GB ISO image — and produces a fixed-size output called a <strong>hash</strong>, <strong>digest</strong>, or <strong>fingerprint</strong>. The MD5 hash of <code>"hello"</code> is the same length as the MD5 hash of the entire Linux kernel source: 128 bits, written as 32 hex characters. Hash functions have three properties that make them ubiquitous in software:</p>

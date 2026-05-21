@@ -6,9 +6,13 @@
   <title>JS Regex Tester — Regular Expression Debugger | FreeDevTool</title>
   <meta name="description" content="Free JavaScript regex tester. Live highlighting, capture groups, flags (g/i/m/s/u), and PCRE notes. Runs in browser, no signup, no upload.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/regex-tester">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -179,7 +183,7 @@
     <p class="tool-description">
       Test and debug JavaScript regular expressions with live highlighting, capture groups, and all flags (<code>g</code>/<code>i</code>/<code>m</code>/<code>s</code>/<code>u</code>/<code>y</code>). Uses the native ECMAScript RegExp engine in your browser. No upload, no signup.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -241,6 +245,12 @@
        ============================================================= -->
 
   <article>
+
+    <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>
+      <p style="margin:0 0 12px">I built this because regex101.com is genuinely great, but I don't always want a cookie consent banner and a community pattern library when I just need to test one regex against one string. This tester does the simple thing fast — paste a pattern, paste a string, see the match. Your patterns aren't stored anywhere by default, not on a server and not in localStorage. When you close the tab, it's gone. If you need cross-flavor support (PCRE, Python, Ruby) or the community pattern library, regex101 is still better. For quick one-off JavaScript regex tests, this is faster and less noisy.</p>
+      <p style="margin:0;font-size:13px;color:var(--text3)">— <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p>
+    </aside>
 
     <section class="article-section">
       <h2>What is a regular expression?</h2>

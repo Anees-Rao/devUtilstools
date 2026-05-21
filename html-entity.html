@@ -7,9 +7,13 @@
   <meta name="description" content="Free HTML entity encoder &amp; decoder. Convert &amp;lt; &amp;gt; &amp;amp; &amp;quot; for XSS-safe display. Named &amp; numeric entities, Unicode support. Runs in browser.">
   <meta name="keywords" content="html entity encoder, html entity decoder, html escape, html unescape, xss prevention, special characters html, named entities, numeric entities">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/html-entity">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -155,7 +159,7 @@
     <p class="tool-description">
       Encode special characters to HTML entities or decode entities back to readable text. Converts reserved HTML characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&quot;</code>, <code>'</code>) to their entity equivalents — essential for safely displaying user-generated content and preventing <strong>Cross-Site Scripting (XSS)</strong> attacks (<a href="https://owasp.org/Top10/A03_2021-Injection/" rel="noopener" style="color:var(--accent)">OWASP Top 10</a>). Supports named entities (<code>&amp;amp;</code>), decimal numeric (<code>&amp;#38;</code>), hex numeric (<code>&amp;#x26;</code>), and full Unicode escape. Runs in your browser; even sensitive payloads stay local.
     </p>
-    <span class="last-updated">Last updated: May 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -230,6 +234,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after pasting a Stack Overflow code snippet into a customer email template and watching the email server eat every angle bracket. Stack Overflow used named entities but the legacy mail client only supported numeric entities. This tool gives you both formats &mdash; named (readable) and numeric (compatible) &mdash; so you can pick whichever your renderer actually accepts.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What are HTML entities and why do they matter?</h2>
       <p>An <strong>HTML entity</strong> is a special sequence of characters that represents a reserved or non-printable character in HTML markup. They start with an ampersand (<code>&amp;</code>) and end with a semicolon (<code>;</code>). The entity <code>&amp;lt;</code> renders as <code>&lt;</code>, <code>&amp;amp;</code> renders as <code>&amp;</code>, <code>&amp;copy;</code> renders as <code>©</code>. Defined originally in <a href="https://www.w3.org/TR/html401/sgml/entities.html" rel="noopener">HTML 4.01</a> and extended in HTML5 to over 2,000 named entities, they exist for two reasons: <strong>escaping reserved characters</strong> (so the browser doesn't think your text is markup) and <strong>typing characters that aren't on your keyboard</strong> (em dashes, math symbols, currency).</p>

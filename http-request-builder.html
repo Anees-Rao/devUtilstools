@@ -6,9 +6,13 @@
   <title>HTTP Request Builder — cURL & fetch | FreeDevTool</title>
   <meta name="description" content="Build HTTP requests visually. Generate cURL, fetch, axios, Python requests, and Node fetch code. Send live, view response. Browser-only, free.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/http-request-builder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -161,7 +165,7 @@
     <span class="tool-badge">Network</span>
     <h1>HTTP Request Builder</h1>
     <p>Compose HTTP calls visually — method, URL, headers, query, body — and copy the equivalent <code>curl</code>, <code>fetch</code>, <code>axios</code>, Python <code>requests</code>, or Node code. Send live to inspect status, headers, and body (subject to CORS). Runs in your browser.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool API engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -217,6 +221,7 @@
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because Postman is genuinely great, but installing the desktop app to send three quick GET requests feels like overkill &mdash; especially on a customer&rsquo;s machine where I cannot install software. This builder runs in browser, handles GET/POST/PUT/PATCH/DELETE/OPTIONS, supports custom headers, JSON body editor, and shows response with syntax highlighting. Perfect for the 80% of just-send-this-request moments.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>HTTP requests in 2026 — methods, headers, status codes, and the API patterns that ship</h2>
     <p>HTTP is the protocol layer every networked product runs on. Even when you are calling a "GraphQL API", a "gRPC service", or a "WebSocket endpoint", you are still riding HTTP/1.1, HTTP/2, or HTTP/3 underneath. Knowing the protocol cold pays off in every debugging session — every "why does this work in Postman but not in my code?" question, every CORS preflight mystery, every 401-when-it-should-be-403, every cached-response surprise. This guide is the working reference for the protocol fundamentals (RFC 9110), the headers that actually matter, the auth schemes that secure modern APIs, and the cURL → code patterns that live in every backend codebase.</p>

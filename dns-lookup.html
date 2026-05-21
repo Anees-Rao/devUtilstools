@@ -6,9 +6,13 @@
   <title>DNS Lookup — A, MX, TXT, CNAME Records | FreeDevTool</title>
   <meta name="description" content="Free DNS lookup. Query A, AAAA, CNAME, MX, TXT, NS, SOA, CAA records via Cloudflare DoH. Inspect SPF, DKIM, DMARC. Browser-based, no signup.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/dns-lookup">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -143,7 +147,7 @@
     <span class="tool-badge">Network</span>
     <h1>DNS Lookup Tool</h1>
     <p>Query A, AAAA, CNAME, MX, TXT, NS, SOA, and CAA records via <a href="https://www.cloudflare.com/learning/dns/dns-over-tls/" rel="noopener" style="color:var(--accent)">Cloudflare DNS-over-HTTPS</a>. Inspect SPF, DKIM, DMARC. Browser-only — encrypted to <code>1.1.1.1</code>, never touches our servers.</p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -184,6 +188,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending 20 minutes debugging a DNS issue where my browser saw one thing and the customer&rsquo;s browser saw another &mdash; caching at different DNS resolvers showing different TTL states. Most online DNS lookups use traditional DNS through opaque resolvers. This tool uses Cloudflare DNS-over-HTTPS, so you can see exactly what Cloudflare resolvers see &mdash; and inspect SPF, DKIM, DMARC records directly without parsing TXT records by hand.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is DNS and how does a lookup work?</h2>
       <p>The <strong>Domain Name System</strong> (DNS) is the internet's phonebook — it translates human-friendly names like <code>freedevtool.org</code> into machine-friendly IP addresses like <code>104.21.x.x</code>. Every web request, every email, every API call begins with at least one DNS lookup. The DNS protocol is defined in <a href="https://datatracker.ietf.org/doc/html/rfc1035" rel="noopener">RFC 1035</a> (1987) with dozens of subsequent updates that added security, IPv6, and modern transport protocols.</p>

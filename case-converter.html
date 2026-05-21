@@ -6,6 +6,9 @@
   <title>Case Converter — camelCase, snake_case, kebab | FreeDevTool</title>
   <meta name="description" content="Free case converter — camelCase ↔ snake_case ↔ kebab-case ↔ PascalCase ↔ Title Case ↔ UPPER_SNAKE. Smart word splitting, browser-only.">
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -23,6 +26,7 @@
   <link rel="canonical" href="https://freedevtool.org/case-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -271,7 +275,7 @@
     <p class="tool-description">
       Convert text between <strong>camelCase</strong>, <strong>snake_case</strong>, <strong>kebab-case</strong>, <strong>PascalCase</strong>, <strong>UPPER_SNAKE_CASE</strong>, <strong>Title Case</strong>, <strong>dot.case</strong>, <strong>path/case</strong>, <strong>Sentence case</strong>, and more programming naming conventions. Smart word splitting detects camelCase boundaries, underscores, hyphens, dots, slashes, and spaces — then re-joins in your target format. Bulk-convert variable lists for refactoring across languages and ecosystems. All processing in your browser.
     </p>
-    <span class="last-updated">Last updated: April 2026</span>
+    <div class="last-updated">Last updated: May 2026 &middot; Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -303,6 +307,7 @@
 
   <article>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because I switch naming conventions every time I move between languages: Python is snake_case, JavaScript is camelCase, React components are PascalCase, CSS is kebab-case, constants are SCREAMING_SNAKE. Renaming variables manually across these conventions is tedious and error-prone. This converter handles all six conventions correctly, including the tricky cases (XMLParser becomes xml_parser, not x_m_l_parser).</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">
       <h2>What is a "case" and why do programming languages care?</h2>
       <p>"Case" in programming refers to the <strong>letter casing convention</strong> used for compound identifiers — variable names, function names, file names, URL paths. The same conceptual identifier ("user profile picture") can be written as <code>userProfilePicture</code>, <code>user_profile_picture</code>, <code>user-profile-picture</code>, <code>UserProfilePicture</code>, or <code>USER_PROFILE_PICTURE</code> depending on the convention. Each convention emerged from specific language constraints and community preferences over decades, and most modern style guides treat consistency as a hard requirement.</p>

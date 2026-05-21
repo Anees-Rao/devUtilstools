@@ -20,9 +20,13 @@
   }
   </script>
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/jwt-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -148,7 +152,7 @@
     <span class="tool-badge">Security</span>
     <h1>JWT Generator</h1>
     <p>Generate signed JSON Web Tokens with custom headers, payload claims and HMAC-SHA signing. Your secret key never leaves your browser — signing uses the Web Crypto API client-side.</p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool security engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </section>
   <div class="tool-card">
     <div class="card-dots"><span></span><span></span><span></span></div>
@@ -232,6 +236,7 @@
     </ul>
   </section>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this for local API testing. When you are developing an auth-protected endpoint, you need test JWTs constantly &mdash; and spinning up a real identity provider every time is overkill. Most online JWT generators only do HS256 with hardcoded keys; if your service uses RS256 (asymmetric, the right choice for production), you are out of luck. This generator does HS256, HS384, HS512, and RS256 with browser-side keypair generation.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>JWTs in production — the spec, the algorithms, and the attacks you need to know</h2>
     <p>JSON Web Tokens are the connective tissue of modern auth. OAuth 2.0 access tokens, OpenID Connect ID tokens, AWS Cognito sessions, Auth0 sessions, Firebase Auth, Cloudflare Zero Trust, and every framework's "auth helper" all hand you JWTs. The spec is small (RFC 7519) and the format is elegant — but the historical CVEs against JWT implementations are extensive, and most of them are caused by misuse rather than spec flaws. This guide walks through the structure, the algorithm choices that matter, the alg=none and key-confusion attacks every junior backend engineer needs to know about, and the rotation patterns that production systems actually use.</p>

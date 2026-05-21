@@ -20,9 +20,13 @@
   }
   </script>
   <meta name="robots" content="index, follow">
+  <meta name="author" content="Anees Ur Rehman">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/regex-explainer">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/favicon.svg">
@@ -220,7 +224,7 @@
     <p class="tool-description">
       Translate any regular expression into plain English with a color-coded breakdown of every token. This free regex to plain English translator parses capture groups, quantifiers, character classes, lookahead and lookbehind assertions, anchors, alternation, and more. Paste a regex pattern to instantly visualize its structure — a powerful regular expression breakdown tool for understanding complex pattern matching. All processing runs client-side in your browser.
     </p>
-    <div class="last-updated">Last updated: May 2026 · Reviewed by FreeDevTool engineering team</div>
+    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -272,6 +276,7 @@
     </div>
   </div>
 
+  <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after inheriting a 200-line Python service with regex patterns I could not read. The original developer had left, the patterns were correct but inscrutable, and rewriting them without breaking the test suite was terrifying. This explainer takes any regex and produces a plain-English breakdown of each token &mdash; useful for debugging legacy code, understanding patterns from Stack Overflow, or learning regex by reverse-engineering working examples.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">
     <h2>The complete guide to reading regular expressions — tokens, dialects, and traps</h2>
     <p>Regular expressions are the closest thing programming has to a universal mini-language. The same pattern, more or less, runs in your editor's find dialog, your shell's <code>grep</code>, your application's request validator, your CDN's URL rewriter, your database's <code>LIKE</code> upgrade, and your log analysis pipeline. The bad news: "more or less" is doing a lot of work in that sentence. JavaScript regex, Python <code>re</code>, PCRE, .NET, Go's RE2, and POSIX BRE/ERE all differ in features and even in the meaning of common syntax. This guide is a tour through what each token means, where dialects diverge, and the catastrophic backtracking trap that has caused outages at Stack Overflow (2016) and Cloudflare (2019).</p>
