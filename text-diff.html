@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/text-diff">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -43,7 +45,7 @@
     {"@type":"Question","name":"What is a diff checker and how does it work?","acceptedAnswer":{"@type":"Answer","text":"A diff checker compares two texts line by line and identifies differences using algorithms like the longest common subsequence (LCS). Lines present only in the original are marked as deletions, lines only in the modified version are additions, and matching lines are unchanged. This is the same concept behind git diff and code review tools."}},
     {"@type":"Question","name":"What is the difference between unified diff and side-by-side diff?","acceptedAnswer":{"@type":"Answer","text":"Unified diff shows changes in a single column with + and - prefixes (like git diff output). Side-by-side diff shows the original and modified text in parallel columns, making it easier to visually compare changes. Side-by-side is better for reviewing; unified is more compact and commonly used in terminals and patches."}},
     {"@type":"Question","name":"Can I compare code files online?","acceptedAnswer":{"@type":"Answer","text":"Yes. This diff checker works with any text format — JavaScript, Python, JSON, XML, HTML, CSS, YAML, SQL, and more. Paste your code in both panels to see line-by-line differences highlighted. For comparing entire files, copy-paste the file contents or use git diff for version-controlled files."}},
-    {"@type":"Question","name":"How do I find differences between two JSON files?","acceptedAnswer":{"@type":"Answer","text":"Paste both JSON documents into the left and right panels. The diff checker compares them line by line. For best results, format (pretty-print) both JSON objects first so that structural changes are visible on separate lines. Use our JSON Formatter tool to format JSON before comparing."}}
+    {"@type":"Question","name":"How do I find differences between two JSON files?","acceptedAnswer":{"@type":"Answer","text":"Paste both JSON documents into the left and right panels. The diff checker compares them line by line. For best results, format (pretty-print) both JSON objects first so that structural changes are visible on separate lines. Use our JSON Formatter tool to format JSON before comparing."}},{"@type":"Question","name":"What is the difference between unified and side-by-side diff?","acceptedAnswer":{"@type":"Answer","text":"Unified diff shows changes inline with context lines — common in git output and code review tools. Side-by-side shows old and new in two columns with changes highlighted — easier to compare longer changes visually. Both convey the same information."}},{"@type":"Question","name":"How does git diff work internally?","acceptedAnswer":{"@type":"Answer","text":"git diff compares the working directory (or staging area, or a commit) against another revision. The default algorithm is Myers, which finds the shortest edit script. Optional algorithms: patience, histogram, minimal. Configure with diff.algorithm."}},{"@type":"Question","name":"What is a semantic diff?","acceptedAnswer":{"@type":"Answer","text":"A diff that understands the structure of the file format being compared — parsing JSON and comparing structurally rather than character-by-character. Semantic diffs ignore cosmetic changes (whitespace, key reordering) and highlight structural changes."}}
   ]}
   </script>
 
@@ -225,6 +227,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>A text diff</strong> compares two pieces of text and shows what changed &mdash; insertions, deletions, modifications &mdash; using algorithms like Myers, patience, or histogram. Common granularities: line-by-line for code, word-by-word for prose, character-level for tiny differences. This <strong>free text diff tool</strong> runs entirely in your browser &mdash; your text never leaves the page, unlike some online diff tools.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Line-by-line diff§§Old: function add(a, b) { return a + b; }§§New: function add(x, y) { return x + y; }§§Diff shows whole line replaced (renamed parameters).</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Word-by-word diff§§Old: The quick brown fox jumps§§New: The slow brown dog jumps§§Two word substitutions: "quick" → "slow", "fox" → "dog". Useful for prose.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Whitespace-only changes§§Toggle "ignore whitespace" to filter out cosmetic differences — indentation changes, trailing spaces, line endings (CRLF vs LF). Useful for git diff cleanup.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because diffchecker.com pushes you to sign up after a few uses, and I was tired of pasting customer code into a tool that wanted to upgrade me. This diff tool does line-by-line, word-by-word, and character-by-character comparison entirely in browser. Your text never leaves the page. Use it for code review when GitHub&rsquo;s diff is not right, comparing API responses, or finding the one space character breaking your YAML.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

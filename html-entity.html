@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HTML Entity Encoder &amp; Decoder Online — XSS-Safe Free | FreeDevTool</title>
+  <title>Free HTML Entity Encoder — XSS-Safe Online | FreeDevTool</title>
   <meta name="description" content="Free HTML entity encoder &amp; decoder. Convert &amp;lt; &amp;gt; &amp;amp; &amp;quot; for XSS-safe display. Named &amp; numeric entities, Unicode support. Runs in browser.">
   <meta name="keywords" content="html entity encoder, html entity decoder, html escape, html unescape, xss prevention, special characters html, named entities, numeric entities">
   <meta name="robots" content="index, follow">
@@ -13,6 +13,8 @@
   <link rel="canonical" href="https://freedevtool.org/html-entity">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -48,7 +50,7 @@
     {"@type":"Question","name":"How does HTML encoding prevent XSS attacks?","acceptedAnswer":{"@type":"Answer","text":"Cross-Site Scripting (XSS) attacks inject malicious HTML/JavaScript into web pages. HTML encoding converts dangerous characters like < and > into their entity equivalents (&lt; and &gt;), so the browser renders them as text instead of executing them as code. Always encode user-generated content before inserting it into HTML."}},
     {"@type":"Question","name":"What is the difference between HTML encoding and URL encoding?","acceptedAnswer":{"@type":"Answer","text":"HTML encoding converts characters to HTML entities (& → &amp;) for safe display in HTML documents. URL encoding converts characters to percent-encoded format (space → %20) for safe transmission in URLs. They serve different purposes and are not interchangeable."}},
     {"@type":"Question","name":"What are the most common HTML entities?","acceptedAnswer":{"@type":"Answer","text":"The most common HTML entities are: &amp; (ampersand &), &lt; (less than <), &gt; (greater than >), &quot; (double quote \"), &#39; (single quote '), &nbsp; (non-breaking space), &copy; (copyright ©), &mdash; (em dash —), and &hellip; (ellipsis …)."}},
-    {"@type":"Question","name":"Should I use named or numeric HTML entities?","acceptedAnswer":{"@type":"Answer","text":"Named entities like &amp; are more readable but not all characters have named versions. Numeric entities like &#38; (decimal) or &#x26; (hex) work for any Unicode character. For common entities, use named versions for readability. For uncommon characters, use numeric. Both are valid in all modern browsers."}}
+    {"@type":"Question","name":"Should I use named or numeric HTML entities?","acceptedAnswer":{"@type":"Answer","text":"Named entities like &amp; are more readable but not all characters have named versions. Numeric entities like &#38; (decimal) or &#x26; (hex) work for any Unicode character. For common entities, use named versions for readability. For uncommon characters, use numeric. Both are valid in all modern browsers."}},{"@type":"Question","name":"What is the HTML entity for the ampersand character?","acceptedAnswer":{"@type":"Answer","text":"&amp; (5 characters) renders as a single ampersand. Required because a literal ampersand inside HTML markup could start an entity reference. Other essential escapes: &lt; for less-than, &gt; for greater-than, &quot; for double quote, &apos; for apostrophe."}},{"@type":"Question","name":"How do HTML entities prevent XSS attacks?","acceptedAnswer":{"@type":"Answer","text":"Cross-site scripting (XSS) injects malicious HTML or JavaScript. Encoding user-controlled strings into HTML entities prevents them from being parsed as markup — a script payload becomes literal text instead of executing. Always escape on output, not input."}},{"@type":"Question","name":"What is the non-breaking space HTML entity?","acceptedAnswer":{"@type":"Answer","text":"&nbsp; is a non-breaking space — visually identical to a regular space but the browser will not break a line at this point. Used to keep words together: Mr.&nbsp;Smith, 100&nbsp;km, Section&nbsp;3.2. Excessive nbsp use breaks responsive layouts."}}
   ]}
   </script>
 
@@ -234,6 +236,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>HTML entities</strong> are escape sequences (<code>&amp;amp;</code>, <code>&amp;lt;</code>, <code>&amp;gt;</code>, <code>&amp;#169;</code>) that represent characters which would otherwise be parsed as HTML markup or are difficult to type. Named entities are more readable (<code>&amp;copy;</code>); numeric entities are more compatible across older renderers (<code>&amp;#169;</code>). This <strong>free HTML entity encoder and decoder</strong> outputs both formats and is essential for XSS-safe content rendering.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Common entity reference§§<  →  &lt;§§>  →  &gt;§§"  →  &quot;§§&  →  &amp;§§'  →  &apos;§§These 5 entities are the minimum needed to escape any user-controlled string for safe HTML rendering.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Named vs numeric§§©   →  &copy; (named, readable) OR &#169; (numeric, universal compatibility)§§Named entities are easier for humans; numeric entities are guaranteed in every browser including legacy.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Non-breaking space§§&nbsp; prevents line breaks at the space, useful for "Mr.&nbsp;Smith" or "100&nbsp;km" where the words must stay together.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after pasting a Stack Overflow code snippet into a customer email template and watching the email server eat every angle bracket. Stack Overflow used named entities but the legacy mail client only supported numeric entities. This tool gives you both formats &mdash; named (readable) and numeric (compatible) &mdash; so you can pick whichever your renderer actually accepts.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

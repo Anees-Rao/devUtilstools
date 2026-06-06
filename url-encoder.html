@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Encoder & Decoder — Percent Encoding | FreeDevTool</title>
-  <meta name="description" content="Free URL encoder and decoder. encodeURIComponent, encodeURI, percent-encoding (RFC 3986), UTF-8/Unicode. Runs in browser, no signup.">
+  <title>Free URL Encoder <title>Free URL Encoder &amp; Decoder Online — RFC 3986 | FreeDevTool</title> Decoder — RFC 3986 Online | FreeDevTool</title>
+  <meta name="description" content="Percent-encode and decode URLs. Distinguishes encodeURI vs encodeURIComponent vs RFC 3986 modes. Free online URL encoder, no signup.">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://freedevtool.org/url-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -103,7 +105,7 @@
         "@type": "Question",
         "name": "How do I safely encode an entire URL string?",
         "acceptedAnswer": { "@type": "Answer", "text": "Generally, do not encode the whole URL — encode at the level of individual components. Use a URL builder API: new URL() + URLSearchParams in JavaScript, urllib.parse.urlencode in Python, url.URL struct in Go. These libraries encode each component correctly without manual reserved-character handling. If you must encode a full URL string, use encodeURI() in JavaScript — it preserves URL structure while escaping illegal characters in the path." }
-      }
+      },{"@type":"Question","name":"Why is %20 used in URLs?","acceptedAnswer":{"@type":"Answer","text":"%20 is the percent-encoded representation of a space character (ASCII 32 = hex 20). Spaces are not allowed in valid URLs, so they must be encoded. In query strings, + is also accepted as a space (legacy form data encoding), but %20 is universal."}},{"@type":"Question","name":"What characters need to be URL encoded?","acceptedAnswer":{"@type":"Answer","text":"RFC 3986 reserves these characters: colon, forward slash, question mark, hash, brackets, at sign, exclamation, dollar, ampersand, parentheses, asterisk, plus, comma, semicolon, equals. They must be encoded when they appear as data inside a URL. Unreserved characters (A-Z, a-z, 0-9, hyphen, underscore, period, tilde) never need encoding."}},{"@type":"Question","name":"Why does my URL show + instead of spaces?","acceptedAnswer":{"@type":"Answer","text":"The + symbol means a space in form-encoded URLs (application/x-www-form-urlencoded used by HTML forms). This predates RFC 3986. When decoding, treat + as a space only in the query string component, not in the URL path."}}
     ]
   }
   </script>
@@ -431,6 +433,28 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>URL encoding</strong> (also called percent encoding, defined in RFC 3986) replaces unsafe characters in URLs with a percent sign followed by two hexadecimal digits — a space becomes <code>%20</code>, an ampersand becomes <code>%26</code>, a forward slash becomes <code>%2F</code>. Encoding is required whenever you put data into a URL: query strings, fragment identifiers, OAuth state parameters, webhook URLs. This <strong>free URL encoder and decoder</strong> shows three encoding modes side by side — <code>encodeURI</code>, <code>encodeURIComponent</code>, and strict RFC 3986 — so you can pick the right one for your context.
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Spaces in a query string</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Input:    hello world<br>Encoded:  hello%20world</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">encodeURI vs encodeURIComponent</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Input:                   https://example.com/path?key=a&b=c<br>encodeURI:               https://example.com/path?key=a&b=c<br>encodeURIComponent:      https%3A%2F%2Fexample.com%2Fpath%3Fkey%3Da%26b%3Dc</code>
+        <p style="margin:8px 0 0;font-size:13px">Use <code>encodeURI</code> for whole URLs you want to preserve. Use <code>encodeURIComponent</code> for individual query-string values.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">OAuth state parameter</strong>
+        <p style="margin:0;font-size:14px;line-height:1.6">OAuth state values often contain JSON, base64, or random bytes — always encode them with <code>encodeURIComponent</code> before adding to the authorize URL, or the callback will silently drop characters.</p>
+      </div>
+    </section>
+
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a coworker spent two hours debugging why their OAuth state parameter was not surviving a redirect. The problem: they used encodeURI() instead of encodeURIComponent() &mdash; the former preserves URL structure characters which broke the surrounding query string. Most online URL encoders only do one mode. This one shows all three: encodeURI, encodeURIComponent, and RFC 3986. Side by side so you can see the difference.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

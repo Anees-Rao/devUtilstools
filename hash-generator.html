@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hash Generator — MD5, SHA-256, SHA-512 | FreeDevTool</title>
-  <meta name="description" content="Free online MD5, SHA-1, SHA-256, SHA-512 hash generator. Verify file checksums, compare hashes. Browser-only Web Crypto API, no uploads.">
+  <title>Free Hash Generator — MD5, SHA-256, BLAKE3 | FreeDevTool</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-384, SHA-512, and BLAKE3 hashes via Web Crypto API. Free hash generator. Runs entirely in your browser.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/hash-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -86,7 +88,7 @@
         "@type": "Question",
         "name": "How do I verify a file checksum using SHA-256?",
         "acceptedAnswer": { "@type": "Answer", "text": "On Windows: certutil -hashfile filename SHA256. On macOS: shasum -a 256 filename. On Linux: sha256sum filename. Compare the output hash with the expected hash provided by the file's publisher. If they match, the file has not been altered or corrupted during download." }
-      }
+      },{"@type":"Question","name":"Is SHA-256 still secure in 2026?","acceptedAnswer":{"@type":"Answer","text":"Yes. SHA-256 has no known practical collision attacks and remains the recommended general-purpose cryptographic hash. It is hardware-accelerated on every modern CPU via SHA extensions. Use SHA-512 on 64-bit systems where the larger digest is acceptable — it is often faster than SHA-256."}},{"@type":"Question","name":"What is BLAKE3 and how is it different from SHA-256?","acceptedAnswer":{"@type":"Answer","text":"BLAKE3 (2020) is a modern cryptographic hash that is faster than MD5 while being secure. It uses a Merkle tree structure that parallelizes naturally across CPU cores. For large files or high-throughput pipelines, BLAKE3 is dramatically quicker than SHA-256."}},{"@type":"Question","name":"How long is a SHA-256 hash?","acceptedAnswer":{"@type":"Answer","text":"A SHA-256 hash is 256 bits = 32 bytes = 64 hexadecimal characters. Every input — whether 1 byte or 1 terabyte — produces exactly the same fixed-size output. This fixed length is what makes hashes useful as fingerprints in databases and content-addressed storage."}}
     ]
   }
   </script>
@@ -341,6 +343,27 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>A cryptographic hash function</strong> takes input data of any size and produces a fixed-size fingerprint called a hash or digest. Hashing is one-way — the original input cannot be recovered from the hash, and even a single-bit change in input produces a completely different output. This <strong>free hash generator</strong> computes MD5, SHA-1, SHA-256, SHA-384, SHA-512, and BLAKE3 hashes entirely in your browser using the Web Crypto API. No data is uploaded.
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">SHA-256 of plain text</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--text)">Input:  hello<br>SHA-256: 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">BLAKE3 — modern and parallel</strong>
+        <p style="margin:0;font-size:14px;line-height:1.6">BLAKE3 (2020) is cryptographically secure and faster than MD5 on multi-core CPUs. Pick BLAKE3 when hashing large files or high-throughput pipelines; pick SHA-256 when broader compatibility matters.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">For passwords — do NOT use these</strong>
+        <p style="margin:0;font-size:14px;line-height:1.6">SHA-256 is too fast for password hashing — attackers can try billions per second. Use a slow, salted KDF instead: <strong>Argon2id</strong>, <strong>bcrypt</strong>, or <strong>scrypt</strong>.</p>
+      </div>
+    </section>
+
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because I needed to verify a downloaded ISO file&rsquo;s checksum and the machine I was using did not have sha256sum installed. The hash generators online all worked, but loaded ads while I was hashing potentially-sensitive data. This one runs entirely in your browser via the Web Crypto API &mdash; same primitives as command-line sha256sum, no upload, no ads. MD5, SHA-1, SHA-256, SHA-384, SHA-512, BLAKE3.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

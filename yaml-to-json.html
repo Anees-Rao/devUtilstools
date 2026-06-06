@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YAML to JSON Converter — Bidirectional | FreeDevTool</title>
-  <meta name="description" content="Free YAML ⇄ JSON converter. YAML 1.2, anchors, aliases, multi-doc streams. Docker Compose, Kubernetes, GitHub Actions friendly. Browser-only.">
+  <title>Free YAML to JSON Converter Online — Instant, No Signup | FreeDevTool</title>
+  <meta name="description" content="Free YAML to JSON converter. Handles YAML 1.2, anchors, aliases, multi-doc streams. Works with Docker Compose, Kubernetes, GitHub Actions configs. Browser-only.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/yaml-to-json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -53,7 +55,7 @@
   }
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is YAML and how does it differ from JSON?","acceptedAnswer":{"@type":"Answer","text":"YAML (YAML Ain't Markup Language) is a human-readable data serialization format that uses indentation to represent hierarchy. Unlike JSON, YAML supports comments (#), does not require quotes around most strings, and uses dashes for arrays. JSON is stricter with mandatory double-quoted keys, commas, and curly braces, but has native browser support via JSON.parse() and is the dominant format for REST APIs and web configuration."}},{"@type":"Question","name":"Can I convert JSON back to YAML with this tool?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool supports bidirectional conversion. Paste YAML in the left pane and click YAML to JSON, or paste JSON in the right pane and click JSON to YAML. The Swap button lets you quickly exchange both panes."}},{"@type":"Question","name":"Does this tool handle YAML multi-line strings?","acceptedAnswer":{"@type":"Answer","text":"Yes. This converter supports YAML literal block scalars (|) that preserve newlines and folded block scalars (>) that join lines with spaces. It also handles block chomping indicators (|-, |+, >-, >+) for controlling trailing newlines."}}]}
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is YAML and how does it differ from JSON?","acceptedAnswer":{"@type":"Answer","text":"YAML (YAML Ain't Markup Language) is a human-readable data serialization format that uses indentation to represent hierarchy. Unlike JSON, YAML supports comments (#), does not require quotes around most strings, and uses dashes for arrays. JSON is stricter with mandatory double-quoted keys, commas, and curly braces, but has native browser support via JSON.parse() and is the dominant format for REST APIs and web configuration."}},{"@type":"Question","name":"Can I convert JSON back to YAML with this tool?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool supports bidirectional conversion. Paste YAML in the left pane and click YAML to JSON, or paste JSON in the right pane and click JSON to YAML. The Swap button lets you quickly exchange both panes."}},{"@type":"Question","name":"Does this tool handle YAML multi-line strings?","acceptedAnswer":{"@type":"Answer","text":"Yes. This converter supports YAML literal block scalars (|) that preserve newlines and folded block scalars (>) that join lines with spaces. It also handles block chomping indicators (|-, |+, >-, >+) for controlling trailing newlines."}},{"@type":"Question","name":"When should I use YAML instead of JSON?","acceptedAnswer":{"@type":"Answer","text":"YAML is better for human-edited configuration files — Kubernetes manifests, Docker Compose, GitHub Actions, Ansible playbooks. JSON is better for machine-to-machine transfer (faster to parse, less ambiguity). YAML supports comments and multi-line strings; JSON does not."}},{"@type":"Question","name":"What is a YAML anchor and how does it work?","acceptedAnswer":{"@type":"Answer","text":"A YAML anchor marks a value for reuse with the ampersand symbol. An alias references the anchored value elsewhere with the asterisk symbol. Combined with a merge key, anchors keep large configs DRY by sharing common settings across multiple sections. Common in Kubernetes Helm values and CI configurations."}},{"@type":"Question","name":"Why does Docker Compose use YAML over JSON?","acceptedAnswer":{"@type":"Answer","text":"Docker Compose files are written by humans daily, and YAML is easier to read and edit than JSON — comments are allowed, strings do not need quotes, structure is shown via indentation. JSON would make Compose files significantly noisier without adding capability."}}]}
   </script>
   <style>
     .conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -189,6 +191,28 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>YAML (YAML Aint Markup Language)</strong> is a human-readable data serialization format used in Kubernetes manifests, Docker Compose files, GitHub Actions workflows, Ansible playbooks, and Helm charts. JSON is YAMLs structurally compatible cousin — valid JSON is also valid YAML. This <strong>free YAML to JSON converter</strong> handles the YAML 1.2 spec bidirectionally, including anchors (<code>&amp;ref</code>), aliases (<code>*ref</code>), merge keys (<code>&lt;&lt;:</code>), tags (<code>!!str</code>), and multi-document streams (<code>---</code>).
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Simple key-value</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">YAML:                JSON:<br>name: Alice          {"name": "Alice",<br>age: 30               "age": 30,<br>active: true          "active": true}</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">YAML anchor expansion</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">defaults: &amp;defaults<br>&nbsp;&nbsp;timeout: 30<br>&nbsp;&nbsp;retries: 3<br>prod:<br>&nbsp;&nbsp;&lt;&lt;: *defaults<br>&nbsp;&nbsp;host: prod.example.com</code>
+        <p style="margin:6px 0 0;font-size:13px">Anchors keep large configs DRY. The converter expands them into the equivalent JSON.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Multi-document Kubernetes manifest</strong>
+        <p style="margin:0;font-size:14px;line-height:1.6">Kubernetes manifests often contain multiple documents separated by <code>---</code>. The converter outputs an array of JSON objects, one per YAML document.</p>
+      </div>
+    </section>
+
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a Kubernetes deployment broke because my YAML used a stray tab character that the YAML 1.2 parser silently treated as part of a multi-line string. The converter I had been using could not show me where the parse diverged. This one validates strictly against YAML 1.2, handles anchors and aliases, and shows exactly which line broke. Useful for Helm values, GitHub Actions workflows, and Docker Compose configs.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

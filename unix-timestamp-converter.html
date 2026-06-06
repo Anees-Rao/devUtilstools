@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/unix-timestamp-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -91,7 +93,7 @@
         "@type": "Question",
         "name": "What is the maximum UNIX timestamp value?",
         "acceptedAnswer": { "@type": "Answer", "text": "On 32-bit systems the maximum signed integer timestamp is 2147483647, which corresponds to January 19, 2038 — the Year 2038 problem. On 64-bit systems (modern Linux, macOS, Windows) the limit is effectively unlimited for practical purposes." }
-      }
+      },{"@type":"Question","name":"What is the Year 2038 problem?","acceptedAnswer":{"@type":"Answer","text":"The 32-bit signed Unix timestamp can represent dates from 1901 to January 19, 2038 at 03:14:07 UTC. After that it overflows to a negative number, wrapping to 1901. Systems using 32-bit time_t will fail on or before 2038. Modern systems use 64-bit time_t."}},{"@type":"Question","name":"How do I convert epoch to ISO 8601 format?","acceptedAnswer":{"@type":"Answer","text":"In JavaScript: new Date(unixTimestamp * 1000).toISOString returns the ISO 8601 string. Multiply by 1000 because JavaScript Date expects milliseconds. In Python: datetime.fromtimestamp with UTC timezone. Always include the timezone Z for UTC to avoid ambiguity."}},{"@type":"Question","name":"Is Unix time the same as UTC?","acceptedAnswer":{"@type":"Answer","text":"Unix time is defined as seconds since 1970-01-01 UTC, so it always references UTC. But Unix time does NOT count leap seconds — every Unix day is exactly 86,400 seconds. Real UTC has had about 27 leap seconds inserted since 1972."}}
     ]
   }
   </script>
@@ -337,6 +339,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>A Unix timestamp</strong> is the number of seconds (or milliseconds) since 1970-01-01 00:00:00 UTC, used as a universal time format in APIs, logs, and databases. The 32-bit signed seconds timestamp overflows in January 2038 (the "Y2K38" problem). This <strong>free Unix timestamp converter</strong> handles both 10-digit second and 13-digit millisecond formats, displaying both UTC and your local timezone.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Seconds vs milliseconds§§Seconds (10 digits):     1717094400§§Milliseconds (13 digits): 1717094400000§§Same moment, different units. JavaScript Date uses milliseconds; most server APIs use seconds.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">ISO 8601 format§§Unix:  1717094400§§ISO:   2026-05-30T22:00:00Z§§ISO 8601 is the universal date string format — sortable as text, timezone-explicit, used by JSON APIs and JWT.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">The 2038 problem§§The 32-bit signed Unix timestamp overflows at 2038-01-19 03:14:07 UTC. After that it wraps to a negative number representing 1901. 64-bit timestamps solve it; many embedded systems still use 32-bit.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending 30 minutes debugging an API that returned timestamps in seconds while my client expected milliseconds. That off-by-1000x makes events look 50 years in the past or future. This converter shows both seconds and ms simultaneously, in your local timezone and UTC. Paste any number and the tool figures out the unit from the magnitude. Saves you from the &lsquo;is it 1718000000 or 1718000000000?&rsquo; moment every backend dev hits.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

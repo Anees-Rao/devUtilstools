@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/json-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -81,7 +83,7 @@
         "@type": "Question",
         "name": "How do I fix a JSON parse error?",
         "acceptedAnswer": { "@type": "Answer", "text": "Common fixes: 1) Replace single quotes with double quotes around keys and string values. 2) Remove trailing commas after the last item in an object or array. 3) Remove comments (JSON does not support // or /* */). 4) Make sure all strings are closed with matching quotes. 5) Check for missing commas between key-value pairs." }
-      }
+      },{"@type":"Question","name":"Does JSON allow comments?","acceptedAnswer":{"@type":"Answer","text":"No. RFC 8259 strictly forbids comments. JavaScript inline comments are not valid JSON and will cause parsers to throw. If you need comments, use JSONC (JSON with Comments — used by VS Code) or JSON5. Strip comments before strict JSON.parse()."}},{"@type":"Question","name":"Can JSON have trailing commas?","acceptedAnswer":{"@type":"Answer","text":"No. RFC 8259 forbids trailing commas after the last element of an array or object. JavaScript object literals allow them, which is the most common JSON syntax error developers introduce. Use a formatter to catch and remove them, or use JSON5 if you need trailing comma support."}},{"@type":"Question","name":"What is RFC 8259?","acceptedAnswer":{"@type":"Answer","text":"RFC 8259 (December 2017) is the current IETF standard for JSON. It obsoleted RFC 7159 and RFC 4627. The standard defines syntax, UTF-8 encoding, and what makes JSON valid. It explicitly notes that JSON is a subset of JavaScript object literal syntax."}}
     ]
   }
   </script>
@@ -313,6 +315,29 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>JSON (JavaScript Object Notation, RFC 8259)</strong> is a lightweight text format for structured data using key-value pairs, arrays, and primitive types. Valid JSON requires double quotes around keys and strings, allows no comments, and accepts no trailing commas. This <strong>free JSON formatter and validator</strong> pretty-prints with configurable indentation, minifies for transmission, sorts keys alphabetically, and identifies the exact location of syntax errors — all RFC 8259 compliant, all entirely client-side.
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Common invalid JSON — trailing comma</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">{<br>&nbsp;&nbsp;"name": "Alice",<br>&nbsp;&nbsp;"age": 30,    ← invalid trailing comma<br>}</code>
+        <p style="margin:6px 0 0;font-size:13px">JavaScript accepts trailing commas; strict JSON does not. Use JSONC or JSON5 if you need them.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Formatted vs minified</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Formatted:  pretty, 2-space indent, readable<br>Minified:   {"a":1,"b":2,"c":3} — no whitespace</code>
+        <p style="margin:6px 0 0;font-size:13px">Minify before sending over the wire; format before reading in code review.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Sorted keys for diff-friendly output</strong>
+        <p style="margin:0;font-size:14px;line-height:1.6">Alphabetically sorting keys before saving JSON to git makes diffs readable. This formatter sorts keys consistently across nested objects.</p>
+      </div>
+    </section>
+
 
     <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
       <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>

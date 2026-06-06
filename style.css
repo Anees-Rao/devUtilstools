@@ -3,7 +3,7 @@
    Design: Dual-theme (dark default, light optional) | Green accent | Monospace
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+/* Google Fonts moved to HTML <head> for faster LCP. See <link rel="stylesheet"> in each page. */
 
 :root {
   --bg:       #0d0f11;

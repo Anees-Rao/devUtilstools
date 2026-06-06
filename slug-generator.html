@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>URL Slug Generator — SEO-Friendly Slugs | FreeDevTool</title>
-  <meta name="description" content="Free URL slug generator. Convert titles to clean kebab-case permalinks. Transliterates Cyrillic, Greek, accented Latin, CJK. Browser-only.">
+  <title>Free URL Slug Generator — 80+ Languages | FreeDevTool</title>
+  <meta name="description" content="Convert text to URL-safe slugs. Handles Cyrillic, Greek, accented Latin, CJK, emoji. SEO-friendly kebab-case output. Free, no signup.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/slug-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -96,7 +98,7 @@
         "@type": "Question",
         "name": "How do I handle special characters and accents in slugs?",
         "acceptedAnswer": { "@type": "Answer", "text": "Special characters and accented letters should be transliterated to their ASCII equivalents — for example, e with acute becomes e, n with tilde becomes n, u with umlaut becomes u. Non-alphanumeric characters (except the separator) should be removed entirely. This ensures maximum compatibility across browsers, servers, and social media platforms while keeping slugs clean and readable." }
-      }
+      },{"@type":"Question","name":"Should URL slugs use hyphens or underscores?","acceptedAnswer":{"@type":"Answer","text":"Use hyphens. Google explicitly recommends hyphens since 2008 — search engines treat hyphens as word separators, but underscores as part of the same word. Hyphens are also more readable and are the convention in every modern CMS and framework."}},{"@type":"Question","name":"How long should a URL slug be?","acceptedAnswer":{"@type":"Answer","text":"3-5 words is the sweet spot for SEO and shareability. Avoid stopwords (the, a, of) unless essential. Browsers display about 60 characters of URL in the address bar. Keep slugs under 60 characters total including the domain."}},{"@type":"Question","name":"What happens if I change a URL slug?","acceptedAnswer":{"@type":"Answer","text":"Old URLs return 404 unless you set up a 301 redirect from old to new. Inbound links, social shares, and search engine indexes will continue pointing to the old slug. Always add a permanent redirect when changing a published slug; never delete the old URL."}}
     ]
   }
   </script>
@@ -280,6 +282,28 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>A URL slug</strong> is the human-readable portion of a URL after the domain — for example, <code>how-to-build-an-mvp</code> in <code>/blog/how-to-build-an-mvp</code>. Good slugs are lowercase, hyphen-separated, 3-5 words, contain the primary keyword, and skip stopwords like "the" or "of". This <strong>free URL slug generator</strong> handles all major scripts — Latin with accents, Cyrillic, Greek, Arabic, CJK (Chinese, Japanese, Korean), and emoji — by transliterating where possible and stripping cleanly where not.
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">English title</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Input:   How to build an MVP in 30 days<br>Slug:    how-to-build-an-mvp-in-30-days</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Cyrillic transliteration</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Input:   Как создать MVP<br>Slug:    kak-sozdat-mvp</code>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Emoji and special characters</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Input:   🚀 Fast shipping!<br>Slug:    fast-shipping</code>
+        <p style="margin:6px 0 0;font-size:13px">Emoji and punctuation are stripped cleanly — the result is a valid kebab-case slug.</p>
+      </div>
+    </section>
+
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after generating slugs for Arabic and Chinese product titles and watching my SEO team&rsquo;s eyes glaze over. Most slugifiers strip non-Latin characters entirely, leaving you with an empty slug. This one transliterates where possible (Arabic to Latin-script equivalents, Chinese to Pinyin) and falls back gracefully. Handles emoji cleanly &mdash; not a parse error.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

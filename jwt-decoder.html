@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/jwt-decoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -86,7 +88,7 @@
         "@type": "Question",
         "name": "What is the difference between JWT and JWE?",
         "acceptedAnswer": { "@type": "Answer", "text": "A JWT (JSON Web Token) with JWS (JSON Web Signature) has a readable payload signed for integrity — anyone can read the claims but can't modify them. A JWE (JSON Web Encryption) encrypts the payload so only authorized parties with the decryption key can read the contents. Use JWE when the payload itself must remain confidential." }
-      }
+      },{"@type":"Question","name":"What does the exp claim mean in a JWT?","acceptedAnswer":{"@type":"Answer","text":"exp (expiration time) is a Unix timestamp after which the JWT must not be accepted. Verifiers reject tokens where the current time is past exp. Recommended JWT lifetimes are short (15-60 minutes for access tokens), paired with longer-lived refresh tokens for renewal."}},{"@type":"Question","name":"What does RS256 vs HS256 mean in JWT?","acceptedAnswer":{"@type":"Answer","text":"HS256 uses HMAC-SHA256 with a shared secret — anyone who can verify can also forge. RS256 uses RSA-SHA256 with an asymmetric keypair — the issuer signs with the private key, verifiers use the public key. Use RS256 when the verifier is a different service from the issuer."}},{"@type":"Question","name":"What is the difference between JWT and a Bearer token?","acceptedAnswer":{"@type":"Answer","text":"A Bearer token is any opaque token presented in the HTTP Authorization header as Authorization: Bearer token. A JWT is a specific structured Bearer token format (header.payload.signature). All JWTs are Bearer tokens; not all Bearer tokens are JWTs."}}
     ]
   }
   </script>
@@ -312,6 +314,30 @@
        ============================================================= -->
 
   <article>
+
+    <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+      <strong>A JSON Web Token (JWT, RFC 7519)</strong> is a Base64URL-encoded string with three dot-separated parts: <code>header.payload.signature</code>. The header and payload are <em>not encrypted</em> — they can be read by anyone holding the token. Only the signature requires a key to verify. This <strong>free JWT decoder</strong> parses any token entirely in your browser — open the DevTools Network tab and you will see zero requests fire when you paste. Useful for inspecting bearer tokens, OAuth access tokens, and OpenID Connect ID tokens without sending them to a server.
+    </p>
+
+    <section id="examples" style="max-width:760px;margin:24px auto 32px">
+      <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Decoded JWT header</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">{<br>&nbsp;&nbsp;"alg": "RS256",<br>&nbsp;&nbsp;"typ": "JWT",<br>&nbsp;&nbsp;"kid": "abc123"<br>}</code>
+        <p style="margin:6px 0 0;font-size:13px">Identifies the signing algorithm (HS256, RS256, ES256) and key ID used to sign.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Decoded JWT payload (claims)</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">{<br>&nbsp;&nbsp;"sub": "1234567890",<br>&nbsp;&nbsp;"iat": 1717094400,<br>&nbsp;&nbsp;"exp": 1717180800,<br>&nbsp;&nbsp;"scope": "read:profile"<br>}</code>
+        <p style="margin:6px 0 0;font-size:13px">Common claims: <code>sub</code> (subject/user ID), <code>iat</code> (issued at), <code>exp</code> (expiry), <code>aud</code> (audience), <code>iss</code> (issuer).</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px">
+        <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Bearer token from Authorization header</strong>
+        <code style="display:block;font-family:var(--mono);font-size:13px;line-height:1.6">Authorization: Bearer eyJhbGciOi...XVCJ9.eyJzdWIi...wMH0.SflKxw...</code>
+        <p style="margin:6px 0 0;font-size:13px">Paste just the token (everything after "Bearer ") into the decoder.</p>
+      </div>
+    </section>
+
 
     <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
       <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>

@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/sql-formatter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -53,7 +55,7 @@
   }
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is SQL formatting and why should I format my SQL queries?","acceptedAnswer":{"@type":"Answer","text":"SQL formatting is the process of restructuring SQL code with consistent indentation, line breaks, and keyword casing to improve readability. Properly formatted SQL is easier to debug, review in code reviews, and maintain across teams. Most SQL style guides recommend uppercase keywords (SELECT, FROM, WHERE) and consistent indentation for subqueries and JOIN clauses."}},{"@type":"Question","name":"Does this SQL formatter support different database dialects?","acceptedAnswer":{"@type":"Answer","text":"This formatter handles standard SQL keywords used across MySQL, PostgreSQL, SQL Server, Oracle, and SQLite. It recognizes keywords like SELECT, FROM, WHERE, JOIN, GROUP BY, ORDER BY, HAVING, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, and more. Dialect-specific functions are preserved as-is."}},{"@type":"Question","name":"Is it safe to paste production SQL queries into an online formatter?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool processes everything 100% client-side in your browser using JavaScript. Your SQL queries are never sent to any server, stored, or logged. You can verify this by using the tool offline after the page loads."}}]}
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is SQL formatting and why should I format my SQL queries?","acceptedAnswer":{"@type":"Answer","text":"SQL formatting is the process of restructuring SQL code with consistent indentation, line breaks, and keyword casing to improve readability. Properly formatted SQL is easier to debug, review in code reviews, and maintain across teams. Most SQL style guides recommend uppercase keywords (SELECT, FROM, WHERE) and consistent indentation for subqueries and JOIN clauses."}},{"@type":"Question","name":"Does this SQL formatter support different database dialects?","acceptedAnswer":{"@type":"Answer","text":"This formatter handles standard SQL keywords used across MySQL, PostgreSQL, SQL Server, Oracle, and SQLite. It recognizes keywords like SELECT, FROM, WHERE, JOIN, GROUP BY, ORDER BY, HAVING, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, and more. Dialect-specific functions are preserved as-is."}},{"@type":"Question","name":"Is it safe to paste production SQL queries into an online formatter?","acceptedAnswer":{"@type":"Answer","text":"Yes. This tool processes everything 100% client-side in your browser using JavaScript. Your SQL queries are never sent to any server, stored, or logged. You can verify this by using the tool offline after the page loads."}},{"@type":"Question","name":"Should SQL keywords be uppercase or lowercase?","acceptedAnswer":{"@type":"Answer","text":"Pure preference — both are valid SQL. Uppercase SELECT is traditional and standard in style guides because it visually distinguishes keywords from identifiers. Lowercase select is increasingly common in modern teams. Pick one style for your project."}},{"@type":"Question","name":"How do I format complex SQL with CTEs?","acceptedAnswer":{"@type":"Answer","text":"Common Table Expressions (WITH clauses) should be at the start with each CTE on its own line block. The main SELECT that follows should align at the same indent level. Most formatters handle this correctly; verify your formatter respects the WITH structure."}},{"@type":"Question","name":"Does SQL formatting affect query performance?","acceptedAnswer":{"@type":"Answer","text":"No. Formatting is purely cosmetic — whitespace is ignored by SQL parsers. A formatted and minified query produce identical execution plans. Format for human readability; the database engine does not care."}}]}
   </script>
   <style>
     .sql-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -161,6 +163,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>SQL formatting</strong> applies consistent indentation, keyword case, and line breaks to make complex queries readable. Different dialects have different rules &mdash; PostgreSQL preserves identifier case, MySQL is case-insensitive, BigQuery and Snowflake have their own keyword sets. This <strong>free SQL formatter</strong> handles ANSI, MySQL, PostgreSQL, BigQuery, and Snowflake dialects with CTE and window function support.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Simple SELECT§§Input:  select id,name from users where active=1§§Formatted:§§SELECT id, name§§FROM users§§WHERE active = 1§§Keywords uppercase, one column per line for readability.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Common Table Expression§§WITH recent_orders AS (§§  SELECT * FROM orders WHERE created_at > NOW() - INTERVAL "7 days"§§)§§SELECT customer_id, COUNT(*) FROM recent_orders GROUP BY customer_id;§§Formatters preserve CTE structure and indentation hierarchy.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Window function§§SELECT name, salary,§§  RANK() OVER (PARTITION BY dept ORDER BY salary DESC) AS rank§§FROM employees;§§Window functions stay on a single logical line for readability.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending 20 minutes debugging a PostgreSQL CTE that worked in my IDE but broke when formatted by another tool &mdash; the formatter was MySQL-only and silently lowercased keywords PostgreSQL needs in specific cases. This formatter handles ANSI, MySQL, PostgreSQL, BigQuery, and Snowflake. CTEs, window functions, and array operators stay intact.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

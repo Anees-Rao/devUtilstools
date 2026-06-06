@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/uuid-generator">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -96,7 +98,7 @@
         "@type": "Question",
         "name": "Can I use UUID as a database primary key?",
         "acceptedAnswer": { "@type": "Answer", "text": "Yes, UUID is widely used as a primary key. Benefits: globally unique across distributed systems, no auto-increment reveals record count, safe to generate client-side. Downsides: 16 bytes vs 4-8 bytes for an integer, random UUIDs cause index fragmentation in B-tree indexes. UUID v7 (ordered) solves the fragmentation issue." }
-      }
+      },{"@type":"Question","name":"Should I use UUID or auto-increment for primary keys?","acceptedAnswer":{"@type":"Answer","text":"Auto-increment integers are smaller and faster to compare. UUIDs are universally unique without a central authority, do not leak row counts, and enable client-side ID generation. For modern distributed systems, UUIDv7 combines UUID benefits with insertion-order sorting."}},{"@type":"Question","name":"Can UUIDs collide?","acceptedAnswer":{"@type":"Answer","text":"Mathematically yes, practically no. UUIDv4 has 122 bits of randomness — generating a duplicate has a 50% probability only after roughly 2.71 quintillion UUIDs. Generating 1 billion per second for 85 years approaches that. Treat UUIDv4 collisions as effectively impossible."}},{"@type":"Question","name":"What is RFC 9562?","acceptedAnswer":{"@type":"Answer","text":"RFC 9562 (May 2024) is the current UUID standard. It obsoletes RFC 4122 and introduces UUID v6, v7, and v8. UUIDv7 embeds a Unix millisecond timestamp at the start of the ID, making UUIDs naturally sortable by creation time. Recommended for new database primary keys."}}
     ]
   }
   </script>
@@ -296,6 +298,17 @@
 
     </div>
   </div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>A UUID (Universally Unique Identifier, RFC 9562)</strong> is a 128-bit identifier represented as a 36-character hyphenated hex string. UUID v4 is fully random. UUID v7 (finalized 2024) embeds a millisecond timestamp at the start, making it monotonically sortable &mdash; ideal for database primary keys because the B-tree index stays clustered by insertion order. This <strong>free UUID generator</strong> produces v1, v4, v6, and v7.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">UUID v4 &mdash; fully random</strong><code style="display:block;font-family:var(--mono);font-size:13px">f47ac10b-58cc-4372-a567-0e02b2c3d479</code><p style="margin:6px 0 0;font-size:13px">122 bits of entropy. Best for opaque public-facing IDs.</p></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">UUID v7 &mdash; time-ordered</strong><code style="display:block;font-family:var(--mono);font-size:13px">018f9b6c-4123-7890-abcd-ef1234567890</code><p style="margin:6px 0 0;font-size:13px">First 48 bits are a Unix millisecond timestamp. IDs sort chronologically.</p></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">When to use v7 vs v4</strong><p style="margin:0;font-size:14px">Use v7 for database primary keys and event sourcing. Use v4 when timestamp leakage is a privacy concern.</p></div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because UUID v7 (RFC 9562, finalized 2024) is what every database should be using for primary keys, but most generators online still only do v4. UUIDv7 embeds a millisecond timestamp at the start of the ID &mdash; your database index stays sorted by insert order, eliminating the page-fragmentation problem v4 causes at scale. This generator does v1, v4, v6, and v7. Pick the right one for your use case.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

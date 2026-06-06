@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/js-minifier">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -62,7 +64,7 @@
     {"@type":"Question","name":"How much does JS minification improve page speed?","acceptedAnswer":{"@type":"Answer","text":"Minification typically reduces JavaScript file size by 20-40%. Combined with gzip/brotli compression, total transfer size can drop by 60-80%. The impact on page speed depends on the original file size — a 200KB unminified file becoming 120KB minified can save 50-200ms on 3G connections."}},
     {"@type":"Question","name":"What is the difference between minification and obfuscation?","acceptedAnswer":{"@type":"Answer","text":"Minification removes unnecessary characters to reduce file size while keeping code functionally identical. Obfuscation deliberately makes code hard to understand by renaming variables, adding dead code, and transforming logic — primarily for intellectual property protection. Minification is a performance optimization; obfuscation is a security measure. Both reduce readability."}},
     {"@type":"Question","name":"Does minifying JS affect Core Web Vitals and SEO?","acceptedAnswer":{"@type":"Answer","text":"Yes. JavaScript is often render-blocking or parser-blocking. Smaller JS files download and parse faster, improving Time to Interactive (TTI), Total Blocking Time (TBT), and Interaction to Next Paint (INP). Google uses Core Web Vitals as ranking signals, making JS minification a direct SEO optimization."}},
-    {"@type":"Question","name":"What is tree shaking vs minification?","acceptedAnswer":{"@type":"Answer","text":"Tree shaking removes unused code (dead code elimination) from your bundle at build time — for example, importing only one function from lodash instead of the entire library. Minification compresses the remaining code by removing whitespace and comments. They work together: tree shake first to remove unused code, then minify what's left."}}
+    {"@type":"Question","name":"What is tree shaking vs minification?","acceptedAnswer":{"@type":"Answer","text":"Tree shaking removes unused code (dead code elimination) from your bundle at build time — for example, importing only one function from lodash instead of the entire library. Minification compresses the remaining code by removing whitespace and comments. They work together: tree shake first to remove unused code, then minify what's left."}},{"@type":"Question","name":"Is online JS minification safe for production code?","acceptedAnswer":{"@type":"Answer","text":"Browser-based minifiers are safe — your code never leaves your machine. For production builds, prefer a build-time minifier (esbuild, swc, Terser) for source map integration, bundling integration, and automated test integration against minified output."}},{"@type":"Question","name":"Should I minify in development or only production?","acceptedAnswer":{"@type":"Answer","text":"Production only. In development you want fast incremental builds and readable stack traces. Minification slows the build and obscures source. Use a build mode flag (NODE_ENV production) to enable minification only on production deployments."}},{"@type":"Question","name":"What is dead code elimination in JS minification?","acceptedAnswer":{"@type":"Answer","text":"Dead code elimination (DCE) removes code paths that can never execute — unreachable branches, functions never called, imports never used. Combined with tree-shaking, DCE can reduce bundle size by 30-50% on large codebases. Whitespace-only minifiers do not do DCE."}}
   ]}
   </script>
 
@@ -219,6 +221,23 @@ greet('World');" oninput="process()" rows="8"></textarea>
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>JavaScript minification</strong> removes whitespace, comments, and shortens variable names to reduce bundle size — typical savings are 30-40% before gzip. This <strong>free JS minifier</strong> performs whitespace removal and basic shortening &mdash; not full AST-based minification like Terser or esbuild. Use it for quick one-off compression; use a build pipeline (Terser, esbuild, swc) for production.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Typical savings§§React production bundle (300 KB) → ~200 KB after esbuild minification (33% smaller).§§After gzip the difference shrinks to ~10%, but parse-time savings remain.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Mangling identifiers§§function calculateUserBalance(userId) → function a(b) — saves bytes and CPU parse time. Use sourcemaps to debug minified production code.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Production-only§§Minify only for production builds — never minified code in development. Source maps are essential for any minified JS that ships to production, so errors map back to original lines.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this for quick one-off minification &mdash; when you need to reduce a 50-line script before pasting into a constrained inline-script context, but spinning up esbuild or terser is overkill. This minifier does whitespace removal and basic shortening (not full AST-based minification &mdash; that is terser&rsquo;s territory). For production builds use a real build tool; for quick wins this is faster.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

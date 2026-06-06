@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/regex-tester">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -52,7 +54,7 @@
     {"@type":"Question","name":"What do the regex flags g, i, m, s mean?","acceptedAnswer":{"@type":"Answer","text":"g (global) finds all matches instead of stopping at the first. i (case-insensitive) ignores letter casing. m (multiline) makes ^ and $ match line starts/ends. s (dotAll) makes the dot (.) match newline characters too. u (unicode) enables full Unicode matching."}},
     {"@type":"Question","name":"What is the difference between greedy and lazy regex matching?","acceptedAnswer":{"@type":"Answer","text":"Greedy quantifiers (*, +, {n,}) match as much as possible. Lazy quantifiers (*?, +?, {n,}?) match as little as possible. For example, on '<b>hello</b>', the pattern '<.*>' matches the entire string (greedy) while '<.*?>' matches just '<b>' (lazy)."}},
     {"@type":"Question","name":"How do I validate an email address with regex?","acceptedAnswer":{"@type":"Answer","text":"A practical email regex is: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$ — this covers most valid emails. However, the full RFC 5322 email spec is extremely complex. For production, use a dedicated email validation library rather than regex alone."}},
-    {"@type":"Question","name":"What are capture groups in regex?","acceptedAnswer":{"@type":"Answer","text":"Capture groups use parentheses () to extract specific parts of a match. For example, the pattern (\\d{4})-(\\d{2})-(\\d{2}) on '2026-03-20' creates three groups: '2026', '03', '20'. Named groups use (?<name>...) syntax for clearer code. Non-capturing groups (?:...) group without capturing."}}
+    {"@type":"Question","name":"What are capture groups in regex?","acceptedAnswer":{"@type":"Answer","text":"Capture groups use parentheses () to extract specific parts of a match. For example, the pattern (\\d{4})-(\\d{2})-(\\d{2}) on '2026-03-20' creates three groups: '2026', '03', '20'. Named groups use (?<name>...) syntax for clearer code. Non-capturing groups (?:...) group without capturing."}},{"@type":"Question","name":"What do the regex flags g, i, m, s mean?","acceptedAnswer":{"@type":"Answer","text":"g (global) finds all matches; without it the regex stops at the first. i (case-insensitive) ignores letter casing. m (multiline) makes caret and dollar match line starts/ends. s (dotAll) makes dot match newlines. u (unicode) enables full Unicode support."}},{"@type":"Question","name":"What is the difference between greedy and lazy regex matching?","acceptedAnswer":{"@type":"Answer","text":"Greedy quantifiers match as much as possible. Lazy versions add a trailing question mark and match as little as possible. On <b>hello</b><b>world</b>, the greedy pattern matches the whole string; the lazy pattern matches just the first <b>hello</b>."}},{"@type":"Question","name":"What is catastrophic backtracking in regex?","acceptedAnswer":{"@type":"Answer","text":"A regex pattern where nested quantifiers cause exponential time on certain inputs. Classic example: nested plus quantifiers on a long input. The engine tries every possible grouping before giving up. Avoid nested quantifiers; use atomic groups or possessive quantifiers when necessary."}}
   ]}
   </script>
 
@@ -246,6 +248,26 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>A regex tester</strong> applies a regular expression pattern to a string and shows what matches, what captures into groups, and what the substitution output would be. JavaScript's <code>RegExp</code> engine supports flags (g, i, m, s, u, y) and modern features like named groups and lookbehind. This <strong>free JS regex tester</strong> runs entirely in your browser &mdash; your patterns are not saved anywhere.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Match all URLs in text§§Pattern: https?:\\/\\/\\S+§§Flags: g (global) for multiple matches§§Matches any http/https URL.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Capture groups§§Pattern: (\\d{4})-(\\d{2})-(\\d{2})§§On "2026-06-06" captures three groups: "2026", "06", "06". Reference as $1, $2, $3 in replacements.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Non-capturing group§§Pattern: (?:foo</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">bar)+§§The ?: makes the group not capture (it groups but does not store). Useful for alternation without polluting your capture group numbers.</strong>
+    </div>
+  </section>
 
     <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
       <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CSS Gradient Generator — Linear, Radial & Conic Gradient Maker | FreeDevTool</title>
+  <title>CSS Gradient Generator — Linear, Radial, Conic | FreeDevTool</title>
   <meta name="description" content="Free CSS gradient generator. Linear, radial &amp; conic gradients with live preview. Multiple color stops, angle control, OKLCH-aware, copy-ready CSS.">
   <meta name="keywords" content="css gradient generator, linear gradient, radial gradient, conic gradient, css background gradient, color stop generator, oklch gradient">
   <meta name="robots" content="index, follow">
@@ -13,6 +13,8 @@
   <link rel="canonical" href="https://freedevtool.org/css-gradient">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -39,7 +41,7 @@
   {"@context":"https://schema.org","@type":"WebApplication","name":"CSS Gradient Generator","url":"https://freedevtool.org/css-gradient","description":"Create beautiful CSS gradients visually with live preview and instant code output.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the different types of CSS gradients?","acceptedAnswer":{"@type":"Answer","text":"CSS supports three gradient types: linear-gradient (colors transition along a straight line at any angle), radial-gradient (colors radiate outward from a center point as a circle or ellipse), and conic-gradient (colors rotate around a center point like a color wheel). Each has a repeating variant (repeating-linear-gradient, etc.) for creating patterns."}},{"@type":"Question","name":"How do I create a gradient with multiple color stops in CSS?","acceptedAnswer":{"@type":"Answer","text":"Add multiple color stops separated by commas: background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%). Each stop has a color and optional position (percentage or length). Browsers automatically distribute colors evenly if positions are omitted. You can add as many stops as needed for complex gradients."}},{"@type":"Question","name":"Can I use CSS gradients as text backgrounds?","acceptedAnswer":{"@type":"Answer","text":"Yes. Apply the gradient as background, then use background-clip: text and -webkit-background-clip: text with color: transparent. This clips the gradient to the text shape, creating gradient-colored text. This technique works in all modern browsers and is commonly used for hero headings and decorative typography."}}]}
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the different types of CSS gradients?","acceptedAnswer":{"@type":"Answer","text":"CSS supports three gradient types: linear-gradient (colors transition along a straight line at any angle), radial-gradient (colors radiate outward from a center point as a circle or ellipse), and conic-gradient (colors rotate around a center point like a color wheel). Each has a repeating variant (repeating-linear-gradient, etc.) for creating patterns."}},{"@type":"Question","name":"How do I create a gradient with multiple color stops in CSS?","acceptedAnswer":{"@type":"Answer","text":"Add multiple color stops separated by commas: background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%). Each stop has a color and optional position (percentage or length). Browsers automatically distribute colors evenly if positions are omitted. You can add as many stops as needed for complex gradients."}},{"@type":"Question","name":"Can I use CSS gradients as text backgrounds?","acceptedAnswer":{"@type":"Answer","text":"Yes. Apply the gradient as background, then use background-clip: text and -webkit-background-clip: text with color: transparent. This clips the gradient to the text shape, creating gradient-colored text. This technique works in all modern browsers and is commonly used for hero headings and decorative typography."}},{"@type":"Question","name":"What is the difference between linear and radial gradients?","acceptedAnswer":{"@type":"Answer","text":"Linear gradients transition colors along a straight line at a specified angle. Radial gradients transition outward from a center point in a circle or ellipse. Use linear for backgrounds and overlays; radial for spotlights and circular effects."}},{"@type":"Question","name":"What is a conic gradient used for?","acceptedAnswer":{"@type":"Answer","text":"Conic gradients sweep colors around a center point in a circle. Classic uses: pie charts and progress rings rendered in pure CSS without SVG. Also used for color wheels, spinner animations, and decorative backgrounds. Universal support in modern browsers since 2021."}},{"@type":"Question","name":"Why does my gradient have banding?","acceptedAnswer":{"@type":"Answer","text":"Banding occurs when a gradient transitions between similar colors over a large distance — limited 8-bit color depth shows as visible steps. Three fixes: (1) interpolate in OKLCH for smoother transitions, (2) add subtle noise via background-blend-mode, (3) shorten the gradient range."}}]}
   </script>
   <style>
     .grad-preview{width:100%;height:220px;border-radius:var(--radius);border:1px solid var(--border);margin-bottom:20px;transition:all .3s}
@@ -187,6 +189,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>CSS gradients</strong> come in three types: linear (in a direction), radial (from a point), and conic (around a center, useful for pie charts in pure CSS). Modern browsers also support OKLCH color interpolation, which produces visibly smoother gradient transitions than RGB. This <strong>free CSS gradient generator</strong> handles all three types with multi-stop support and OKLCH output.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Linear gradient with multiple stops§§background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);§§The 135deg angle goes from top-left to bottom-right. Single direction, two stops.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Conic gradient (pie chart in pure CSS)§§background: conic-gradient(red 0deg 120deg, green 120deg 240deg, blue 240deg 360deg);§§Three sectors making a tricolor pie chart — no SVG required.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">OKLCH gradient (smoother interpolation)§§background: linear-gradient(in oklch, oklch(70% 0.2 30) 0%, oklch(70% 0.2 270) 100%);§§Interpolating in OKLCH instead of RGB avoids the "muddy" mid-tones that appear in RGB gradients between high-saturation colors.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because most CSS gradient generators online were last updated when only linear gradients existed. Modern CSS has conic gradients (great for pie charts in pure CSS), radial gradients with elliptical sizing, and OKLCH color space &mdash; which produces visibly smoother gradient transitions than RGB interpolation. This generator does all of them with live preview.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

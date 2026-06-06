@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cron Expression Parser & Validator | FreeDevTool</title>
-  <meta name="description" content="Free cron expression parser, validator and evaluator. Human-readable descriptions, next run times, 5-field crontab syntax. Crontab Guru alternative.">
+  <title>Free Cron Parser — Next 10 Fire Times | FreeDevTool</title>
+  <meta name="description" content="Parse and explain cron expressions in plain English. Shows the next 10 fire times. Supports standard cron, quartz, and AWS formats. Free, browser-only.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/cron-parser">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -43,7 +45,7 @@
     {"@type":"Question","name":"How do I schedule a cron job to run every 5 minutes?","acceptedAnswer":{"@type":"Answer","text":"Use the expression: */5 * * * * — this means 'every 5th minute of every hour, every day'. The */5 in the minute field is a step value. Similarly, */10 runs every 10 minutes, */15 every 15 minutes, and 0 * * * * runs at the top of every hour."}},
     {"@type":"Question","name":"What are the five fields in a cron expression?","acceptedAnswer":{"@type":"Answer","text":"The five standard cron fields are: (1) Minute (0-59), (2) Hour (0-23), (3) Day of month (1-31), (4) Month (1-12 or JAN-DEC), (5) Day of week (0-7 or SUN-SAT, where 0 and 7 are both Sunday). Some systems add a 6th field for seconds or year."}},
     {"@type":"Question","name":"What is the difference between standard cron and Quartz cron?","acceptedAnswer":{"@type":"Answer","text":"Standard (Unix) cron has 5 fields: minute, hour, day-of-month, month, day-of-week. Quartz cron (used in Java's Quartz Scheduler) has 6-7 fields adding seconds and optionally year. Quartz also supports 'L' (last), 'W' (weekday), '#' (nth weekday), and '?' (no specific value) — features not available in standard cron."}},
-    {"@type":"Question","name":"Can I use cron expressions on Windows?","acceptedAnswer":{"@type":"Answer","text":"Windows doesn't natively support cron syntax, but alternatives exist: Windows Task Scheduler has its own GUI and XML format. WSL (Windows Subsystem for Linux) supports standard cron. Many tools like Jenkins, GitHub Actions, and Kubernetes use cron expressions cross-platform regardless of the host OS."}}
+    {"@type":"Question","name":"Can I use cron expressions on Windows?","acceptedAnswer":{"@type":"Answer","text":"Windows doesn't natively support cron syntax, but alternatives exist: Windows Task Scheduler has its own GUI and XML format. WSL (Windows Subsystem for Linux) supports standard cron. Many tools like Jenkins, GitHub Actions, and Kubernetes use cron expressions cross-platform regardless of the host OS."}},{"@type":"Question","name":"What does * * * * * mean in cron?","acceptedAnswer":{"@type":"Answer","text":"Five asterisks mean every minute of every hour of every day of every month, regardless of day of week — fire every minute. The five fields left to right: minute (0-59), hour (0-23), day of month (1-31), month (1-12), day of week (0-7 where 0 and 7 both mean Sunday)."}},{"@type":"Question","name":"Why does my cron job not fire?","acceptedAnswer":{"@type":"Answer","text":"Common reasons: (1) the expression is technically valid but does not match what you intended; (2) the cron service is not running; (3) timezone mismatch — GitHub Actions, Kubernetes, and AWS use UTC by default; (4) the previous run is still executing and your scheduler is configured not to overlap."}},{"@type":"Question","name":"What is the difference between standard cron and quartz cron?","acceptedAnswer":{"@type":"Answer","text":"Standard POSIX cron uses 5 fields. Quartz cron (used by Java schedulers like Spring) adds a 6th field for seconds and a 7th optional field for year, and uses ? as a placeholder where standard cron uses *. Common porting error: copying a Quartz expression into a Linux crontab fails."}}
   ]}
   </script>
 
@@ -225,6 +227,17 @@
 
     </div>
   </div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>A cron expression</strong> is a 5-field schedule string used by Linux cron, Kubernetes CronJob, GitHub Actions, AWS EventBridge, and most CI/CD platforms to specify when a recurring job runs. The fields are <code>minute hour day-of-month month day-of-week</code>, separated by spaces. Each field accepts a number, range, list, or asterisk for "every". This <strong>free cron expression parser</strong> explains any expression in plain English and shows the next 10 fire times.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Daily at midnight</strong><code style="display:block;font-family:var(--mono);font-size:13px">0 0 * * *</code><p style="margin:6px 0 0;font-size:13px">Fires at 00:00 every day.</p></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Every 15 minutes</strong><code style="display:block;font-family:var(--mono);font-size:13px">*/15 * * * *</code><p style="margin:6px 0 0;font-size:13px">Step values must divide 60 evenly (2, 3, 4, 5, 6, 10, 12, 15, 20, 30).</p></div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px"><strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Weekdays at 9 AM</strong><code style="display:block;font-family:var(--mono);font-size:13px">0 9 * * MON-FRI</code><p style="margin:6px 0 0;font-size:13px">Day-of-week 0 and 7 both mean Sunday &mdash; a common gotcha.</p></div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this because crontab.guru is dominant for a reason &mdash; it is good. But it is closed source, English-only, and runs from a server. This parser is open source, runs entirely in your browser, and produces the same explanations plus the next 10 fire times. Useful for verifying GitHub Actions cron schedules, Kubernetes CronJob expressions, and legacy Linux crontab entries &mdash; without phoning a server every time you check.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

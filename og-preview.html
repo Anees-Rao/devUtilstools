@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open Graph Preview — OG Tag &amp; Twitter Card | FreeDevTool</title>
+  <title>Free OG Preview — Open Graph <title>Open Graph Preview — OG Tag &amp; Twitter Card | FreeDevTool</title> Twitter Card | FreeDevTool</title>
   <meta name="description" content="Free Open Graph preview &amp; OG tag generator. Test social share cards for Facebook, X (Twitter), LinkedIn, WhatsApp. Browser-only, no signup.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/og-preview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -49,7 +51,7 @@
   }
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Open Graph tags and why do they matter?","acceptedAnswer":{"@type":"Answer","text":"Open Graph (OG) tags are HTML meta tags that control how your URL appears when shared on social media platforms like Facebook, LinkedIn, and WhatsApp. They define the title, description, image, and URL shown in the share card. Without OG tags, platforms guess what to display, often resulting in poor-looking previews. Well-configured OG tags can increase click-through rates by up to 2-3x."}},{"@type":"Question","name":"What image size should I use for Open Graph?","acceptedAnswer":{"@type":"Answer","text":"The recommended OG image size is 1200×630 pixels (aspect ratio 1.91:1). The minimum is 200×200px, but images below 600px wide may not display as large cards on Facebook. For Twitter summary_large_image cards, use 1200×628px. Keep file size under 8MB. Use JPG or PNG format for best compatibility across all platforms."}},{"@type":"Question","name":"What is the difference between Open Graph and Twitter Cards?","acceptedAnswer":{"@type":"Answer","text":"Open Graph uses og: prefix tags (og:title, og:description, og:image) and was created by Facebook. Twitter Cards use twitter: prefix tags (twitter:card, twitter:title, twitter:image). Twitter will fall back to OG tags if twitter-specific tags are not present, so you can often just use OG tags for both platforms. The main Twitter-specific tag is twitter:card which sets the card type (summary or summary_large_image)."}}]}
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are Open Graph tags and why do they matter?","acceptedAnswer":{"@type":"Answer","text":"Open Graph (OG) tags are HTML meta tags that control how your URL appears when shared on social media platforms like Facebook, LinkedIn, and WhatsApp. They define the title, description, image, and URL shown in the share card. Without OG tags, platforms guess what to display, often resulting in poor-looking previews. Well-configured OG tags can increase click-through rates by up to 2-3x."}},{"@type":"Question","name":"What image size should I use for Open Graph?","acceptedAnswer":{"@type":"Answer","text":"The recommended OG image size is 1200×630 pixels (aspect ratio 1.91:1). The minimum is 200×200px, but images below 600px wide may not display as large cards on Facebook. For Twitter summary_large_image cards, use 1200×628px. Keep file size under 8MB. Use JPG or PNG format for best compatibility across all platforms."}},{"@type":"Question","name":"What is the difference between Open Graph and Twitter Cards?","acceptedAnswer":{"@type":"Answer","text":"Open Graph uses og: prefix tags (og:title, og:description, og:image) and was created by Facebook. Twitter Cards use twitter: prefix tags (twitter:card, twitter:title, twitter:image). Twitter will fall back to OG tags if twitter-specific tags are not present, so you can often just use OG tags for both platforms. The main Twitter-specific tag is twitter:card which sets the card type (summary or summary_large_image)."}},{"@type":"Question","name":"Why does my Facebook link preview not update?","acceptedAnswer":{"@type":"Answer","text":"Facebook caches OG data for about 30 days by default. To force a refresh, paste the URL into the Facebook Sharing Debugger and click Scrape Again. This re-fetches your meta tags. Slack and Discord also cache but with shorter TTLs (4-12 hours). LinkedIn has the longest cache (about 7 days)."}},{"@type":"Question","name":"What size should my og:image be in 2026?","acceptedAnswer":{"@type":"Answer","text":"1200 by 630 pixels at 1.91 to 1 aspect ratio. Below 600 by 315 the image may not render. Above 5 MB file size Facebook rejects it. Use PNG for graphics with text, JPEG for photos."}},{"@type":"Question","name":"Does Discord support all OG tags?","acceptedAnswer":{"@type":"Answer","text":"Discord supports the core OG tags (og:title, og:description, og:image, og:url) plus extras (og:video, og:type). Discord additionally supports oEmbed for richer card formats. Slack supports a similar subset. iMessage uses Apple-specific tags via apple-touch-icon."}}]}
   </script>
   <style>
     .og-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -228,6 +230,23 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>Open Graph (og:) meta tags</strong> control how a URL renders when shared on social platforms. Each platform parses tags slightly differently &mdash; Slack ignores some Facebook-specific tags, Discord supports oEmbed, iMessage requires apple-touch-icon. This <strong>free Open Graph preview tool</strong> shows exactly what Facebook, Twitter/X, LinkedIn, Slack, Discord, and iMessage will render, flagging missing or oversized images before you share.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Platform differences§§Facebook prefers og:image 1200×630.§§Twitter accepts 1200×675 (16:9) with twitter:card type "summary_large_image".§§LinkedIn caches OG data for ~7 days — frustrating during launches.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Cache invalidation§§After updating OG tags, force a refresh:§§Facebook: https://developers.facebook.com/tools/debug§§Twitter: https://cards-dev.twitter.com/validator (deprecated; check live tweet)§§LinkedIn: paste URL into post composer to trigger re-scrape.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Common mistakes§§og:image with relative URL (must be absolute https://)§§og:image larger than 8 MB (rejected)§§Missing og:image:width and og:image:height (some platforms refuse to render)</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after a launch where our Twitter card showed a placeholder image because we forgot to set og:image:width. The Twitter Card Validator was down that morning. This preview tool shows you exactly what Facebook, Twitter/X, LinkedIn, Slack, Discord, and iMessage would render &mdash; and flags missing or oversized images before you tweet. Works without OAuth or signup, unlike most preview tools.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>String Escape & Unescape Tool Online — JSON, HTML, URL Free | FreeDevTool</title>
+  <title>Free String Escape — JSON, HTML, URL Online | FreeDevTool</title>
   <meta name="description" content="Escape and unescape strings for JSON, HTML, JavaScript, URL, CSV and SQL. Handle backslash escaping, special characters, newline tab quotes, HTML entities and URL encoding. Free, no signup.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/string-escape">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -81,7 +83,7 @@
         "@type": "Question",
         "name": "Why is string escaping important for security?",
         "acceptedAnswer": { "@type": "Answer", "text": "Proper string escaping prevents injection attacks — the most common class of web security vulnerabilities. Without escaping, attackers can inject malicious code: SQL injection exploits unescaped quotes in database queries, XSS (Cross-Site Scripting) exploits unescaped HTML/JavaScript in web pages, and command injection exploits unescaped shell characters. Always escape user input before inserting it into SQL queries, HTML output, URLs, or shell commands." }
-      }
+      },{"@type":"Question","name":"How do I escape a JSON string?","acceptedAnswer":{"@type":"Answer","text":"JSON requires escaping: backslash, double quote, forward slash (optional), newline, carriage return, tab, backspace, form feed, and Unicode escape sequences. Use the language built-in JSON serializer (JSON.stringify in JavaScript, json.dumps in Python) — never escape manually."}},{"@type":"Question","name":"What characters need to be escaped in JavaScript?","acceptedAnswer":{"@type":"Answer","text":"Inside a string literal: the same quote character used to delimit, plus backslash. Special whitespace also needs escaping (newline, tab, carriage return). Unicode characters can be escaped as Unicode escape sequences. Modern JavaScript prefers template literals to minimize escaping."}},{"@type":"Question","name":"Why do I need to escape strings in SQL queries?","acceptedAnswer":{"@type":"Answer","text":"To prevent SQL injection — a user-controlled string containing a quote and SQL keywords can break out of your intended query. Better: use parameterized queries (prepared statements) so the database engine handles escaping. Manual escape is error-prone."}}
     ]
   }
   </script>
@@ -306,6 +308,24 @@
 
     </div>
   </div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>String escaping</strong> adds backslash sequences (<code>
+</code>, <code>"</code>, <code>\</code>) so a string can be embedded inside another context (code, JSON, HTML, SQL, regex, shell) without breaking the parent syntax. Each context has different escape rules. This <strong>free string escape tool</strong> handles six contexts &mdash; JavaScript, JSON, HTML attribute, SQL string, regex pattern, shell argument &mdash; in both directions.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">JSON string escape§§Input:    She said "hi" and waved§§JSON:     "She said \\"hi\\" and waved"§§Backslash before any embedded quote.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">JavaScript template literal§§Input:    line one${"\\n"}line two§§Escaped:  "line one\\nline two"§§Or use a template literal with literal newlines.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Shell single-quote vs double-quote§§Single: '$HOME' is literal "$HOME"§§Double: "$HOME" expands to /home/user§§Wrap unknown user input in single quotes to prevent variable expansion attacks.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after spending too long pasting a regex from a JavaScript file into a JSON config and watching every backslash silently vanish. Different contexts need different escape rules &mdash; JS string, JSON string, HTML attribute, SQL string, regex pattern, shell argument &mdash; and getting them wrong creates &lsquo;works locally, breaks in production&rsquo; bugs. This tool handles all six contexts, in both directions.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

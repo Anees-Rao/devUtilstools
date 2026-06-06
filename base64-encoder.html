@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/base64-encoder">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -81,7 +83,7 @@
         "@type": "Question",
         "name": "What is URL-safe Base64?",
         "acceptedAnswer": { "@type": "Answer", "text": "Standard Base64 uses + and / which are reserved characters in URLs. URL-safe Base64 replaces + with - and / with _, making the output safe to use in URLs and filenames without percent-encoding." }
-      }
+      },{"@type":"Question","name":"Is Base64 encoding safe for sensitive data?","acceptedAnswer":{"@type":"Answer","text":"Base64 is encoding, not encryption — anyone can decode a Base64 string in seconds without a key. Do not treat Base64 as a privacy mechanism. Use proper encryption (AES, RSA) for confidentiality. Base64 is for binary-to-text conversion only."}},{"@type":"Question","name":"How much does Base64 increase file size?","acceptedAnswer":{"@type":"Answer","text":"Base64 increases size by approximately 33% (3 input bytes become 4 output characters). A 1 MB binary becomes about 1.33 MB Base64 text. After gzip the overhead largely disappears, but uncompressed network and memory size is still 33% larger."}},{"@type":"Question","name":"What is the difference between Base64 and Base64URL?","acceptedAnswer":{"@type":"Answer","text":"Standard Base64 (RFC 4648 section 4) uses plus and slash which are reserved in URLs. URL-safe Base64 (section 5) replaces plus with hyphen and slash with underscore, making the output safe in URL paths and query strings without percent-encoding. JWTs always use Base64URL."}}
     ]
   }
   </script>
@@ -295,6 +297,23 @@
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>Base64</strong> is a binary-to-text encoding scheme (RFC 4648) that represents binary data using 64 printable ASCII characters, with optional padding equals signs. It is used to safely embed images, certificates, and other binary payloads in JSON, HTML, email, and HTTP headers. This <strong>free Base64 encoder and decoder</strong> handles UTF-8 multi-byte input, URL-safe Base64 (with - and _ replacements), and binary files — entirely in your browser.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Plain text to Base64§§Input:    Hello, World!§§Base64:   SGVsbG8sIFdvcmxkIQ==§§The trailing == is padding because the input is not a multiple of 3 bytes.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">URL-safe variant§§Standard:  abc+/123==§§URL-safe:  abc-_123==§§The + becomes -, the / becomes _. Safe to put in URLs and filenames without percent-encoding.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Basic Auth header§§Username "alice" and password "s3cret" become Basic YWxpY2U6czNjcmV0 in an HTTP Authorization header — Base64 of "alice:s3cret".</strong>
+    </div>
+  </section>
 
     <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)">
       <div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">💡 Why I built this</div>

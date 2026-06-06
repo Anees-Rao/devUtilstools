@@ -26,6 +26,8 @@
   <link rel="canonical" href="https://freedevtool.org/markdown-preview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -61,7 +63,7 @@
     {"@type":"Question","name":"How do I convert Markdown to HTML?","acceptedAnswer":{"@type":"Answer","text":"Use a Markdown parser like marked.js, markdown-it, or this online tool to convert Markdown syntax to HTML. Paste your Markdown in the editor, and the tool generates clean, semantic HTML in real time. Click 'Copy HTML' to get the converted output."}},
     {"@type":"Question","name":"What is the difference between Markdown and HTML?","acceptedAnswer":{"@type":"Answer","text":"Markdown is a lightweight markup language designed for readability — it uses simple symbols like # for headings and ** for bold. HTML is the full markup language of the web with tags like <h1> and <strong>. Markdown is converted to HTML for web rendering. Markdown is easier to write; HTML offers more control."}},
     {"@type":"Question","name":"What is the Markdown syntax for tables?","acceptedAnswer":{"@type":"Answer","text":"Use pipes | and dashes - to create tables: '| Header | Header |\\n| --- | --- |\\n| Cell | Cell |'. Align columns with colons: :--- (left), :---: (center), ---: (right). Tables are a GitHub Flavored Markdown extension, not part of the original Markdown spec."}},
-    {"@type":"Question","name":"Can I use Markdown for SEO-optimized content?","acceptedAnswer":{"@type":"Answer","text":"Markdown itself doesn't affect SEO — what matters is the HTML it produces. Use proper heading hierarchy (H1 → H2 → H3), add alt text to images, use semantic elements, and ensure the generated HTML is clean and valid. Many static site generators (Hugo, Jekyll, Gatsby) convert Markdown to SEO-friendly HTML."}}
+    {"@type":"Question","name":"Can I use Markdown for SEO-optimized content?","acceptedAnswer":{"@type":"Answer","text":"Markdown itself doesn't affect SEO — what matters is the HTML it produces. Use proper heading hierarchy (H1 → H2 → H3), add alt text to images, use semantic elements, and ensure the generated HTML is clean and valid. Many static site generators (Hugo, Jekyll, Gatsby) convert Markdown to SEO-friendly HTML."}},{"@type":"Question","name":"How do I add tables in Markdown?","acceptedAnswer":{"@type":"Answer","text":"GitHub-flavored Markdown supports pipe-separated tables with a separator row of dashes. Standard CommonMark does not support tables — this is a GFM extension. Optional alignment colons in the separator row: left-align with leading colon, center with both, right-align with trailing colon."}},{"@type":"Question","name":"What is the difference between CommonMark and GFM?","acceptedAnswer":{"@type":"Answer","text":"CommonMark is the strict standardized version. GFM extends CommonMark with tables, task lists, strikethrough, autolinks, fenced code blocks with syntax highlighting, and stricter whitespace rules. GitHub renders GFM; CommonMark renderers cover the common case but miss the extensions."}},{"@type":"Question","name":"How do I add task lists in Markdown?","acceptedAnswer":{"@type":"Answer","text":"GFM syntax: hyphen space bracket space bracket for unchecked, hyphen space bracket x bracket for checked. GitHub renders these as interactive checkboxes. Many static site generators support them. Standard CommonMark does not — they render as plain bullet text."}}
   ]}
   </script>
 
@@ -280,6 +282,50 @@ Made with ♥ by [FreeDevTool](https://freedevtool.org)
        ============================================================= -->
 
   <article>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>Markdown</strong> is a lightweight plain-text formatting syntax that converts to HTML &mdash; the lingua franca of READMEs, technical docs, and Dev.to articles. GitHub-flavored Markdown (GFM) adds tables, task lists, strikethrough, and fenced code blocks. This <strong>free Markdown preview</strong> renders GFM exactly as GitHub does &mdash; no surprises when you push your README.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">GFM task lists§§- [x] Buy milk§§- [ ] Walk the dog§§Renders as checkboxes that match GitHub exactly. Standard CommonMark does NOT support task lists.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">GFM tables§§</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px"> Name </strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px"> Score </strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">§§</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">------</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">------</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">§§</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px"> Alice </strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px"> 95  </strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">§§Pipe-separated tables with optional alignment colons (:--, :--:, --:). Always preview in actual GitHub before publishing.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Fenced code block with language§§Triple backticks plus language hint gets syntax highlighting on GitHub: javascript, python, sql, html, etc. The highlighting engine is Linguist.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after pushing a README to GitHub and watching the bullet points render as flat text &mdash; because my local markdown preview accepted bullets without trailing spaces, but GitHub&rsquo;s stricter parser required them. This preview matches GitHub-flavored Markdown exactly: same task list rendering, same table parsing, same fenced code block behavior. What you see here is what GitHub will show &mdash; no surprises.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
     <section class="article-section">

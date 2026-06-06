@@ -26,6 +26,8 @@
   <link rel="canonical" href="https://freedevtool.org/number-base">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -95,7 +97,7 @@
         "@type": "Question",
         "name": "What is the difference between signed and unsigned binary numbers?",
         "acceptedAnswer": { "@type": "Answer", "text": "Unsigned binary numbers represent only non-negative values — an 8-bit unsigned number ranges from 0 to 255. Signed binary uses the most significant bit (MSB) as a sign indicator. In two's complement (the most common signed format), an 8-bit signed number ranges from -128 to 127. The binary value 11111111 is 255 unsigned but -1 in signed two's complement. Understanding this distinction is crucial when working with low-level programming, bitwise operations, and data types in languages like C and Rust." }
-      }
+      },{"@type":"Question","name":"What is two complement and why is it used?","acceptedAnswer":{"@type":"Answer","text":"Two complement is how CPUs represent negative integers in binary. Negate by inverting all bits and adding 1. This lets the same hardware addition circuit handle positive and negative numbers — no separate subtraction unit needed. Every modern CPU uses two complement."}},{"@type":"Question","name":"Why do programmers use hexadecimal?","acceptedAnswer":{"@type":"Answer","text":"Each hex digit represents exactly 4 bits (a nibble). Memory addresses, color codes, machine instructions, and bit patterns map cleanly to hex — easier to read than binary, more compact than decimal. 0xFF is 1 byte; 0xFFFF is 2 bytes."}},{"@type":"Question","name":"What is the largest 32-bit signed integer?","acceptedAnswer":{"@type":"Answer","text":"2,147,483,647 (0x7FFFFFFF). With one bit reserved for sign you get 31 bits of magnitude. The minimum 32-bit signed integer is -2,147,483,648. The Unix epoch timestamp overflows this on January 19, 2038 — the famous Y2K38 problem."}}
     ]
   }
   </script>
@@ -482,6 +484,23 @@
 
     </div>
   </div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>Number base conversion</strong> converts integers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16). Signed integers in binary use two's complement representation &mdash; the high bit indicates sign, and negative values are the bitwise inverse plus one. This <strong>free number base converter</strong> handles two's complement for negative numbers, missing from most online converters.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Common conversions§§42 (decimal)  =  101010 (binary)  =  52 (octal)  =  0x2A (hex)§§The same 6 bits viewed in 4 different bases.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Hex for memory addresses§§Memory addresses use hex because each hex digit is exactly 4 bits — 0xFF is 1 byte, 0xFFFF is 2 bytes. Easier to read than binary, more compact than decimal.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Two complement for negatives§§-5 in 8-bit two complement = 11111011 = 0xFB§§The high bit is the sign bit. To negate: invert all bits, add one. Used by every modern CPU to handle negative integers.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after debugging an embedded firmware bug where a signed 8-bit register read as 254 instead of -2. The conversion tool I was using only did unsigned, so I could not see what value the device was actually reporting. This converter supports two&rsquo;s complement for negative numbers in binary and hex &mdash; the way actual hardware encodes signed integers. Critical for embedded, missing from most calculators.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

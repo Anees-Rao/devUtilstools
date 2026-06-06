@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Byte Converter Online — Data Size Unit Converter Free | FreeDevTool</title>
+  <title>Free Byte Converter — KB MB GB TiB Online | FreeDevTool</title>
   <meta name="description" content="Convert between bytes, KB, MB, GB, TB, PB and more. Support for both binary (KiB, MiB, GiB) and decimal (KB, MB, GB) units. Free data size calculator.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
@@ -12,6 +12,8 @@
   <link rel="canonical" href="https://freedevtool.org/byte-converter">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" as="style">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap">
   <link rel="preload" href="style.css?v=20260502-cards" as="style">
   <link rel="stylesheet" href="style.css?v=20260502-cards">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -34,7 +36,7 @@
   {"@context":"https://schema.org","@type":"WebApplication","name":"Byte Converter Online","url":"https://freedevtool.org/byte-converter","description":"Convert between data size units — bytes, KB, MB, GB, TB with binary and decimal support.","applicationCategory":"DeveloperApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between KB and KiB (binary vs decimal)?","acceptedAnswer":{"@type":"Answer","text":"KB (kilobyte) uses the SI decimal standard where 1 KB = 1,000 bytes. KiB (kibibyte) uses the IEC binary standard where 1 KiB = 1,024 bytes. The distinction matters because hard drive manufacturers use decimal (making drives appear larger), while operating systems traditionally use binary (showing less usable space). The IEC introduced KiB, MiB, GiB notation in 1998 to eliminate this ambiguity."}},{"@type":"Question","name":"How many bytes are in a gigabyte?","acceptedAnswer":{"@type":"Answer","text":"In decimal (SI): 1 GB = 1,000,000,000 bytes (10^9). In binary (IEC): 1 GiB = 1,073,741,824 bytes (2^30). The difference is about 7.4%. For a 500 GB hard drive, that's roughly 35 GB of 'missing' space when your OS reports in GiB."}},{"@type":"Question","name":"Why does my hard drive show less space than advertised?","acceptedAnswer":{"@type":"Answer","text":"Hard drive manufacturers measure capacity in decimal gigabytes (1 GB = 1 billion bytes) because it yields larger numbers. Operating systems like Windows display sizes in binary gibibytes (1 GiB = 1,073,741,824 bytes). A 1 TB drive (1,000,000,000,000 bytes) shows as approximately 931 GiB in Windows. macOS switched to decimal display in 2009, so Mac users see the advertised size."}}]}
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the difference between KB and KiB (binary vs decimal)?","acceptedAnswer":{"@type":"Answer","text":"KB (kilobyte) uses the SI decimal standard where 1 KB = 1,000 bytes. KiB (kibibyte) uses the IEC binary standard where 1 KiB = 1,024 bytes. The distinction matters because hard drive manufacturers use decimal (making drives appear larger), while operating systems traditionally use binary (showing less usable space). The IEC introduced KiB, MiB, GiB notation in 1998 to eliminate this ambiguity."}},{"@type":"Question","name":"How many bytes are in a gigabyte?","acceptedAnswer":{"@type":"Answer","text":"In decimal (SI): 1 GB = 1,000,000,000 bytes (10^9). In binary (IEC): 1 GiB = 1,073,741,824 bytes (2^30). The difference is about 7.4%. For a 500 GB hard drive, that's roughly 35 GB of 'missing' space when your OS reports in GiB."}},{"@type":"Question","name":"Why does my hard drive show less space than advertised?","acceptedAnswer":{"@type":"Answer","text":"Hard drive manufacturers measure capacity in decimal gigabytes (1 GB = 1 billion bytes) because it yields larger numbers. Operating systems like Windows display sizes in binary gibibytes (1 GiB = 1,073,741,824 bytes). A 1 TB drive (1,000,000,000,000 bytes) shows as approximately 931 GiB in Windows. macOS switched to decimal display in 2009, so Mac users see the advertised size."}},{"@type":"Question","name":"Is 1 KB equal to 1000 or 1024 bytes?","acceptedAnswer":{"@type":"Answer","text":"Both definitions exist — that is the confusion. SI/decimal standard: 1 KB = 1000 bytes (used by storage vendors, network speeds). Binary standard: 1 KiB = 1024 bytes (used by operating system file sizes, memory addresses). IEC introduced KiB/MiB/GiB in 1998 to disambiguate."}},{"@type":"Question","name":"What is the difference between bits and bytes?","acceptedAnswer":{"@type":"Answer","text":"A bit is a single binary digit (0 or 1). A byte is 8 bits. Network speeds are quoted in bits (Mbps = megabits per second), while file sizes are in bytes (MB = megabytes). 100 Mbps internet downloads at about 12.5 MB/s — divide bps by 8."}},{"@type":"Question","name":"Why does Windows show different file sizes than my drive label?","acceptedAnswer":{"@type":"Answer","text":"Drive manufacturers use decimal GB (1 GB = 1,000,000,000 bytes). Windows reports drives in binary GiB but calls it GB (1 GB = 1,073,741,824 bytes). A 1 TB drive is 1,000 GB by the label but only about 931 GB by Windows. macOS uses decimal and matches the label."}}]}
   </script>
   <style>
     .byte-input-row{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
@@ -173,6 +175,23 @@
     </div>
   </div>
   <div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;padding:8px 20px;border-radius:var(--radius);font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999">Copied!</div>
+
+  <p class="aeo-lead" style="font-size:16px;line-height:1.7;color:var(--text);max-width:760px;margin:24px auto 18px;padding:0 4px">
+    <strong>Byte units</strong> come in two incompatible systems: decimal SI (KB = 1000 bytes, used by storage vendors and network speeds) and binary IEC (KiB = 1024 bytes, used by operating systems and memory). A 500 GB hard drive ships 500,000,000,000 bytes but Windows reports it as ~465 GiB. This <strong>free byte converter</strong> shows both systems side by side so you know exactly which unit your data is in.
+  </p>
+
+  <section id="examples" style="max-width:760px;margin:24px auto 32px">
+    <h2 style="font-size:18px;margin-bottom:14px">Examples</h2>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Decimal vs binary§§1 KB  =  1,000 bytes (decimal, SI)§§1 KiB =  1,024 bytes (binary, IEC)§§A 500 GB drive ships 500 billion bytes; Windows reports it as ~465 GiB.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Network speed vs file size§§1 Mbps download speed = 0.125 MB/s. A 100 MB file takes ~13 minutes on 1 Mbps, ~10 seconds on 100 Mbps.</strong>
+    </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px">
+      <strong style="display:block;color:var(--accent);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Storage industry lawsuits§§Drive vendors won the lawsuit that confirmed they can use decimal units (GB = 10^9 bytes). Operating systems mostly use binary (GiB = 2^30 bytes). The gap grows: 4 TB drive = ~3.64 TiB.</strong>
+    </div>
+  </section>
 
   <aside class="founder-note" style="max-width:760px;margin:24px auto 32px;padding:20px 24px;background:rgba(0,208,132,0.05);border-left:3px solid var(--accent);border-radius:6px;font-size:14px;line-height:1.7;color:var(--text2)"><div style="font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600">&#128161; Why I built this</div><p style="margin:0 0 12px">I built this after losing a debate with a vendor over whether their 500 GB disk was 500,000,000,000 bytes or 500 times 1024 cubed bytes. The first is what they actually shipped, the second is what the OS reports. This converter shows both &mdash; decimal SI (KB = 1000) and binary IEC (KiB = 1024) &mdash; side by side. Storage vendors win lawsuits over this distinction; you should know which one your spreadsheet is using.</p><p style="margin:0;font-size:13px;color:var(--text3)">&mdash; <a href="/about" style="color:var(--accent);text-decoration:none">Anees Ur Rehman</a>, full-stack developer</p></aside>
   <section class="article-section">

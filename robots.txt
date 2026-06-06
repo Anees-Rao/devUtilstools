@@ -61,4 +61,11 @@ Allow: /
 User-agent: YouBot
 Allow: /
 
+# Common Crawl (feeds many LLM training datasets)
+User-agent: CCBot
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
 Sitemap: https://freedevtool.org/sitemap.xml
