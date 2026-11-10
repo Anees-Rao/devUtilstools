@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Cron Parser — Next 10 Fire Times | FreeDevTool</title>
-  <meta name="description" content="Parse and explain cron expressions in plain English. Shows the next 10 fire times. Supports standard cron, quartz, and AWS formats. Free, browser-only.">
+  <title>Cron Expression Generator &amp; Parser — Next 10 Run Times | FreeDevTool</title>
+  <meta name="description" content="Free cron expression generator and parser. Explain crontab schedules in plain English and see the next 10 run times. Linux, Kubernetes, GitHub Actions.">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Anees Ur Rehman">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-05-19","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","datePublished":"2026-05-02","dateModified":"2026-11-10","inLanguage":"en-US","isPartOf":{"@type":"WebSite","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Anees Ur Rehman","url":"https://freedevtool.org/about","jobTitle":"Full-stack developer","worksFor":{"@type":"Organization","name":"FreeDevTool","url":"https://freedevtool.org"}}</script>
   <link rel="canonical" href="https://freedevtool.org/cron-parser">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"How to explain a cron expression in plain English","totalTime":"PT1M","supply":[],"tool":[{"@type":"HowToTool","name":"Web Browser"}],"step":[{"@type":"HowToStep","position":1,"name":"Open the cron parser","text":"Visit https://freedevtool.org/cron-parser.","url":"https://freedevtool.org/cron-parser"},{"@type":"HowToStep","position":2,"name":"Paste your cron expression","text":"Enter a 5-field expression (POSIX cron) or 6-field expression (Quartz, AWS EventBridge). The parser auto-detects the dialect."},{"@type":"HowToStep","position":3,"name":"Read the plain-English explanation","text":"Each field is translated and combined into a sentence like At 00:00 on every day in January, March, May, July, September, and November."},{"@type":"HowToStep","position":4,"name":"Verify the next 10 fire times","text":"The parser computes and lists the next 10 wall-clock fire times in your local timezone. Verify the schedule matches your intent before committing it to crontab or Kubernetes CronJob."}]}</script>
@@ -25,14 +25,14 @@
   <meta property="og:image:alt" content="FreeDevTool — 50+ free, fast, privacy-first developer tools">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://freedevtool.org/og-image.svg">
-  <meta name="twitter:title" content="Cron Expression Generator &amp; Parser — Free Crontab Tool">
-  <meta name="twitter:description" content="Parse, generate and validate cron expressions. Get human-readable descriptions, next 5 run times, and presets for crontab, Kubernetes, GitHub Actions.">
+  <meta name="twitter:title" content="Cron Expression Generator &amp; Parser — Next 10 Run Times">
+  <meta name="twitter:description" content="Free cron expression generator and parser. Explain crontab schedules in plain English and see the next 10 run times. Linux, Kubernetes, GitHub Actions.">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L0CMH3X36"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-3L0CMH3X36');</script>
 
-  <meta property="og:title" content="Cron Expression Generator & Parser — Free Crontab Tool">
-  <meta property="og:description" content="Parse cron expressions to human-readable text. Generate cron schedules with next run times.">
+  <meta property="og:title" content="Cron Expression Generator &amp; Parser — Next 10 Run Times">
+  <meta property="og:description" content="Free cron expression generator and parser. Explain crontab schedules in plain English and see the next 10 run times. Linux, Kubernetes, GitHub Actions.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://freedevtool.org/cron-parser">
 
@@ -184,7 +184,7 @@
     <p class="tool-description">
       Parse, generate, and validate cron expressions with instant human-readable descriptions and next scheduled run times. This free online crontab tool supports standard 5-field Unix cron syntax used in Linux crontab, Kubernetes CronJobs, GitHub Actions, Jenkins, and CI/CD pipelines. Enter a cron expression or use presets to build your schedule. A powerful alternative to crontab.guru — all processing runs in your browser.
     </p>
-    <div class="last-updated">Last updated: May 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
+    <div class="last-updated">Last updated: November 2026 · Written by <a href="/about">Anees Ur Rehman</a>, full-stack developer</div>
   </div>
 
   <div class="tool-card">
@@ -222,7 +222,7 @@
       <div class="cron-desc" id="cron-desc">Every 5 minutes</div>
 
       <div class="next-runs">
-        <label>Next 5 Scheduled Runs</label>
+        <label>Next 10 Scheduled Runs</label>
         <div id="next-runs"></div>
       </div>
 
@@ -689,7 +689,7 @@ function parseCron() {
     document.getElementById('cron-desc').textContent = desc;
     errEl.style.display = 'none';
 
-    const runs = getNextRuns(expr, 5);
+    const runs = getNextRuns(expr, 10);
     let html = '';
     runs.forEach((r, i) => {
       html += '<div class="next-run"><span class="next-run-idx">' + (i + 1) + '</span><span class="next-run-date">' + r.toLocaleString() + '</span><span class="next-run-rel">' + relTime(r) + '</span></div>';
